@@ -1,0 +1,32 @@
+{
+  "name": "@uipkge/registry-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "description": "UIPKGE open-source dual-framework component registry (Vue & React).",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
+  "packageManager": "bun@1.4.0",
+  "scripts": {
+    "dev:vue": "bun --cwd packages/vue dev",
+    "dev:react": "bun --cwd packages/react dev",
+    "build": "bun run build:registry",
+    "build:registry": "bun --cwd packages/vue build && bun --cwd packages/react build",
+    "build:vue": "bun --cwd packages/vue build",
+    "build:react": "bun --cwd packages/react build",
+    "test": "bun --cwd packages/vue test && bun --cwd packages/react test",
+    "test:vue": "bun --cwd packages/vue test",
+    "test:react": "bun --cwd packages/react test",
+    "typecheck": "bun --cwd packages/vue typecheck && bun --cwd packages/react typecheck",
+    "verify:vue": "bun --cwd packages/vue verify",
+    "verify:react": "bun --cwd packages/react verify",
+    "verify": "bun run verify:vue && bun run verify:react",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0",
+    "prettier-plugin-tailwindcss": "^0.8.0",
+    "typescript": "^5.5.0"
+  }
+}
