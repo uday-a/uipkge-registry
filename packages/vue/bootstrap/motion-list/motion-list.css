@@ -1,0 +1,71 @@
+/*
+ * @uipkge/motion-list — drop-in TransitionGroup styles for sortable
+ * lists, kanban columns, reorderable cards.
+ *
+ * Usage:
+ *   <TransitionGroup name="motion-list" tag="div" class="relative">
+ *     <YourCard v-for="item in items" :key="item.id" />
+ *   </TransitionGroup>
+ *
+ * The parent <div> must be `position: relative` so leaving items can
+ * be taken out of flow without escaping the column. The `enter` and
+ * `move` animations share the same settle curve so a card moving
+ * between two columns reads as one continuous motion.
+ *
+ * Tokens are exposed as CSS variables so consumers can per-context
+ * override (e.g. quicker move for very short lists, slower for hero
+ * boards). Override at any ancestor:
+ *
+ *   <div style="--motion-list-duration-move: 240ms"> ... </div>
+ *
+ * Staged in this repo before promotion to the uipkge registry —
+ * once published, consume via
+ *   `npx shadcn-vue@latest add @uipkge/motion-list -y`.
+ */
+
+@theme inline {
+  --motion-list-curve: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-list-duration-move: 320ms;
+  --motion-list-duration-enter: 220ms;
+  --motion-list-duration-leave: 220ms;
+}
+
+.motion-list-move,
+.motion-list-enter-active,
+.motion-list-leave-active {
+  transition:
+    transform var(--motion-list-duration-move) var(--motion-list-curve),
+    opacity var(--motion-list-duration-enter) var(--motion-list-curve);
+}
+
+.motion-list-enter-from {
+  opacity: 0;
+  transform: translateY(-6px) scale(0.96);
+}
+
+.motion-list-leave-to {
+  opacity: 0;
+  transform: scale(0.94);
+}
+
+/* Take leaving items out of flow so siblings reflow immediately —
+ * the parent collapses smoothly while the leave fade completes.
+ * Override `--motion-list-leave-width` when the parent has padding
+ * that the absolute child would otherwise ignore. */
+.motion-list-leave-active {
+  position: absolute;
+  width: var(--motion-list-leave-width, 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-list-move,
+  .motion-list-enter-active,
+  .motion-list-leave-active {
+    transition: none;
+  }
+  .motion-list-enter-from,
+  .motion-list-leave-to {
+    opacity: 1;
+    transform: none;
+  }
+}

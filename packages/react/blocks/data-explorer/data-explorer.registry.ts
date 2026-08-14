@@ -1,0 +1,41 @@
+import { defineRegistryItem } from '../../lib/define-registry'
+
+export default defineRegistryItem({
+  name: 'data-explorer',
+  type: 'registry:block',
+  categories: ['devops', 'data', 'dashboard'],
+  description:
+    'Configurable dense record explorer for admin and data tools. One `columns` config drives typed cells (text with sub-line and copy, number/delta, currency, percent, bytes, duration, date, relative time, boolean, badge, progress, sparkline, avatar, link, tags, row-actions menu) plus per-column sort, filter operators, pin, hide, reorder, resize, group-by and footer aggregates. Feed it `rows` or an async `source(query)`; pick `pages`, `infinite` or `none` pagination; add row selection with a bulk bar, expandable rows, virtual scrolling, inline editing, multi-sort, status facets, density, fullscreen, export, keyboard row navigation, persisted state and a record detail Sheet. Ships skeleton, error-with-retry and filter-aware empty states, exact stroke-rounded icons inlined (no icon dependency), and a deterministic pipeline-run sample dataset to swap for your source.',
+  files: [
+    { path: 'DataExplorer.tsx', target: 'components/blocks/data-explorer/DataExplorer.tsx' },
+    { path: 'DataExplorerCell.tsx', target: 'components/blocks/data-explorer/DataExplorerCell.tsx' },
+    { path: 'DataExplorerColumnHeader.tsx', target: 'components/blocks/data-explorer/DataExplorerColumnHeader.tsx' },
+    { path: 'DataExplorerColumnsMenu.tsx', target: 'components/blocks/data-explorer/DataExplorerColumnsMenu.tsx' },
+    { path: 'DataExplorerDetailRow.tsx', target: 'components/blocks/data-explorer/DataExplorerDetailRow.tsx' },
+    { path: 'data-explorer-core.ts', target: 'components/blocks/data-explorer/data-explorer-core.ts' },
+    { path: 'data-explorer-data.ts', target: 'components/blocks/data-explorer/data-explorer-data.ts' },
+    { path: 'data-explorer-icons.tsx', target: 'components/blocks/data-explorer/data-explorer-icons.tsx' },
+    { path: 'data-explorer-types.ts', target: 'components/blocks/data-explorer/data-explorer-types.ts' },
+  ],
+  dependencies: [],
+  registryDependencies: [
+    'https://uipkge.dev/r/avatar.json',
+    'https://uipkge.dev/r/badge.json',
+    'https://uipkge.dev/r/button.json',
+    'https://uipkge.dev/r/card.json',
+    'https://uipkge.dev/r/checkbox.json',
+    'https://uipkge.dev/r/context-menu.json',
+    'https://uipkge.dev/r/dropdown-menu.json',
+    'https://uipkge.dev/r/empty-state.json',
+    'https://uipkge.dev/r/input.json',
+    'https://uipkge.dev/r/kbd.json',
+    'https://uipkge.dev/r/popover.json',
+    'https://uipkge.dev/r/progress.json',
+    'https://uipkge.dev/r/select.json',
+    'https://uipkge.dev/r/separator.json',
+    'https://uipkge.dev/r/sheet.json',
+    'https://uipkge.dev/r/skeleton.json',
+    'https://uipkge.dev/r/table.json',
+    'https://uipkge.dev/r/tooltip.json',
+  ],
+})

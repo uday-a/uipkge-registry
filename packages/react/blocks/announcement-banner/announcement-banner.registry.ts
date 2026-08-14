@@ -1,0 +1,12 @@
+import { defineRegistryItem } from '../../lib/define-registry'
+
+export default defineRegistryItem({
+  name: 'announcement-banner',
+  type: 'registry:block',
+  categories: ['marketing'],
+  description:
+    'Interactive release, security, and maintenance broadcast center with rotating live ticker, CLI copy button, and floating pill / top-bar modes.',
+  files: [{ path: 'AnnouncementBanner.tsx', target: 'components/blocks/AnnouncementBanner.tsx' }],
+  dependencies: ['lucide-react'],
+  registryDependencies: ['https://uipkge.dev/r/badge.json', 'https://uipkge.dev/r/button.json'],
+})

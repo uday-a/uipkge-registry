@@ -1,0 +1,36 @@
+import Story from '../../components/story/Story'
+import { EnvironmentVariablesManager } from '@react-registry-blocks/environment-variables-manager/EnvironmentVariablesManager'
+
+export default function EnvironmentVariablesManagerDemo() {
+  return (
+    <>
+      <Story
+        title="Default"
+        description="Full-featured environment variables manager with encrypted secrets, environment scoping (Production, Preview, Development), mask/reveal toggles, copy actions, and bulk import."
+      >
+        <EnvironmentVariablesManager />
+      </Story>
+
+      <Story
+        title="Add Variable Form Open"
+        description="The environment variable manager with the inline creation form opened by default."
+      >
+        <EnvironmentVariablesManager initialAddOpen />
+      </Story>
+
+      <Story
+        title="Production Scope Filtered"
+        description="Initialized with the active environment tab set to Production."
+      >
+        <EnvironmentVariablesManager defaultEnvironment="production" />
+      </Story>
+
+      <Story
+        title="Empty State"
+        description="Zero-state view prompting the user to add their first secret or import an existing .env file."
+      >
+        <EnvironmentVariablesManager initialVariables={[]} />
+      </Story>
+    </>
+  )
+}

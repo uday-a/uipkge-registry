@@ -1,0 +1,323 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Anybody:wght@600;700;800&display=swap');
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans:
+    'DM Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
+  --font-display: 'Anybody', 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono:
+    'DM Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  --radius-sm: var(--radius);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius);
+  --radius-xl: var(--radius);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  /* Motion tokens — used across every component. Calibrated against Radix,
+     Material 3 and Sonner defaults. Override per component if needed. */
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 120ms; /* hover, focus ring, color shifts */
+  --dur-base: 200ms; /* most state changes */
+  --dur-slow: 300ms; /* modal/sheet enter, tab pill slide */
+  --dur-page: 250ms; /* page transition */
+
+  /* Sage paper palette — warm OKLCH tokens with forest accent. */
+  --radius: 0.3rem;
+  --background: oklch(0.98 0.006 130);
+  --foreground: oklch(0.2 0.012 150);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.2 0.012 150);
+  --popover: oklch(0.99 0.004 130);
+  --popover-foreground: oklch(0.2 0.012 150);
+  --primary: oklch(0.46 0.08 145);
+  --primary-foreground: oklch(0.98 0.006 130);
+  --secondary: oklch(0.94 0.012 130);
+  --secondary-foreground: oklch(0.24 0.014 150);
+  --muted: oklch(0.95 0.01 130);
+  --muted-foreground: oklch(0.48 0.014 150);
+  --accent: oklch(0.92 0.02 80);
+  --accent-foreground: oklch(0.24 0.014 150);
+  --destructive: oklch(0.55 0.2 28);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.88 0.014 135);
+  --input: oklch(0.88 0.014 135);
+  --ring: oklch(0.5 0.08 150);
+  /* Chart palette held as hex (not OKLCH) so ECharts' canvas renderer
+   * can hex-concat opacity (`color + '40'`) for gradient fills. Browsers
+   * keep `oklch(...)` strings unchanged through canvas.fillStyle and
+   * getComputedStyle, breaking those concat sites. Light mode: warm
+   * orange / teal / deep blue / amber / yellow. */
+  --chart-1: #e76e50;
+  --chart-2: #2a9d90;
+  --chart-3: #264653;
+  --chart-4: #e9c468;
+  --chart-5: #f4a261;
+
+  --sidebar: oklch(0.955 0.012 130);
+  --sidebar-foreground: oklch(0.2 0.012 150);
+  --sidebar-primary: oklch(0.46 0.08 145);
+  --sidebar-primary-foreground: oklch(0.98 0.006 130);
+  --sidebar-accent: oklch(0.92 0.02 80);
+  --sidebar-accent-foreground: oklch(0.24 0.014 150);
+  --sidebar-border: oklch(0.88 0.014 135);
+  --sidebar-ring: oklch(0.5 0.08 150);
+
+  /* App extensions (not part of shadcn) */
+  --success: oklch(0.55 0.18 145);
+  --warning: oklch(0.7 0.16 75);
+  --info: oklch(0.55 0.22 260);
+}
+
+.dark {
+  /* Sage paper palette — dark variant. */
+  --background: oklch(0.16 0.01 150);
+  --foreground: oklch(0.94 0.008 130);
+  --card: oklch(0.2 0.012 150);
+  --card-foreground: oklch(0.94 0.008 130);
+  --popover: oklch(0.2 0.012 150);
+  --popover-foreground: oklch(0.94 0.008 130);
+  --primary: oklch(0.72 0.1 145);
+  --primary-foreground: oklch(0.16 0.01 150);
+  --secondary: oklch(0.27 0.012 150);
+  --secondary-foreground: oklch(0.94 0.008 130);
+  --muted: oklch(0.26 0.012 150);
+  --muted-foreground: oklch(0.72 0.014 140);
+  --accent: oklch(0.3 0.018 80);
+  --accent-foreground: oklch(0.94 0.008 130);
+  --destructive: oklch(0.68 0.18 25);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 14%);
+  --ring: oklch(0.6 0.1 145);
+  /* Dark mode chart palette — same warm earthy family as light,
+     lightened for visibility on dark backgrounds. */
+  --chart-1: #e8997a;
+  --chart-2: #5cbfb0;
+  --chart-3: #4a6b7a;
+  --chart-4: #f0d99a;
+  --chart-5: #f5b87a;
+
+  --sidebar: oklch(0.19 0.012 150);
+  --sidebar-foreground: oklch(0.94 0.008 130);
+  --sidebar-primary: oklch(0.72 0.1 145);
+  --sidebar-primary-foreground: oklch(0.16 0.01 150);
+  --sidebar-accent: oklch(0.3 0.018 80);
+  --sidebar-accent-foreground: oklch(0.94 0.008 130);
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: oklch(0.6 0.1 145);
+
+  /* App extensions (not part of shadcn) */
+  --success: oklch(0.65 0.16 145);
+  --warning: oklch(0.78 0.17 75);
+  --info: oklch(0.65 0.18 260);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings:
+      'rlig' 1,
+      'calt' 1;
+  }
+
+  /* Tailwind v4 dropped `cursor: pointer` for buttons. Restore it for all
+     interactive elements (native + Reka role-based controls). Disabled
+     elements stay default. */
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']),
+  [role='checkbox']:not([aria-disabled='true']),
+  [role='radio']:not([aria-disabled='true']),
+  [role='switch']:not([aria-disabled='true']),
+  [role='menuitem']:not([aria-disabled='true']),
+  [role='menuitemcheckbox']:not([aria-disabled='true']),
+  [role='menuitemradio']:not([aria-disabled='true']),
+  [role='option']:not([aria-disabled='true']),
+  [role='tab']:not([aria-disabled='true']),
+  summary,
+  label[for],
+  select:not(:disabled),
+  input[type='checkbox']:not(:disabled),
+  input[type='radio']:not(:disabled),
+  input[type='range']:not(:disabled),
+  input[type='file']:not(:disabled),
+  input[type='submit']:not(:disabled),
+  input[type='reset']:not(:disabled),
+  input[type='button']:not(:disabled),
+  input[type='color']:not(:disabled) {
+    cursor: pointer;
+  }
+
+  /* Shadow tokens */
+  .shadow-sm {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+  .shadow-xs {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+  }
+  .shadow-md {
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  }
+  .shadow-lg {
+    box-shadow:
+      0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  }
+  .shadow-xl {
+    box-shadow:
+      0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  }
+
+  .dark .shadow-sm {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  }
+  .dark .shadow-xs {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
+  }
+  .dark .shadow-md {
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.3),
+      0 2px 4px -2px rgba(0, 0, 0, 0.2);
+  }
+  .dark .shadow-lg {
+    box-shadow:
+      0 10px 15px -3px rgba(0, 0, 0, 0.35),
+      0 4px 6px -4px rgba(0, 0, 0, 0.25);
+  }
+  .dark .shadow-xl {
+    box-shadow:
+      0 20px 25px -5px rgba(0, 0, 0, 0.4),
+      0 8px 10px -6px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Card hover lift */
+[data-slot='card']:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.dark [data-slot='card']:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* Subtle background texture */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background-image:
+    radial-gradient(circle at 20% 80%, oklch(0.46 0.08 145 / 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, oklch(0.46 0.08 145 / 0.02) 0%, transparent 50%);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
+
+/* Reusable error-shake animation — apply class `animate-shake` on submit
+   attempt only (never on blur, too aggressive). */
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-6px);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(4px);
+  }
+}
+.animate-shake {
+  animation: shake 400ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+/* Global reduced-motion safety net — collapses every animation/transition
+   to near-instant. Component-specific @media reduce blocks override
+   timings further when needed; this is the floor. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .animate-shake {
+    animation: none;
+  }
+}

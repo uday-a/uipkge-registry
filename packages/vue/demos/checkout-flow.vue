@@ -1,0 +1,40 @@
+<script setup lang="ts">
+import CheckoutFlow from '@/components/blocks/checkout-flow/CheckoutFlow.vue'
+const sampleCart = [
+  { id: '1', name: 'Aurora desk lamp', qty: 1, price: 89, image: '' },
+  { id: '2', name: 'Walnut coaster set (4)', qty: 2, price: 24, image: '' },
+  { id: '3', name: 'Linen throw blanket', qty: 1, price: 64, image: '' },
+]
+
+const singleItem = [{ id: 'a', name: 'Annual subscription', qty: 1, price: 99, image: '' }]
+
+async function fakeSuccess() {
+  await new Promise((r) => setTimeout(r, 1200))
+  return { orderId: 'ORDER-' + Math.random().toString(36).slice(2, 8).toUpperCase() }
+}
+
+async function fakeFailure(): Promise<{ orderId: string }> {
+  await new Promise((r) => setTimeout(r, 900))
+  throw new Error('Issuer rejected the charge. Please contact your bank.')
+}
+</script>
+
+<template>
+  <Story
+    title="3-step happy path"
+    description="Cart → Payment → Confirm → Success (with confetti + animated checkmark). Walk through it."
+  >
+    <CheckoutFlow :items="sampleCart" currency="USD" :tax-rate="0.0825" :shipping-fee="6.99" :on-submit="fakeSuccess" />
+  </Story>
+
+  <Story
+    title="Error path"
+    description="Submit rejects at the confirm step → animated X + retry button that returns to the payment form."
+  >
+    <CheckoutFlow :items="sampleCart" currency="USD" :on-submit="fakeFailure" />
+  </Story>
+
+  <Story title="Single-item cart" description="Minimal cart screen when there's only one line item.">
+    <CheckoutFlow :items="singleItem" currency="USD" :on-submit="fakeSuccess" />
+  </Story>
+</template>

@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "preserve",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/components/ui/*": ["components/*"],
+      "@/components/blocks/CommandPalette.vue": ["blocks/command-palette/CommandPalette.vue"],
+      "@/components/blocks/NotificationsPopover.vue": ["blocks/notifications-popover/NotificationsPopover.vue"],
+      "@/components/blocks/PaymentForm.vue": ["blocks/payment-form/PaymentForm.vue"],
+      "@/components/blocks/*": ["blocks/*"],
+      "@/lib/utils": ["lib/utils.ts"],
+      "@/lib/*": ["lib/*"],
+      "@/composables/useKanban": ["bootstrap/use-kanban/useKanban.ts"],
+      "@/composables/useMonthGrid": ["bootstrap/use-month-grid/useMonthGrid.ts"],
+      "@/composables/useTheme": ["bootstrap/use-theme/useTheme.ts"],
+      "~/composables/useTheme": ["bootstrap/use-theme/useTheme.ts"],
+      "@/composables/*": ["bootstrap/*"],
+      "@/bootstrap/*": ["bootstrap/*"]
+    }
+  },
+  "include": ["components", "blocks", "bootstrap", "lib", "types", "vitest.config.ts"],
+  // __tests__ are dev-only (vitest runs them); the typecheck gate covers
+  // shipped source that consumers copy into their projects.
+  // __tests__ are dev-only (vitest runs them); page.vue files are docs-site
+  // preview scaffolding (filtered out of consumer JSON by build.ts) whose
+  // imports assume the consumer's app layout -- not resolvable in-package.
+  "exclude": ["node_modules", "public", "**/__tests__", "**/page.vue"]
+}
