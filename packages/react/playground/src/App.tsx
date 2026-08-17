@@ -1,184 +1,409 @@
-import React, { useState, useEffect, useMemo } from 'react'
-import { Search, Sun, Moon, Check, Copy } from 'lucide-react'
+import React, { useState, useEffect, useRef, useMemo } from "react";
+import WorkbenchHeader from "./components/WorkbenchHeader";
+import WorkbenchSidebar, {
+  type SidebarItem,
+} from "./components/WorkbenchSidebar";
+import TestBenchDrawer, {
+  type LoggedEvent,
+} from "./components/TestBenchDrawer";
+import { StoryCodeContext } from "./StoryContext";
+import { extractProps, type PropMeta } from "./lib/extract-props";
+import { extractTypeDecls, type TypeDecl } from "./lib/extract-meta";
+import { extractStories } from "./lib/extract-stories";
+import {
+  COLOR_THEMES,
+  RADIUS_PRESETS,
+  VIEWPORT_PRESETS,
+  type CanvasBackground,
+} from "./theme";
+import registryManifest from "../../registry.json";
 
-// Discover all demos in packages/react/demos
-const demoModules = import.meta.glob('../../demos/*.tsx')
+// Vite globs for React demos and raw source
+const demoModules = import.meta.glob("../../demos/*.tsx");
+const demoRawModules = import.meta.glob("../../demos/*.tsx", {
+  query: "?raw",
+  import: "default",
+});
 
-interface DemoEntry {
-  id: string
-  name: string
-  loader: () => Promise<any>
-}
+const manifestMap = new Map(
+  (registryManifest.items as any[]).map((it) => [it.name, it]),
+);
 
-const demos: DemoEntry[] = Object.entries(demoModules).map(([path, loader]) => {
-  const filename = path.split('/').pop()?.replace('.tsx', '') || ''
-  return {
-    id: filename,
-    name: filename
-      .split('-')
-      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-      .join(' '),
-    loader: loader as () => Promise<any>,
-  }
-}).sort((a, b) => a.name.localeCompare(b.name))
+// Build catalog items from demos and enrich with registry.json
+const demoKeys = Object.keys(demoModules);
+const items: SidebarItem[] = demoKeys
+  .map((p) => {
+    const filename = p.split("/").pop()?.replace(".tsx", "") || "";
+    const meta = manifestMap.get(filename);
+    const isBlock = meta
+      ? meta.type === "registry:block"
+      : p.includes("block") || filename.includes("-dashboard");
+    let category = "UI";
+    if (isBlock) {
+      category = "Blocks";
+    } else if (
+      filename.includes("chart") ||
+      meta?.categories?.includes("chart") ||
+      meta?.categories?.includes("data-visualization")
+    ) {
+      category = "Charts";
+    } else if (meta?.categories?.[0]) {
+      category =
+        meta.categories[0].charAt(0).toUpperCase() +
+        meta.categories[0].slice(1);
+    }
+
+    return {
+      id: filename,
+      name: filename
+        .split("-")
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(" "),
+      type: (meta?.type || (isBlock ? "registry:block" : "registry:ui")) as any,
+      category,
+      categories: meta?.categories || [],
+    };
+  })
+  .sort((a, b) => a.name.localeCompare(b.name));
 
 export default function App() {
-  const [search, setSearch] = useState('')
-  const [selectedId, setSelectedId] = useState(demos[0]?.id || 'button')
-  const [ActiveComponent, setActiveComponent] = useState<React.ComponentType | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [copied, setCopied] = useState(false)
-  const [isDark, setIsDark] = useState(false)
+  const [selectedId, setSelectedId] = useState("button");
+  const [ActiveComponent, setActiveComponent] =
+    useState<React.ComponentType | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [remountKey, setRemountKey] = useState(0);
+  const previewContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const filteredDemos = useMemo(() => {
-    const q = search.toLowerCase().trim()
-    if (!q) return demos
-    return demos.filter((d) => d.id.toLowerCase().includes(q) || d.name.toLowerCase().includes(q))
-  }, [search])
+  // Theme & Canvas state
+  const [isDark, setIsDark] = useState(false);
+  const [activeColorTheme, setActiveColorTheme] = useState("default");
+  const [activeRadius, setActiveRadius] = useState("0.5rem");
+  const [activeViewport, setActiveViewport] = useState("fluid");
+  const [canvasBg, setCanvasBg] = useState<CanvasBackground>("dots");
+  const [isInspectorOpen, setIsInspectorOpen] = useState(true);
+
+  // Component Metadata
+  const [currentMeta, setCurrentMeta] = useState<{
+    type: string;
+    description?: string;
+    categories: string[];
+    dependencies: string[];
+    registryDependencies: string[];
+    files: Array<{ path: string; target: string; content?: string }>;
+  }>({
+    type: "registry:ui",
+    categories: [],
+    dependencies: [],
+    registryDependencies: [],
+    files: [],
+  });
+
+  // Props & Types
+  const [propsList, setPropsList] = useState<PropMeta[]>([]);
+  const [typeDecls, setTypeDecls] = useState<TypeDecl[]>([]);
+  const [storyCodeMap, setStoryCodeMap] = useState<Record<string, string>>({});
+
+  // Event Logger
+  const [loggedEvents, setLoggedEvents] = useState<LoggedEvent[]>([]);
+
+  const logEvent = (ev: Event) => {
+    const target = ev.target as HTMLElement | null;
+    const tagName = target?.tagName?.toLowerCase() || "unknown";
+    const slot = target?.getAttribute("data-slot") || "";
+    const targetDesc = slot ? `${tagName}[data-slot=${slot}]` : tagName;
+
+    const id = `${Date.now()}-${Math.random().toString(36).substr(2, 4)}`;
+    const now = new Date();
+    const timestamp = `${now.getHours().toString().padStart(2, "0")}:${now
+      .getMinutes()
+      .toString()
+      .padStart(2, "0")}:${now.getSeconds().toString().padStart(2, "0")}.${now
+      .getMilliseconds()
+      .toString()
+      .padStart(3, "0")}`;
+
+    let detail: string | undefined;
+    if (ev.type === "input" || ev.type === "change") {
+      const val = (target as HTMLInputElement)?.value;
+      if (val !== undefined) detail = `value: "${val}"`;
+    }
+
+    setLoggedEvents((prev) => [
+      {
+        id,
+        timestamp,
+        type: ev.type,
+        target: targetDesc,
+        detail,
+      },
+      ...prev.slice(0, 49),
+    ]);
+  };
 
   useEffect(() => {
-    const target = demos.find((d) => d.id === selectedId)
-    if (!target) return
-    setLoading(true)
-    target.loader()
-      .then((mod) => {
-        setActiveComponent(() => mod.default)
-      })
-      .catch((err) => {
-        console.error('Failed to load React demo:', err)
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-  }, [selectedId])
+    const el = previewContainerRef.current;
+    if (!el) return;
+    const opts = { capture: true, passive: true };
+    el.addEventListener("click", logEvent, opts);
+    el.addEventListener("input", logEvent, opts);
+    el.addEventListener("change", logEvent, opts);
+    el.addEventListener("submit", logEvent, opts);
 
-  const toggleTheme = () => {
-    const next = !isDark
-    setIsDark(next)
-    if (next) {
-      document.documentElement.classList.add('dark')
+    return () => {
+      el.removeEventListener("click", logEvent, opts);
+      el.removeEventListener("input", logEvent, opts);
+      el.removeEventListener("change", logEvent, opts);
+      el.removeEventListener("submit", logEvent, opts);
+    };
+  }, [remountKey, ActiveComponent]);
+
+  // Load Component
+  useEffect(() => {
+    let isCancelled = false;
+
+    const loadComponent = async (id: string) => {
+      setLoading(true);
+      const demoPath = `../../demos/${id}.tsx`;
+      const compLoader = demoModules[demoPath];
+
+      if (compLoader) {
+        try {
+          const mod: any = await compLoader();
+          if (!isCancelled) {
+            setActiveComponent(() => mod.default);
+          }
+        } catch (err) {
+          console.error(`Failed to load component ${id}:`, err);
+        }
+      }
+
+      // Load raw demo source for story snippets
+      const rawLoader = demoRawModules[demoPath];
+      if (rawLoader) {
+        try {
+          const rawCode: any = await rawLoader();
+          if (typeof rawCode === "string" && !isCancelled) {
+            setStoryCodeMap(extractStories(rawCode));
+          }
+        } catch (err) {
+          console.error("Failed to load raw demo source:", err);
+        }
+      }
+
+      // Pre-populate from manifestMap immediately
+      const localMeta = manifestMap.get(id);
+      if (localMeta && !isCancelled) {
+        setCurrentMeta({
+          type: localMeta.type || "registry:ui",
+          description: localMeta.description,
+          categories: localMeta.categories || [],
+          dependencies: localMeta.dependencies || [],
+          registryDependencies: localMeta.registryDependencies || [],
+          files: localMeta.files || [],
+        });
+
+        const mainTsx = localMeta.files?.find(
+          (f: any) => f.path?.endsWith(".tsx") || f.path?.endsWith(".ts"),
+        );
+        const variantFile = localMeta.files?.find((f: any) =>
+          f.path?.includes(".variants."),
+        );
+        if (mainTsx && mainTsx.content) {
+          setPropsList(
+            extractProps(mainTsx.content, variantFile?.content).props,
+          );
+        }
+        if (localMeta.files?.length) {
+          setTypeDecls(extractTypeDecls(localMeta.files));
+        }
+      }
+
+      // Refine from item JSON manifest if available
+      try {
+        const res = await fetch(`/r/react/${id}.json`);
+        if (res.ok && !isCancelled) {
+          const json = await res.json();
+          setCurrentMeta({
+            type: json.type || "registry:ui",
+            description: json.description,
+            categories: json.categories || [],
+            dependencies: json.dependencies || [],
+            registryDependencies: json.registryDependencies || [],
+            files: json.files || [],
+          });
+
+          const mainTsxFile = json.files?.find(
+            (f: any) => f.path.endsWith(".tsx") || f.path.endsWith(".ts"),
+          );
+          const varFile = json.files?.find((f: any) =>
+            f.path.includes(".variants."),
+          );
+          if (mainTsxFile && mainTsxFile.content) {
+            setPropsList(
+              extractProps(mainTsxFile.content, varFile?.content).props,
+            );
+          }
+          if (json.files?.length) {
+            setTypeDecls(extractTypeDecls(json.files));
+          }
+        }
+      } catch (err) {
+        // Fallback already provided by localMeta
+      } finally {
+        if (!isCancelled) setLoading(false);
+      }
+    };
+
+    loadComponent(selectedId);
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [selectedId, remountKey]);
+
+  // Sync dark class on document element
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add("dark");
     } else {
-      document.documentElement.classList.remove('dark')
+      document.documentElement.classList.remove("dark");
     }
-  }
+  }, [isDark]);
 
-  const copyCommand = (id: string) => {
-    navigator.clipboard.writeText(`npx shadcn add https://uipkge.dev/r/react/${id}.json`)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
-
+  // Sync color theme on document element
   useEffect(() => {
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setIsDark(true)
-      document.documentElement.classList.add('dark')
-    }
-  }, [])
+    document.documentElement.setAttribute("data-theme", activeColorTheme);
+  }, [activeColorTheme]);
 
-  const currentItem = demos.find((d) => d.id === selectedId)
+  // Sync radius on document element
+  useEffect(() => {
+    document.documentElement.style.setProperty("--radius", activeRadius);
+  }, [activeRadius]);
+
+  const selectedItemName = useMemo(() => {
+    const item = items.find((i) => i.id === selectedId);
+    return item ? item.name : selectedId;
+  }, [selectedId]);
+
+  const viewportStyle = useMemo(() => {
+    const vp = VIEWPORT_PRESETS.find((v) => v.id === activeViewport);
+    if (!vp || vp.width === "100%") return { width: "100%" };
+    return {
+      width: vp.width,
+      maxWidth: "100%",
+      margin: "0 auto",
+      transition: "width 200ms ease-out",
+    };
+  }, [activeViewport]);
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-background text-foreground font-sans antialiased">
-      {/* Sidebar */}
-      <aside className="flex w-72 shrink-0 flex-col border-r border-border bg-card">
-        {/* Header */}
-        <div className="flex items-center justify-between border-b border-border px-4 py-3.5">
-          <div className="flex items-center gap-2">
-            <div className="flex size-7 items-center justify-center rounded-lg bg-primary text-primary-foreground font-mono text-xs font-bold shadow-xs">
-              UI
-            </div>
-            <div>
-              <h1 className="text-xs font-bold tracking-tight">UIPKGE React</h1>
-              <p className="text-[10px] text-muted-foreground font-mono">dev playground</p>
-            </div>
-          </div>
-          <button
-            type="button"
-            className="flex size-7 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition cursor-pointer"
-            onClick={toggleTheme}
-            title={isDark ? 'Switch to Light' : 'Switch to Dark'}
+      {/* Sidebar Catalog */}
+      <WorkbenchSidebar
+        items={items}
+        selectedId={selectedId}
+        onSelect={(id) => setSelectedId(id)}
+      />
+
+      {/* Main Workbench Area */}
+      <div className="flex flex-1 flex-col overflow-hidden">
+        {/* Top Header Controls */}
+        <WorkbenchHeader
+          componentId={selectedId}
+          componentName={selectedItemName}
+          componentType={currentMeta.type}
+          category={currentMeta.categories[0]}
+          isDark={isDark}
+          onToggleDark={() => setIsDark(!isDark)}
+          activeColorTheme={activeColorTheme}
+          onChangeColorTheme={(theme) => setActiveColorTheme(theme)}
+          activeRadius={activeRadius}
+          onChangeRadius={(radius) => setActiveRadius(radius)}
+          activeViewport={activeViewport}
+          onChangeViewport={(vp) => setActiveViewport(vp)}
+          canvasBg={canvasBg}
+          onChangeCanvasBg={(bg) => setCanvasBg(bg)}
+          onRemount={() => setRemountKey((k) => k + 1)}
+          isInspectorOpen={isInspectorOpen}
+          onToggleInspector={() => setIsInspectorOpen(!isInspectorOpen)}
+        />
+
+        {/* Canvas Preview Area */}
+        <main
+          className={`relative flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 ${
+            canvasBg === "dots"
+              ? "canvas-dots"
+              : canvasBg === "grid"
+                ? "canvas-grid"
+                : "canvas-solid"
+          }`}
+        >
+          <div
+            ref={previewContainerRef}
+            style={viewportStyle}
+            className={`transition-all duration-200 ${
+              activeViewport !== "fluid"
+                ? "rounded-2xl border border-border/80 bg-background/95 p-4 sm:p-6 shadow-2xl backdrop-blur-xs ring-1 ring-black/5 dark:ring-white/10 my-4"
+                : ""
+            }`}
           >
-            {isDark ? <Sun className="size-3.5" /> : <Moon className="size-3.5" />}
-          </button>
-        </div>
+            {/* Viewport Frame Header badge if simulated */}
+            {activeViewport !== "fluid" && (
+              <div className="mb-4 flex items-center justify-between border-b border-border/60 pb-2.5 text-[11px] font-mono text-muted-foreground">
+                <div className="flex items-center gap-1.5 font-medium text-foreground">
+                  <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="uppercase tracking-wider">
+                    {
+                      VIEWPORT_PRESETS.find((v) => v.id === activeViewport)
+                        ?.label
+                    }{" "}
+                    VIEWPORT
+                  </span>
+                </div>
+                <span>
+                  {VIEWPORT_PRESETS.find((v) => v.id === activeViewport)?.width}{" "}
+                  &times; auto
+                </span>
+              </div>
+            )}
 
-        {/* Search */}
-        <div className="p-3 border-b border-border">
-          <div className="relative">
-            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground" />
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              type="text"
-              placeholder="Filter components..."
-              className="w-full rounded-md border border-border bg-background pl-8 pr-3 py-1.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
-            />
-          </div>
-        </div>
-
-        {/* Component List */}
-        <div className="flex-1 overflow-y-auto p-2 space-y-0.5">
-          <div className="px-2 py-1 text-[11px] font-medium text-muted-foreground flex items-center justify-between">
-            <span>Components & Blocks</span>
-            <span className="font-mono text-[10px]">{filteredDemos.length}</span>
-          </div>
-          {filteredDemos.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              className={`flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-left text-xs transition cursor-pointer ${
-                selectedId === item.id
-                  ? 'bg-primary text-primary-foreground font-medium shadow-xs'
-                  : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-              }`}
-              onClick={() => setSelectedId(item.id)}
-            >
-              <span className="truncate">{item.name}</span>
-              <span className="font-mono text-[10px] opacity-70 ml-2">{item.id}</span>
-            </button>
-          ))}
-        </div>
-      </aside>
-
-      {/* Main Content Area */}
-      <main className="flex flex-1 flex-col overflow-hidden bg-background">
-        {/* Top Navigation Bar */}
-        <header className="flex h-13 items-center justify-between border-b border-border px-6 bg-card/50 backdrop-blur">
-          <div className="flex items-center gap-3">
-            <h2 className="text-sm font-semibold tracking-tight">{currentItem?.name}</h2>
-            <span className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
-              @uipkge/{selectedId}
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              className="flex items-center gap-1.5 rounded-md border border-border bg-background px-2.5 py-1 text-xs font-mono text-muted-foreground hover:text-foreground hover:bg-muted transition cursor-pointer"
-              onClick={() => copyCommand(selectedId)}
-            >
-              {copied ? <Check className="size-3 text-success" /> : <Copy className="size-3" />}
-              <span>npx shadcn add @uipkge/{selectedId}</span>
-            </button>
-          </div>
-        </header>
-
-        {/* Preview Canvas */}
-        <div className="flex-1 overflow-y-auto p-8">
-          <div className="mx-auto max-w-4xl">
+            {/* Dynamic React Demo Component wrapped in StoryCodeContext */}
             {loading ? (
-              <div className="flex items-center justify-center py-20 text-muted-foreground text-xs font-mono">
-                Loading preview...
+              <div className="flex h-64 items-center justify-center">
+                <div className="flex flex-col items-center gap-2 text-xs text-muted-foreground font-mono">
+                  <div className="size-5 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+                  <span>Loading {selectedItemName}...</span>
+                </div>
               </div>
             ) : ActiveComponent ? (
-              <ActiveComponent />
+              <StoryCodeContext.Provider value={storyCodeMap}>
+                <ActiveComponent key={`${selectedId}-${remountKey}`} />
+              </StoryCodeContext.Provider>
             ) : (
-              <div className="text-center py-20 text-muted-foreground text-xs">
-                Select a component from the sidebar to preview
+              <div className="flex h-64 items-center justify-center rounded-xl border border-dashed border-border text-center text-xs text-muted-foreground">
+                No demo component found for &quot;{selectedId}&quot;.
               </div>
             )}
           </div>
-        </div>
-      </main>
+        </main>
+
+        {/* Bottom Test Bench Drawer */}
+        <TestBenchDrawer
+          componentId={selectedId}
+          componentName={selectedItemName}
+          componentType={currentMeta.type}
+          propsList={propsList}
+          typeDecls={typeDecls}
+          files={currentMeta.files}
+          dependencies={currentMeta.dependencies}
+          registryDependencies={currentMeta.registryDependencies}
+          events={loggedEvents}
+          isOpen={isInspectorOpen}
+          onToggleOpen={() => setIsInspectorOpen(!isInspectorOpen)}
+          onSelectComponent={(id) => setSelectedId(id)}
+          onClearEvents={() => setLoggedEvents([])}
+        />
+      </div>
     </div>
-  )
+  );
 }
