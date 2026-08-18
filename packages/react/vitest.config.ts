@@ -59,8 +59,8 @@ export default defineConfig({
     include: [
       'components/**/__tests__/**/*.{spec,test}.tsx',
       'components/**/__tests__/**/*.{spec,test}.ts',
-      'blocks/**/__tests__/**/*.{spec,test}.tsx',
-      'blocks/**/__tests__/**/*.{spec,test}.ts',
+      'bootstrap/**/__tests__/**/*.{spec,test}.tsx',
+      'bootstrap/**/__tests__/**/*.{spec,test}.ts',
     ],
     css: false,
     globals: false,

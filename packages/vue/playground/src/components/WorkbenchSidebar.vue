@@ -30,7 +30,7 @@ const emit = defineEmits<{
 
 const search = ref("");
 const searchInputRef = ref<HTMLInputElement | null>(null);
-type FilterTab = "all" | "ui" | "block" | "charts";
+type FilterTab = "all" | "ui" | "charts";
 const activeTab = ref<FilterTab>("all");
 const collapsedCategories = ref<Record<string, boolean>>({});
 
@@ -45,8 +45,6 @@ const filteredItems = computed(() => {
         !i.id.includes("chart") &&
         !i.categories?.includes("chart"),
     );
-  } else if (activeTab.value === "block") {
-    list = list.filter((i) => i.type === "registry:block");
   } else if (activeTab.value === "charts") {
     list = list.filter(
       (i) =>
@@ -140,7 +138,7 @@ onUnmounted(() => {
 
       <!-- Segmented Type Filter Tabs -->
       <div
-        class="mt-2.5 grid grid-cols-4 gap-1 rounded-lg border border-border bg-muted/40 p-0.5 text-[11px] font-medium"
+        class="mt-2.5 grid grid-cols-3 gap-1 rounded-lg border border-border bg-muted/40 p-0.5 text-[11px] font-medium"
       >
         <button
           type="button"
@@ -165,18 +163,6 @@ onUnmounted(() => {
           @click="activeTab = 'ui'"
         >
           UI
-        </button>
-        <button
-          type="button"
-          class="rounded-md py-1 text-center transition"
-          :class="
-            activeTab === 'block'
-              ? 'bg-background text-foreground shadow-xs font-semibold'
-              : 'text-muted-foreground hover:text-foreground'
-          "
-          @click="activeTab = 'block'"
-        >
-          Blocks
         </button>
         <button
           type="button"

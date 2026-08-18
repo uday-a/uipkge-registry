@@ -39,13 +39,8 @@ const items: SidebarItem[] = demoKeys
   .map((p) => {
     const filename = p.split("/").pop()?.replace(".vue", "") || "";
     const meta = manifestMap.get(filename);
-    const isBlock = meta
-      ? meta.type === "registry:block"
-      : p.includes("block") || filename.includes("-dashboard");
     let category = "UI";
-    if (isBlock) {
-      category = "Blocks";
-    } else if (
+    if (
       filename.includes("chart") ||
       meta?.categories?.includes("chart") ||
       meta?.categories?.includes("data-visualization")
@@ -63,7 +58,7 @@ const items: SidebarItem[] = demoKeys
         .split("-")
         .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
         .join(" "),
-      type: (meta?.type || (isBlock ? "registry:block" : "registry:ui")) as any,
+      type: (meta?.type || "registry:ui") as any,
       category,
       categories: meta?.categories || [],
     };

@@ -24,7 +24,7 @@ export interface WorkbenchSidebarProps {
   onSelect: (id: string) => void;
 }
 
-type FilterTab = "all" | "ui" | "block" | "charts";
+type FilterTab = "all" | "ui" | "charts";
 
 export default function WorkbenchSidebar({
   items,
@@ -67,8 +67,6 @@ export default function WorkbenchSidebar({
           !i.id.includes("chart") &&
           !i.categories?.includes("chart"),
       );
-    } else if (activeTab === "block") {
-      list = list.filter((i) => i.type === "registry:block");
     } else if (activeTab === "charts") {
       list = list.filter(
         (i) =>
@@ -145,7 +143,7 @@ export default function WorkbenchSidebar({
         </div>
 
         {/* Filter Segmented Control */}
-        <div className="grid grid-cols-4 rounded-lg border border-border bg-muted/40 p-0.5 text-xs">
+        <div className="grid grid-cols-3 rounded-lg border border-border bg-muted/40 p-0.5 text-xs">
           <button
             type="button"
             className={`rounded-md py-1 font-medium transition ${
@@ -167,17 +165,6 @@ export default function WorkbenchSidebar({
             onClick={() => setActiveTab("ui")}
           >
             UI
-          </button>
-          <button
-            type="button"
-            className={`rounded-md py-1 font-medium transition ${
-              activeTab === "block"
-                ? "bg-background text-foreground shadow-xs"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-            onClick={() => setActiveTab("block")}
-          >
-            Blocks
           </button>
           <button
             type="button"

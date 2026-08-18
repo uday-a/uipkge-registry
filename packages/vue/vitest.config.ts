@@ -69,7 +69,7 @@ export default defineConfig({
     name: 'registry-vue',
     environment: 'happy-dom',
     setupFiles: [path.join(root, 'components/data-table/__tests__/setup.ts')],
-    include: ['components/**/__tests__/**/*.{spec,test}.ts', 'blocks/**/__tests__/**/*.{spec,test}.ts'],
+    include: ['components/**/__tests__/**/*.{spec,test}.ts', 'bootstrap/**/__tests__/**/*.{spec,test}.ts'],
     css: false,
     globals: false,
     testTimeout: 15000,
