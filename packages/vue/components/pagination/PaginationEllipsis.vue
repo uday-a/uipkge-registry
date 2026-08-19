@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { PaginationEllipsis as RkPaginationEllipsis } from 'reka-ui'
-import { MoreHorizontal } from 'lucide-vue-next'
+import { PaginationEllipsis as RkPaginationEllipsis } from "reka-ui";
+import { MoreHorizontal } from "lucide-vue-next";
 </script>
 <template>
   <RkPaginationEllipsis aria-hidden="true">

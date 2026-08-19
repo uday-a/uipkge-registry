@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
-import { Button } from '@/components/ui/button'
+import { ChevronLeft, ChevronRight } from "lucide-vue-next";
+import { Button } from "@/components/ui/button";
 
 defineProps<{
-  canMoveRight: boolean
-  canMoveLeft: boolean
-  oneWay?: boolean
-}>()
+  canMoveRight: boolean;
+  canMoveLeft: boolean;
+  oneWay?: boolean;
+}>();
 
 defineEmits<{
-  (e: 'move-right'): void
-  (e: 'move-left'): void
-}>()
+  (e: "move-right"): void;
+  (e: "move-left"): void;
+}>();
 </script>
 
 <template>

@@ -1,1 +1,5 @@
-export { WaffleChart, type WaffleChartProps, type WaffleSlice } from './WaffleChart'
+export {
+  WaffleChart,
+  type WaffleChartProps,
+  type WaffleSlice,
+} from "./WaffleChart";

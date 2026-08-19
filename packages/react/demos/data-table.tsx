@@ -1,14 +1,25 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { type ColumnDef } from '@tanstack/react-table'
-import Story from '../../components/story/Story'
-import { DataTable, DataTableColumnHeader, type FilterDefinition } from '@react-registry/data-table'
-import { ChevronDown, ChevronRight, MoreHorizontal, Pencil, Copy, Trash2 } from 'lucide-react'
-import { Badge } from '@react-registry/badge'
-import { Avatar, AvatarFallback } from '@react-registry/avatar'
-import { Progress } from '@react-registry/progress'
-import { Switch } from '@react-registry/switch'
-import { Label } from '@react-registry/label'
-import { Button } from '@react-registry/button'
+import React, { useState, useRef, useEffect } from "react";
+import { type ColumnDef } from "@tanstack/react-table";
+import Story from "../../components/story/Story";
+import {
+  DataTable,
+  DataTableColumnHeader,
+  type FilterDefinition,
+} from "@react-registry/data-table";
+import {
+  ChevronDown,
+  ChevronRight,
+  MoreHorizontal,
+  Pencil,
+  Copy,
+  Trash2,
+} from "lucide-react";
+import { Badge } from "@react-registry/badge";
+import { Avatar, AvatarFallback } from "@react-registry/avatar";
+import { Progress } from "@react-registry/progress";
+import { Switch } from "@react-registry/switch";
+import { Label } from "@react-registry/label";
+import { Button } from "@react-registry/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,226 +27,231 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@react-registry/dropdown-menu'
+} from "@react-registry/dropdown-menu";
 
 interface Employee {
-  id: string
-  name: string
-  email: string
-  role: string
-  department: string
-  status: 'active' | 'on_leave' | 'terminated'
-  hired: string
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  department: string;
+  status: "active" | "on_leave" | "terminated";
+  hired: string;
 }
 
 // Generated dataset for virtual-scroll story.
 const FIRST_NAMES = [
-  'James',
-  'Elena',
-  'Marcus',
-  'Sophie',
-  'Daniel',
-  'Claire',
-  'Nathan',
-  'Olivia',
-  'Henry',
-  'Amelia',
-  'Lucas',
-  'Grace',
-  'Owen',
-  'Stella',
-  'Isaac',
-]
+  "James",
+  "Elena",
+  "Marcus",
+  "Sophie",
+  "Daniel",
+  "Claire",
+  "Nathan",
+  "Olivia",
+  "Henry",
+  "Amelia",
+  "Lucas",
+  "Grace",
+  "Owen",
+  "Stella",
+  "Isaac",
+];
 const ROLES = [
-  'Backend Engineer',
-  'Frontend Engineer',
-  'Designer',
-  'PM',
-  'Data Scientist',
-  'Tech Writer',
-  'DevOps',
-  'QA Lead',
-]
-const DEPTS = ['Engineering', 'Product', 'Design', 'Marketing']
-const STATUSES = ['active', 'on_leave', 'terminated'] as const
+  "Backend Engineer",
+  "Frontend Engineer",
+  "Designer",
+  "PM",
+  "Data Scientist",
+  "Tech Writer",
+  "DevOps",
+  "QA Lead",
+];
+const DEPTS = ["Engineering", "Product", "Design", "Marketing"];
+const STATUSES = ["active", "on_leave", "terminated"] as const;
 const bigData: Employee[] = Array.from({ length: 500 }, (_, i) => {
-  const first = FIRST_NAMES[i % FIRST_NAMES.length]
+  const first = FIRST_NAMES[i % FIRST_NAMES.length];
   return {
     id: String(i + 100),
-    name: `${first} ${'ABCDEFGHIJ'[i % 10]}.`,
+    name: `${first} ${"ABCDEFGHIJ"[i % 10]}.`,
     email: `${first.toLowerCase()}${i}@uipkge.dev`,
     role: ROLES[i % ROLES.length],
     department: DEPTS[i % DEPTS.length],
     status: STATUSES[i % STATUSES.length],
-    hired: `202${2 + (i % 3)}-${String((i % 12) + 1).padStart(2, '0')}-${String((i % 27) + 1).padStart(2, '0')}`,
-  }
-})
+    hired: `202${2 + (i % 3)}-${String((i % 12) + 1).padStart(2, "0")}-${String((i % 27) + 1).padStart(2, "0")}`,
+  };
+});
 
 const data: Employee[] = [
   {
-    id: '1',
-    name: 'James Carter',
-    email: 'james.carter@uipkge.dev',
-    role: 'Backend Engineer',
-    department: 'Engineering',
-    status: 'active',
+    id: "1",
+    name: "James Carter",
+    email: "james.carter@uipkge.dev",
+    role: "Backend Engineer",
+    department: "Engineering",
+    status: "active",
   },
   {
-    id: '2',
-    name: 'Elena Rossi',
-    email: 'elena.rossi@uipkge.dev',
-    role: 'Tech Writer',
-    department: 'Marketing',
-    status: 'active',
+    id: "2",
+    name: "Elena Rossi",
+    email: "elena.rossi@uipkge.dev",
+    role: "Tech Writer",
+    department: "Marketing",
+    status: "active",
   },
   {
-    id: '3',
-    name: 'Marcus Hale',
-    email: 'marcus.hale@uipkge.dev',
-    role: 'Data Scientist',
-    department: 'Product',
-    status: 'on_leave',
+    id: "3",
+    name: "Marcus Hale",
+    email: "marcus.hale@uipkge.dev",
+    role: "Data Scientist",
+    department: "Product",
+    status: "on_leave",
   },
   {
-    id: '4',
-    name: 'Sophie Bennett',
-    email: 'sophie.bennett@uipkge.dev',
-    role: 'Senior Engineer',
-    department: 'Engineering',
-    status: 'active',
+    id: "4",
+    name: "Sophie Bennett",
+    email: "sophie.bennett@uipkge.dev",
+    role: "Senior Engineer",
+    department: "Engineering",
+    status: "active",
   },
   {
-    id: '5',
-    name: 'Daniel Price',
-    email: 'daniel.price@uipkge.dev',
-    role: 'Designer',
-    department: 'Design',
-    status: 'terminated',
+    id: "5",
+    name: "Daniel Price",
+    email: "daniel.price@uipkge.dev",
+    role: "Designer",
+    department: "Design",
+    status: "terminated",
   },
   {
-    id: '6',
-    name: 'Claire Donovan',
-    email: 'claire.donovan@uipkge.dev',
-    role: 'PM',
-    department: 'Product',
-    status: 'active',
+    id: "6",
+    name: "Claire Donovan",
+    email: "claire.donovan@uipkge.dev",
+    role: "PM",
+    department: "Product",
+    status: "active",
   },
   {
-    id: '7',
-    name: 'Nathan Brooks',
-    email: 'nathan.brooks@uipkge.dev',
-    role: 'Senior Engineer',
-    department: 'Engineering',
-    status: 'active',
+    id: "7",
+    name: "Nathan Brooks",
+    email: "nathan.brooks@uipkge.dev",
+    role: "Senior Engineer",
+    department: "Engineering",
+    status: "active",
   },
   {
-    id: '8',
-    name: 'Olivia Grant',
-    email: 'olivia.grant@uipkge.dev',
-    role: 'Designer',
-    department: 'Design',
-    status: 'on_leave',
+    id: "8",
+    name: "Olivia Grant",
+    email: "olivia.grant@uipkge.dev",
+    role: "Designer",
+    department: "Design",
+    status: "on_leave",
   },
   {
-    id: '9',
-    name: 'Henry Walsh',
-    email: 'henry.walsh@uipkge.dev',
-    role: 'Frontend Engineer',
-    department: 'Engineering',
-    status: 'active',
+    id: "9",
+    name: "Henry Walsh",
+    email: "henry.walsh@uipkge.dev",
+    role: "Frontend Engineer",
+    department: "Engineering",
+    status: "active",
   },
   {
-    id: '10',
-    name: 'Amelia Cole',
-    email: 'amelia.cole@uipkge.dev',
-    role: 'QA Lead',
-    department: 'Engineering',
-    status: 'active',
+    id: "10",
+    name: "Amelia Cole",
+    email: "amelia.cole@uipkge.dev",
+    role: "QA Lead",
+    department: "Engineering",
+    status: "active",
   },
   {
-    id: '11',
-    name: 'Lucas Meyer',
-    email: 'lucas.meyer@uipkge.dev',
-    role: 'DevOps',
-    department: 'Engineering',
-    status: 'active',
+    id: "11",
+    name: "Lucas Meyer",
+    email: "lucas.meyer@uipkge.dev",
+    role: "DevOps",
+    department: "Engineering",
+    status: "active",
   },
   {
-    id: '12',
-    name: 'Grace Turner',
-    email: 'grace.turner@uipkge.dev',
-    role: 'Designer',
-    department: 'Design',
-    status: 'active',
+    id: "12",
+    name: "Grace Turner",
+    email: "grace.turner@uipkge.dev",
+    role: "Designer",
+    department: "Design",
+    status: "active",
   },
   {
-    id: '13',
-    name: 'Owen Barrett',
-    email: 'owen.barrett@uipkge.dev',
-    role: 'PM',
-    department: 'Product',
-    status: 'on_leave',
+    id: "13",
+    name: "Owen Barrett",
+    email: "owen.barrett@uipkge.dev",
+    role: "PM",
+    department: "Product",
+    status: "on_leave",
   },
   {
-    id: '14',
-    name: 'Stella Quinn',
-    email: 'stella.quinn@uipkge.dev',
-    role: 'Tech Writer',
-    department: 'Marketing',
-    status: 'active',
+    id: "14",
+    name: "Stella Quinn",
+    email: "stella.quinn@uipkge.dev",
+    role: "Tech Writer",
+    department: "Marketing",
+    status: "active",
   },
   {
-    id: '15',
-    name: 'Isaac Nolan',
-    email: 'isaac.nolan@uipkge.dev',
-    role: 'Data Scientist',
-    department: 'Product',
-    status: 'active',
+    id: "15",
+    name: "Isaac Nolan",
+    email: "isaac.nolan@uipkge.dev",
+    role: "Data Scientist",
+    department: "Product",
+    status: "active",
   },
   {
-    id: '16',
-    name: 'Hannah Reid',
-    email: 'hannah.reid@uipkge.dev',
-    role: 'Frontend Engineer',
-    department: 'Engineering',
-    status: 'terminated',
+    id: "16",
+    name: "Hannah Reid",
+    email: "hannah.reid@uipkge.dev",
+    role: "Frontend Engineer",
+    department: "Engineering",
+    status: "terminated",
   },
 ].map((row, i) => ({
   ...row,
-  hired: `202${2 + (i % 3)}-${String((i % 12) + 1).padStart(2, '0')}-${String((i % 27) + 1).padStart(2, '0')}`,
-})) as Employee[]
+  hired: `202${2 + (i % 3)}-${String((i % 12) + 1).padStart(2, "0")}-${String((i % 27) + 1).padStart(2, "0")}`,
+})) as Employee[];
 
-function StatusBadge({ status }: { status: Employee['status'] }) {
-  const variant = status === 'active' ? 'default' : status === 'on_leave' ? 'secondary' : 'outline'
+function StatusBadge({ status }: { status: Employee["status"] }) {
+  const variant =
+    status === "active"
+      ? "default"
+      : status === "on_leave"
+        ? "secondary"
+        : "outline";
   return (
     <Badge variant={variant} className="capitalize">
-      {status.replace('_', ' ')}
+      {status.replace("_", " ")}
     </Badge>
-  )
+  );
 }
 
 const plainColumns: ColumnDef<Employee>[] = [
-  { accessorKey: 'name', header: 'Name' },
-  { accessorKey: 'email', header: 'Email' },
-  { accessorKey: 'role', header: 'Role' },
-  { accessorKey: 'department', header: 'Department' },
+  { accessorKey: "name", header: "Name" },
+  { accessorKey: "email", header: "Email" },
+  { accessorKey: "role", header: "Role" },
+  { accessorKey: "department", header: "Department" },
   {
-    accessorKey: 'status',
-    header: 'Status',
+    accessorKey: "status",
+    header: "Status",
     cell: ({ row }) => <StatusBadge status={row.original.status} />,
   },
-]
+];
 
 function SelectAllCheckbox({ table }: { table: any }) {
-  const isAll = table.getIsAllPageRowsSelected()
-  const isSome = table.getIsSomePageRowsSelected()
-  const ref = useRef<HTMLInputElement | null>(null)
+  const isAll = table.getIsAllPageRowsSelected();
+  const isSome = table.getIsSomePageRowsSelected();
+  const ref = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     if (ref.current) {
-      ref.current.indeterminate = isSome && !isAll
+      ref.current.indeterminate = isSome && !isAll;
     }
-  }, [isSome, isAll])
+  }, [isSome, isAll]);
 
   return (
     <input
@@ -246,11 +262,11 @@ function SelectAllCheckbox({ table }: { table: any }) {
       onChange={(e) => table.toggleAllPageRowsSelected(e.target.checked)}
       aria-label="Select all rows"
     />
-  )
+  );
 }
 
 const selectColumn: ColumnDef<Employee> = {
-  id: 'select',
+  id: "select",
   enableSorting: false,
   enableHiding: false,
   size: 32,
@@ -264,17 +280,24 @@ const selectColumn: ColumnDef<Employee> = {
       aria-label="Select row"
     />
   ),
-}
+};
 
-const createActionsColumn = (announceAction: (message: string) => void): ColumnDef<Employee> => ({
-  id: 'actions',
+const createActionsColumn = (
+  announceAction: (message: string) => void,
+): ColumnDef<Employee> => ({
+  id: "actions",
   enableSorting: false,
   enableHiding: false,
   size: 40,
   cell: ({ row }) => (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon-sm" className="-my-1 size-8" aria-label="Open row actions">
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          className="-my-1 size-8"
+          aria-label="Open row actions"
+        >
           <MoreHorizontal className="size-4" />
         </Button>
       </DropdownMenuTrigger>
@@ -282,42 +305,69 @@ const createActionsColumn = (announceAction: (message: string) => void): ColumnD
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuItem
           onClick={() => {
-            navigator.clipboard?.writeText(row.original.email)
-            announceAction(`Copied ${row.original.email}`)
+            navigator.clipboard?.writeText(row.original.email);
+            announceAction(`Copied ${row.original.email}`);
           }}
         >
           <Copy className="size-3.5" />
           Copy email
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => announceAction(`Edit ${row.original.name}`)}>
+        <DropdownMenuItem
+          onClick={() => announceAction(`Edit ${row.original.name}`)}
+        >
           <Pencil className="size-3.5" />
           Edit
         </DropdownMenuItem>
-        <DropdownMenuItem className="text-destructive" onClick={() => announceAction(`Deleted ${row.original.name}`)}>
+        <DropdownMenuItem
+          className="text-destructive"
+          onClick={() => announceAction(`Deleted ${row.original.name}`)}
+        >
           <Trash2 className="size-3.5" />
           Delete
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   ),
-})
+});
 
 const sortableColumnDefinitions: ColumnDef<Employee>[] = [
   selectColumn,
-  { accessorKey: 'name', header: ({ column }) => <DataTableColumnHeader column={column} label="Name" /> },
-  { accessorKey: 'email', header: ({ column }) => <DataTableColumnHeader column={column} label="Email" /> },
-  { accessorKey: 'role', header: ({ column }) => <DataTableColumnHeader column={column} label="Role" /> },
-  { accessorKey: 'department', header: ({ column }) => <DataTableColumnHeader column={column} label="Department" /> },
   {
-    accessorKey: 'status',
-    header: ({ column }) => <DataTableColumnHeader column={column} label="Status" />,
+    accessorKey: "name",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} label="Name" />
+    ),
+  },
+  {
+    accessorKey: "email",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} label="Email" />
+    ),
+  },
+  {
+    accessorKey: "role",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} label="Role" />
+    ),
+  },
+  {
+    accessorKey: "department",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} label="Department" />
+    ),
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} label="Status" />
+    ),
     cell: ({ row }) => <StatusBadge status={row.original.status} />,
   },
-]
+];
 
 const expanderColumn: ColumnDef<Employee> = {
-  id: 'expander',
+  id: "expander",
   enableSorting: false,
   enableHiding: false,
   size: 32,
@@ -326,40 +376,44 @@ const expanderColumn: ColumnDef<Employee> = {
       variant="ghost"
       size="icon-sm"
       className="-my-1 size-7"
-      aria-label={row.getIsExpanded() ? 'Collapse' : 'Expand'}
+      aria-label={row.getIsExpanded() ? "Collapse" : "Expand"}
       onClick={(e) => {
-        e.stopPropagation()
-        row.toggleExpanded()
+        e.stopPropagation();
+        row.toggleExpanded();
       }}
     >
-      {row.getIsExpanded() ? <ChevronDown className="size-4" /> : <ChevronRight className="size-4" />}
+      {row.getIsExpanded() ? (
+        <ChevronDown className="size-4" />
+      ) : (
+        <ChevronRight className="size-4" />
+      )}
     </Button>
   ),
-}
+};
 
 const expansionColumns: ColumnDef<Employee>[] = [
   expanderColumn,
-  { accessorKey: 'name', header: 'Name' },
-  { accessorKey: 'department', header: 'Department' },
+  { accessorKey: "name", header: "Name" },
+  { accessorKey: "department", header: "Department" },
   {
-    accessorKey: 'status',
-    header: 'Status',
+    accessorKey: "status",
+    header: "Status",
     cell: ({ row }) => <StatusBadge status={row.original.status} />,
   },
-]
+];
 
 // Rich-cell columns demo: avatar+name, progress bar, custom header.
 const richColumns: ColumnDef<Employee>[] = [
   {
-    accessorKey: 'name',
-    header: 'Person',
+    accessorKey: "name",
+    header: "Person",
     cell: ({ row }) => {
-      const e = row.original
+      const e = row.original;
       const initials = e.name
-        .split(' ')
+        .split(" ")
         .map((n) => n[0])
-        .join('')
-        .toUpperCase()
+        .join("")
+        .toUpperCase();
       return (
         <div className="flex items-center gap-3">
           <Avatar className="size-8">
@@ -370,11 +424,11 @@ const richColumns: ColumnDef<Employee>[] = [
             <div className="text-muted-foreground text-xs">{e.email}</div>
           </div>
         </div>
-      )
+      );
     },
   },
   {
-    id: 'tenure',
+    id: "tenure",
     header: () => (
       <div className="flex items-center gap-1">
         Tenure
@@ -382,34 +436,44 @@ const richColumns: ColumnDef<Employee>[] = [
       </div>
     ),
     cell: ({ row }) => {
-      const yrs = (parseInt(row.original.id) % 10) + 1
+      const yrs = (parseInt(row.original.id) % 10) + 1;
       return (
         <div className="flex items-center gap-2">
           <Progress value={yrs * 10} className="h-1.5 w-20" />
-          <span className="text-muted-foreground text-xs tabular-nums">{yrs}y</span>
+          <span className="text-muted-foreground text-xs tabular-nums">
+            {yrs}y
+          </span>
         </div>
-      )
+      );
     },
   },
-  { accessorKey: 'department', header: 'Department' },
+  { accessorKey: "department", header: "Department" },
   {
-    accessorKey: 'status',
-    header: 'Status',
+    accessorKey: "status",
+    header: "Status",
     cell: ({ row }) => <StatusBadge status={row.original.status} />,
   },
-]
+];
 
 const filters: FilterDefinition[] = [
   {
-    column: 'department',
-    label: 'Department',
-    type: 'multiselect',
-    options: ['Engineering', 'Product', 'Design', 'Marketing'],
+    column: "department",
+    label: "Department",
+    type: "multiselect",
+    options: ["Engineering", "Product", "Design", "Marketing"],
   },
-  { column: 'status', label: 'Status', type: 'multiselect', options: ['active', 'on_leave', 'terminated'] },
-]
+  {
+    column: "status",
+    label: "Status",
+    type: "multiselect",
+    options: ["active", "on_leave", "terminated"],
+  },
+];
 
-const dateFilters: FilterDefinition[] = [...filters, { column: 'hired', label: 'Hired', type: 'date' }]
+const dateFilters: FilterDefinition[] = [
+  ...filters,
+  { column: "hired", label: "Hired", type: "date" },
+];
 
 // Per-column header filter — each header carries its own filter definition.
 // The funnel icon next to the sort affordance opens a popover with the
@@ -419,95 +483,123 @@ const dateFilters: FilterDefinition[] = [...filters, { column: 'hired', label: '
 const headerFilterColumns: ColumnDef<Employee>[] = [
   selectColumn,
   {
-    accessorKey: 'name',
+    accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} label="Name" filter={{ column: 'name', label: 'Name', type: 'text' }} />
+      <DataTableColumnHeader
+        column={column}
+        label="Name"
+        filter={{ column: "name", label: "Name", type: "text" }}
+      />
     ),
   },
   {
-    accessorKey: 'email',
+    accessorKey: "email",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} label="Email" filter={{ column: 'email', label: 'Email', type: 'text' }} />
+      <DataTableColumnHeader
+        column={column}
+        label="Email"
+        filter={{ column: "email", label: "Email", type: "text" }}
+      />
     ),
   },
   {
-    accessorKey: 'role',
-    header: ({ column }) => <DataTableColumnHeader column={column} label="Role" />,
+    accessorKey: "role",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} label="Role" />
+    ),
   },
   {
-    accessorKey: 'department',
+    accessorKey: "department",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
         label="Department"
         filter={{
-          column: 'department',
-          label: 'Department',
-          type: 'multiselect',
-          options: ['Engineering', 'Product', 'Design', 'Marketing'],
+          column: "department",
+          label: "Department",
+          type: "multiselect",
+          options: ["Engineering", "Product", "Design", "Marketing"],
         }}
       />
     ),
   },
   {
-    accessorKey: 'status',
+    accessorKey: "status",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
         label="Status"
         filter={{
-          column: 'status',
-          label: 'Status',
-          type: 'multiselect',
+          column: "status",
+          label: "Status",
+          type: "multiselect",
           options: [
-            { value: 'active', label: 'Active' },
-            { value: 'on_leave', label: 'On leave' },
-            { value: 'terminated', label: 'Terminated' },
+            { value: "active", label: "Active" },
+            { value: "on_leave", label: "On leave" },
+            { value: "terminated", label: "Terminated" },
           ],
         }}
       />
     ),
     cell: ({ row }) => <StatusBadge status={row.original.status} />,
   },
-]
+];
 
 export default function DataTableDemo() {
-  const [onlyActive, setOnlyActive] = useState(false)
-  const [actionMessage, setActionMessage] = useState('')
-  const [infiniteRows, setInfiniteRows] = useState<Employee[]>(() => data.slice(0, 8))
-  const [infiniteLoading, setInfiniteLoading] = useState(false)
+  const [onlyActive, setOnlyActive] = useState(false);
+  const [actionMessage, setActionMessage] = useState("");
+  const [infiniteRows, setInfiniteRows] = useState<Employee[]>(() =>
+    data.slice(0, 8),
+  );
+  const [infiniteLoading, setInfiniteLoading] = useState(false);
   const loadMoreInfinite = () => {
-    if (infiniteLoading || infiniteRows.length >= data.length) return
-    setInfiniteLoading(true)
+    if (infiniteLoading || infiniteRows.length >= data.length) return;
+    setInfiniteLoading(true);
     window.setTimeout(() => {
-      setInfiniteRows(data.slice(0, Math.min(infiniteRows.length + 4, data.length)))
-      setInfiniteLoading(false)
-    }, 600)
-  }
+      setInfiniteRows(
+        data.slice(0, Math.min(infiniteRows.length + 4, data.length)),
+      );
+      setInfiniteLoading(false);
+    }, 600);
+  };
   const announceAction = (message: string) => {
-    setActionMessage(message)
-    window.setTimeout(() => setActionMessage(''), 2000)
-  }
-  const sortableColumns = [...sortableColumnDefinitions, createActionsColumn(announceAction)]
+    setActionMessage(message);
+    window.setTimeout(() => setActionMessage(""), 2000);
+  };
+  const sortableColumns = [
+    ...sortableColumnDefinitions,
+    createActionsColumn(announceAction),
+  ];
   const dateColumns: ColumnDef<Employee>[] = [
     ...sortableColumnDefinitions,
-    { accessorKey: 'hired', header: ({ column }) => <DataTableColumnHeader column={column} label="Hired" /> },
+    {
+      accessorKey: "hired",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} label="Hired" />
+      ),
+    },
     createActionsColumn(announceAction),
-  ]
-  const [serverRows, setServerRows] = useState<Employee[]>(() => data.slice(0, 10))
-  const [serverLoading, setServerLoading] = useState(false)
+  ];
+  const [serverRows, setServerRows] = useState<Employee[]>(() =>
+    data.slice(0, 10),
+  );
+  const [serverLoading, setServerLoading] = useState(false);
   const onServerState = (state: { page: number; pageSize: number }) => {
-    setServerLoading(true)
+    setServerLoading(true);
     window.setTimeout(() => {
-      const start = (state.page - 1) * state.pageSize
-      setServerRows(data.slice(start, start + state.pageSize))
-      setServerLoading(false)
-    }, 350)
-  }
+      const start = (state.page - 1) * state.pageSize;
+      setServerRows(data.slice(start, start + state.pageSize));
+      setServerLoading(false);
+    }, 350);
+  };
 
   return (
     <div className="space-y-4">
-      <p role="status" aria-live="polite" className="text-muted-foreground min-h-5 text-xs">
+      <p
+        role="status"
+        aria-live="polite"
+        className="text-muted-foreground min-h-5 text-xs"
+      >
         {actionMessage}
       </p>
       <Story
@@ -542,46 +634,85 @@ export default function DataTableDemo() {
         title="No search"
         description="Hide the global search input with `enable-search=false`. Filters + view + pagination still render."
       >
-        <DataTable columns={sortableColumns} data={data} filters={filters} enableSearch={false} />
+        <DataTable
+          columns={sortableColumns}
+          data={data}
+          filters={filters}
+          enableSearch={false}
+        />
       </Story>
 
       <Story
         title="No view dropdown"
         description="Hide the column-visibility dropdown with `enable-column-visibility=false`."
       >
-        <DataTable columns={sortableColumns} data={data} filterColumn="email" enableColumnVisibility={false} />
+        <DataTable
+          columns={sortableColumns}
+          data={data}
+          filterColumn="email"
+          enableColumnVisibility={false}
+        />
       </Story>
 
       <Story
         title="No pagination"
         description="Hide the pagination footer with `enable-pagination=false`. Useful when the dataset is small or scrolled inline."
       >
-        <DataTable columns={sortableColumns} data={data} filterColumn="email" enablePagination={false} />
+        <DataTable
+          columns={sortableColumns}
+          data={data}
+          filterColumn="email"
+          enablePagination={false}
+        />
       </Story>
 
       <Story
         title="Hide toolbar entirely"
         description="`hide-toolbar` removes search + filters + view in one shot. Combine with `enable-pagination=false` for a pure read-only sortable table."
       >
-        <DataTable columns={sortableColumns} data={data} hideToolbar enablePagination={false} />
+        <DataTable
+          columns={sortableColumns}
+          data={data}
+          hideToolbar
+          enablePagination={false}
+        />
       </Story>
 
       <Story
         title="Sticky header"
         description="Combine `sticky-header` + `max-height` to keep headers visible while the body scrolls."
       >
-        <DataTable columns={sortableColumns} data={data} filterColumn="email" stickyHeader maxHeight="280px" />
+        <DataTable
+          columns={sortableColumns}
+          data={data}
+          filterColumn="email"
+          stickyHeader
+          maxHeight="280px"
+        />
       </Story>
 
-      <Story title="Density: compact" description="Tighter row padding for log-style or analytics views.">
-        <DataTable columns={sortableColumns} data={data} filterColumn="email" density="compact" />
+      <Story
+        title="Density: compact"
+        description="Tighter row padding for log-style or analytics views."
+      >
+        <DataTable
+          columns={sortableColumns}
+          data={data}
+          filterColumn="email"
+          density="compact"
+        />
       </Story>
 
       <Story
         title="Density: comfortable"
         description="Roomier padding when content is heavy or visual breathing room matters."
       >
-        <DataTable columns={sortableColumns} data={data} filterColumn="email" density="comfortable" />
+        <DataTable
+          columns={sortableColumns}
+          data={data}
+          filterColumn="email"
+          density="comfortable"
+        />
       </Story>
 
       <Story
@@ -606,15 +737,19 @@ export default function DataTableDemo() {
           filterColumn="email"
           renderBulkActions={(rows, clear) => (
             <>
-              <Button size="sm" variant="outline" onClick={() => announceAction(`Exporting ${rows.length} rows`)}>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => announceAction(`Exporting ${rows.length} rows`)}
+              >
                 Export
               </Button>
               <Button
                 size="sm"
                 variant="destructive"
                 onClick={() => {
-                  announceAction(`Deleted ${rows.length} rows`)
-                  clear()
+                  announceAction(`Deleted ${rows.length} rows`);
+                  clear();
                 }}
               >
                 Delete
@@ -635,7 +770,9 @@ export default function DataTableDemo() {
           emptyState={
             <div className="space-y-2 py-8">
               <p className="font-medium">No employees yet</p>
-              <p className="text-muted-foreground text-sm">Add your first one to get started.</p>
+              <p className="text-muted-foreground text-sm">
+                Add your first one to get started.
+              </p>
             </div>
           }
         />
@@ -662,7 +799,9 @@ export default function DataTableDemo() {
               <p>
                 <strong>Department:</strong> {row.department}
               </p>
-              <p className="text-muted-foreground mt-2 text-xs">Click the chevron again to collapse.</p>
+              <p className="text-muted-foreground mt-2 text-xs">
+                Click the chevron again to collapse.
+              </p>
             </div>
           )}
         />
@@ -676,7 +815,10 @@ export default function DataTableDemo() {
           columns={sortableColumns}
           data={data}
           filterColumn="email"
-          defaultColumnPinning={{ left: ['select', 'name'], right: ['actions'] }}
+          defaultColumnPinning={{
+            left: ["select", "name"],
+            right: ["actions"],
+          }}
         />
       </Story>
 
@@ -684,14 +826,25 @@ export default function DataTableDemo() {
         title="Column resizing"
         description="`enable-resize` adds drag handles between columns. Drag right edges to widen / shrink."
       >
-        <DataTable columns={sortableColumns} data={data} filterColumn="email" enableResize />
+        <DataTable
+          columns={sortableColumns}
+          data={data}
+          filterColumn="email"
+          enableResize
+        />
       </Story>
 
       <Story
         title="Export CSV"
         description="`enable-export` adds a Download button in the toolbar. Exports the currently filtered + visible columns."
       >
-        <DataTable columns={sortableColumns} data={data} filters={filters} filterColumn="email" enableExport />
+        <DataTable
+          columns={sortableColumns}
+          data={data}
+          filters={filters}
+          filterColumn="email"
+          enableExport
+        />
       </Story>
 
       <Story
@@ -707,13 +860,17 @@ export default function DataTableDemo() {
       >
         <DataTable
           columns={sortableColumns}
-          data={onlyActive ? data.filter((d) => d.status === 'active') : data}
+          data={onlyActive ? data.filter((d) => d.status === "active") : data}
           filters={filters}
           filterColumn="email"
           filterMode="inline"
           customFilters={
             <div className="border-border ml-2 flex items-center gap-2 border-l px-2">
-              <Switch checked={onlyActive} onCheckedChange={setOnlyActive} id="only-active" />
+              <Switch
+                checked={onlyActive}
+                onCheckedChange={setOnlyActive}
+                id="only-active"
+              />
               <Label htmlFor="only-active" className="cursor-pointer text-sm">
                 Only active
               </Label>
@@ -726,7 +883,12 @@ export default function DataTableDemo() {
         title="Drag-to-reorder columns"
         description="`enable-reorder` makes column headers draggable. Pick up a header and drop on another to swap positions."
       >
-        <DataTable columns={sortableColumns} data={data} filterColumn="email" enableReorder />
+        <DataTable
+          columns={sortableColumns}
+          data={data}
+          filterColumn="email"
+          enableReorder
+        />
       </Story>
 
       <Story
@@ -756,9 +918,10 @@ export default function DataTableDemo() {
           renderFooter={(rows) => (
             <tr className="font-medium">
               <td colSpan={7} className="px-3 py-3 text-sm">
-                Total: {rows.length} employee{rows.length === 1 ? '' : 's'}
+                Total: {rows.length} employee{rows.length === 1 ? "" : "s"}
                 <span className="text-muted-foreground ml-2">
-                  · {rows.filter((r) => r.original.status === 'active').length} active
+                  · {rows.filter((r) => r.original.status === "active").length}{" "}
+                  active
                 </span>
               </td>
             </tr>
@@ -833,7 +996,12 @@ export default function DataTableDemo() {
         title="Loading"
         description="`loading` renders a skeleton while the first page is empty, then dims the body on subsequent fetches. Pair with server-side `totalRows`."
       >
-        <DataTable columns={sortableColumns} data={[]} filterColumn="email" loading />
+        <DataTable
+          columns={sortableColumns}
+          data={[]}
+          filterColumn="email"
+          loading
+        />
       </Story>
 
       <Story
@@ -869,21 +1037,36 @@ export default function DataTableDemo() {
         title="Date range filter"
         description="`type: 'date'` on a filter definition opens a range calendar. ISO `YYYY-MM-DD` cell values compare lexicographically."
       >
-        <DataTable columns={dateColumns} data={data} filters={dateFilters} filterColumn="email" />
+        <DataTable
+          columns={dateColumns}
+          data={data}
+          filters={dateFilters}
+          filterColumn="email"
+        />
       </Story>
 
       <Story
         title="Grouped by department"
         description="`defaultGrouping` clusters rows under a group header. Click a header to collapse or expand the group."
       >
-        <DataTable columns={sortableColumns} data={data} defaultGrouping={['department']} enablePagination={false} />
+        <DataTable
+          columns={sortableColumns}
+          data={data}
+          defaultGrouping={["department"]}
+          enablePagination={false}
+        />
       </Story>
 
       <Story
         title="Keyboard navigation"
         description="Focus the table, then J/K or arrows move the row, Space selects, Enter activates, Esc clears, ⌘A selects all, ⌘C copies TSV."
       >
-        <DataTable columns={sortableColumns} data={data} filterColumn="email" enableKeyboardNavigation />
+        <DataTable
+          columns={sortableColumns}
+          data={data}
+          filterColumn="email"
+          enableKeyboardNavigation
+        />
       </Story>
 
       <Story
@@ -891,7 +1074,12 @@ export default function DataTableDemo() {
         description="`borderless='full'` drops the outer card chrome so the table sits flush on a parent surface."
       >
         <div className="bg-muted/30 rounded-lg p-3">
-          <DataTable columns={sortableColumns} data={data} filterColumn="email" borderless="full" />
+          <DataTable
+            columns={sortableColumns}
+            data={data}
+            filterColumn="email"
+            borderless="full"
+          />
         </div>
       </Story>
 
@@ -920,15 +1108,19 @@ export default function DataTableDemo() {
           bulkActionPosition="inline"
           renderBulkActions={(rows, clear) => (
             <>
-              <Button size="sm" variant="outline" onClick={() => announceAction(`Exporting ${rows.length} rows`)}>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => announceAction(`Exporting ${rows.length} rows`)}
+              >
                 Export
               </Button>
               <Button
                 size="sm"
                 variant="destructive"
                 onClick={() => {
-                  announceAction(`Deleted ${rows.length} rows`)
-                  clear()
+                  announceAction(`Deleted ${rows.length} rows`);
+                  clear();
                 }}
               >
                 Delete
@@ -938,5 +1130,5 @@ export default function DataTableDemo() {
         />
       </Story>
     </div>
-  )
+  );
 }

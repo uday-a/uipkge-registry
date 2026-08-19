@@ -11,4 +11,4 @@ export {
   type FileUploadItemProps,
   type FileUploadItemNameProps,
   type FileUploadItemSizeProps,
-} from './file-upload'
+} from "./file-upload";

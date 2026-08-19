@@ -1,1 +1,4 @@
-export { PictorialBarChart, type PictorialBarChartProps } from './PictorialBarChart'
+export {
+  PictorialBarChart,
+  type PictorialBarChartProps,
+} from "./PictorialBarChart";

@@ -1,1 +1,4 @@
-export { default as MarimekkoChart, type MekkoColumn } from './MarimekkoChart.vue'
+export {
+  default as MarimekkoChart,
+  type MekkoColumn,
+} from "./MarimekkoChart.vue";

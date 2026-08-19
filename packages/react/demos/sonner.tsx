@@ -1,12 +1,15 @@
-import Story from '../../components/story/Story'
-import { Button } from '@react-registry/button'
-import { Toaster } from '@react-registry/sonner'
-import { toast } from 'sonner'
+import Story from "../../components/story/Story";
+import { Button } from "@react-registry/button";
+import { Toaster } from "@react-registry/sonner";
+import { toast } from "sonner";
 
 function fakeAsync(ms = 1500, fail = false) {
   return new Promise((resolve, reject) => {
-    setTimeout(() => (fail ? reject(new Error('Network error')) : resolve('Saved')), ms)
-  })
+    setTimeout(
+      () => (fail ? reject(new Error("Network error")) : resolve("Saved")),
+      ms,
+    );
+  });
 }
 
 export default function SonnerDemo() {
@@ -19,24 +22,40 @@ export default function SonnerDemo() {
         description="Toast styles for default, success, info, warning, error, and with-description."
       >
         <div className="flex flex-wrap gap-2">
-          <Button variant="outline" onClick={() => toast('Event has been created.')}>
+          <Button
+            variant="outline"
+            onClick={() => toast("Event has been created.")}
+          >
             Default
           </Button>
-          <Button variant="outline" onClick={() => toast.success('Saved successfully.')}>
+          <Button
+            variant="outline"
+            onClick={() => toast.success("Saved successfully.")}
+          >
             Success
           </Button>
-          <Button variant="outline" onClick={() => toast.info('Heads up!')}>
+          <Button variant="outline" onClick={() => toast.info("Heads up!")}>
             Info
           </Button>
-          <Button variant="outline" onClick={() => toast.warning('Please review.')}>
+          <Button
+            variant="outline"
+            onClick={() => toast.warning("Please review.")}
+          >
             Warning
           </Button>
-          <Button variant="outline" onClick={() => toast.error('Failed to save.')}>
+          <Button
+            variant="outline"
+            onClick={() => toast.error("Failed to save.")}
+          >
             Error
           </Button>
           <Button
             variant="outline"
-            onClick={() => toast('Settings updated', { description: 'Your preferences have been saved.' })}
+            onClick={() =>
+              toast("Settings updated", {
+                description: "Your preferences have been saved.",
+              })
+            }
           >
             With description
           </Button>
@@ -51,9 +70,12 @@ export default function SonnerDemo() {
           <Button
             variant="outline"
             onClick={() =>
-              toast('Event has been created', {
-                description: 'Sunday, December 03, 2023 at 9:00 AM',
-                action: { label: 'Undo', onClick: () => toast.success('Reverted') },
+              toast("Event has been created", {
+                description: "Sunday, December 03, 2023 at 9:00 AM",
+                action: {
+                  label: "Undo",
+                  onClick: () => toast.success("Reverted"),
+                },
               })
             }
           >
@@ -62,8 +84,8 @@ export default function SonnerDemo() {
           <Button
             variant="outline"
             onClick={() =>
-              toast.success('Invitation sent', {
-                action: { label: 'Resend', onClick: () => toast('Resending…') },
+              toast.success("Invitation sent", {
+                action: { label: "Resend", onClick: () => toast("Resending…") },
               })
             }
           >
@@ -79,15 +101,19 @@ export default function SonnerDemo() {
         <div className="flex flex-wrap gap-2">
           <Button
             variant="outline"
-            onClick={() => toast('Tap the X to dismiss this toast manually.', { closeButton: true })}
+            onClick={() =>
+              toast("Tap the X to dismiss this toast manually.", {
+                closeButton: true,
+              })
+            }
           >
             With close button
           </Button>
           <Button
             variant="outline"
             onClick={() =>
-              toast.error('Something went wrong', {
-                description: 'Click the X to clear this manually.',
+              toast.error("Something went wrong", {
+                description: "Click the X to clear this manually.",
                 closeButton: true,
               })
             }
@@ -105,8 +131,8 @@ export default function SonnerDemo() {
           <Button
             variant="outline"
             onClick={() =>
-              toast('Sticky notification', {
-                description: 'This toast stays until you close it.',
+              toast("Sticky notification", {
+                description: "This toast stays until you close it.",
                 duration: Number.POSITIVE_INFINITY,
                 closeButton: true,
               })
@@ -117,8 +143,8 @@ export default function SonnerDemo() {
           <Button
             variant="outline"
             onClick={() => {
-              const id = toast.loading('Processing… this may take a while.')
-              setTimeout(() => toast.success('Done!', { id }), 3000)
+              const id = toast.loading("Processing… this may take a while.");
+              setTimeout(() => toast.success("Done!", { id }), 3000);
             }}
           >
             Loading then resolve
@@ -135,9 +161,9 @@ export default function SonnerDemo() {
             variant="outline"
             onClick={() =>
               toast.promise(fakeAsync(1500), {
-                loading: 'Saving…',
-                success: 'Saved successfully',
-                error: 'Failed to save',
+                loading: "Saving…",
+                success: "Saved successfully",
+                error: "Failed to save",
               })
             }
           >
@@ -147,8 +173,8 @@ export default function SonnerDemo() {
             variant="outline"
             onClick={() =>
               toast.promise(fakeAsync(1500, true), {
-                loading: 'Uploading…',
-                success: 'Upload complete',
+                loading: "Uploading…",
+                success: "Upload complete",
                 error: (err) => `Upload failed: ${(err as Error).message}`,
               })
             }
@@ -158,5 +184,5 @@ export default function SonnerDemo() {
         </div>
       </Story>
     </div>
-  )
+  );
 }

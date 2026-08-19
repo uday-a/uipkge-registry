@@ -1,16 +1,22 @@
-import Story from '../../components/story/Story'
-import { ProgressLinear } from '@react-registry/progress-linear'
+import Story from "../../components/story/Story";
+import { ProgressLinear } from "@react-registry/progress-linear";
 
 export default function ProgressLinearDemo() {
   return (
     <>
-      <Story title="Determinate" description="Linear progress bar driven by a fixed model value (0–100).">
+      <Story
+        title="Determinate"
+        description="Linear progress bar driven by a fixed model value (0–100)."
+      >
         <div className="max-w-md">
           <ProgressLinear value={60} />
         </div>
       </Story>
 
-      <Story title="Indeterminate" description="indeterminate animates a sliding bar for unknown-duration tasks.">
+      <Story
+        title="Indeterminate"
+        description="indeterminate animates a sliding bar for unknown-duration tasks."
+      >
         <div className="max-w-md">
           <ProgressLinear indeterminate />
         </div>
@@ -34,7 +40,10 @@ export default function ProgressLinearDemo() {
         </div>
       </Story>
 
-      <Story title="Striped" description="striped paints diagonal hatch marks on the fill for a loading aesthetic.">
+      <Story
+        title="Striped"
+        description="striped paints diagonal hatch marks on the fill for a loading aesthetic."
+      >
         <div className="max-w-md space-y-3">
           <ProgressLinear value={70} striped />
           <ProgressLinear value={45} striped color="var(--info)" />
@@ -74,5 +83,5 @@ export default function ProgressLinearDemo() {
         </div>
       </Story>
     </>
-  )
+  );
 }

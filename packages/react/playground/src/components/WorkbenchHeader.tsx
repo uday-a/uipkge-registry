@@ -16,6 +16,8 @@ import {
   Laptop,
   Tablet,
   Smartphone,
+  PanelLeftClose,
+  PanelLeft,
 } from "lucide-react";
 import {
   COLOR_THEMES,
@@ -42,6 +44,8 @@ export interface WorkbenchHeaderProps {
   onRemount: () => void;
   isInspectorOpen: boolean;
   onToggleInspector: () => void;
+  isSidebarOpen?: boolean;
+  onToggleSidebar?: () => void;
 }
 
 export default function WorkbenchHeader({
@@ -62,6 +66,8 @@ export default function WorkbenchHeader({
   onRemount,
   isInspectorOpen,
   onToggleInspector,
+  isSidebarOpen = true,
+  onToggleSidebar,
 }: WorkbenchHeaderProps) {
   const [copiedCmd, setCopiedCmd] = useState(false);
   const [showThemePopover, setShowThemePopover] = useState(false);
@@ -80,7 +86,21 @@ export default function WorkbenchHeader({
   return (
     <header className="flex h-13 shrink-0 items-center justify-between border-b border-border bg-card px-4 select-none z-20">
       {/* Left: Brand & Component Info */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2.5 sm:gap-3">
+        {/* Toggle sidebar button */}
+        <button
+          type="button"
+          className="flex size-7 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-2xs"
+          onClick={onToggleSidebar}
+          title={isSidebarOpen ? "Hide sidebar (⌘B)" : "Show sidebar (⌘B)"}
+        >
+          {isSidebarOpen ? (
+            <PanelLeftClose className="size-3.5" />
+          ) : (
+            <PanelLeft className="size-3.5" />
+          )}
+        </button>
+
         <div className="flex items-center gap-2">
           <div className="flex size-6 items-center justify-center rounded-md bg-foreground text-background font-mono font-black text-xs">
             UI
@@ -91,26 +111,21 @@ export default function WorkbenchHeader({
           <a
             href="http://localhost:5173"
             title="Open Vue 3.5 Playground"
-            className="flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground font-mono transition"
+            className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground font-mono transition"
           >
             <span>Vue 3.5</span>
             <ExternalLink className="size-2.5" />
           </a>
         </div>
 
-        <div className="h-4 w-px bg-border" />
+        <div className="hidden sm:block h-4 w-px bg-border" />
 
         <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold text-foreground tracking-tight">
+          <span className="text-xs sm:text-sm font-semibold text-foreground tracking-tight truncate max-w-[140px] sm:max-w-xs">
             {componentName}
           </span>
-          <span className="rounded bg-primary/10 text-primary px-1.5 py-0.5 text-[10px] font-mono uppercase font-bold tracking-wider">
-            {{ "registry:block": "BLOCK", "registry:ui": "UI" }[
-              componentType
-            ] || componentType.replace("registry:", "")}
-          </span>
           {category && (
-            <span className="hidden sm:inline-block rounded border border-border px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground">
+            <span className="hidden sm:inline-block rounded-md border border-border px-2 py-0.5 text-xs font-mono text-muted-foreground">
               {category}
             </span>
           )}
@@ -120,7 +135,7 @@ export default function WorkbenchHeader({
         <button
           type="button"
           title="Click to copy install command"
-          className="hidden md:flex items-center gap-1.5 rounded-md border border-border bg-muted/30 hover:bg-muted px-2 py-1 text-xs font-mono text-muted-foreground hover:text-foreground transition shadow-2xs"
+          className="hidden xl:flex items-center gap-1.5 rounded-md border border-border bg-muted/30 hover:bg-muted px-2 py-1 text-xs font-mono text-muted-foreground hover:text-foreground transition shadow-2xs"
           onClick={copyInstallCommand}
         >
           {copiedCmd ? (
@@ -128,7 +143,7 @@ export default function WorkbenchHeader({
           ) : (
             <Copy className="size-3" />
           )}
-          <span>npx shadcn add @uipkge/{componentId}</span>
+          <span>add @uipkge/{componentId}</span>
         </button>
       </div>
 
@@ -226,7 +241,7 @@ export default function WorkbenchHeader({
                 <span className="text-xs font-semibold text-foreground">
                   Theme Customizer
                 </span>
-                <span className="text-[10px] font-mono text-muted-foreground uppercase">
+                <span className="text-xs font-mono text-muted-foreground uppercase">
                   OKLCH
                 </span>
               </div>
@@ -252,7 +267,7 @@ export default function WorkbenchHeader({
                         className="size-4 rounded-full border border-black/10 dark:border-white/10"
                         style={{ backgroundColor: theme.swatch }}
                       />
-                      <span className="text-[10px] text-muted-foreground group-hover:text-foreground">
+                      <span className="text-xs text-muted-foreground group-hover:text-foreground">
                         {theme.name}
                       </span>
                     </button>

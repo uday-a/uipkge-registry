@@ -1,1 +1,1 @@
-export { ControlChart, type ControlChartProps } from './ControlChart'
+export { ControlChart, type ControlChartProps } from "./ControlChart";

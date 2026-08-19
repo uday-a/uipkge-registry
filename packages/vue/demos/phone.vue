@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { Phone } from '@/components/ui/phone'
-import hrmsScreenshot from '../../assets/templates/hrms.jpeg?url'
-import trackingScreenshot from '../../assets/templates/tracking.jpeg?url'
+import { Phone } from "@/components/ui/phone";
+import hrmsScreenshot from "../../assets/templates/hrms.jpeg?url";
+import trackingScreenshot from "../../assets/templates/tracking.jpeg?url";
 </script>
 
 <template>
@@ -10,7 +10,12 @@ import trackingScreenshot from '../../assets/templates/tracking.jpeg?url'
     description="Place any image edge to edge, choose its crop with standard object-position classes, and layer marketing copy above it."
   >
     <div class="grid place-items-center gap-12 py-10 lg:grid-cols-2">
-      <Phone model="iphone-17-pro" color="deep-blue" :show-status-bar="false" :show-home-indicator="false">
+      <Phone
+        model="iphone-17-pro"
+        color="deep-blue"
+        :show-status-bar="false"
+        :show-home-indicator="false"
+      >
         <img
           :src="hrmsScreenshot"
           alt="HR management dashboard"
@@ -19,12 +24,23 @@ import trackingScreenshot from '../../assets/templates/tracking.jpeg?url'
         <div
           class="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/90 via-black/55 to-transparent p-5 pt-24 text-white"
         >
-          <p class="text-xs font-medium tracking-[0.18em] text-white/65 uppercase">Workforce</p>
-          <p class="mt-1 text-xl font-semibold tracking-tight">Your team, in focus.</p>
+          <p
+            class="text-xs font-medium tracking-[0.18em] text-white/65 uppercase"
+          >
+            Workforce
+          </p>
+          <p class="mt-1 text-xl font-semibold tracking-tight">
+            Your team, in focus.
+          </p>
         </div>
       </Phone>
 
-      <Phone model="galaxy-s26-ultra" color="cobalt-violet" :show-status-bar="false" :show-nav-bar="false">
+      <Phone
+        model="galaxy-s26-ultra"
+        color="cobalt-violet"
+        :show-status-bar="false"
+        :show-nav-bar="false"
+      >
         <img
           :src="trackingScreenshot"
           alt="Shipment tracking dashboard"
@@ -33,8 +49,14 @@ import trackingScreenshot from '../../assets/templates/tracking.jpeg?url'
         <div
           class="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/90 via-black/55 to-transparent p-5 pt-24 text-white"
         >
-          <p class="text-xs font-medium tracking-[0.18em] text-white/65 uppercase">Live tracking</p>
-          <p class="mt-1 text-xl font-semibold tracking-tight">Every shipment. One view.</p>
+          <p
+            class="text-xs font-medium tracking-[0.18em] text-white/65 uppercase"
+          >
+            Live tracking
+          </p>
+          <p class="mt-1 text-xl font-semibold tracking-tight">
+            Every shipment. One view.
+          </p>
         </div>
       </Phone>
     </div>
@@ -49,7 +71,9 @@ import trackingScreenshot from '../../assets/templates/tracking.jpeg?url'
         <div class="bg-background flex h-full flex-col px-4 pt-14 pb-7">
           <p class="text-muted-foreground text-xs">Good morning</p>
           <h3 class="text-xl font-semibold tracking-tight">Alex Morgan</h3>
-          <div class="bg-primary text-primary-foreground mt-5 rounded-[1.4rem] p-4">
+          <div
+            class="bg-primary text-primary-foreground mt-5 rounded-[1.4rem] p-4"
+          >
             <p class="text-primary-foreground/70 text-xs">Available balance</p>
             <p class="mt-1 text-2xl font-semibold tracking-tight">$4,280.00</p>
           </div>
@@ -80,7 +104,9 @@ import trackingScreenshot from '../../assets/templates/tracking.jpeg?url'
               :key="index"
               class="bg-card rounded-[1.2rem] border p-3"
             >
-              <span class="text-muted-foreground text-xs tabular-nums">{{ time }}</span>
+              <span class="text-muted-foreground text-xs tabular-nums">{{
+                time
+              }}</span>
               <p class="mt-1 text-sm font-medium">{{ title }}</p>
             </div>
           </div>
@@ -89,7 +115,10 @@ import trackingScreenshot from '../../assets/templates/tracking.jpeg?url'
     </div>
   </Story>
 
-  <Story title="Finishes" description="Model-specific metal finishes preserve the same calibrated geometry.">
+  <Story
+    title="Finishes"
+    description="Model-specific metal finishes preserve the same calibrated geometry."
+  >
     <div class="flex flex-wrap items-end justify-center gap-7 py-8">
       <Phone model="iphone-17-pro" color="cosmic-orange" size="sm" />
       <Phone model="iphone-17-pro" color="deep-blue" size="sm" />

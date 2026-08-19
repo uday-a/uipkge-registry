@@ -1,1 +1,1 @@
-export { default as Clipboard } from './Clipboard.vue'
+export { default as Clipboard } from "./Clipboard.vue";

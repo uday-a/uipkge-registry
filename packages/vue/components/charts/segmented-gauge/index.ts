@@ -1,1 +1,1 @@
-export { default as SegmentedGauge } from './SegmentedGauge.vue'
+export { default as SegmentedGauge } from "./SegmentedGauge.vue";

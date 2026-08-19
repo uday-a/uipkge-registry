@@ -14,4 +14,4 @@ export {
   ContextMenuSubTrigger,
   ContextMenuSubContent,
   ContextMenuPortal,
-} from './context-menu'
+} from "./context-menu";

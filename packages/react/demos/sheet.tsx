@@ -1,7 +1,7 @@
-import Story from '../../components/story/Story'
-import { Button } from '@react-registry/button'
-import { Input } from '@react-registry/input'
-import { Label } from '@react-registry/label'
+import Story from "../../components/story/Story";
+import { Button } from "@react-registry/button";
+import { Input } from "@react-registry/input";
+import { Label } from "@react-registry/label";
 import {
   Sheet,
   SheetClose,
@@ -11,7 +11,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@react-registry/sheet'
+} from "@react-registry/sheet";
 
 export default function SheetDemo() {
   return (
@@ -27,7 +27,9 @@ export default function SheetDemo() {
           <SheetContent side="left">
             <SheetHeader>
               <SheetTitle>Edit profile</SheetTitle>
-              <SheetDescription>Make changes to your profile here. Click save when you're done.</SheetDescription>
+              <SheetDescription>
+                Make changes to your profile here. Click save when you're done.
+              </SheetDescription>
             </SheetHeader>
             <div className="grid gap-4 px-4 py-2">
               <div className="grid gap-2">
@@ -57,7 +59,9 @@ export default function SheetDemo() {
           <SheetContent>
             <SheetHeader>
               <SheetTitle>Cart</SheetTitle>
-              <SheetDescription>3 items · estimated total $182.50</SheetDescription>
+              <SheetDescription>
+                3 items · estimated total $182.50
+              </SheetDescription>
             </SheetHeader>
             <div className="space-y-3 px-4 py-2 text-sm">
               <div className="flex justify-between">
@@ -83,7 +87,10 @@ export default function SheetDemo() {
         </Sheet>
       </Story>
 
-      <Story title="Top" description="Slides down from the top edge — good for site-wide notifications or banners.">
+      <Story
+        title="Top"
+        description="Slides down from the top edge — good for site-wide notifications or banners."
+      >
         <Sheet>
           <SheetTrigger asChild>
             <Button variant="outline">Open top sheet</Button>
@@ -92,8 +99,8 @@ export default function SheetDemo() {
             <SheetHeader>
               <SheetTitle>System maintenance scheduled</SheetTitle>
               <SheetDescription>
-                We'll be performing routine maintenance on Sunday at 02:00 UTC. Expect brief intermittent downtime over
-                a 30 minute window.
+                We'll be performing routine maintenance on Sunday at 02:00 UTC.
+                Expect brief intermittent downtime over a 30 minute window.
               </SheetDescription>
             </SheetHeader>
             <SheetFooter>
@@ -116,7 +123,9 @@ export default function SheetDemo() {
           <SheetContent side="bottom">
             <SheetHeader>
               <SheetTitle>Filters</SheetTitle>
-              <SheetDescription>Refine the list with the controls below.</SheetDescription>
+              <SheetDescription>
+                Refine the list with the controls below.
+              </SheetDescription>
             </SheetHeader>
             <div className="grid gap-3 px-4 py-2 sm:grid-cols-3">
               <div className="grid gap-2">
@@ -153,25 +162,28 @@ export default function SheetDemo() {
           <SheetContent>
             <SheetHeader>
               <SheetTitle>Release notes</SheetTitle>
-              <SheetDescription>Highlights from the last several versions.</SheetDescription>
+              <SheetDescription>
+                Highlights from the last several versions.
+              </SheetDescription>
             </SheetHeader>
             <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 py-2 text-sm">
               {Array.from({ length: 12 }, (_, idx) => {
-                const i = idx + 1
+                const i = idx + 1;
                 return (
                   <section key={i} className="space-y-1">
                     <h4 className="font-medium">v1.{12 - i + 1}.0</h4>
                     <p className="text-muted-foreground">
-                      Notes for release v1.{12 - i + 1}.0 — fixes, features, and assorted improvements across the
-                      registry. Multiple paragraphs of placeholder copy keep the body tall enough that scrolling becomes
-                      necessary on most viewport heights.
+                      Notes for release v1.{12 - i + 1}.0 — fixes, features, and
+                      assorted improvements across the registry. Multiple
+                      paragraphs of placeholder copy keep the body tall enough
+                      that scrolling becomes necessary on most viewport heights.
                     </p>
                     <p className="text-muted-foreground">
-                      Additional context for v1.{12 - i + 1}.0 with deprecation notes and migration steps where
-                      relevant.
+                      Additional context for v1.{12 - i + 1}.0 with deprecation
+                      notes and migration steps where relevant.
                     </p>
                   </section>
-                )
+                );
               })}
             </div>
             <SheetFooter>
@@ -183,5 +195,5 @@ export default function SheetDemo() {
         </Sheet>
       </Story>
     </>
-  )
+  );
 }

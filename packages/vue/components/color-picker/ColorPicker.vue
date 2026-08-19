@@ -1,52 +1,57 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
+import { computed } from "vue";
+import type { HTMLAttributes } from "vue";
+import { cn } from "@/lib/utils";
 
 const props = withDefaults(
   defineProps<{
-    modelValue?: string
-    disabled?: boolean
+    modelValue?: string;
+    disabled?: boolean;
     /** Override the swatches shown below the color input. Pass [] to hide entirely. */
-    presets?: string[]
+    presets?: string[];
     /** Hide the hex text field next to the color trigger. */
-    hideHexInput?: boolean
-    class?: HTMLAttributes['class']
+    hideHexInput?: boolean;
+    class?: HTMLAttributes["class"];
   }>(),
   {
     presets: () => [
-      '#ef4444',
-      '#f97316',
-      '#eab308',
-      '#22c55e',
-      '#14b8a6',
-      '#3b82f6',
-      '#8b5cf6',
-      '#ec4899',
-      '#ffffff',
-      '#d4d4d4',
-      '#737373',
-      '#171717',
+      "#ef4444",
+      "#f97316",
+      "#eab308",
+      "#22c55e",
+      "#14b8a6",
+      "#3b82f6",
+      "#8b5cf6",
+      "#ec4899",
+      "#ffffff",
+      "#d4d4d4",
+      "#737373",
+      "#171717",
     ],
     hideHexInput: false,
   },
-)
+);
 
 const emit = defineEmits<{
-  'update:modelValue': [value: string]
-}>()
+  "update:modelValue": [value: string];
+}>();
 
-const swatches = computed(() => props.presets ?? [])
+const swatches = computed(() => props.presets ?? []);
 
 /** Native <input type="color"> only accepts #rrggbb — keep a safe value while typing free-form hex. */
 const safeColorValue = computed(() => {
-  const v = props.modelValue || ''
-  return /^#[0-9a-fA-F]{6}$/.test(v) ? v : '#ffffff'
-})
+  const v = props.modelValue || "";
+  return /^#[0-9a-fA-F]{6}$/.test(v) ? v : "#ffffff";
+});
 </script>
 
 <template>
-  <div data-uipkge data-slot="color-picker" :class="cn('space-y-3', props.class)" v-bind="$attrs">
+  <div
+    data-uipkge
+    data-slot="color-picker"
+    :class="cn('space-y-3', props.class)"
+    v-bind="$attrs"
+  >
     <!-- Color trigger + hex field -->
     <div class="flex items-center gap-2">
       <div
@@ -59,7 +64,9 @@ const safeColorValue = computed(() => {
           :disabled="disabled"
           aria-label="Pick color"
           class="absolute inset-0 h-full w-full cursor-pointer opacity-0 disabled:cursor-not-allowed"
-          @input="emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+          @input="
+            emit('update:modelValue', ($event.target as HTMLInputElement).value)
+          "
         />
       </div>
       <input
@@ -72,7 +79,9 @@ const safeColorValue = computed(() => {
         :disabled="disabled"
         aria-label="Hex color"
         class="bg-background border-input text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 h-10 flex-1 rounded-md border px-3 text-sm uppercase shadow-xs outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50"
-        @input="emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+        @input="
+          emit('update:modelValue', ($event.target as HTMLInputElement).value)
+        "
       />
     </div>
 

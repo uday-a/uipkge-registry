@@ -1,4 +1,4 @@
-import Story from '../../components/story/Story'
+import Story from "../../components/story/Story";
 import {
   Sidebar,
   SidebarContent,
@@ -17,7 +17,7 @@ import {
   SidebarProvider,
   SidebarRail,
   SidebarTrigger,
-} from '@react-registry/sidebar'
+} from "@react-registry/sidebar";
 import {
   Bell,
   Calendar,
@@ -31,18 +31,22 @@ import {
   Settings,
   Star,
   Users,
-} from 'lucide-react'
+} from "lucide-react";
 
 // Each Story wraps its SidebarProvider in `[transform:translate(0)]` so the
 // Sidebar component's internal `position: fixed` anchors to the demo container
 // rather than the page viewport. Without this it leaks into the registry-site
 // layout.
-const containBlock = 'min-h-0 h-[400px] [transform:translate(0)] rounded-lg border overflow-hidden'
+const containBlock =
+  "min-h-0 h-[400px] [transform:translate(0)] rounded-lg border overflow-hidden";
 
 export default function SidebarDemo() {
   return (
     <>
-      <Story title="Default" description="Collapsible sidebar with header, group label, and menu items.">
+      <Story
+        title="Default"
+        description="Collapsible sidebar with header, group label, and menu items."
+      >
         <SidebarProvider className={containBlock}>
           <Sidebar collapsible="none" className="border-r">
             <SidebarHeader>
@@ -56,20 +60,20 @@ export default function SidebarDemo() {
                 <SidebarMenu>
                   <SidebarMenuItem>
                     <SidebarMenuButton>
-                      {' '}
-                      <Home className="size-4" /> <span>Home</span>{' '}
+                      {" "}
+                      <Home className="size-4" /> <span>Home</span>{" "}
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                   <SidebarMenuItem>
                     <SidebarMenuButton>
-                      {' '}
-                      <Compass className="size-4" /> <span>Explore</span>{' '}
+                      {" "}
+                      <Compass className="size-4" /> <span>Explore</span>{" "}
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                   <SidebarMenuItem>
                     <SidebarMenuButton>
-                      {' '}
-                      <Settings className="size-4" /> <span>Settings</span>{' '}
+                      {" "}
+                      <Settings className="size-4" /> <span>Settings</span>{" "}
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 </SidebarMenu>
@@ -78,7 +82,9 @@ export default function SidebarDemo() {
           </Sidebar>
           <main className="flex-1 p-4">
             <SidebarTrigger />
-            <p className="text-muted-foreground mt-4 text-sm">Main content area.</p>
+            <p className="text-muted-foreground mt-4 text-sm">
+              Main content area.
+            </p>
           </main>
         </SidebarProvider>
       </Story>
@@ -92,7 +98,9 @@ export default function SidebarDemo() {
             <SidebarHeader>
               <div className="flex items-center gap-2 px-4 py-3">
                 <Star className="size-4" />
-                <span className="text-sm font-semibold group-data-[collapsible=icon]:hidden">Workspace</span>
+                <span className="text-sm font-semibold group-data-[collapsible=icon]:hidden">
+                  Workspace
+                </span>
               </div>
             </SidebarHeader>
             <SidebarContent>
@@ -101,8 +109,8 @@ export default function SidebarDemo() {
                 <SidebarMenu>
                   <SidebarMenuItem>
                     <SidebarMenuButton tooltip="Inbox">
-                      {' '}
-                      <Inbox className="size-4" /> <span>Inbox</span>{' '}
+                      {" "}
+                      <Inbox className="size-4" /> <span>Inbox</span>{" "}
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                   <SidebarMenuItem>
@@ -122,7 +130,9 @@ export default function SidebarDemo() {
           </Sidebar>
           <main className="flex-1 p-4">
             <SidebarTrigger />
-            <p className="text-muted-foreground mt-4 text-sm">Toggle the trigger to collapse the sidebar to icons.</p>
+            <p className="text-muted-foreground mt-4 text-sm">
+              Toggle the trigger to collapse the sidebar to icons.
+            </p>
           </main>
         </SidebarProvider>
       </Story>
@@ -143,14 +153,14 @@ export default function SidebarDemo() {
                 <SidebarMenu>
                   <SidebarMenuItem>
                     <SidebarMenuButton>
-                      {' '}
-                      <Home className="size-4" /> <span>Home</span>{' '}
+                      {" "}
+                      <Home className="size-4" /> <span>Home</span>{" "}
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                   <SidebarMenuItem>
                     <SidebarMenuButton>
-                      {' '}
-                      <Users className="size-4" /> <span>Team</span>{' '}
+                      {" "}
+                      <Users className="size-4" /> <span>Team</span>{" "}
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 </SidebarMenu>
@@ -158,7 +168,9 @@ export default function SidebarDemo() {
             </SidebarContent>
           </Sidebar>
           <main className="flex-1 p-4">
-            <p className="text-muted-foreground text-sm">Floating sidebar with rounded corners.</p>
+            <p className="text-muted-foreground text-sm">
+              Floating sidebar with rounded corners.
+            </p>
           </main>
         </SidebarProvider>
       </Story>
@@ -192,7 +204,9 @@ export default function SidebarDemo() {
             </SidebarContent>
           </Sidebar>
           <SidebarInset>
-            <p className="text-muted-foreground p-4 text-sm">Main content sits inside a rounded inset card.</p>
+            <p className="text-muted-foreground p-4 text-sm">
+              Main content sits inside a rounded inset card.
+            </p>
           </SidebarInset>
         </SidebarProvider>
       </Story>
@@ -212,18 +226,22 @@ export default function SidebarDemo() {
                 <SidebarMenu>
                   <SidebarMenuItem>
                     <SidebarMenuButton>
-                      {' '}
-                      <Home className="size-4" /> <span>Getting started</span>{' '}
+                      {" "}
+                      <Home className="size-4" />{" "}
+                      <span>Getting started</span>{" "}
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                   <SidebarMenuItem>
                     <SidebarMenuButton>
-                      {' '}
-                      <ChevronDown className="size-4" /> <span>Components</span>{' '}
+                      {" "}
+                      <ChevronDown className="size-4" />{" "}
+                      <span>Components</span>{" "}
                     </SidebarMenuButton>
                     <SidebarMenuSub>
                       <SidebarMenuSubItem>
-                        <SidebarMenuSubButton href="#">Button</SidebarMenuSubButton>
+                        <SidebarMenuSubButton href="#">
+                          Button
+                        </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                       <SidebarMenuSubItem>
                         <SidebarMenuSubButton href="#" isActive>
@@ -231,14 +249,16 @@ export default function SidebarDemo() {
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                       <SidebarMenuSubItem>
-                        <SidebarMenuSubButton href="#">Dialog</SidebarMenuSubButton>
+                        <SidebarMenuSubButton href="#">
+                          Dialog
+                        </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                     </SidebarMenuSub>
                   </SidebarMenuItem>
                   <SidebarMenuItem>
                     <SidebarMenuButton>
-                      {' '}
-                      <Settings className="size-4" /> <span>Settings</span>{' '}
+                      {" "}
+                      <Settings className="size-4" /> <span>Settings</span>{" "}
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 </SidebarMenu>
@@ -266,22 +286,22 @@ export default function SidebarDemo() {
                 <SidebarMenu>
                   <SidebarMenuItem>
                     <SidebarMenuButton>
-                      {' '}
-                      <Inbox className="size-4" /> <span>Inbox</span>{' '}
+                      {" "}
+                      <Inbox className="size-4" /> <span>Inbox</span>{" "}
                     </SidebarMenuButton>
                     <SidebarMenuBadge>24</SidebarMenuBadge>
                   </SidebarMenuItem>
                   <SidebarMenuItem>
                     <SidebarMenuButton>
-                      {' '}
-                      <Star className="size-4" /> <span>Starred</span>{' '}
+                      {" "}
+                      <Star className="size-4" /> <span>Starred</span>{" "}
                     </SidebarMenuButton>
                     <SidebarMenuBadge>3</SidebarMenuBadge>
                   </SidebarMenuItem>
                   <SidebarMenuItem>
                     <SidebarMenuButton>
-                      {' '}
-                      <Bell className="size-4" /> <span>Updates</span>{' '}
+                      {" "}
+                      <Bell className="size-4" /> <span>Updates</span>{" "}
                     </SidebarMenuButton>
                     <SidebarMenuAction showOnHover>
                       <MoreHorizontal className="size-4" />
@@ -289,8 +309,8 @@ export default function SidebarDemo() {
                   </SidebarMenuItem>
                   <SidebarMenuItem>
                     <SidebarMenuButton>
-                      {' '}
-                      <Plus className="size-4" /> <span>New folder</span>{' '}
+                      {" "}
+                      <Plus className="size-4" /> <span>New folder</span>{" "}
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 </SidebarMenu>
@@ -299,10 +319,12 @@ export default function SidebarDemo() {
           </Sidebar>
           <main className="flex-1 p-4">
             <SidebarTrigger />
-            <p className="text-muted-foreground mt-4 text-sm">Hover the Updates row to reveal its action.</p>
+            <p className="text-muted-foreground mt-4 text-sm">
+              Hover the Updates row to reveal its action.
+            </p>
           </main>
         </SidebarProvider>
       </Story>
     </>
-  )
+  );
 }

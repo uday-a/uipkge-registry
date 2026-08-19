@@ -1,63 +1,63 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from 'vue'
-import { computed, ref, watch } from 'vue'
-import QRCodeLib from 'qrcode'
-import { Loader2, RotateCcw, Check, ScanLine } from 'lucide-vue-next'
-import { cn } from '@/lib/utils'
+import type { HTMLAttributes } from "vue";
+import { computed, ref, watch } from "vue";
+import QRCodeLib from "qrcode";
+import { Loader2, RotateCcw, Check, ScanLine } from "lucide-vue-next";
+import { cn } from "@/lib/utils";
 
-export type QRCodeType = 'canvas' | 'svg'
-export type QRCodeStatus = 'active' | 'expired' | 'loading' | 'scanned'
-export type QRCodeErrorLevel = 'L' | 'M' | 'Q' | 'H'
+export type QRCodeType = "canvas" | "svg";
+export type QRCodeStatus = "active" | "expired" | "loading" | "scanned";
+export type QRCodeErrorLevel = "L" | "M" | "Q" | "H";
 
 const props = withDefaults(
   defineProps<{
-    value: string
-    type?: QRCodeType
-    size?: number
-    color?: string
-    bgColor?: string
-    icon?: string
-    iconSize?: number | { width: number; height: number }
-    errorLevel?: QRCodeErrorLevel
-    bordered?: boolean
-    status?: QRCodeStatus
-    marginSize?: number
-    class?: HTMLAttributes['class']
+    value: string;
+    type?: QRCodeType;
+    size?: number;
+    color?: string;
+    bgColor?: string;
+    icon?: string;
+    iconSize?: number | { width: number; height: number };
+    errorLevel?: QRCodeErrorLevel;
+    bordered?: boolean;
+    status?: QRCodeStatus;
+    marginSize?: number;
+    class?: HTMLAttributes["class"];
   }>(),
   {
-    type: 'canvas',
+    type: "canvas",
     size: 160,
     // qrcode requires resolvable hex/rgb — CSS vars like var(--foreground) throw.
-    color: '#000000',
-    bgColor: '#ffffff',
-    errorLevel: 'M',
+    color: "#000000",
+    bgColor: "#ffffff",
+    errorLevel: "M",
     bordered: true,
-    status: 'active',
+    status: "active",
     marginSize: 0,
   },
-)
+);
 
 const emit = defineEmits<{
-  refresh: []
-}>()
+  refresh: [];
+}>();
 
-const qrDataUrl = ref('')
-const qrSvg = ref('')
-const isGenerating = ref(false)
+const qrDataUrl = ref("");
+const qrSvg = ref("");
+const isGenerating = ref(false);
 
 const iconDimensions = computed(() => {
-  if (typeof props.iconSize === 'number') {
-    return { width: props.iconSize, height: props.iconSize }
+  if (typeof props.iconSize === "number") {
+    return { width: props.iconSize, height: props.iconSize };
   }
-  return props.iconSize ?? { width: 40, height: 40 }
-})
+  return props.iconSize ?? { width: 40, height: 40 };
+});
 
-const errorCorrectionLevel = computed(() => props.errorLevel)
+const errorCorrectionLevel = computed(() => props.errorLevel);
 
 async function generateQR() {
-  if (!props.value || props.status === 'loading') return
+  if (!props.value || props.status === "loading") return;
 
-  isGenerating.value = true
+  isGenerating.value = true;
   try {
     const options = {
       width: props.size,
@@ -67,20 +67,20 @@ async function generateQR() {
         light: props.bgColor,
       },
       errorCorrectionLevel: errorCorrectionLevel.value,
-    }
+    };
 
-    if (props.type === 'svg') {
+    if (props.type === "svg") {
       qrSvg.value = await QRCodeLib.toString(props.value, {
-        type: 'svg',
+        type: "svg",
         ...options,
-      })
+      });
     } else {
-      qrDataUrl.value = await QRCodeLib.toDataURL(props.value, options)
+      qrDataUrl.value = await QRCodeLib.toDataURL(props.value, options);
     }
   } catch (e) {
-    console.error('QR Code generation failed:', e)
+    console.error("QR Code generation failed:", e);
   } finally {
-    isGenerating.value = false
+    isGenerating.value = false;
   }
 }
 
@@ -97,43 +97,43 @@ watch(
   ],
   () => generateQR(),
   { immediate: true },
-)
+);
 
 function downloadQR() {
-  const link = document.createElement('a')
-  link.download = `qrcode-${props.value.slice(0, 20)}.png`
-  link.href = qrDataUrl.value
-  link.click()
+  const link = document.createElement("a");
+  link.download = `qrcode-${props.value.slice(0, 20)}.png`;
+  link.href = qrDataUrl.value;
+  link.click();
 }
 
 function handleRefresh() {
-  emit('refresh')
+  emit("refresh");
 }
 
 const statusOverlay = computed(() => {
   switch (props.status) {
-    case 'expired':
+    case "expired":
       return {
         icon: RotateCcw,
-        text: 'Expired',
+        text: "Expired",
         action: handleRefresh,
-      }
-    case 'scanned':
+      };
+    case "scanned":
       return {
         icon: Check,
-        text: 'Scanned',
+        text: "Scanned",
         action: null,
-      }
-    case 'loading':
+      };
+    case "loading":
       return {
         icon: Loader2,
-        text: 'Loading...',
+        text: "Loading...",
         action: null,
-      }
+      };
     default:
-      return null
+      return null;
   }
-})
+});
 </script>
 
 <template>
@@ -142,7 +142,11 @@ const statusOverlay = computed(() => {
     data-slot="qr-code"
     :aria-busy="status === 'loading' || undefined"
     :class="
-      cn('inline-flex flex-col items-center gap-2', bordered && 'bg-background rounded-lg border p-4', props.class)
+      cn(
+        'inline-flex flex-col items-center gap-2',
+        bordered && 'bg-background rounded-lg border p-4',
+        props.class,
+      )
     "
   >
     <div
@@ -158,7 +162,10 @@ const statusOverlay = computed(() => {
       </template>
 
       <!-- Icon overlay -->
-      <div v-if="icon && status === 'active'" class="absolute inset-0 flex items-center justify-center">
+      <div
+        v-if="icon && status === 'active'"
+        class="absolute inset-0 flex items-center justify-center"
+      >
         <div
           class="bg-background overflow-hidden rounded-md shadow-sm"
           :style="{
@@ -175,8 +182,14 @@ const statusOverlay = computed(() => {
         v-if="statusOverlay"
         class="bg-background/90 absolute inset-0 flex flex-col items-center justify-center gap-2 backdrop-blur-sm"
       >
-        <component :is="statusOverlay.icon" class="size-8" :class="status === 'loading' && 'animate-spin'" />
-        <span class="text-foreground text-sm font-medium">{{ statusOverlay.text }}</span>
+        <component
+          :is="statusOverlay.icon"
+          class="size-8"
+          :class="status === 'loading' && 'animate-spin'"
+        />
+        <span class="text-foreground text-sm font-medium">{{
+          statusOverlay.text
+        }}</span>
         <button
           v-if="statusOverlay.action"
           type="button"

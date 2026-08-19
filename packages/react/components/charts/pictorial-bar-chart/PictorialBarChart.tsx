@@ -1,32 +1,38 @@
-'use client'
+"use client";
 
-import * as React from 'react'
-import { ChartFrame, EChart } from '../shared'
-import { useChartTheme, mergeOptionBlock } from '../useChartTheme'
+import * as React from "react";
+import { ChartFrame, EChart } from "../shared";
+import { useChartTheme, mergeOptionBlock } from "../useChartTheme";
 
 // PictorialBarChart
 // ─────────────────────────────────────────────────────────────────────────
 
 export interface PictorialBarChartProps {
-  data: { category: string; value: number }[]
+  data: { category: string; value: number }[];
   /** ECharts symbol for the repeated pictogram. Default 'rect'. */
-  symbol?: string
-  height?: number | string
-  option?: any
-  className?: string
+  symbol?: string;
+  height?: number | string;
+  option?: any;
+  className?: string;
   /** Accessible name announced for the chart image. Defaults to "Chart". */
-  ariaLabel?: string
+  ariaLabel?: string;
 }
 
-export const PictorialBarChart = React.forwardRef<HTMLDivElement, PictorialBarChartProps>(
-  ({ data, symbol = 'rect', height = 300, option, className, ariaLabel }, ref) => {
-    const theme = useChartTheme()
+export const PictorialBarChart = React.forwardRef<
+  HTMLDivElement,
+  PictorialBarChartProps
+>(
+  (
+    { data, symbol = "rect", height = 300, option, className, ariaLabel },
+    ref,
+  ) => {
+    const theme = useChartTheme();
 
     const mergedOption = React.useMemo(() => {
-      const max = Math.max(...data.map((d) => d.value), 1)
+      const max = Math.max(...data.map((d) => d.value), 1);
       const series = [
         {
-          type: 'pictorialBar',
+          type: "pictorialBar",
           symbol,
           symbolRepeat: true,
           symbolSize: [12, 8],
@@ -35,8 +41,8 @@ export const PictorialBarChart = React.forwardRef<HTMLDivElement, PictorialBarCh
           itemStyle: { color: theme.colors[0] },
           data: data.map((d) => ({ value: d.value, symbolBoundingData: max })),
         },
-      ]
-      const userOption: any = option ?? {}
+      ];
+      const userOption: any = option ?? {};
       const {
         series: userSeries,
         xAxis: userXAxis,
@@ -44,17 +50,20 @@ export const PictorialBarChart = React.forwardRef<HTMLDivElement, PictorialBarCh
         grid: userGrid,
         tooltip: userTooltip,
         ...userRest
-      } = userOption
+      } = userOption;
       const mergedSeries = Array.isArray(userSeries)
         ? series.map((s, i) => ({ ...s, ...(userSeries[i] ?? {}) }))
-        : series
+        : series;
 
       return {
         color: theme.colors,
-        grid: mergeOptionBlock({ left: 16, right: 16, top: 24, bottom: 24, containLabel: true }, userGrid),
+        grid: mergeOptionBlock(
+          { left: 16, right: 16, top: 24, bottom: 24, containLabel: true },
+          userGrid,
+        ),
         tooltip: mergeOptionBlock(
           {
-            trigger: 'item',
+            trigger: "item",
             backgroundColor: theme.tooltipBg,
             borderColor: theme.tooltipBorder,
             textStyle: { color: theme.tooltipText, fontSize: 12 },
@@ -63,7 +72,7 @@ export const PictorialBarChart = React.forwardRef<HTMLDivElement, PictorialBarCh
         ),
         xAxis: mergeOptionBlock(
           {
-            type: 'category',
+            type: "category",
             data: data.map((d) => d.category),
             axisLine: { lineStyle: { color: theme.axisColor } },
             axisLabel: { color: theme.textColor, fontSize: 11 },
@@ -73,7 +82,7 @@ export const PictorialBarChart = React.forwardRef<HTMLDivElement, PictorialBarCh
         ),
         yAxis: mergeOptionBlock(
           {
-            type: 'value',
+            type: "value",
             max,
             splitLine: { lineStyle: { color: theme.splitLineColor } },
             axisLabel: { color: theme.textColor, fontSize: 11 },
@@ -82,14 +91,19 @@ export const PictorialBarChart = React.forwardRef<HTMLDivElement, PictorialBarCh
         ),
         series: mergedSeries,
         ...userRest,
-      }
-    }, [data, symbol, option, theme])
+      };
+    }, [data, symbol, option, theme]);
 
     return (
-      <ChartFrame ref={ref} height={height} className={className} ariaLabel={ariaLabel}>
+      <ChartFrame
+        ref={ref}
+        height={height}
+        className={className}
+        ariaLabel={ariaLabel}
+      >
         <EChart option={mergedOption} />
       </ChartFrame>
-    )
+    );
   },
-)
-PictorialBarChart.displayName = 'PictorialBarChart'
+);
+PictorialBarChart.displayName = "PictorialBarChart";

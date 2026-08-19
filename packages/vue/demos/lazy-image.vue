@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { Button } from '@/components/ui/button'
-import { Img } from '@/components/ui/lazy-image'
-import { ref } from 'vue'
+import { Button } from "@/components/ui/button";
+import { Img } from "@/components/ui/lazy-image";
+import { ref } from "vue";
 
 const galleryItems = Array.from({ length: 12 }, (_, i) => ({
   id: i,
   src: `https://picsum.photos/seed/uipkge-${i}/600/400`,
   alt: `Stock photo ${i + 1}`,
-}))
+}));
 
-const swapSrc = ref('https://picsum.photos/seed/uipkge-swap-a/800/450')
+const swapSrc = ref("https://picsum.photos/seed/uipkge-swap-a/800/450");
 function swap() {
-  swapSrc.value = swapSrc.value.includes('swap-a')
-    ? 'https://picsum.photos/seed/uipkge-swap-b/800/450'
-    : 'https://picsum.photos/seed/uipkge-swap-a/800/450'
+  swapSrc.value = swapSrc.value.includes("swap-a")
+    ? "https://picsum.photos/seed/uipkge-swap-b/800/450"
+    : "https://picsum.photos/seed/uipkge-swap-a/800/450";
 }
 </script>
 
@@ -94,7 +94,12 @@ function swap() {
     <div class="grid grid-cols-3 gap-3">
       <div>
         <p class="text-muted-foreground mb-2 text-xs">No fallback</p>
-        <Img src="https://example.invalid/missing.jpg" alt="Broken" aspect-ratio="1/1" class="rounded-md" />
+        <Img
+          src="https://example.invalid/missing.jpg"
+          alt="Broken"
+          aspect-ratio="1/1"
+          class="rounded-md"
+        />
       </div>
       <div>
         <p class="text-muted-foreground mb-2 text-xs">Fallback URL</p>
@@ -108,9 +113,16 @@ function swap() {
       </div>
       <div>
         <p class="text-muted-foreground mb-2 text-xs">Slot fallback</p>
-        <Img src="https://example.invalid/missing.jpg" alt="Broken with slot" aspect-ratio="1/1" class="rounded-md">
+        <Img
+          src="https://example.invalid/missing.jpg"
+          alt="Broken with slot"
+          aspect-ratio="1/1"
+          class="rounded-md"
+        >
           <template #fallback>
-            <div class="bg-destructive/10 text-destructive flex h-full items-center justify-center text-xs font-medium">
+            <div
+              class="bg-destructive/10 text-destructive flex h-full items-center justify-center text-xs font-medium"
+            >
               Failed
             </div>
           </template>
@@ -123,7 +135,13 @@ function swap() {
     title="Eager"
     description="eager skips the IntersectionObserver hold and uses loading='eager' + decoding='sync'. Use for above-the-fold hero images."
   >
-    <Img src="https://picsum.photos/seed/uipkge-hero/1200/600" alt="Hero" aspect-ratio="2/1" eager class="rounded-md" />
+    <Img
+      src="https://picsum.photos/seed/uipkge-hero/1200/600"
+      alt="Hero"
+      aspect-ratio="2/1"
+      eager
+      class="rounded-md"
+    />
   </Story>
 
   <Story
@@ -133,9 +151,16 @@ function swap() {
     <div class="space-y-3">
       <div class="flex gap-2">
         <Button size="sm" @click="swap">Swap image</Button>
-        <span class="text-muted-foreground self-center text-xs">{{ swapSrc.split('/').slice(-3).join('/') }}</span>
+        <span class="text-muted-foreground self-center text-xs">{{
+          swapSrc.split("/").slice(-3).join("/")
+        }}</span>
       </div>
-      <Img :src="swapSrc" alt="Swappable" aspect-ratio="16/9" class="rounded-md" />
+      <Img
+        :src="swapSrc"
+        alt="Swappable"
+        aspect-ratio="16/9"
+        class="rounded-md"
+      />
     </div>
   </Story>
 </template>

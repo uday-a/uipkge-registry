@@ -1,1 +1,1 @@
-export { SegmentedGauge, type SegmentedGaugeProps } from './SegmentedGauge'
+export { SegmentedGauge, type SegmentedGaugeProps } from "./SegmentedGauge";

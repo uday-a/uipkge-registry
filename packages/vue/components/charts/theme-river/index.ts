@@ -1,1 +1,1 @@
-export { default as ThemeRiver } from './ThemeRiver.vue'
+export { default as ThemeRiver } from "./ThemeRiver.vue";

@@ -1,21 +1,29 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { Countdown } from '@/components/ui/countdown'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import { ref } from "vue";
+import { Countdown } from "@/components/ui/countdown";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
-const flashSaleEnd = ref(Date.now() + 3_600_000 * 5 + 42_000)
-const auctionEnd = ref(Date.now() + 10_000)
-const eventStart = ref(Date.now() + 86_400_000 * 2 + 3_600_000 * 4 + 60_000 * 30)
-const newYear = ref(new Date(new Date().getFullYear() + 1, 0, 1).getTime())
-const pausedTarget = ref(Date.now() + 120_000)
-const isPaused = ref(false)
-const auctionFinished = ref(false)
-const auctionTick = ref(0)
+const flashSaleEnd = ref(Date.now() + 3_600_000 * 5 + 42_000);
+const auctionEnd = ref(Date.now() + 10_000);
+const eventStart = ref(
+  Date.now() + 86_400_000 * 2 + 3_600_000 * 4 + 60_000 * 30,
+);
+const newYear = ref(new Date(new Date().getFullYear() + 1, 0, 1).getTime());
+const pausedTarget = ref(Date.now() + 120_000);
+const isPaused = ref(false);
+const auctionFinished = ref(false);
+const auctionTick = ref(0);
 
 function resetAuction() {
-  auctionEnd.value = Date.now() + 10_000
-  auctionFinished.value = false
+  auctionEnd.value = Date.now() + 10_000;
+  auctionFinished.value = false;
 }
 </script>
 
@@ -24,8 +32,12 @@ function resetAuction() {
     title="Flash sale"
     description="A 5-hour countdown on a promotional banner — the classic e-commerce urgency pattern."
   >
-    <div class="bg-primary text-primary-foreground max-w-md rounded-lg px-5 py-4">
-      <p class="text-sm font-medium opacity-90">Flash sale — 40% off all plans</p>
+    <div
+      class="bg-primary text-primary-foreground max-w-md rounded-lg px-5 py-4"
+    >
+      <p class="text-sm font-medium opacity-90">
+        Flash sale — 40% off all plans
+      </p>
       <Countdown
         :target="flashSaleEnd"
         label="Ends in"
@@ -41,7 +53,9 @@ function resetAuction() {
     <Card class="max-w-md">
       <CardHeader>
         <CardTitle>Vintage camera lot</CardTitle>
-        <CardDescription>Highest bid: $1,240 · 3 bidders active</CardDescription>
+        <CardDescription
+          >Highest bid: $1,240 · 3 bidders active</CardDescription
+        >
       </CardHeader>
       <CardContent class="space-y-3">
         <Countdown
@@ -52,9 +66,15 @@ function resetAuction() {
           @tick="(v) => (auctionTick = v)"
         />
         <div class="flex items-center gap-3">
-          <Button size="sm" variant="outline" @click="resetAuction">Reset timer</Button>
+          <Button size="sm" variant="outline" @click="resetAuction"
+            >Reset timer</Button
+          >
           <span class="text-muted-foreground text-xs">
-            {{ auctionFinished ? 'Auction ended!' : `Ticking… ${Math.ceil(auctionTick / 1000)}s left` }}
+            {{
+              auctionFinished
+                ? "Auction ended!"
+                : `Ticking… ${Math.ceil(auctionTick / 1000)}s left`
+            }}
           </span>
         </div>
       </CardContent>
@@ -68,7 +88,9 @@ function resetAuction() {
     <Card class="max-w-md">
       <CardHeader>
         <CardTitle>UIPKGE Summit 2025</CardTitle>
-        <CardDescription>Doors open in 2 days, 4 hours, 30 minutes.</CardDescription>
+        <CardDescription
+          >Doors open in 2 days, 4 hours, 30 minutes.</CardDescription
+        >
       </CardHeader>
       <CardContent>
         <Countdown :target="eventStart" label="Starts in" />
@@ -110,9 +132,11 @@ function resetAuction() {
           <span
             class="bg-muted text-foreground inline-flex size-14 items-center justify-center rounded-lg text-xl font-bold tabular-nums"
           >
-            {{ String(days).padStart(2, '0') }}
+            {{ String(days).padStart(2, "0") }}
           </span>
-          <span class="text-muted-foreground text-xs tracking-wide uppercase">days</span>
+          <span class="text-muted-foreground text-xs tracking-wide uppercase"
+            >days</span
+          >
         </div>
       </template>
       <template #hours="{ hours }">
@@ -120,9 +144,11 @@ function resetAuction() {
           <span
             class="bg-muted text-foreground inline-flex size-14 items-center justify-center rounded-lg text-xl font-bold tabular-nums"
           >
-            {{ String(hours).padStart(2, '0') }}
+            {{ String(hours).padStart(2, "0") }}
           </span>
-          <span class="text-muted-foreground text-xs tracking-wide uppercase">hrs</span>
+          <span class="text-muted-foreground text-xs tracking-wide uppercase"
+            >hrs</span
+          >
         </div>
       </template>
       <template #minutes="{ minutes }">
@@ -130,9 +156,11 @@ function resetAuction() {
           <span
             class="bg-muted text-foreground inline-flex size-14 items-center justify-center rounded-lg text-xl font-bold tabular-nums"
           >
-            {{ String(minutes).padStart(2, '0') }}
+            {{ String(minutes).padStart(2, "0") }}
           </span>
-          <span class="text-muted-foreground text-xs tracking-wide uppercase">min</span>
+          <span class="text-muted-foreground text-xs tracking-wide uppercase"
+            >min</span
+          >
         </div>
       </template>
       <template #seconds="{ seconds }">
@@ -140,9 +168,11 @@ function resetAuction() {
           <span
             class="bg-muted text-foreground inline-flex size-14 items-center justify-center rounded-lg text-xl font-bold tabular-nums"
           >
-            {{ String(seconds).padStart(2, '0') }}
+            {{ String(seconds).padStart(2, "0") }}
           </span>
-          <span class="text-muted-foreground text-xs tracking-wide uppercase">sec</span>
+          <span class="text-muted-foreground text-xs tracking-wide uppercase"
+            >sec</span
+          >
         </div>
       </template>
     </Countdown>
@@ -153,17 +183,25 @@ function resetAuction() {
     description="paused freezes the countdown; a custom separator and no-pad give it a distinct look."
   >
     <div class="max-w-md space-y-3">
-      <Countdown :target="pausedTarget" :paused="isPaused" label="Paused demo" separator="—" />
+      <Countdown
+        :target="pausedTarget"
+        :paused="isPaused"
+        label="Paused demo"
+        separator="—"
+      />
       <div class="flex items-center gap-3">
         <Button size="sm" variant="outline" @click="isPaused = !isPaused">
-          {{ isPaused ? 'Resume' : 'Pause' }}
+          {{ isPaused ? "Resume" : "Pause" }}
         </Button>
         <Countdown :target="eventStart" :pad="false" label="No leading zeros" />
       </div>
     </div>
   </Story>
 
-  <Story title="New year" description="Countdown to January 1st of next year — a perennial landing-page fixture.">
+  <Story
+    title="New year"
+    description="Countdown to January 1st of next year — a perennial landing-page fixture."
+  >
     <Countdown :target="newYear" label="New Year" />
   </Story>
 </template>

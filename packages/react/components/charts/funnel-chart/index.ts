@@ -1,1 +1,1 @@
-export { FunnelChart, type FunnelChartProps } from './FunnelChart'
+export { FunnelChart, type FunnelChartProps } from "./FunnelChart";

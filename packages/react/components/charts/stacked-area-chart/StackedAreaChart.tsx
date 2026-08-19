@@ -1,46 +1,65 @@
-'use client'
+"use client";
 
-import * as React from 'react'
-import { ChartFrame, EChart } from '../shared'
-import { useChartTheme, mergeOptionBlock, toRgba } from '../useChartTheme'
+import * as React from "react";
+import { ChartFrame, EChart } from "../shared";
+import { useChartTheme, mergeOptionBlock, toRgba } from "../useChartTheme";
 
 // StackedAreaChart
 // ─────────────────────────────────────────────────────────────────────────
 
 export interface StackedAreaChartProps {
-  data: Record<string, any>[]
-  xField?: string
-  yFields: string[]
+  data: Record<string, any>[];
+  xField?: string;
+  yFields: string[];
   /** Render as 100% shares instead of absolute values. Default false. */
-  percent?: boolean
-  height?: number | string
-  option?: any
-  className?: string
+  percent?: boolean;
+  height?: number | string;
+  option?: any;
+  className?: string;
   /** Accessible name announced for the chart image. Defaults to "Chart". */
-  ariaLabel?: string
+  ariaLabel?: string;
 }
 
-export const StackedAreaChart = React.forwardRef<HTMLDivElement, StackedAreaChartProps>(
-  ({ data, xField = 'x', yFields, percent = false, height = 320, option, className, ariaLabel }, ref) => {
-    const theme = useChartTheme()
+export const StackedAreaChart = React.forwardRef<
+  HTMLDivElement,
+  StackedAreaChartProps
+>(
+  (
+    {
+      data,
+      xField = "x",
+      yFields,
+      percent = false,
+      height = 320,
+      option,
+      className,
+      ariaLabel,
+    },
+    ref,
+  ) => {
+    const theme = useChartTheme();
 
     const mergedOption = React.useMemo(() => {
-      const totals = data.map((d) => yFields.reduce((s, f) => s + (d[f] ?? 0), 0) || 1)
+      const totals = data.map(
+        (d) => yFields.reduce((s, f) => s + (d[f] ?? 0), 0) || 1,
+      );
       const series = yFields.map((f, i) => {
-        const c = theme.colors[i % theme.colors.length]
+        const c = theme.colors[i % theme.colors.length];
         return {
           name: f,
-          type: 'line',
-          stack: 'area',
+          type: "line",
+          stack: "area",
           smooth: true,
-          symbol: 'none',
+          symbol: "none",
           lineStyle: { width: 1.5, color: c },
           areaStyle: { color: toRgba(c, 0.45) },
-          emphasis: { focus: 'series' },
-          data: data.map((d, r) => (percent ? ((d[f] ?? 0) / totals[r]!) * 100 : d[f])),
-        }
-      })
-      const userOption: any = option ?? {}
+          emphasis: { focus: "series" },
+          data: data.map((d, r) =>
+            percent ? ((d[f] ?? 0) / totals[r]!) * 100 : d[f],
+          ),
+        };
+      });
+      const userOption: any = option ?? {};
       const {
         series: userSeries,
         xAxis: userXAxis,
@@ -49,16 +68,19 @@ export const StackedAreaChart = React.forwardRef<HTMLDivElement, StackedAreaChar
         tooltip: userTooltip,
         legend: userLegend,
         ...userRest
-      } = userOption
+      } = userOption;
       const mergedSeries = Array.isArray(userSeries)
         ? series.map((s, i) => ({ ...s, ...(userSeries[i] ?? {}) }))
-        : series
+        : series;
       return {
         color: theme.colors,
-        grid: mergeOptionBlock({ left: 16, right: 16, top: 24, bottom: 32, containLabel: true }, userGrid),
+        grid: mergeOptionBlock(
+          { left: 16, right: 16, top: 24, bottom: 32, containLabel: true },
+          userGrid,
+        ),
         tooltip: mergeOptionBlock(
           {
-            trigger: 'axis',
+            trigger: "axis",
             backgroundColor: theme.tooltipBg,
             borderColor: theme.tooltipBorder,
             textStyle: { color: theme.tooltipText, fontSize: 12 },
@@ -69,7 +91,7 @@ export const StackedAreaChart = React.forwardRef<HTMLDivElement, StackedAreaChar
         legend: mergeOptionBlock(
           {
             bottom: 0,
-            icon: 'circle',
+            icon: "circle",
             itemWidth: 8,
             itemHeight: 8,
             textStyle: { fontSize: 11, color: theme.textColor },
@@ -78,7 +100,7 @@ export const StackedAreaChart = React.forwardRef<HTMLDivElement, StackedAreaChar
         ),
         xAxis: mergeOptionBlock(
           {
-            type: 'category',
+            type: "category",
             boundaryGap: false,
             data: data.map((d) => d[xField]),
             axisLine: { lineStyle: { color: theme.axisColor } },
@@ -90,13 +112,17 @@ export const StackedAreaChart = React.forwardRef<HTMLDivElement, StackedAreaChar
         yAxis: mergeOptionBlock(
           percent
             ? {
-                type: 'value',
+                type: "value",
                 max: 100,
                 splitLine: { lineStyle: { color: theme.splitLineColor } },
-                axisLabel: { color: theme.textColor, fontSize: 11, formatter: '{value}%' },
+                axisLabel: {
+                  color: theme.textColor,
+                  fontSize: 11,
+                  formatter: "{value}%",
+                },
               }
             : {
-                type: 'value',
+                type: "value",
                 splitLine: { lineStyle: { color: theme.splitLineColor } },
                 axisLabel: { color: theme.textColor, fontSize: 11 },
               },
@@ -104,14 +130,19 @@ export const StackedAreaChart = React.forwardRef<HTMLDivElement, StackedAreaChar
         ),
         series: mergedSeries,
         ...userRest,
-      }
-    }, [data, xField, yFields, percent, option, theme])
+      };
+    }, [data, xField, yFields, percent, option, theme]);
 
     return (
-      <ChartFrame ref={ref} height={height} className={className} ariaLabel={ariaLabel}>
+      <ChartFrame
+        ref={ref}
+        height={height}
+        className={className}
+        ariaLabel={ariaLabel}
+      >
         <EChart option={mergedOption} />
       </ChartFrame>
-    )
+    );
   },
-)
-StackedAreaChart.displayName = 'StackedAreaChart'
+);
+StackedAreaChart.displayName = "StackedAreaChart";

@@ -1,1 +1,1 @@
-export { default as ErrorBarChart, type ErrorDatum } from './ErrorBarChart.vue'
+export { default as ErrorBarChart, type ErrorDatum } from "./ErrorBarChart.vue";

@@ -1,34 +1,52 @@
-import Story from '../../components/story/Story'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@react-registry/card'
-import { Badge } from '@react-registry/badge'
-import { Button } from '@react-registry/button'
-import { ArrowUpRight, Check } from 'lucide-react'
+import Story from "../../components/story/Story";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@react-registry/card";
+import { Badge } from "@react-registry/badge";
+import { Button } from "@react-registry/button";
+import { ArrowUpRight, Check } from "lucide-react";
 
 export default function CardDemo() {
   return (
     <>
-      <Story title="Simple" description="Header (title + description) plus content.">
+      <Story
+        title="Simple"
+        description="Header (title + description) plus content."
+      >
         <Card className="max-w-md">
           <CardHeader>
             <CardTitle>Simple card</CardTitle>
-            <CardDescription>A basic Card with header and content.</CardDescription>
+            <CardDescription>
+              A basic Card with header and content.
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <p className="text-sm">
-              Cards group related content. They include headers, content, and footers — each as separate slots.
+              Cards group related content. They include headers, content, and
+              footers — each as separate slots.
             </p>
           </CardContent>
         </Card>
       </Story>
 
-      <Story title="With footer actions" description="CardFooter slot for save/cancel patterns.">
+      <Story
+        title="With footer actions"
+        description="CardFooter slot for save/cancel patterns."
+      >
         <Card className="max-w-md">
           <CardHeader>
             <CardTitle>Edit profile</CardTitle>
             <CardDescription>Update your account details.</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-muted-foreground text-sm">Form fields go here.</p>
+            <p className="text-muted-foreground text-sm">
+              Form fields go here.
+            </p>
           </CardContent>
           <CardFooter className="gap-2 border-t pt-4">
             <Button size="sm">Save</Button>
@@ -39,7 +57,10 @@ export default function CardDemo() {
         </Card>
       </Story>
 
-      <Story title="With header action" description="Secondary action in the top-right corner.">
+      <Story
+        title="With header action"
+        description="Secondary action in the top-right corner."
+      >
         <Card className="max-w-md">
           <CardHeader>
             <div className="flex items-start justify-between">
@@ -85,5 +106,5 @@ export default function CardDemo() {
         </Card>
       </Story>
     </>
-  )
+  );
 }

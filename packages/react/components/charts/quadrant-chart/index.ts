@@ -1,1 +1,1 @@
-export { QuadrantChart, type QuadrantChartProps } from './QuadrantChart'
+export { QuadrantChart, type QuadrantChartProps } from "./QuadrantChart";

@@ -34,23 +34,23 @@
   </Stepper>
 -->
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { Component, HTMLAttributes } from 'vue'
-import { Check } from 'lucide-vue-next'
-import { cn } from '@/lib/utils'
-import { stepperIndicatorVariants } from './stepper.variants'
+import { computed } from "vue";
+import type { Component, HTMLAttributes } from "vue";
+import { Check } from "lucide-vue-next";
+import { cn } from "@/lib/utils";
+import { stepperIndicatorVariants } from "./stepper.variants";
 
 interface Props {
-  title: string
-  description?: string
-  icon?: Component
-  completed?: boolean
-  active?: boolean
-  error?: boolean
-  disabled?: boolean
-  status?: 'active' | 'completed' | 'pending' | 'error'
-  index?: number
-  class?: HTMLAttributes['class']
+  title: string;
+  description?: string;
+  icon?: Component;
+  completed?: boolean;
+  active?: boolean;
+  error?: boolean;
+  disabled?: boolean;
+  status?: "active" | "completed" | "pending" | "error";
+  index?: number;
+  class?: HTMLAttributes["class"];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -59,19 +59,24 @@ const props = withDefaults(defineProps<Props>(), {
   error: false,
   disabled: false,
   index: undefined,
-})
+});
 
 const computedStatus = computed(() => {
-  if (props.status) return props.status
-  if (props.error) return 'error'
-  if (props.active) return 'active'
-  if (props.completed) return 'completed'
-  return 'pending'
-})
+  if (props.status) return props.status;
+  if (props.error) return "error";
+  if (props.active) return "active";
+  if (props.completed) return "completed";
+  return "pending";
+});
 </script>
 
 <template>
-  <div :class="cn('stepper-step flex gap-3', props.class)" role="tab" :aria-selected="active" :aria-disabled="disabled">
+  <div
+    :class="cn('stepper-step flex gap-3', props.class)"
+    role="tab"
+    :aria-selected="active"
+    :aria-disabled="disabled"
+  >
     <!-- Indicator -->
     <div
       data-slot="stepper-indicator"
@@ -92,7 +97,9 @@ const computedStatus = computed(() => {
           data-slot="stepper-indicator-icon"
           aria-hidden="true"
         />
-        <span v-else-if="index" data-slot="stepper-indicator-label">{{ index }}</span>
+        <span v-else-if="index" data-slot="stepper-indicator-label">{{
+          index
+        }}</span>
       </slot>
     </div>
 

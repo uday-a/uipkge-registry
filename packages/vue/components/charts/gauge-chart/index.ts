@@ -1,1 +1,1 @@
-export { default as GaugeChart } from './GaugeChart.vue'
+export { default as GaugeChart } from "./GaugeChart.vue";

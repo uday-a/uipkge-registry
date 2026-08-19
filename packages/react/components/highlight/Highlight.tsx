@@ -1,44 +1,51 @@
-import * as React from 'react'
-import { cn } from '@/lib/utils'
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
-export interface HighlightProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children'> {
+export interface HighlightProps extends Omit<
+  React.HTMLAttributes<HTMLSpanElement>,
+  "children"
+> {
   /** Text to search within. */
-  text: string
+  text: string;
   /** Query string or RegExp to highlight. */
-  query: string | RegExp
+  query: string | RegExp;
   /** HTML tag used to wrap matched substrings. Default 'mark'. */
-  highlightTag?: 'mark' | 'span'
+  highlightTag?: "mark" | "span";
   /** Class applied to each highlight wrapper. */
-  highlightClass?: React.HTMLAttributes<HTMLSpanElement>['className']
+  highlightClass?: React.HTMLAttributes<HTMLSpanElement>["className"];
   /** Inline style applied to each highlight wrapper. */
-  highlightStyle?: React.CSSProperties
+  highlightStyle?: React.CSSProperties;
   /** Case-sensitive matching. Default false. */
-  caseSensitive?: boolean
+  caseSensitive?: boolean;
   /** Match whole words only. Default false. */
-  wholeWord?: boolean
+  wholeWord?: boolean;
   /** Cap the number of highlights rendered. 0 = unlimited. Default 0. */
-  maxHighlights?: number
+  maxHighlights?: number;
   /** Fired with the number of highlights actually rendered (after maxHighlights cap). */
-  onMatchCount?: (count: number) => void
+  onMatchCount?: (count: number) => void;
   /** Fired with the total match count (before maxHighlights cap). */
-  onTotalMatchCount?: (count: number) => void
+  onTotalMatchCount?: (count: number) => void;
 }
 
 interface Segment {
-  text: string
-  match: boolean
+  text: string;
+  match: boolean;
 }
 
-function buildPattern(query: string | RegExp, caseSensitive: boolean, wholeWord: boolean): RegExp | null {
+function buildPattern(
+  query: string | RegExp,
+  caseSensitive: boolean,
+  wholeWord: boolean,
+): RegExp | null {
   if (query instanceof RegExp) {
-    const flags = query.flags.includes('g') ? query.flags : query.flags + 'g'
-    return new RegExp(query.source, flags)
+    const flags = query.flags.includes("g") ? query.flags : query.flags + "g";
+    return new RegExp(query.source, flags);
   }
-  if (!query) return null
-  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-  const body = wholeWord ? `\\b${escaped}\\b` : escaped
-  const flags = caseSensitive ? 'g' : 'gi'
-  return new RegExp(body, flags)
+  if (!query) return null;
+  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const body = wholeWord ? `\\b${escaped}\\b` : escaped;
+  const flags = caseSensitive ? "g" : "gi";
+  return new RegExp(body, flags);
 }
 
 const Highlight = React.forwardRef<HTMLSpanElement, HighlightProps>(
@@ -47,7 +54,7 @@ const Highlight = React.forwardRef<HTMLSpanElement, HighlightProps>(
       className,
       text,
       query,
-      highlightTag = 'mark',
+      highlightTag = "mark",
       highlightClass,
       highlightStyle,
       caseSensitive = false,
@@ -60,64 +67,75 @@ const Highlight = React.forwardRef<HTMLSpanElement, HighlightProps>(
     ref,
   ) => {
     const segments = React.useMemo<Segment[]>(() => {
-      if (!text) return []
-      if (!query) return [{ text, match: false }]
+      if (!text) return [];
+      if (!query) return [{ text, match: false }];
 
-      const pattern = buildPattern(query, caseSensitive, wholeWord)
-      if (!pattern) return [{ text, match: false }]
+      const pattern = buildPattern(query, caseSensitive, wholeWord);
+      if (!pattern) return [{ text, match: false }];
 
-      const out: Segment[] = []
-      let last = 0
-      let count = 0
-      let m: RegExpExecArray | null
+      const out: Segment[] = [];
+      let last = 0;
+      let count = 0;
+      let m: RegExpExecArray | null;
       while ((m = pattern.exec(text)) !== null) {
-        if (m.index > last) out.push({ text: text.slice(last, m.index), match: false })
-        out.push({ text: m[0], match: true })
-        last = m.index + m[0].length
-        count++
-        if (maxHighlights > 0 && count >= maxHighlights) break
-        if (m[0] === '') pattern.lastIndex++
+        if (m.index > last)
+          out.push({ text: text.slice(last, m.index), match: false });
+        out.push({ text: m[0], match: true });
+        last = m.index + m[0].length;
+        count++;
+        if (maxHighlights > 0 && count >= maxHighlights) break;
+        if (m[0] === "") pattern.lastIndex++;
       }
-      if (last < text.length) out.push({ text: text.slice(last), match: false })
+      if (last < text.length)
+        out.push({ text: text.slice(last), match: false });
 
-      return out
-    }, [text, query, caseSensitive, wholeWord, maxHighlights])
+      return out;
+    }, [text, query, caseSensitive, wholeWord, maxHighlights]);
 
     const totalMatchCount = React.useMemo(() => {
-      if (!text || !query) return 0
-      const pattern = buildPattern(query, caseSensitive, wholeWord)
-      if (!pattern) return 0
+      if (!text || !query) return 0;
+      const pattern = buildPattern(query, caseSensitive, wholeWord);
+      if (!pattern) return 0;
 
-      let total = 0
-      let m: RegExpExecArray | null
+      let total = 0;
+      let m: RegExpExecArray | null;
       while ((m = pattern.exec(text)) !== null) {
-        total++
-        if (m[0] === '') pattern.lastIndex++
+        total++;
+        if (m[0] === "") pattern.lastIndex++;
       }
-      return total
-    }, [text, query, caseSensitive, wholeWord])
+      return total;
+    }, [text, query, caseSensitive, wholeWord]);
 
-    const renderedMatchCount = React.useMemo(() => segments.filter((s) => s.match).length, [segments])
+    const renderedMatchCount = React.useMemo(
+      () => segments.filter((s) => s.match).length,
+      [segments],
+    );
 
     React.useEffect(() => {
-      onMatchCount?.(renderedMatchCount)
-    }, [renderedMatchCount, onMatchCount])
+      onMatchCount?.(renderedMatchCount);
+    }, [renderedMatchCount, onMatchCount]);
 
     React.useEffect(() => {
-      onTotalMatchCount?.(totalMatchCount)
-    }, [totalMatchCount, onTotalMatchCount])
+      onTotalMatchCount?.(totalMatchCount);
+    }, [totalMatchCount, onTotalMatchCount]);
 
-    const Tag = highlightTag
+    const Tag = highlightTag;
 
     return (
-      <span ref={ref} data-uipkge="" data-slot="highlight" className={cn(className)} {...props}>
+      <span
+        ref={ref}
+        data-uipkge=""
+        data-slot="highlight"
+        className={cn(className)}
+        {...props}
+      >
         {segments.map((seg, i) =>
           seg.match ? (
             <Tag
               key={i}
               data-slot="highlight-match"
               className={cn(
-                'bg-accent text-accent-foreground dark:bg-accent/30 dark:text-accent-foreground rounded px-0.5 font-medium',
+                "bg-accent text-accent-foreground dark:bg-accent/30 dark:text-accent-foreground rounded px-0.5 font-medium",
                 highlightClass,
               )}
               style={highlightStyle}
@@ -129,9 +147,9 @@ const Highlight = React.forwardRef<HTMLSpanElement, HighlightProps>(
           ),
         )}
       </span>
-    )
+    );
   },
-)
-Highlight.displayName = 'Highlight'
+);
+Highlight.displayName = "Highlight";
 
-export { Highlight }
+export { Highlight };

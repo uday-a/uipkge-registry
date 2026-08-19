@@ -1,87 +1,110 @@
 <script setup lang="ts">
-import { PaymentCard } from '@/components/ui/payment-card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { onMounted, onUnmounted, ref } from 'vue'
+import { PaymentCard } from "@/components/ui/payment-card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { onMounted, onUnmounted, ref } from "vue";
 
-const typedNumber = ref('')
-let typeTimer: ReturnType<typeof setInterval> | null = null
+const typedNumber = ref("");
+let typeTimer: ReturnType<typeof setInterval> | null = null;
 
-const brands = ['4111 1111 1111 1111', '5454 5454 5454 5454', '3782 822463 10005', '6011 1111 1111 1117']
-let brandIdx = 0
-let charIdx = 0
+const brands = [
+  "4111 1111 1111 1111",
+  "5454 5454 5454 5454",
+  "3782 822463 10005",
+  "6011 1111 1111 1117",
+];
+let brandIdx = 0;
+let charIdx = 0;
 
 function startTyping() {
   typeTimer = setInterval(() => {
-    const target = brands[brandIdx]
+    const target = brands[brandIdx];
     if (charIdx <= target.length) {
-      typedNumber.value = target.slice(0, charIdx)
-      charIdx++
+      typedNumber.value = target.slice(0, charIdx);
+      charIdx++;
     } else {
-      brandIdx = (brandIdx + 1) % brands.length
-      charIdx = 0
-      typedNumber.value = ''
+      brandIdx = (brandIdx + 1) % brands.length;
+      charIdx = 0;
+      typedNumber.value = "";
     }
-  }, 180)
+  }, 180);
 }
 
-onMounted(startTyping)
+onMounted(startTyping);
 onUnmounted(() => {
-  if (typeTimer) clearInterval(typeTimer)
-})
+  if (typeTimer) clearInterval(typeTimer);
+});
 
 // Live interactive example — format as the user types.
-const liveNumber = ref('')
-const liveName = ref('Jane Doe')
-const liveExpiry = ref('12/29')
-const liveCvc = ref('')
-const liveCvcFocused = ref(false)
+const liveNumber = ref("");
+const liveName = ref("Jane Doe");
+const liveExpiry = ref("12/29");
+const liveCvc = ref("");
+const liveCvcFocused = ref(false);
 
 function formatCardNumber(raw: string) {
-  const digits = raw.replace(/\D/g, '').slice(0, 16)
+  const digits = raw.replace(/\D/g, "").slice(0, 16);
   // Amex uses 4-6-5; everything else 4-4-4-4. Detect as soon as we can.
   if (/^3[47]/.test(digits)) {
-    return [digits.slice(0, 4), digits.slice(4, 10), digits.slice(10, 15)].filter(Boolean).join(' ')
+    return [digits.slice(0, 4), digits.slice(4, 10), digits.slice(10, 15)]
+      .filter(Boolean)
+      .join(" ");
   }
-  return digits.replace(/(\d{4})(?=\d)/g, '$1 ').trim()
+  return digits.replace(/(\d{4})(?=\d)/g, "$1 ").trim();
 }
 
 function formatExpiry(raw: string) {
-  const d = raw.replace(/\D/g, '').slice(0, 4)
-  if (d.length <= 2) return d
-  return `${d.slice(0, 2)}/${d.slice(2)}`
+  const d = raw.replace(/\D/g, "").slice(0, 4);
+  if (d.length <= 2) return d;
+  return `${d.slice(0, 2)}/${d.slice(2)}`;
 }
 
 function onNumberInput(v: string | number) {
-  liveNumber.value = formatCardNumber(String(v ?? ''))
+  liveNumber.value = formatCardNumber(String(v ?? ""));
 }
 
 function onExpiryInput(v: string | number) {
-  liveExpiry.value = formatExpiry(String(v ?? ''))
+  liveExpiry.value = formatExpiry(String(v ?? ""));
 }
 
 function onCvcInput(v: string | number) {
-  const isAmex = /^3[47]/.test(liveNumber.value.replace(/\D/g, ''))
-  liveCvc.value = String(v ?? '')
-    .replace(/\D/g, '')
-    .slice(0, isAmex ? 4 : 3)
+  const isAmex = /^3[47]/.test(liveNumber.value.replace(/\D/g, ""));
+  liveCvc.value = String(v ?? "")
+    .replace(/\D/g, "")
+    .slice(0, isAmex ? 4 : 3);
 }
 
 // Click-to-flip story.
-const flipOpen = ref(false)
+const flipOpen = ref(false);
 </script>
 
 <template>
-  <Story title="Default" description="Front face with sample card data. Brand auto-detected from the number prefix.">
+  <Story
+    title="Default"
+    description="Front face with sample card data. Brand auto-detected from the number prefix."
+  >
     <div class="flex justify-center py-4">
-      <PaymentCard number="4242 4242 4242 4242" name="Jane Doe" expiry="12/29" />
+      <PaymentCard
+        number="4242 4242 4242 4242"
+        name="Jane Doe"
+        expiry="12/29"
+      />
     </div>
   </Story>
 
-  <Story title="Flipped" description="Back face with CVC. The 700ms 3D rotateY transition is springy and smooth.">
+  <Story
+    title="Flipped"
+    description="Back face with CVC. The 700ms 3D rotateY transition is springy and smooth."
+  >
     <div class="flex justify-center py-4">
-      <PaymentCard number="4242 4242 4242 4242" name="Jane Doe" expiry="12/29" cvc="123" flipped />
+      <PaymentCard
+        number="4242 4242 4242 4242"
+        name="Jane Doe"
+        expiry="12/29"
+        cvc="123"
+        flipped
+      />
     </div>
   </Story>
 
@@ -91,7 +114,9 @@ const flipOpen = ref(false)
   >
     <div class="flex flex-col items-center gap-3 py-4">
       <PaymentCard :number="typedNumber" name="Jane Doe" expiry="12/29" />
-      <code class="text-muted-foreground text-xs">{{ typedNumber || '(typing…)' }}</code>
+      <code class="text-muted-foreground text-xs">{{
+        typedNumber || "(typing…)"
+      }}</code>
     </div>
   </Story>
 
@@ -123,7 +148,12 @@ const flipOpen = ref(false)
       <div class="grid grid-cols-2 gap-3">
         <div class="grid gap-1.5">
           <Label for="demo-cc-name">Name</Label>
-          <Input id="demo-cc-name" v-model="liveName" autocomplete="cc-name" placeholder="Jane Doe" />
+          <Input
+            id="demo-cc-name"
+            v-model="liveName"
+            autocomplete="cc-name"
+            placeholder="Jane Doe"
+          />
         </div>
         <div class="grid gap-1.5">
           <Label for="demo-cc-expiry">Expiry</Label>
@@ -158,9 +188,15 @@ const flipOpen = ref(false)
     description="Toggle the flipped prop — useful for checkout forms that reveal CVC on demand."
   >
     <div class="flex flex-col items-center gap-4 py-4">
-      <PaymentCard number="5454 5454 5454 5454" name="Jane Doe" expiry="08/27" cvc="917" :flipped="flipOpen" />
+      <PaymentCard
+        number="5454 5454 5454 5454"
+        name="Jane Doe"
+        expiry="08/27"
+        cvc="917"
+        :flipped="flipOpen"
+      />
       <Button variant="outline" size="sm" @click="flipOpen = !flipOpen">
-        {{ flipOpen ? 'Show front' : 'Show back' }}
+        {{ flipOpen ? "Show front" : "Show back" }}
       </Button>
     </div>
   </Story>
@@ -170,7 +206,13 @@ const flipOpen = ref(false)
     description="Opt-in tilt follows the mouse via rAF; shimmer runs a 2.5s gradient sweep. Hover over the card."
   >
     <div class="flex justify-center py-6">
-      <PaymentCard number="5454 5454 5454 5454" name="Jane Doe" expiry="08/27" tilt shimmer />
+      <PaymentCard
+        number="5454 5454 5454 5454"
+        name="Jane Doe"
+        expiry="08/27"
+        tilt
+        shimmer
+      />
     </div>
   </Story>
 
@@ -188,10 +230,30 @@ const flipOpen = ref(false)
     description="Used inside lists and confirmation summaries — fixed 120px width, scaled-down typography."
   >
     <div class="flex flex-wrap items-center justify-center gap-3 py-4">
-      <PaymentCard number="4242 4242 4242 4242" expiry="12/29" variant="compact" :flip="false" />
-      <PaymentCard number="5454 5454 5454 5454" expiry="08/27" variant="compact" :flip="false" />
-      <PaymentCard number="3782 822463 10005" expiry="03/30" variant="compact" :flip="false" />
-      <PaymentCard number="6011 1111 1111 1117" expiry="11/28" variant="compact" :flip="false" />
+      <PaymentCard
+        number="4242 4242 4242 4242"
+        expiry="12/29"
+        variant="compact"
+        :flip="false"
+      />
+      <PaymentCard
+        number="5454 5454 5454 5454"
+        expiry="08/27"
+        variant="compact"
+        :flip="false"
+      />
+      <PaymentCard
+        number="3782 822463 10005"
+        expiry="03/30"
+        variant="compact"
+        :flip="false"
+      />
+      <PaymentCard
+        number="6011 1111 1111 1117"
+        expiry="11/28"
+        variant="compact"
+        :flip="false"
+      />
     </div>
   </Story>
 
@@ -200,10 +262,30 @@ const flipOpen = ref(false)
     description="Force a specific brand via the brand prop. Each gets its own metallic face + wordmark."
   >
     <div class="grid grid-cols-1 gap-3 py-4 sm:grid-cols-2">
-      <PaymentCard number="4111 1111 1111 1111" name="Jane Doe" expiry="12/29" brand="visa" />
-      <PaymentCard number="5555 5555 5555 4444" name="Jane Doe" expiry="08/27" brand="mastercard" />
-      <PaymentCard number="3782 822463 10005" name="Jane Doe" expiry="03/30" brand="amex" />
-      <PaymentCard number="6011 1111 1111 1117" name="Jane Doe" expiry="11/28" brand="discover" />
+      <PaymentCard
+        number="4111 1111 1111 1111"
+        name="Jane Doe"
+        expiry="12/29"
+        brand="visa"
+      />
+      <PaymentCard
+        number="5555 5555 5555 4444"
+        name="Jane Doe"
+        expiry="08/27"
+        brand="mastercard"
+      />
+      <PaymentCard
+        number="3782 822463 10005"
+        name="Jane Doe"
+        expiry="03/30"
+        brand="amex"
+      />
+      <PaymentCard
+        number="6011 1111 1111 1117"
+        name="Jane Doe"
+        expiry="11/28"
+        brand="discover"
+      />
     </div>
   </Story>
 

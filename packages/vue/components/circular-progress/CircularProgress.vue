@@ -1,110 +1,112 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from 'vue'
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
-import { cn } from '@/lib/utils'
-import { circularProgressVariants } from './circular-progress.variants'
+import type { HTMLAttributes } from "vue";
+import { computed, onBeforeUnmount, ref, watch } from "vue";
+import { cn } from "@/lib/utils";
+import { circularProgressVariants } from "./circular-progress.variants";
 
 // Inlined union: SFC compiler can't extract runtime props from
 // `CircularProgressVariants['size']`.
 const props = withDefaults(
   defineProps<{
-    class?: HTMLAttributes['class']
+    class?: HTMLAttributes["class"];
     /** Progress value 0-100. Ignored when indeterminate is true. */
-    value?: number
+    value?: number;
     /** Diameter in pixels. */
-    size?: 'sm' | 'default' | 'lg' | number
+    size?: "sm" | "default" | "lg" | number;
     /** Stroke thickness in pixels. */
-    thickness?: number
+    thickness?: number;
     /** Progress arc color. Defaults to primary. */
-    color?: string
+    color?: string;
     /** Track (background ring) color. */
-    trackColor?: string
+    trackColor?: string;
     /** Indeterminate spinning mode. */
-    indeterminate?: boolean
+    indeterminate?: boolean;
     /** Show the numeric value in the center. */
-    showValue?: boolean
+    showValue?: boolean;
     /** Suffix appended to the value (e.g. '%'). */
-    suffix?: string
+    suffix?: string;
     /** Accessible label. */
-    ariaLabel?: string
+    ariaLabel?: string;
   }>(),
   {
     value: 0,
-    size: 'default',
+    size: "default",
     thickness: 8,
     indeterminate: false,
     showValue: false,
-    suffix: '%',
-    ariaLabel: 'Progress',
+    suffix: "%",
+    ariaLabel: "Progress",
   },
-)
+);
 
 const sizePx = computed(() => {
-  if (typeof props.size === 'number') return props.size
+  if (typeof props.size === "number") return props.size;
   switch (props.size) {
-    case 'sm':
-      return 40
-    case 'lg':
-      return 80
+    case "sm":
+      return 40;
+    case "lg":
+      return 80;
     default:
-      return 56
+      return 56;
   }
-})
+});
 
-const normalizedValue = computed(() => Math.min(100, Math.max(0, props.value)))
-const isComplete = computed(() => !props.indeterminate && normalizedValue.value >= 100)
+const normalizedValue = computed(() => Math.min(100, Math.max(0, props.value)));
+const isComplete = computed(
+  () => !props.indeterminate && normalizedValue.value >= 100,
+);
 
 /** One-shot pulse only when value crosses into complete — not on static 100 mounts. */
-const pulseComplete = ref(false)
-let pulseTimer: ReturnType<typeof setTimeout> | undefined
+const pulseComplete = ref(false);
+let pulseTimer: ReturnType<typeof setTimeout> | undefined;
 
 watch(
   () => [props.indeterminate, normalizedValue.value] as const,
   ([indeterminate, value], prev) => {
     if (indeterminate || value < 100) {
-      pulseComplete.value = false
-      clearTimeout(pulseTimer)
-      return
+      pulseComplete.value = false;
+      clearTimeout(pulseTimer);
+      return;
     }
-    const prevValue = prev?.[1]
-    if (prevValue === undefined) return
+    const prevValue = prev?.[1];
+    if (prevValue === undefined) return;
     if (value >= 100 && prevValue < 100) {
-      pulseComplete.value = false
+      pulseComplete.value = false;
       // Retrigger CSS animation if complete→incomplete→complete in quick succession.
       requestAnimationFrame(() => {
-        pulseComplete.value = true
-        clearTimeout(pulseTimer)
+        pulseComplete.value = true;
+        clearTimeout(pulseTimer);
         pulseTimer = setTimeout(() => {
-          pulseComplete.value = false
-        }, 600)
-      })
+          pulseComplete.value = false;
+        }, 600);
+      });
     }
   },
-)
+);
 
 onBeforeUnmount(() => {
-  clearTimeout(pulseTimer)
-})
+  clearTimeout(pulseTimer);
+});
 
-const radius = computed(() => (sizePx.value - props.thickness) / 2)
-const circumference = computed(() => 2 * Math.PI * radius.value)
+const radius = computed(() => (sizePx.value - props.thickness) / 2);
+const circumference = computed(() => 2 * Math.PI * radius.value);
 const strokeDashoffset = computed(() => {
-  if (props.indeterminate) return circumference.value * 0.25
-  return circumference.value * (1 - normalizedValue.value / 100)
-})
+  if (props.indeterminate) return circumference.value * 0.25;
+  return circumference.value * (1 - normalizedValue.value / 100);
+});
 
-const resolvedColor = computed(() => props.color || 'var(--primary)')
-const resolvedTrackColor = computed(() => props.trackColor || 'var(--muted)')
+const resolvedColor = computed(() => props.color || "var(--primary)");
+const resolvedTrackColor = computed(() => props.trackColor || "var(--muted)");
 
-const viewBox = computed(() => `0 0 ${sizePx.value} ${sizePx.value}`)
-const center = computed(() => sizePx.value / 2)
+const viewBox = computed(() => `0 0 ${sizePx.value} ${sizePx.value}`);
+const center = computed(() => sizePx.value / 2);
 
 const fontSize = computed(() => {
-  const s = sizePx.value
-  if (s <= 40) return 'text-xs'
-  if (s <= 56) return 'text-sm'
-  return 'text-base'
-})
+  const s = sizePx.value;
+  if (s <= 40) return "text-xs";
+  if (s <= 56) return "text-sm";
+  return "text-base";
+});
 </script>
 
 <template>
@@ -135,9 +137,15 @@ const fontSize = computed(() => {
       />
       <!-- Progress arc -->
       <g
-        :transform="indeterminate ? undefined : `rotate(-90 ${center} ${center})`"
+        :transform="
+          indeterminate ? undefined : `rotate(-90 ${center} ${center})`
+        "
         :class="indeterminate ? 'animate-spin-circular' : ''"
-        :style="indeterminate ? { transformBox: 'fill-box', transformOrigin: 'center' } : undefined"
+        :style="
+          indeterminate
+            ? { transformBox: 'fill-box', transformOrigin: 'center' }
+            : undefined
+        "
       >
         <circle
           :cx="center"
@@ -151,7 +159,8 @@ const fontSize = computed(() => {
           :stroke-dashoffset="strokeDashoffset"
           :class="
             cn(
-              !indeterminate && 'transition-[stroke-dashoffset] duration-500 ease-out motion-reduce:transition-none',
+              !indeterminate &&
+                'transition-[stroke-dashoffset] duration-500 ease-out motion-reduce:transition-none',
               pulseComplete && 'animate-circular-complete',
             )
           "
@@ -159,9 +168,15 @@ const fontSize = computed(() => {
       </g>
     </svg>
 
-    <div v-if="showValue || $slots.default" class="absolute inset-0 flex items-center justify-center">
+    <div
+      v-if="showValue || $slots.default"
+      class="absolute inset-0 flex items-center justify-center"
+    >
       <slot :value="normalizedValue">
-        <span v-if="showValue" :class="cn('text-foreground font-medium tabular-nums', fontSize)">
+        <span
+          v-if="showValue"
+          :class="cn('text-foreground font-medium tabular-nums', fontSize)"
+        >
           {{ Math.round(normalizedValue) }}{{ suffix }}
         </span>
       </slot>

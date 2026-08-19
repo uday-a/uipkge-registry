@@ -1,16 +1,19 @@
-import { defineRegistryItem } from '../../../lib/define-registry'
+import { defineRegistryItem } from "../../../lib/define-registry";
 
 export default defineRegistryItem({
-  name: 'bubble-map',
-  type: 'registry:ui',
-  framework: 'vue',
-  categories: ['chart'],
+  name: "bubble-map",
+  type: "registry:ui",
+  framework: "vue",
+  categories: ["chart"],
   description:
-    'Proportional symbol bubble map as dependency-free SVG. Eliminates geographic landmass distortion by scaling circle areas to continuous quantitative values with mathematical square-root radius normalization, pulsating concentric ripple rings, multi-tier size legend, and interactive hover cards.',
+    "Proportional symbol bubble map as dependency-free SVG. Eliminates geographic landmass distortion by scaling circle areas to continuous quantitative values with mathematical square-root radius normalization, pulsating concentric ripple rings, multi-tier size legend, and interactive hover cards.",
   files: [
-    { path: 'BubbleMap.vue', target: 'components/ui/charts/bubble-map/BubbleMap.vue' },
-    { path: 'index.ts', target: 'components/ui/charts/bubble-map/index.ts' },
+    {
+      path: "BubbleMap.vue",
+      target: "components/ui/charts/bubble-map/BubbleMap.vue",
+    },
+    { path: "index.ts", target: "components/ui/charts/bubble-map/index.ts" },
   ],
-  dependencies: ['mapbox-gl', '@studiometa/vue-mapbox-gl', 'lucide-vue-next'],
-  registryDependencies: ['https://uipkge.dev/r/map.json'],
-})
+  dependencies: ["mapbox-gl", "@studiometa/vue-mapbox-gl", "lucide-vue-next"],
+  registryDependencies: ["https://uipkge.dev/r/map.json"],
+});

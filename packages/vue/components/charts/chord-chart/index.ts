@@ -1,1 +1,1 @@
-export { default as ChordChart } from './ChordChart.vue'
+export { default as ChordChart } from "./ChordChart.vue";

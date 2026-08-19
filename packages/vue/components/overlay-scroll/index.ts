@@ -1,1 +1,1 @@
-export { default as OverlayScroll } from './OverlayScroll.vue'
+export { default as OverlayScroll } from "./OverlayScroll.vue";

@@ -1,1 +1,1 @@
-export { default as CategoryDistributionChart } from './CategoryDistributionChart.vue'
+export { default as CategoryDistributionChart } from "./CategoryDistributionChart.vue";

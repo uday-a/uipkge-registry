@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { use } from 'echarts/core'
-import { CanvasRenderer } from 'echarts/renderers'
-import { ScatterChart as EChartsScatterChart } from 'echarts/charts'
+import { computed } from "vue";
+import { use } from "echarts/core";
+import { CanvasRenderer } from "echarts/renderers";
+import { ScatterChart as EChartsScatterChart } from "echarts/charts";
 import {
   GridComponent,
   TooltipComponent,
   MarkLineComponent,
   MarkAreaComponent,
   LegendComponent,
-} from 'echarts/components'
-import VChart from 'vue-echarts'
-import { cn } from '@/lib/utils'
+} from "echarts/components";
+import VChart from "vue-echarts";
+import { cn } from "@/lib/utils";
 import {
   chartColors,
   chartTextColor,
@@ -20,7 +20,7 @@ import {
   chartTooltipBorder,
   chartTooltipText,
   mergeOptionBlock,
-} from '../useChartTheme'
+} from "../useChartTheme";
 
 use([
   CanvasRenderer,
@@ -30,50 +30,56 @@ use([
   MarkLineComponent,
   MarkAreaComponent,
   LegendComponent,
-])
+]);
 
 function median(vals: number[]) {
-  const s = [...vals].sort((a, b) => a - b)
-  const m = Math.floor(s.length / 2)
-  return s.length % 2 ? s[m]! : ((s[m - 1] ?? 0) + (s[m] ?? 0)) / 2
+  const s = [...vals].sort((a, b) => a - b);
+  const m = Math.floor(s.length / 2);
+  return s.length % 2 ? s[m]! : ((s[m - 1] ?? 0) + (s[m] ?? 0)) / 2;
 }
 
 interface Props {
-  data: { x: number; y: number; label?: string }[]
+  data: { x: number; y: number; label?: string }[];
   /** Split lines. Default to the data medians. */
-  xMid?: number
-  yMid?: number
+  xMid?: number;
+  yMid?: number;
   /** Clockwise from top-right: [stars, question marks, dogs, cash cows]. */
-  quadrantLabels?: [string, string, string, string]
-  xName?: string
-  yName?: string
-  height?: number | string
-  option?: any
-  class?: string
+  quadrantLabels?: [string, string, string, string];
+  xName?: string;
+  yName?: string;
+  height?: number | string;
+  option?: any;
+  class?: string;
   /** Accessible name announced for the chart image. Defaults to "Chart". */
-  ariaLabel?: string
+  ariaLabel?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  quadrantLabels: () => ['Stars', 'Question marks', 'Dogs', 'Cash cows'],
+  quadrantLabels: () => ["Stars", "Question marks", "Dogs", "Cash cows"],
   height: 340,
-})
+});
 
 const splits = computed(() => ({
   x: props.xMid ?? median(props.data.map((d) => d.x)),
   y: props.yMid ?? median(props.data.map((d) => d.y)),
-}))
+}));
 
 const mergedOption = computed(() => {
-  const { x, y } = splits.value
-  const quad = (name: string, x0: number | string, x1: number | string, y0: number | string, y1: number | string) => [
+  const { x, y } = splits.value;
+  const quad = (
+    name: string,
+    x0: number | string,
+    x1: number | string,
+    y0: number | string,
+    y1: number | string,
+  ) => [
     {
       xAxis: x0,
       yAxis: y0,
       itemStyle: { color: chartColors.value[0], opacity: 0.05 },
       label: {
         show: true,
-        position: 'inside',
+        position: "inside",
         color: chartTextColor.value,
         fontSize: 12,
         fontWeight: 700,
@@ -81,39 +87,43 @@ const mergedOption = computed(() => {
       },
     },
     { xAxis: x1, yAxis: y1 },
-  ]
+  ];
   const series = [
     {
-      type: 'scatter',
+      type: "scatter",
       symbolSize: 12,
       itemStyle: { color: chartColors.value[0], opacity: 0.85 },
       label: {
         show: true,
-        position: 'top',
+        position: "top",
         color: chartTextColor.value,
         fontSize: 10,
-        formatter: (p: any) => p.value[2] ?? '',
+        formatter: (p: any) => p.value[2] ?? "",
       },
       markLine: {
         silent: true,
-        symbol: 'none',
-        lineStyle: { type: 'dashed', color: chartTextColor.value, opacity: 0.6 },
+        symbol: "none",
+        lineStyle: {
+          type: "dashed",
+          color: chartTextColor.value,
+          opacity: 0.6,
+        },
         label: { show: false },
         data: [{ xAxis: x }, { yAxis: y }],
       },
       markArea: {
         silent: true,
         data: [
-          quad(props.quadrantLabels[0], x, 'max', y, 'max'),
-          quad(props.quadrantLabels[1], 'min', x, y, 'max'),
-          quad(props.quadrantLabels[2], 'min', x, 'min', y),
-          quad(props.quadrantLabels[3], x, 'max', 'min', y),
+          quad(props.quadrantLabels[0], x, "max", y, "max"),
+          quad(props.quadrantLabels[1], "min", x, y, "max"),
+          quad(props.quadrantLabels[2], "min", x, "min", y),
+          quad(props.quadrantLabels[3], x, "max", "min", y),
         ],
       },
-      data: props.data.map((d) => [d.x, d.y, d.label ?? '']),
+      data: props.data.map((d) => [d.x, d.y, d.label ?? ""]),
     },
-  ]
-  const userOption: any = props.option ?? {}
+  ];
+  const userOption: any = props.option ?? {};
   const {
     series: userSeries,
     xAxis: userXAxis,
@@ -121,16 +131,21 @@ const mergedOption = computed(() => {
     grid: userGrid,
     tooltip: userTooltip,
     ...userRest
-  } = userOption
-  const mergedSeries = Array.isArray(userSeries) ? series.map((s, i) => ({ ...s, ...(userSeries[i] ?? {}) })) : series
-  const xs = props.data.map((d) => d.x)
-  const ys = props.data.map((d) => d.y)
+  } = userOption;
+  const mergedSeries = Array.isArray(userSeries)
+    ? series.map((s, i) => ({ ...s, ...(userSeries[i] ?? {}) }))
+    : series;
+  const xs = props.data.map((d) => d.x);
+  const ys = props.data.map((d) => d.y);
   return {
     color: chartColors.value,
-    grid: mergeOptionBlock({ left: 16, right: 16, top: 24, bottom: 24, containLabel: true }, userGrid),
+    grid: mergeOptionBlock(
+      { left: 16, right: 16, top: 24, bottom: 24, containLabel: true },
+      userGrid,
+    ),
     tooltip: mergeOptionBlock(
       {
-        trigger: 'item',
+        trigger: "item",
         backgroundColor: chartTooltipBg.value,
         borderColor: chartTooltipBorder.value,
         textStyle: { color: chartTooltipText.value, fontSize: 12 },
@@ -140,7 +155,7 @@ const mergedOption = computed(() => {
     legend: { show: false },
     xAxis: mergeOptionBlock(
       {
-        type: 'value',
+        type: "value",
         name: props.xName,
         min: Math.min(...xs) - 1,
         max: Math.max(...xs) + 1,
@@ -152,7 +167,7 @@ const mergedOption = computed(() => {
     ),
     yAxis: mergeOptionBlock(
       {
-        type: 'value',
+        type: "value",
         name: props.yName,
         min: Math.min(...ys) - 1,
         max: Math.max(...ys) + 1,
@@ -164,8 +179,8 @@ const mergedOption = computed(() => {
     ),
     series: mergedSeries,
     ...userRest,
-  }
-})
+  };
+});
 </script>
 
 <template>
@@ -173,8 +188,15 @@ const mergedOption = computed(() => {
     role="img"
     tabindex="0"
     :aria-label="ariaLabel || 'Chart'"
-    :style="{ height: /^\d+$/.test(String(height)) ? `${height}px` : String(height) }"
-    :class="cn('focus-visible:ring-ring w-full focus-visible:ring-2 focus-visible:outline-none', props.class)"
+    :style="{
+      height: /^\d+$/.test(String(height)) ? `${height}px` : String(height),
+    }"
+    :class="
+      cn(
+        'focus-visible:ring-ring w-full focus-visible:ring-2 focus-visible:outline-none',
+        props.class,
+      )
+    "
   >
     <VChart :option="mergedOption" :autoresize="true" class="size-full" />
   </div>

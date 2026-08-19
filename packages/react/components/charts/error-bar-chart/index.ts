@@ -1,1 +1,5 @@
-export { ErrorBarChart, type ErrorBarChartProps, type ErrorDatum } from './ErrorBarChart'
+export {
+  ErrorBarChart,
+  type ErrorBarChartProps,
+  type ErrorDatum,
+} from "./ErrorBarChart";

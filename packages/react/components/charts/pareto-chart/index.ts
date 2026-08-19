@@ -1,1 +1,1 @@
-export { ParetoChart, type ParetoChartProps } from './ParetoChart'
+export { ParetoChart, type ParetoChartProps } from "./ParetoChart";

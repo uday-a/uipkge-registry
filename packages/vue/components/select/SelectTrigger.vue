@@ -1,38 +1,38 @@
 <script setup lang="ts">
-import type { SelectTriggerProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
-import { reactiveOmit } from '@vueuse/core'
-import { ChevronDown, Loader } from 'lucide-vue-next'
-import { SelectIcon, SelectTrigger, useForwardProps } from 'reka-ui'
-import { cn } from '@/lib/utils'
+import type { SelectTriggerProps } from "reka-ui";
+import type { HTMLAttributes } from "vue";
+import { reactiveOmit } from "@vueuse/core";
+import { ChevronDown, Loader } from "lucide-vue-next";
+import { SelectIcon, SelectTrigger, useForwardProps } from "reka-ui";
+import { cn } from "@/lib/utils";
 
 const props = withDefaults(
   defineProps<
     SelectTriggerProps & {
-      class?: HTMLAttributes['class']
-      size?: 'sm' | 'default' | 'lg'
-      state?: 'default' | 'error' | 'success'
-      loading?: boolean
+      class?: HTMLAttributes["class"];
+      size?: "sm" | "default" | "lg";
+      state?: "default" | "error" | "success";
+      loading?: boolean;
     }
   >(),
-  { size: 'default', state: 'default', loading: false },
-)
+  { size: "default", state: "default", loading: false },
+);
 
-const delegatedProps = reactiveOmit(props, 'class', 'size', 'state', 'loading')
-const forwardedProps = useForwardProps(delegatedProps)
+const delegatedProps = reactiveOmit(props, "class", "size", "state", "loading");
+const forwardedProps = useForwardProps(delegatedProps);
 
 const sizeClasses = {
-  sm: 'h-8 text-sm px-2.5 py-1.5',
-  default: 'h-9 text-sm px-3 py-2',
-  lg: 'h-11 text-base px-4 py-2.5',
-}
+  sm: "h-8 text-sm px-2.5 py-1.5",
+  default: "h-9 text-sm px-3 py-2",
+  lg: "h-11 text-base px-4 py-2.5",
+};
 
 const stateClasses = {
-  default: 'border-input dark:hover:bg-input/50',
+  default: "border-input dark:hover:bg-input/50",
   error:
-    'border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
-  success: 'border-success focus-visible:border-success',
-}
+    "border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+  success: "border-success focus-visible:border-success",
+};
 </script>
 
 <template>

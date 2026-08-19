@@ -1,1 +1,1 @@
-export { default as AlertModal } from './AlertModal.vue'
+export { default as AlertModal } from "./AlertModal.vue";

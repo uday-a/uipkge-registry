@@ -10,4 +10,4 @@ export {
   TableEmpty,
   type TableProps,
   type TableEmptyProps,
-} from './table'
+} from "./table";

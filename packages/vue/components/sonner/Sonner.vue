@@ -1,21 +1,28 @@
 <script lang="ts" setup>
-import type { ToasterProps } from 'vue-sonner'
-import { CircleCheckIcon, InfoIcon, Loader2Icon, OctagonXIcon, TriangleAlertIcon, XIcon } from 'lucide-vue-next'
-import { Toaster as Sonner } from 'vue-sonner'
-import { cn } from '@/lib/utils'
+import type { ToasterProps } from "vue-sonner";
+import {
+  CircleCheckIcon,
+  InfoIcon,
+  Loader2Icon,
+  OctagonXIcon,
+  TriangleAlertIcon,
+  XIcon,
+} from "lucide-vue-next";
+import { Toaster as Sonner } from "vue-sonner";
+import { cn } from "@/lib/utils";
 
 // Sonner cadence — UX_MICROINTERACTIONS.md research:
 // 4000ms default, bottom-right position so swipe-right dismiss reads
 // naturally, max 3 visible (older stack with scale offset), rich colors
 // so success/error/info/warning each get distinct variants.
 const props = withDefaults(defineProps<ToasterProps>(), {
-  position: 'bottom-right',
+  position: "bottom-right",
   duration: 4000,
   visibleToasts: 3,
   richColors: true,
   closeButton: false,
   expand: false,
-})
+});
 </script>
 
 <template>
@@ -43,7 +50,10 @@ const props = withDefaults(defineProps<ToasterProps>(), {
     </template>
     <template #loading-icon>
       <div>
-        <Loader2Icon class="size-4 motion-safe:animate-spin" aria-hidden="true" />
+        <Loader2Icon
+          class="size-4 motion-safe:animate-spin"
+          aria-hidden="true"
+        />
       </div>
     </template>
     <template #close-icon>

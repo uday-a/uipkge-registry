@@ -1,6 +1,6 @@
-import { useState } from 'react'
-import Story from '../../components/story/Story'
-import { Button } from '@react-registry/button'
+import { useState } from "react";
+import Story from "../../components/story/Story";
+import { Button } from "@react-registry/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -16,7 +16,7 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from '@react-registry/dropdown-menu'
+} from "@react-registry/dropdown-menu";
 import {
   ChevronDown,
   Cloud,
@@ -35,13 +35,13 @@ import {
   User,
   UserPlus,
   Users,
-} from 'lucide-react'
+} from "lucide-react";
 
 export default function DropdownMenuDemo() {
-  const [showStatus, setShowStatus] = useState(true)
-  const [showActivity, setShowActivity] = useState(false)
-  const [showPanel, setShowPanel] = useState(true)
-  const [position, setPosition] = useState('center')
+  const [showStatus, setShowStatus] = useState(true);
+  const [showActivity, setShowActivity] = useState(false);
+  const [showPanel, setShowPanel] = useState(true);
+  const [position, setPosition] = useState("center");
 
   return (
     <>
@@ -119,13 +119,22 @@ export default function DropdownMenuDemo() {
           <DropdownMenuContent className="w-56">
             <DropdownMenuLabel>Appearance</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuCheckboxItem checked={showStatus} onCheckedChange={setShowStatus}>
+            <DropdownMenuCheckboxItem
+              checked={showStatus}
+              onCheckedChange={setShowStatus}
+            >
               Status bar
             </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem checked={showActivity} onCheckedChange={setShowActivity}>
+            <DropdownMenuCheckboxItem
+              checked={showActivity}
+              onCheckedChange={setShowActivity}
+            >
               Activity bar
             </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem checked={showPanel} onCheckedChange={setShowPanel}>
+            <DropdownMenuCheckboxItem
+              checked={showPanel}
+              onCheckedChange={setShowPanel}
+            >
               Panel
             </DropdownMenuCheckboxItem>
           </DropdownMenuContent>
@@ -143,10 +152,17 @@ export default function DropdownMenuDemo() {
           <DropdownMenuContent className="w-56">
             <DropdownMenuLabel>Panel position</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
+            <DropdownMenuRadioGroup
+              value={position}
+              onValueChange={setPosition}
+            >
               <DropdownMenuRadioItem value="top">Top</DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="center">Center</DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="bottom">Bottom</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="center">
+                Center
+              </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="bottom">
+                Bottom
+              </DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -210,12 +226,17 @@ export default function DropdownMenuDemo() {
             <DropdownMenuItem>Rename…</DropdownMenuItem>
             <DropdownMenuItem>Move to folder…</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-destructive focus:text-destructive">Delete</DropdownMenuItem>
+            <DropdownMenuItem className="text-destructive focus:text-destructive">
+              Delete
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </Story>
 
-      <Story title="Action menu" description="Chevron-trigger pattern for create-new menus.">
+      <Story
+        title="Action menu"
+        description="Chevron-trigger pattern for create-new menus."
+      >
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button>
@@ -237,5 +258,5 @@ export default function DropdownMenuDemo() {
         </DropdownMenu>
       </Story>
     </>
-  )
+  );
 }

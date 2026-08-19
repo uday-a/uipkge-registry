@@ -1,1 +1,1 @@
-export { default as ChoroplethMapChart } from './ChoroplethMapChart.vue'
+export { default as ChoroplethMapChart } from "./ChoroplethMapChart.vue";

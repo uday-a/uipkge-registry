@@ -1,1 +1,1 @@
-export { default as ViolinChart, type ViolinGroup } from './ViolinChart.vue'
+export { default as ViolinChart, type ViolinGroup } from "./ViolinChart.vue";

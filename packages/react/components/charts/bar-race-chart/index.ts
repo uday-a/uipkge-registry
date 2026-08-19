@@ -1,1 +1,5 @@
-export { BarRaceChart, type BarRaceChartProps, type RaceFrame } from './BarRaceChart'
+export {
+  BarRaceChart,
+  type BarRaceChartProps,
+  type RaceFrame,
+} from "./BarRaceChart";

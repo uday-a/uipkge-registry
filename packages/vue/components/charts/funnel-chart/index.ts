@@ -1,1 +1,1 @@
-export { default as FunnelChart } from './FunnelChart.vue'
+export { default as FunnelChart } from "./FunnelChart.vue";

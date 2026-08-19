@@ -1,5 +1,5 @@
-import * as React from 'react'
-import Story from '../../components/story/Story'
+import * as React from "react";
+import Story from "../../components/story/Story";
 import {
   LeafletMap,
   LeafletMarker,
@@ -13,37 +13,66 @@ import {
   LeafletTileLayer,
   type LeafletMapRef,
   type LeafletMapVariant,
-} from '@/components/ui/leaflet-map'
+} from "@/components/ui/leaflet-map";
 
-const variantOptions: { id: LeafletMapVariant; label: string; desc: string }[] = [
-  { id: 'default', label: 'Default', desc: 'Theme-aware Esri light/dark' },
-  { id: 'streets', label: 'Streets', desc: 'OpenStreetMap Standard tiles' },
-  { id: 'light', label: 'Light', desc: 'Esri Light Gray — clean editorial canvas' },
-  { id: 'dark', label: 'Dark', desc: 'Esri Dark Gray — dashboard canvas' },
-  { id: 'muted', label: 'Muted', desc: 'Theme-aware + desaturated tile pane' },
-  { id: 'outdoors', label: 'Outdoors', desc: 'OpenTopoMap contours & trails' },
-  { id: 'satellite-streets', label: 'Satellite Hybrid', desc: 'Esri imagery + label overlay' },
-  { id: 'satellite', label: 'Satellite', desc: 'Esri World Imagery, no labels' },
-  { id: 'navigation-day', label: 'Nav Day', desc: 'Esri Street Map high contrast' },
-  { id: 'navigation-night', label: 'Nav Night', desc: 'Esri dark canvas HUD' },
-]
+const variantOptions: { id: LeafletMapVariant; label: string; desc: string }[] =
+  [
+    { id: "default", label: "Default", desc: "Theme-aware Esri light/dark" },
+    { id: "streets", label: "Streets", desc: "OpenStreetMap Standard tiles" },
+    {
+      id: "light",
+      label: "Light",
+      desc: "Esri Light Gray — clean editorial canvas",
+    },
+    { id: "dark", label: "Dark", desc: "Esri Dark Gray — dashboard canvas" },
+    {
+      id: "muted",
+      label: "Muted",
+      desc: "Theme-aware + desaturated tile pane",
+    },
+    {
+      id: "outdoors",
+      label: "Outdoors",
+      desc: "OpenTopoMap contours & trails",
+    },
+    {
+      id: "satellite-streets",
+      label: "Satellite Hybrid",
+      desc: "Esri imagery + label overlay",
+    },
+    {
+      id: "satellite",
+      label: "Satellite",
+      desc: "Esri World Imagery, no labels",
+    },
+    {
+      id: "navigation-day",
+      label: "Nav Day",
+      desc: "Esri Street Map high contrast",
+    },
+    {
+      id: "navigation-night",
+      label: "Nav Night",
+      desc: "Esri dark canvas HUD",
+    },
+  ];
 
 const landmarks = [
   {
-    id: 'hq',
-    name: 'Global Operations HQ',
-    detail: '350 5th Ave, New York',
-    status: 'Active · 1,420 staff',
+    id: "hq",
+    name: "Global Operations HQ",
+    detail: "350 5th Ave, New York",
+    status: "Active · 1,420 staff",
     lngLat: [-73.985, 40.748] as [number, number],
   },
   {
-    id: 'depot',
-    name: 'East River Depot',
-    detail: '12 W 34th St, New York',
-    status: 'Active · 24 bays',
+    id: "depot",
+    name: "East River Depot",
+    detail: "12 W 34th St, New York",
+    status: "Active · 24 bays",
     lngLat: [-73.961, 40.763] as [number, number],
   },
-]
+];
 
 const routePath: [number, number][] = [
   [-74.006, 40.7128],
@@ -51,20 +80,20 @@ const routePath: [number, number][] = [
   [-73.985, 40.7484],
   [-73.968, 40.7614],
   [-73.9776, 40.7736],
-]
+];
 const routeWaypoints = [
-  { name: 'Pickup · SoHo', lngLat: routePath[0] },
-  { name: 'Drop-off · UWS', lngLat: routePath[routePath.length - 1] },
-]
+  { name: "Pickup · SoHo", lngLat: routePath[0] },
+  { name: "Drop-off · UWS", lngLat: routePath[routePath.length - 1] },
+];
 
 const zones: GeoJSON.FeatureCollection = {
-  type: 'FeatureCollection',
+  type: "FeatureCollection",
   features: [
     {
-      type: 'Feature',
-      properties: { name: 'Zone A — Midtown', quota: '92%' },
+      type: "Feature",
+      properties: { name: "Zone A — Midtown", quota: "92%" },
       geometry: {
-        type: 'Polygon',
+        type: "Polygon",
         coordinates: [
           [
             [-74.01, 40.735],
@@ -77,10 +106,10 @@ const zones: GeoJSON.FeatureCollection = {
       },
     },
     {
-      type: 'Feature',
-      properties: { name: 'Zone B — FiDi', quota: '71%' },
+      type: "Feature",
+      properties: { name: "Zone B — FiDi", quota: "71%" },
       geometry: {
-        type: 'Polygon',
+        type: "Polygon",
         coordinates: [
           [
             [-74.02, 40.7],
@@ -93,10 +122,11 @@ const zones: GeoJSON.FeatureCollection = {
       },
     },
   ],
-}
+};
 
 function VariantsStory() {
-  const [activeVariant, setActiveVariant] = React.useState<LeafletMapVariant>('default')
+  const [activeVariant, setActiveVariant] =
+    React.useState<LeafletMapVariant>("default");
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap gap-1.5">
@@ -107,8 +137,8 @@ function VariantsStory() {
             title={v.desc}
             className={
               activeVariant === v.id
-                ? 'border-primary bg-primary/10 text-primary rounded-md border px-2.5 py-1 font-mono text-xs transition-colors'
-                : 'border-border bg-card text-muted-foreground hover:text-foreground rounded-md border px-2.5 py-1 font-mono text-xs transition-colors'
+                ? "border-primary bg-primary/10 text-primary rounded-md border px-2.5 py-1 font-mono text-xs transition-colors"
+                : "border-border bg-card text-muted-foreground hover:text-foreground rounded-md border px-2.5 py-1 font-mono text-xs transition-colors"
             }
             onClick={() => setActiveVariant(v.id)}
           >
@@ -124,11 +154,11 @@ function VariantsStory() {
         className="h-96 w-full rounded-lg border"
       />
     </div>
-  )
+  );
 }
 
 function GeoJsonStory() {
-  const mapRef = React.useRef<LeafletMapRef>(null)
+  const mapRef = React.useRef<LeafletMapRef>(null);
   return (
     <div className="space-y-3">
       <div className="flex gap-1.5">
@@ -147,7 +177,13 @@ function GeoJsonStory() {
         <button
           type="button"
           className="border-border bg-card text-foreground hover:bg-muted rounded-md border px-2.5 py-1 font-mono text-xs transition-colors"
-          onClick={() => mapRef.current?.flyTo({ center: [-73.99, 40.735], zoom: 13, duration: 700 })}
+          onClick={() =>
+            mapRef.current?.flyTo({
+              center: [-73.99, 40.735],
+              zoom: 13,
+              duration: 700,
+            })
+          }
         >
           Reset view
         </button>
@@ -163,21 +199,21 @@ function GeoJsonStory() {
           geojson={zones}
           options={{
             style: (f: any) => ({
-              color: '#2563eb',
+              color: "#2563eb",
               weight: 2,
-              fillColor: '#3b82f6',
-              fillOpacity: f?.properties?.quota === '92%' ? 0.3 : 0.15,
+              fillColor: "#3b82f6",
+              fillOpacity: f?.properties?.quota === "92%" ? 0.3 : 0.15,
             }),
           }}
         />
       </LeafletMap>
     </div>
-  )
+  );
 }
 
 function ControlsStory() {
-  const mapRef = React.useRef<LeafletMapRef>(null)
-  const [zoom, setZoom] = React.useState(12)
+  const mapRef = React.useRef<LeafletMapRef>(null);
+  const [zoom, setZoom] = React.useState(12);
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-1.5">
@@ -195,7 +231,9 @@ function ControlsStory() {
         >
           Zoom out
         </button>
-        <span className="text-muted-foreground ml-2 font-mono text-xs">zoom {zoom}</span>
+        <span className="text-muted-foreground ml-2 font-mono text-xs">
+          zoom {zoom}
+        </span>
       </div>
       <LeafletMap
         ref={mapRef}
@@ -207,11 +245,11 @@ function ControlsStory() {
         fullscreenPosition="top-left"
         className="h-96 w-full rounded-lg border"
         onCreated={(m) => {
-          m.on('zoomend', () => setZoom(Math.round(m.getZoom() * 10) / 10))
+          m.on("zoomend", () => setZoom(Math.round(m.getZoom() * 10) / 10));
         }}
       />
     </div>
-  )
+  );
 }
 
 export default function LeafletMapDemo() {
@@ -221,7 +259,11 @@ export default function LeafletMapDemo() {
         title="Default — theme-aware"
         description="Free Esri light/dark canvas tiles follow the app theme automatically. No API key, no token, no setup."
       >
-        <LeafletMap center={[-73.985, 40.748]} zoom={12.5} className="h-96 w-full rounded-lg border" />
+        <LeafletMap
+          center={[-73.985, 40.748]}
+          zoom={12.5}
+          className="h-96 w-full rounded-lg border"
+        />
       </Story>
 
       <Story
@@ -235,7 +277,12 @@ export default function LeafletMapDemo() {
         title="Markers & Popups"
         description="LeafletMarker renders real DOM into a div icon — buttons, badges, and React handlers all keep working."
       >
-        <LeafletMap variant="light" center={[-73.975, 40.755]} zoom={13.5} className="h-96 w-full rounded-lg border">
+        <LeafletMap
+          variant="light"
+          center={[-73.975, 40.755]}
+          zoom={13.5}
+          className="h-96 w-full rounded-lg border"
+        >
           {landmarks.map((m) => (
             <LeafletMarker key={m.id} lngLat={m.lngLat} anchor="bottom">
               <div className="group flex cursor-pointer flex-col items-center">
@@ -247,7 +294,9 @@ export default function LeafletMapDemo() {
               <LeafletPopup offset={[0, -38]} className="space-y-1 text-xs">
                 <div className="text-foreground font-bold">{m.name}</div>
                 <div className="text-muted-foreground">{m.detail}</div>
-                <div className="font-mono text-xs font-medium text-emerald-500">{m.status}</div>
+                <div className="font-mono text-xs font-medium text-emerald-500">
+                  {m.status}
+                </div>
               </LeafletPopup>
             </LeafletMarker>
           ))}
@@ -258,7 +307,11 @@ export default function LeafletMapDemo() {
         title="Tooltips"
         description="LeafletTooltip binds to the nearest ancestor layer — or floats standalone at a coordinate."
       >
-        <LeafletMap center={[-73.985, 40.748]} zoom={12.5} className="h-96 w-full rounded-lg border">
+        <LeafletMap
+          center={[-73.985, 40.748]}
+          zoom={12.5}
+          className="h-96 w-full rounded-lg border"
+        >
           <LeafletCircleMarker
             center={[-73.985, 40.748]}
             radius={10}
@@ -268,7 +321,9 @@ export default function LeafletMapDemo() {
             fillOpacity={0.9}
           >
             <LeafletTooltip direction="top" offset={[0, -12]}>
-              <span className="font-mono text-xs font-bold">Empire State — 1,250 ft</span>
+              <span className="font-mono text-xs font-bold">
+                Empire State — 1,250 ft
+              </span>
             </LeafletTooltip>
           </LeafletCircleMarker>
           <LeafletCircleMarker
@@ -280,7 +335,9 @@ export default function LeafletMapDemo() {
             fillOpacity={0.9}
           >
             <LeafletTooltip direction="top" offset={[0, -12]}>
-              <span className="font-mono text-xs font-bold">East Village Hub</span>
+              <span className="font-mono text-xs font-bold">
+                East Village Hub
+              </span>
             </LeafletTooltip>
           </LeafletCircleMarker>
         </LeafletMap>
@@ -290,9 +347,25 @@ export default function LeafletMapDemo() {
         title="Route Layer"
         description="LeafletPolyline draws a cased route line; waypoint markers pin the endpoints."
       >
-        <LeafletMap variant="streets" center={[-73.985, 40.745]} zoom={13} className="h-96 w-full rounded-lg border">
-          <LeafletPolyline lngLatPath={routePath} color="#0f172a" weight={7} opacity={0.35} />
-          <LeafletPolyline lngLatPath={routePath} color="#3b82f6" weight={4} opacity={1} dashArray="1 0" />
+        <LeafletMap
+          variant="streets"
+          center={[-73.985, 40.745]}
+          zoom={13}
+          className="h-96 w-full rounded-lg border"
+        >
+          <LeafletPolyline
+            lngLatPath={routePath}
+            color="#0f172a"
+            weight={7}
+            opacity={0.35}
+          />
+          <LeafletPolyline
+            lngLatPath={routePath}
+            color="#3b82f6"
+            weight={4}
+            opacity={1}
+            dashArray="1 0"
+          />
           {routeWaypoints.map((w) => (
             <LeafletMarker key={w.name} lngLat={w.lngLat} anchor="bottom">
               <div className="flex flex-col items-center">
@@ -364,7 +437,12 @@ export default function LeafletMapDemo() {
         title="Custom Tile Layer"
         description="LeafletTileLayer stacks extra raster layers; tileUrl on LeafletMap swaps the basemap outright."
       >
-        <LeafletMap variant="satellite" center={[-122.478, 37.819]} zoom={13} className="h-96 w-full rounded-lg border">
+        <LeafletMap
+          variant="satellite"
+          center={[-122.478, 37.819]}
+          zoom={13}
+          className="h-96 w-full rounded-lg border"
+        >
           <LeafletTileLayer
             url="https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}"
             opacity={0.9}
@@ -399,7 +477,12 @@ export default function LeafletMapDemo() {
         title="Polygon Boundary"
         description="LeafletPolygon renders cadastral-style boundaries; dashed rings read as restricted airspace."
       >
-        <LeafletMap variant="navigation-day" center={[4.4, 51.9]} zoom={11} className="h-96 w-full rounded-lg border">
+        <LeafletMap
+          variant="navigation-day"
+          center={[4.4, 51.9]}
+          zoom={11}
+          className="h-96 w-full rounded-lg border"
+        >
           <LeafletPolygon
             lngLatPath={[
               [4.28, 51.82],
@@ -423,5 +506,5 @@ export default function LeafletMapDemo() {
         </LeafletMap>
       </Story>
     </>
-  )
+  );
 }

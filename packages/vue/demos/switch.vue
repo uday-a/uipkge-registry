@@ -1,20 +1,28 @@
 <script setup lang="ts">
 // Astro's plain Vue has no Nuxt auto-import; pull reactivity APIs explicitly.
-import { ref } from 'vue'
-import { Check, X } from 'lucide-vue-next'
+import { ref } from "vue";
+import { Check, X } from "lucide-vue-next";
 
-const enabled = ref(true)
+const enabled = ref(true);
 </script>
 
 <template>
-  <Story title="Default" description="Two-way bound boolean. Click toggles the state.">
+  <Story
+    title="Default"
+    description="Two-way bound boolean. Click toggles the state."
+  >
     <div class="flex items-center gap-2">
       <Switch id="airplane" v-model="enabled" />
-      <Label for="airplane">Airplane mode {{ enabled ? '(on)' : '(off)' }}</Label>
+      <Label for="airplane"
+        >Airplane mode {{ enabled ? "(on)" : "(off)" }}</Label
+      >
     </div>
   </Story>
 
-  <Story title="States" description="On / off / disabled / disabled-on combinations.">
+  <Story
+    title="States"
+    description="On / off / disabled / disabled-on combinations."
+  >
     <div class="space-y-3">
       <div class="flex items-center gap-2">
         <Switch id="s1" :model-value="true" />
@@ -35,16 +43,40 @@ const enabled = ref(true)
     </div>
   </Story>
 
-  <Story title="With text" description="Checked and unchecked text labels inside the track.">
+  <Story
+    title="With text"
+    description="Checked and unchecked text labels inside the track."
+  >
     <div class="flex flex-wrap items-center gap-4">
-      <Switch checked-children="ON" un-checked-children="OFF" :model-value="true" />
-      <Switch checked-children="ON" un-checked-children="OFF" :model-value="false" />
-      <Switch checked-children="Yes" un-checked-children="No" size="lg" :model-value="true" />
-      <Switch checked-children="Yes" un-checked-children="No" size="lg" :model-value="false" />
+      <Switch
+        checked-children="ON"
+        un-checked-children="OFF"
+        :model-value="true"
+      />
+      <Switch
+        checked-children="ON"
+        un-checked-children="OFF"
+        :model-value="false"
+      />
+      <Switch
+        checked-children="Yes"
+        un-checked-children="No"
+        size="lg"
+        :model-value="true"
+      />
+      <Switch
+        checked-children="Yes"
+        un-checked-children="No"
+        size="lg"
+        :model-value="false"
+      />
     </div>
   </Story>
 
-  <Story title="With icons" description="Slots for checked and unchecked children support icons.">
+  <Story
+    title="With icons"
+    description="Slots for checked and unchecked children support icons."
+  >
     <div class="flex flex-wrap items-center gap-4">
       <Switch :model-value="true">
         <template #checked-children>
@@ -73,12 +105,21 @@ const enabled = ref(true)
     </div>
   </Story>
 
-  <Story title="Loading" description="Loading state shows a spinner and disables interaction.">
+  <Story
+    title="Loading"
+    description="Loading state shows a spinner and disables interaction."
+  >
     <div class="flex flex-wrap items-center gap-4">
       <Switch loading :model-value="true" />
       <Switch loading :model-value="false" />
       <Switch loading size="lg" :model-value="true" />
-      <Switch loading size="lg" checked-children="ON" un-checked-children="OFF" :model-value="true" />
+      <Switch
+        loading
+        size="lg"
+        checked-children="ON"
+        un-checked-children="OFF"
+        :model-value="true"
+      />
     </div>
   </Story>
 
@@ -90,14 +131,32 @@ const enabled = ref(true)
         <Switch size="lg" :model-value="true" />
       </div>
       <div class="flex flex-wrap items-center gap-4">
-        <Switch size="sm" checked-children="1" un-checked-children="0" :model-value="true" />
-        <Switch size="default" checked-children="ON" un-checked-children="OFF" :model-value="true" />
-        <Switch size="lg" checked-children="ON" un-checked-children="OFF" :model-value="true" />
+        <Switch
+          size="sm"
+          checked-children="1"
+          un-checked-children="0"
+          :model-value="true"
+        />
+        <Switch
+          size="default"
+          checked-children="ON"
+          un-checked-children="OFF"
+          :model-value="true"
+        />
+        <Switch
+          size="lg"
+          checked-children="ON"
+          un-checked-children="OFF"
+          :model-value="true"
+        />
       </div>
     </div>
   </Story>
 
-  <Story title="Colors" description="Custom track colors beyond the default primary.">
+  <Story
+    title="Colors"
+    description="Custom track colors beyond the default primary."
+  >
     <div class="flex flex-wrap items-center gap-4">
       <Switch color="success" :model-value="true" />
       <Switch color="warning" :model-value="true" />

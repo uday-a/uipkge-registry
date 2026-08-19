@@ -1,16 +1,25 @@
-import { useRef, useState } from 'react'
-import Story from '../../components/story/Story'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@react-registry/card'
-import { Button } from '@react-registry/button'
-import { SignaturePad, type SignaturePadRef } from '@react-registry/signature-pad'
-import { Check, Download, Eraser, PenLine } from 'lucide-react'
+import { useRef, useState } from "react";
+import Story from "../../components/story/Story";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@react-registry/card";
+import { Button } from "@react-registry/button";
+import {
+  SignaturePad,
+  type SignaturePadRef,
+} from "@react-registry/signature-pad";
+import { Check, Download, Eraser, PenLine } from "lucide-react";
 
 export default function SignaturePadDemo() {
-  const [signature, setSignature] = useState<string | null>(null)
-  const padRef = useRef<SignaturePadRef | null>(null)
-  const [penColor, setPenColor] = useState('#1d4ed8')
-  const [penThickness, setPenThickness] = useState(3)
-  const [bgColor, setBgColor] = useState('#ffffff')
+  const [signature, setSignature] = useState<string | null>(null);
+  const padRef = useRef<SignaturePadRef | null>(null);
+  const [penColor, setPenColor] = useState("#1d4ed8");
+  const [penThickness, setPenThickness] = useState(3);
+  const [bgColor, setBgColor] = useState("#ffffff");
 
   return (
     <>
@@ -19,8 +28,14 @@ export default function SignaturePadDemo() {
         description="Standard signature capture with a built-in clear button and live point count."
       >
         <div className="max-w-md space-y-2">
-          <SignaturePad modelValue={signature} onModelChange={setSignature} className="w-full" />
-          <p className="text-muted-foreground text-xs">{signature ? 'Signature captured' : 'No signature yet'}</p>
+          <SignaturePad
+            modelValue={signature}
+            onModelChange={setSignature}
+            className="w-full"
+          />
+          <p className="text-muted-foreground text-xs">
+            {signature ? "Signature captured" : "No signature yet"}
+          </p>
         </div>
       </Story>
 
@@ -37,7 +52,9 @@ export default function SignaturePadDemo() {
             backgroundColor="#f8fafc"
             className="w-full"
           />
-          <p className="text-muted-foreground text-xs">Blue ink, thickness 3, light slate background.</p>
+          <p className="text-muted-foreground text-xs">
+            Blue ink, thickness 3, light slate background.
+          </p>
         </div>
       </Story>
 
@@ -75,7 +92,9 @@ export default function SignaturePadDemo() {
                 max={6}
                 className="w-28"
               />
-              <span className="text-muted-foreground tabular-nums">{penThickness}</span>
+              <span className="text-muted-foreground tabular-nums">
+                {penThickness}
+              </span>
             </label>
           </div>
           <SignaturePad
@@ -107,7 +126,11 @@ export default function SignaturePadDemo() {
             className="w-full"
           />
           <div className="flex flex-wrap gap-2">
-            <Button size="sm" variant="outline" onClick={() => padRef.current?.clear()}>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => padRef.current?.clear()}
+            >
               <Eraser className="size-4" />
               Clear
             </Button>
@@ -117,7 +140,8 @@ export default function SignaturePadDemo() {
             </Button>
           </div>
           <p className="text-muted-foreground text-xs">
-            Empty: {padRef.current?.isEmpty ? 'yes' : 'no'} · Points: {padRef.current?.pointCount ?? 0}
+            Empty: {padRef.current?.isEmpty ? "yes" : "no"} · Points:{" "}
+            {padRef.current?.pointCount ?? 0}
           </p>
         </div>
       </Story>
@@ -127,8 +151,18 @@ export default function SignaturePadDemo() {
         description="Disabled blocks all interaction; readonly shows existing ink but prevents edits."
       >
         <div className="max-w-md space-y-3">
-          <SignaturePad modelValue={signature} onModelChange={setSignature} disabled className="w-full" />
-          <SignaturePad modelValue={signature} onModelChange={setSignature} readonly className="w-full" />
+          <SignaturePad
+            modelValue={signature}
+            onModelChange={setSignature}
+            disabled
+            className="w-full"
+          />
+          <SignaturePad
+            modelValue={signature}
+            onModelChange={setSignature}
+            readonly
+            className="w-full"
+          />
         </div>
       </Story>
 
@@ -139,12 +173,16 @@ export default function SignaturePadDemo() {
         <Card className="max-w-md">
           <CardHeader>
             <CardTitle>Sign your agreement</CardTitle>
-            <CardDescription>By signing below, you accept the terms of service and privacy policy.</CardDescription>
+            <CardDescription>
+              By signing below, you accept the terms of service and privacy
+              policy.
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-muted-foreground text-sm leading-relaxed">
-              This agreement is effective upon signing. Your signature below confirms that you have read and understood
-              all terms outlined in the contract.
+              This agreement is effective upon signing. Your signature below
+              confirms that you have read and understood all terms outlined in
+              the contract.
             </p>
             <SignaturePad
               modelValue={signature}
@@ -153,7 +191,12 @@ export default function SignaturePadDemo() {
               className="w-full"
               actions={({ clear, empty }) => (
                 <div className="flex items-center justify-between pt-2">
-                  <Button size="sm" variant="ghost" disabled={empty} onClick={clear}>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    disabled={empty}
+                    onClick={clear}
+                  >
                     <PenLine className="size-4" />
                     Reset
                   </Button>
@@ -168,5 +211,5 @@ export default function SignaturePadDemo() {
         </Card>
       </Story>
     </>
-  )
+  );
 }

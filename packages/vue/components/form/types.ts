@@ -1,1 +1,1 @@
-export type FormStatus = 'error' | 'warning' | 'success' | null | undefined
+export type FormStatus = "error" | "warning" | "success" | null | undefined;

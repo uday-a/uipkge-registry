@@ -1,9 +1,15 @@
 <script setup lang="ts">
-import { Video } from '@/components/ui/video'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Video } from "@/components/ui/video";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
-const sampleMp4 = '/media/flower.mp4'
-const samplePoster = '/media/flower.jpg'
+const sampleMp4 = "/media/flower.mp4";
+const samplePoster = "/media/flower.jpg";
 </script>
 
 <template>
@@ -18,14 +24,26 @@ const samplePoster = '/media/flower.jpg'
     title="Autoplay (muted)"
     description="Autoplay starts muted to satisfy browser policies — ideal for background reels and silent promos."
   >
-    <Video :src="sampleMp4" :poster="samplePoster" :autoplay="true" :muted="true" :loop="true" class="max-w-2xl" />
+    <Video
+      :src="sampleMp4"
+      :poster="samplePoster"
+      :autoplay="true"
+      :muted="true"
+      :loop="true"
+      class="max-w-2xl"
+    />
   </Story>
 
   <Story
     title="Native controls"
     description="Drop in the browser's built-in controls when you don't need a branded overlay."
   >
-    <Video :src="sampleMp4" :poster="samplePoster" :native-controls="true" class="max-w-2xl" />
+    <Video
+      :src="sampleMp4"
+      :poster="samplePoster"
+      :native-controls="true"
+      class="max-w-2xl"
+    />
   </Story>
 
   <Story
@@ -43,7 +61,12 @@ const samplePoster = '/media/flower.jpg'
       </div>
       <div class="space-y-1.5">
         <p class="text-muted-foreground text-xs">9/16 — portrait</p>
-        <Video :src="sampleMp4" :poster="samplePoster" aspect-ratio="9/16" class="max-w-xs" />
+        <Video
+          :src="sampleMp4"
+          :poster="samplePoster"
+          aspect-ratio="9/16"
+          class="max-w-xs"
+        />
       </div>
       <div class="space-y-1.5">
         <p class="text-muted-foreground text-xs">16/9 — widescreen</p>
@@ -52,7 +75,10 @@ const samplePoster = '/media/flower.jpg'
     </div>
   </Story>
 
-  <Story title="Without poster" description="No poster image — the player area is black until playback starts.">
+  <Story
+    title="Without poster"
+    description="No poster image — the player area is black until playback starts."
+  >
     <Video :src="sampleMp4" class="max-w-2xl" />
   </Story>
 
@@ -60,7 +86,12 @@ const samplePoster = '/media/flower.jpg'
     title="Custom playback rate"
     description="Set an initial playback rate — 1.5× for tutorials, 0.5× for slow-motion analysis."
   >
-    <Video :src="sampleMp4" :poster="samplePoster" :playback-rate="1.5" class="max-w-2xl" />
+    <Video
+      :src="sampleMp4"
+      :poster="samplePoster"
+      :playback-rate="1.5"
+      class="max-w-2xl"
+    />
   </Story>
 
   <Story

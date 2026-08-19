@@ -1,1 +1,5 @@
-export { AlluvialChart, type AlluvialChartProps, type AlluvialLink } from './AlluvialChart'
+export {
+  AlluvialChart,
+  type AlluvialChartProps,
+  type AlluvialLink,
+} from "./AlluvialChart";

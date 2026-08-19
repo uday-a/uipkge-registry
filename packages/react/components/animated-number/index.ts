@@ -1,1 +1,1 @@
-export { AnimatedNumber, type AnimatedNumberProps } from './AnimatedNumber'
+export { AnimatedNumber, type AnimatedNumberProps } from "./AnimatedNumber";

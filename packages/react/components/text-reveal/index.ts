@@ -1,1 +1,1 @@
-export { TextReveal, type TextRevealProps } from './TextReveal'
+export { TextReveal, type TextRevealProps } from "./TextReveal";

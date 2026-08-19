@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { Chip, ChipGroup } from '@/components/ui/chip'
-import { Hash } from 'lucide-vue-next'
+import { ref } from "vue";
+import { Chip, ChipGroup } from "@/components/ui/chip";
+import { Hash } from "lucide-vue-next";
 
-const tags = ref(['design', 'engineering', 'product', 'marketing'])
+const tags = ref(["design", "engineering", "product", "marketing"]);
 
 function removeTag(tag: string) {
-  tags.value = tags.value.filter((t) => t !== tag)
+  tags.value = tags.value.filter((t) => t !== tag);
 }
 </script>
 
@@ -26,7 +26,10 @@ function removeTag(tag: string) {
     </div>
   </Story>
 
-  <Story title="Sizes" description="Three sizes — sm, default, lg — pair naturally with surrounding text scale.">
+  <Story
+    title="Sizes"
+    description="Three sizes — sm, default, lg — pair naturally with surrounding text scale."
+  >
     <div class="flex flex-wrap items-center gap-2">
       <Chip size="sm">Small</Chip>
       <Chip>Default</Chip>
@@ -62,7 +65,15 @@ function removeTag(tag: string) {
   >
     <div class="space-y-3">
       <ChipGroup>
-        <Chip v-for="tag in tags" :key="tag" variant="elevated" closable @close="removeTag(tag)"> #{{ tag }} </Chip>
+        <Chip
+          v-for="tag in tags"
+          :key="tag"
+          variant="elevated"
+          closable
+          @close="removeTag(tag)"
+        >
+          #{{ tag }}
+        </Chip>
       </ChipGroup>
       <button
         v-if="tags.length === 0"

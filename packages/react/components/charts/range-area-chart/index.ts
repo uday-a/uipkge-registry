@@ -1,1 +1,1 @@
-export { RangeAreaChart, type RangeAreaChartProps } from './RangeAreaChart'
+export { RangeAreaChart, type RangeAreaChartProps } from "./RangeAreaChart";

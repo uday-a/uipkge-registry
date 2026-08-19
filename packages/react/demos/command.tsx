@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
-import Story from '../../components/story/Story'
-import { Button } from '@react-registry/button'
+import { useState, useEffect } from "react";
+import Story from "../../components/story/Story";
+import { Button } from "@react-registry/button";
 import {
   Command,
   CommandDialog,
@@ -11,32 +11,43 @@ import {
   CommandList,
   CommandSeparator,
   CommandShortcut,
-} from '@react-registry/command'
-import { Calculator, Calendar, CreditCard, Mail, Settings, Smile, User } from 'lucide-react'
+} from "@react-registry/command";
+import {
+  Calculator,
+  Calendar,
+  CreditCard,
+  Mail,
+  Settings,
+  Smile,
+  User,
+} from "lucide-react";
 
 export default function CommandDemo() {
-  const [dialogOpen, setDialogOpen] = useState(false)
-  const [loading, setLoading] = useState(true)
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   function toggleLoading() {
-    setLoading((v) => !v)
+    setLoading((v) => !v);
   }
 
   // Cmd-K binding for the dialog story.
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault()
-        setDialogOpen((v) => !v)
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setDialogOpen((v) => !v);
       }
-    }
-    document.addEventListener('keydown', handler)
-    return () => document.removeEventListener('keydown', handler)
-  }, [])
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, []);
 
   return (
     <>
-      <Story title="Default" description="Searchable command palette with grouped items and an empty state.">
+      <Story
+        title="Default"
+        description="Searchable command palette with grouped items and an empty state."
+      >
         <Command className="max-w-md rounded-lg border shadow-sm">
           <CommandInput placeholder="Type a command or search…" />
           <CommandList>
@@ -59,7 +70,10 @@ export default function CommandDemo() {
         </Command>
       </Story>
 
-      <Story title="With shortcuts" description="CommandShortcut renders a right-aligned keyboard hint on each item.">
+      <Story
+        title="With shortcuts"
+        description="CommandShortcut renders a right-aligned keyboard hint on each item."
+      >
         <Command className="max-w-md rounded-lg border shadow-sm">
           <CommandInput placeholder="Search actions…" />
           <CommandList>
@@ -136,16 +150,23 @@ export default function CommandDemo() {
         <div className="flex items-center gap-2">
           <Button variant="outline" onClick={() => setDialogOpen(true)}>
             Open command menu
-            <kbd className="bg-muted text-muted-foreground ml-2 rounded px-1.5 py-0.5 text-xs">⌘K</kbd>
+            <kbd className="bg-muted text-muted-foreground ml-2 rounded px-1.5 py-0.5 text-xs">
+              ⌘K
+            </kbd>
           </Button>
-          <span className="text-muted-foreground text-sm">open = {String(dialogOpen)}</span>
+          <span className="text-muted-foreground text-sm">
+            open = {String(dialogOpen)}
+          </span>
         </div>
         <CommandDialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <CommandInput placeholder="Type a command or search…" />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup heading="Suggestions">
-              <CommandItem value="calendar" onSelect={() => setDialogOpen(false)}>
+              <CommandItem
+                value="calendar"
+                onSelect={() => setDialogOpen(false)}
+              >
                 <Calendar />
                 Calendar
               </CommandItem>
@@ -153,19 +174,28 @@ export default function CommandDemo() {
                 <Smile />
                 Search emoji
               </CommandItem>
-              <CommandItem value="calculator" onSelect={() => setDialogOpen(false)}>
+              <CommandItem
+                value="calculator"
+                onSelect={() => setDialogOpen(false)}
+              >
                 <Calculator />
                 Calculator
               </CommandItem>
             </CommandGroup>
             <CommandSeparator />
             <CommandGroup heading="Settings">
-              <CommandItem value="profile" onSelect={() => setDialogOpen(false)}>
+              <CommandItem
+                value="profile"
+                onSelect={() => setDialogOpen(false)}
+              >
                 <User />
                 Profile
                 <CommandShortcut>⌘P</CommandShortcut>
               </CommandItem>
-              <CommandItem value="settings" onSelect={() => setDialogOpen(false)}>
+              <CommandItem
+                value="settings"
+                onSelect={() => setDialogOpen(false)}
+              >
                 <Settings />
                 Settings
                 <CommandShortcut>⌘S</CommandShortcut>
@@ -181,7 +211,7 @@ export default function CommandDemo() {
       >
         <div className="max-w-md space-y-3">
           <Button variant="outline" size="sm" onClick={toggleLoading}>
-            Toggle: {loading ? 'Loading' : 'Empty'}
+            Toggle: {loading ? "Loading" : "Empty"}
           </Button>
           <Command className="rounded-lg border shadow-sm">
             <CommandInput placeholder="Search…" />
@@ -200,5 +230,5 @@ export default function CommandDemo() {
         </div>
       </Story>
     </>
-  )
+  );
 }

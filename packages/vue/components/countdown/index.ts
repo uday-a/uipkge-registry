@@ -1,1 +1,1 @@
-export { default as Countdown } from './Countdown.vue'
+export { default as Countdown } from "./Countdown.vue";

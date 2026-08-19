@@ -5,4 +5,4 @@ export {
   PopoverContent,
   type PopoverProps,
   type PopoverCloseBehavior,
-} from './popover'
+} from "./popover";

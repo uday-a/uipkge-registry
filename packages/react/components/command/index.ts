@@ -8,4 +8,4 @@ export {
   CommandItem,
   CommandShortcut,
   CommandSeparator,
-} from './command'
+} from "./command";

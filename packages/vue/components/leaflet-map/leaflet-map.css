@@ -62,7 +62,7 @@
 }
 /* `muted` variant — desaturate only the tile pane so overlaid data keeps its
  * colour. */
-[data-slot='leaflet-map'][data-muted='true'] .leaflet-tile-pane {
+[data-slot="leaflet-map"][data-muted="true"] .leaflet-tile-pane {
   filter: grayscale(55%) contrast(0.92);
 }
 
@@ -90,31 +90,31 @@
    * labels — force natural content width instead */
   width: max-content;
 }
-.uipkge-leaflet-anchor[data-anchor='center'] {
+.uipkge-leaflet-anchor[data-anchor="center"] {
   transform: translate(-50%, -50%);
 }
-.uipkge-leaflet-anchor[data-anchor='top'] {
+.uipkge-leaflet-anchor[data-anchor="top"] {
   transform: translate(-50%, 0);
 }
-.uipkge-leaflet-anchor[data-anchor='bottom'] {
+.uipkge-leaflet-anchor[data-anchor="bottom"] {
   transform: translate(-50%, -100%);
 }
-.uipkge-leaflet-anchor[data-anchor='left'] {
+.uipkge-leaflet-anchor[data-anchor="left"] {
   transform: translate(0, -50%);
 }
-.uipkge-leaflet-anchor[data-anchor='right'] {
+.uipkge-leaflet-anchor[data-anchor="right"] {
   transform: translate(-100%, -50%);
 }
-.uipkge-leaflet-anchor[data-anchor='top-left'] {
+.uipkge-leaflet-anchor[data-anchor="top-left"] {
   transform: translate(0, 0);
 }
-.uipkge-leaflet-anchor[data-anchor='top-right'] {
+.uipkge-leaflet-anchor[data-anchor="top-right"] {
   transform: translate(-100%, 0);
 }
-.uipkge-leaflet-anchor[data-anchor='bottom-left'] {
+.uipkge-leaflet-anchor[data-anchor="bottom-left"] {
   transform: translate(0, -100%);
 }
-.uipkge-leaflet-anchor[data-anchor='bottom-right'] {
+.uipkge-leaflet-anchor[data-anchor="bottom-right"] {
   transform: translate(-100%, -100%);
 }
 

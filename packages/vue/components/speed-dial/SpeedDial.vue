@@ -1,106 +1,118 @@
 <script setup lang="ts">
-import type { Component, HTMLAttributes } from 'vue'
-import { computed, ref } from 'vue'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { Fab } from '@/components/ui/fab'
-import { cn } from '@/lib/utils'
-import { Plus } from 'lucide-vue-next'
+import type { Component, HTMLAttributes } from "vue";
+import { computed, ref } from "vue";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Fab } from "@/components/ui/fab";
+import { cn } from "@/lib/utils";
+import { Plus } from "lucide-vue-next";
 
 export interface SpeedDialAction {
-  icon: Component
-  label: string
-  handler?: () => void
-  disabled?: boolean
-  class?: HTMLAttributes['class']
+  icon: Component;
+  label: string;
+  handler?: () => void;
+  disabled?: boolean;
+  class?: HTMLAttributes["class"];
 }
 
-type Direction = 'up' | 'down' | 'left' | 'right'
-type Trigger = 'click' | 'hover'
+type Direction = "up" | "down" | "left" | "right";
+type Trigger = "click" | "hover";
 
 interface Props {
-  actions: SpeedDialAction[]
+  actions: SpeedDialAction[];
   /** Main FAB icon. */
-  icon?: Component
+  icon?: Component;
   /** Accessible label for the main FAB. */
-  label?: string
-  direction?: Direction
-  trigger?: Trigger
+  label?: string;
+  direction?: Direction;
+  trigger?: Trigger;
   /** Close the dial after an action is triggered. */
-  closeOnAction?: boolean
-  variant?: 'default' | 'secondary' | 'destructive' | 'outline'
-  position?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left' | 'bottom-center' | 'inline'
-  absolute?: boolean
-  disabled?: boolean
-  class?: HTMLAttributes['class']
+  closeOnAction?: boolean;
+  variant?: "default" | "secondary" | "destructive" | "outline";
+  position?:
+    | "bottom-right"
+    | "bottom-left"
+    | "top-right"
+    | "top-left"
+    | "bottom-center"
+    | "inline";
+  absolute?: boolean;
+  disabled?: boolean;
+  class?: HTMLAttributes["class"];
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  direction: 'up',
-  trigger: 'click',
+  direction: "up",
+  trigger: "click",
   closeOnAction: true,
-  variant: 'default',
-  position: 'bottom-right',
+  variant: "default",
+  position: "bottom-right",
   absolute: false,
-})
+});
 
-const open = ref(false)
-let hoverTimer: ReturnType<typeof setTimeout> | null = null
+const open = ref(false);
+let hoverTimer: ReturnType<typeof setTimeout> | null = null;
 
 function onTriggerEnter() {
-  if (props.disabled || props.trigger !== 'hover') return
-  if (hoverTimer) clearTimeout(hoverTimer)
-  open.value = true
+  if (props.disabled || props.trigger !== "hover") return;
+  if (hoverTimer) clearTimeout(hoverTimer);
+  open.value = true;
 }
 
 function onTriggerLeave() {
-  if (props.trigger !== 'hover') return
-  if (hoverTimer) clearTimeout(hoverTimer)
-  hoverTimer = setTimeout(() => (open.value = false), 150)
+  if (props.trigger !== "hover") return;
+  if (hoverTimer) clearTimeout(hoverTimer);
+  hoverTimer = setTimeout(() => (open.value = false), 150);
 }
 
 function onContentEnter() {
-  if (props.trigger !== 'hover') return
-  if (hoverTimer) clearTimeout(hoverTimer)
+  if (props.trigger !== "hover") return;
+  if (hoverTimer) clearTimeout(hoverTimer);
 }
 
 function onContentLeave() {
-  if (props.trigger !== 'hover') return
-  if (hoverTimer) clearTimeout(hoverTimer)
-  hoverTimer = setTimeout(() => (open.value = false), 150)
+  if (props.trigger !== "hover") return;
+  if (hoverTimer) clearTimeout(hoverTimer);
+  hoverTimer = setTimeout(() => (open.value = false), 150);
 }
 
 function onOpenChange(next: boolean) {
   // Trigger is a wrapper div (as-child); Fab disabled alone does not block Popover.
   if (props.disabled) {
-    open.value = false
-    return
+    open.value = false;
+    return;
   }
-  open.value = next
+  open.value = next;
 }
 
 function runAction(action: SpeedDialAction) {
-  if (action.disabled) return
-  action.handler?.()
-  if (props.closeOnAction) open.value = false
+  if (action.disabled) return;
+  action.handler?.();
+  if (props.closeOnAction) open.value = false;
 }
 
 const side = computed(() => {
   switch (props.direction) {
-    case 'up':
-      return 'top'
-    case 'down':
-      return 'bottom'
-    case 'left':
-      return 'left'
-    case 'right':
-      return 'right'
+    case "up":
+      return "top";
+    case "down":
+      return "bottom";
+    case "left":
+      return "left";
+    case "right":
+      return "right";
   }
-})
+});
 
 const listClass = computed(() => {
-  const base = 'flex items-center gap-3'
-  return props.direction === 'up' || props.direction === 'down' ? `${base} flex-col` : `${base} flex-row`
-})
+  const base = "flex items-center gap-3";
+  return props.direction === "up" || props.direction === "down"
+    ? `${base} flex-col`
+    : `${base} flex-row`;
+});
 </script>
 
 <template>
@@ -134,7 +146,12 @@ const listClass = computed(() => {
       :side="side"
       align="center"
       :side-offset="12"
-      :class="cn('w-auto border-0 bg-transparent p-0 shadow-none', trigger === 'hover' && 'pointer-events-auto')"
+      :class="
+        cn(
+          'w-auto border-0 bg-transparent p-0 shadow-none',
+          trigger === 'hover' && 'pointer-events-auto',
+        )
+      "
       @mouseenter="onContentEnter"
       @mouseleave="onContentLeave"
     >

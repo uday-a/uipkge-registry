@@ -1,39 +1,42 @@
-import * as React from 'react'
-import { Slot } from '@radix-ui/react-slot'
-import { cn } from '@/lib/utils'
-import { gradientTextPresets, type GradientPreset } from './gradient-text.variants'
+import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
+import { cn } from "@/lib/utils";
+import {
+  gradientTextPresets,
+  type GradientPreset,
+} from "./gradient-text.variants";
 
 type Direction =
-  | 'to right'
-  | 'to left'
-  | 'to top'
-  | 'to bottom'
-  | 'to top right'
-  | 'to top left'
-  | 'to bottom right'
-  | 'to bottom left'
+  | "to right"
+  | "to left"
+  | "to top"
+  | "to bottom"
+  | "to top right"
+  | "to top left"
+  | "to bottom right"
+  | "to bottom left";
 
 export interface GradientTextProps extends React.HTMLAttributes<HTMLElement> {
   /** Rendered element / component. */
-  as?: React.ElementType
+  as?: React.ElementType;
   /** Render the child element as the gradient text (merging props/styles)
    *  instead of emitting the `as` tag — the React equivalent of reka-ui's
    *  as-child. */
-  asChild?: boolean
+  asChild?: boolean;
   /** Preset gradient name. Overrides from/to when set. */
-  preset?: GradientPreset
+  preset?: GradientPreset;
   /** Start color of a custom two-stop gradient. */
-  from?: string
+  from?: string;
   /** End color of a custom two-stop gradient. */
-  to?: string
+  to?: string;
   /** Gradient direction. */
-  direction?: Direction
+  direction?: Direction;
   /** Fully custom CSS gradient (e.g. 'linear-gradient(45deg, #f00, #00f, #0f0)'). Overrides preset/from/to. */
-  gradient?: string
+  gradient?: string;
   /** Animate the gradient (subtle background-position shift). */
-  animated?: boolean
+  animated?: boolean;
   /** Animation duration in seconds. Default 4. */
-  animationDuration?: number
+  animationDuration?: number;
 }
 
 /* ------------------------------------------------------------------ */
@@ -55,22 +58,22 @@ const gradientTextCss = `
     }
   }
 }
-`
+`;
 
 function GradientTextStyle() {
-  return <style dangerouslySetInnerHTML={{ __html: gradientTextCss }} />
+  return <style dangerouslySetInnerHTML={{ __html: gradientTextCss }} />;
 }
 
 const GradientText = React.forwardRef<HTMLElement, GradientTextProps>(
   (
     {
       className,
-      as: asProp = 'span',
+      as: asProp = "span",
       asChild = false,
       preset,
       from,
       to,
-      direction = 'to right',
+      direction = "to right",
       gradient,
       animated = false,
       animationDuration = 4,
@@ -80,30 +83,30 @@ const GradientText = React.forwardRef<HTMLElement, GradientTextProps>(
     },
     ref,
   ) => {
-    const Comp = (asChild ? Slot : asProp) as React.ElementType
+    const Comp = (asChild ? Slot : asProp) as React.ElementType;
 
     const gradientValue = React.useMemo(() => {
-      if (gradient) return gradient
-      if (preset) return gradientTextPresets[preset] ?? ''
+      if (gradient) return gradient;
+      if (preset) return gradientTextPresets[preset] ?? "";
       if (from && to) {
-        return `linear-gradient(${direction}, ${from}, ${to})`
+        return `linear-gradient(${direction}, ${from}, ${to})`;
       }
       // Default fallback: primary token gradient.
-      return 'linear-gradient(to right, var(--primary), var(--primary))'
-    }, [gradient, preset, from, to, direction])
+      return "linear-gradient(to right, var(--primary), var(--primary))";
+    }, [gradient, preset, from, to, direction]);
 
     const computedStyle = React.useMemo<React.CSSProperties>(
       () => ({
         backgroundImage: gradientValue,
-        backgroundClip: 'text',
-        WebkitBackgroundClip: 'text',
-        color: 'transparent',
-        WebkitTextFillColor: 'transparent',
-        backgroundSize: animated ? '200% 200%' : undefined,
+        backgroundClip: "text",
+        WebkitBackgroundClip: "text",
+        color: "transparent",
+        WebkitTextFillColor: "transparent",
+        backgroundSize: animated ? "200% 200%" : undefined,
         ...style,
       }),
       [gradientValue, animated, style],
-    )
+    );
 
     return (
       <>
@@ -112,10 +115,12 @@ const GradientText = React.forwardRef<HTMLElement, GradientTextProps>(
           data-uipkge=""
           data-slot="gradient-text"
           data-preset={preset ?? undefined}
-          data-animated={animated ? 'true' : undefined}
+          data-animated={animated ? "true" : undefined}
           className={cn(
-            'inline-block',
-            animated ? `motion-safe:animate-[gradient-text-shift_${animationDuration}s_ease_infinite]` : '',
+            "inline-block",
+            animated
+              ? `motion-safe:animate-[gradient-text-shift_${animationDuration}s_ease_infinite]`
+              : "",
             className,
           )}
           style={computedStyle}
@@ -125,9 +130,9 @@ const GradientText = React.forwardRef<HTMLElement, GradientTextProps>(
           {children}
         </Comp>
       </>
-    )
+    );
   },
-)
-GradientText.displayName = 'GradientText'
+);
+GradientText.displayName = "GradientText";
 
-export { GradientText }
+export { GradientText };

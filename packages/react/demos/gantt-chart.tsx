@@ -1,26 +1,56 @@
-import Story from '../../components/story/Story'
-import { GanttChart } from '@react-registry/charts'
+import Story from "../../components/story/Story";
+import { GanttChart } from "@react-registry/charts";
 
 const launch = [
-  { name: 'Design', start: '2026-09-01', end: '2026-09-18', progress: 1, group: 'Product' },
-  { name: 'API build', start: '2026-09-10', end: '2026-10-09', progress: 0.65, group: 'Eng' },
-  { name: 'Mobile app', start: '2026-09-22', end: '2026-10-23', progress: 0.3, group: 'Eng' },
-  { name: 'QA & launch', start: '2026-10-12', end: '2026-10-30', progress: 0.1, group: 'Product' },
-]
+  {
+    name: "Design",
+    start: "2026-09-01",
+    end: "2026-09-18",
+    progress: 1,
+    group: "Product",
+  },
+  {
+    name: "API build",
+    start: "2026-09-10",
+    end: "2026-10-09",
+    progress: 0.65,
+    group: "Eng",
+  },
+  {
+    name: "Mobile app",
+    start: "2026-09-22",
+    end: "2026-10-23",
+    progress: 0.3,
+    group: "Eng",
+  },
+  {
+    name: "QA & launch",
+    start: "2026-10-12",
+    end: "2026-10-30",
+    progress: 0.1,
+    group: "Product",
+  },
+];
 
 export default function GanttChartDemo() {
   return (
     <>
-      <Story title="Launch plan" description="Date ranges on a time axis; darker fill marks progress.">
+      <Story
+        title="Launch plan"
+        description="Date ranges on a time axis; darker fill marks progress."
+      >
         <GanttChart tasks={launch} height={300} />
       </Story>
 
-      <Story title="Milestones" description="Diamond markers pinned to tasks for gates and releases.">
+      <Story
+        title="Milestones"
+        description="Diamond markers pinned to tasks for gates and releases."
+      >
         <GanttChart
           tasks={launch}
           milestones={[
-            { task: 'API build', date: '2026-09-30', label: 'Beta' },
-            { task: 'QA & launch', date: '2026-10-30', label: 'GA' },
+            { task: "API build", date: "2026-09-30", label: "Beta" },
+            { task: "QA & launch", date: "2026-10-30", label: "GA" },
           ]}
           height={320}
         />
@@ -40,20 +70,38 @@ export default function GanttChartDemo() {
         <GanttChart
           tasks={[
             {
-              name: 'PVG–LAX extra rotation',
-              start: '2026-09-08',
-              end: '2026-12-20',
+              name: "PVG–LAX extra rotation",
+              start: "2026-09-08",
+              end: "2026-12-20",
               progress: 0.4,
-              group: 'Transpacific',
+              group: "Transpacific",
             },
-            { name: 'ICN–ORD upgrade', start: '2026-10-01', end: '2026-12-15', progress: 0.15, group: 'Transpacific' },
-            { name: 'DXB–SIN charter', start: '2026-09-15', end: '2026-11-30', progress: 0.55, group: 'Intra-Asia' },
+            {
+              name: "ICN–ORD upgrade",
+              start: "2026-10-01",
+              end: "2026-12-15",
+              progress: 0.15,
+              group: "Transpacific",
+            },
+            {
+              name: "DXB–SIN charter",
+              start: "2026-09-15",
+              end: "2026-11-30",
+              progress: 0.55,
+              group: "Intra-Asia",
+            },
           ]}
-          milestones={[{ task: 'PVG–LAX extra rotation', date: '2026-10-20', label: 'Rate gate' }]}
+          milestones={[
+            {
+              task: "PVG–LAX extra rotation",
+              date: "2026-10-20",
+              label: "Rate gate",
+            },
+          ]}
           today="2026-10-05"
           height={280}
         />
       </Story>
     </>
-  )
+  );
 }

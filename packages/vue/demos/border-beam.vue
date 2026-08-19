@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { BorderBeam } from '@/components/ui/border-beam'
-import { Progress } from '@/components/ui/progress'
-import { FileUp, Loader2 } from 'lucide-vue-next'
+import { BorderBeam } from "@/components/ui/border-beam";
+import { Progress } from "@/components/ui/progress";
+import { FileUp, Loader2 } from "lucide-vue-next";
 </script>
 
 <template>
@@ -12,7 +12,9 @@ import { FileUp, Loader2 } from 'lucide-vue-next'
     <div class="bg-card relative rounded-xl border p-6">
       <BorderBeam />
       <h3 class="text-sm font-medium">Deploy complete</h3>
-      <p class="text-muted-foreground mt-1 text-xs">uipkge.dev · production · 42s ago</p>
+      <p class="text-muted-foreground mt-1 text-xs">
+        uipkge.dev · production · 42s ago
+      </p>
     </div>
   </Story>
 
@@ -46,7 +48,9 @@ import { FileUp, Loader2 } from 'lucide-vue-next'
     <div class="bg-card relative rounded-xl border p-6">
       <BorderBeam :duration="12" />
       <h3 class="text-sm font-medium">System healthy</h3>
-      <p class="text-muted-foreground mt-1 text-xs">All services operational · 99.98% uptime</p>
+      <p class="text-muted-foreground mt-1 text-xs">
+        All services operational · 99.98% uptime
+      </p>
     </div>
   </Story>
 
@@ -57,7 +61,9 @@ import { FileUp, Loader2 } from 'lucide-vue-next'
     <div class="bg-card relative rounded-xl border p-6">
       <BorderBeam :duration="2" />
       <h3 class="text-sm font-medium">Live region</h3>
-      <p class="text-muted-foreground mt-1 text-xs">Streaming events in real time</p>
+      <p class="text-muted-foreground mt-1 text-xs">
+        Streaming events in real time
+      </p>
     </div>
   </Story>
 
@@ -86,7 +92,9 @@ import { FileUp, Loader2 } from 'lucide-vue-next'
     <div class="bg-card relative rounded-xl border p-6">
       <BorderBeam paused :delay="-3" />
       <h3 class="text-sm font-medium">Paused beam</h3>
-      <p class="text-muted-foreground mt-1 text-xs">Static half-track highlight</p>
+      <p class="text-muted-foreground mt-1 text-xs">
+        Static half-track highlight
+      </p>
     </div>
   </Story>
 
@@ -115,7 +123,10 @@ import { FileUp, Loader2 } from 'lucide-vue-next'
     <div class="bg-card relative rounded-xl border p-6">
       <BorderBeam :size="3" />
       <div class="flex items-center gap-3">
-        <Loader2 class="text-muted-foreground size-4 animate-spin" aria-hidden="true" />
+        <Loader2
+          class="text-muted-foreground size-4 animate-spin"
+          aria-hidden="true"
+        />
         <span class="text-sm">Generating response…</span>
       </div>
     </div>
@@ -142,9 +153,14 @@ import { FileUp, Loader2 } from 'lucide-vue-next'
     title="Pill"
     description="rounded-[inherit] means any parent shape works — here the beam wraps a fully-rounded pill badge."
   >
-    <div class="bg-card relative inline-flex items-center gap-2 rounded-full border px-5 py-2">
+    <div
+      class="bg-card relative inline-flex items-center gap-2 rounded-full border px-5 py-2"
+    >
       <BorderBeam :size="2" />
-      <span class="bg-success relative size-2 rounded-full" aria-hidden="true" />
+      <span
+        class="bg-success relative size-2 rounded-full"
+        aria-hidden="true"
+      />
       <span class="text-xs font-medium">All systems operational</span>
     </div>
   </Story>
@@ -155,18 +171,24 @@ import { FileUp, Loader2 } from 'lucide-vue-next'
   >
     <div class="grid gap-4 sm:grid-cols-3">
       <div class="bg-card rounded-xl border p-6">
-        <p class="text-muted-foreground text-xs tracking-wide uppercase">Sessions</p>
+        <p class="text-muted-foreground text-xs tracking-wide uppercase">
+          Sessions
+        </p>
         <p class="mt-2 text-2xl font-bold tabular-nums">18,204</p>
         <p class="text-muted-foreground mt-1 text-xs">+4.1% vs last week</p>
       </div>
       <div class="bg-card relative rounded-xl border p-6">
         <BorderBeam />
-        <p class="text-muted-foreground text-xs tracking-wide uppercase">Revenue</p>
+        <p class="text-muted-foreground text-xs tracking-wide uppercase">
+          Revenue
+        </p>
         <p class="mt-2 text-2xl font-bold tabular-nums">$48,910</p>
         <p class="text-success mt-1 text-xs font-medium">+12.6% vs last week</p>
       </div>
       <div class="bg-card rounded-xl border p-6">
-        <p class="text-muted-foreground text-xs tracking-wide uppercase">Churn</p>
+        <p class="text-muted-foreground text-xs tracking-wide uppercase">
+          Churn
+        </p>
         <p class="mt-2 text-2xl font-bold tabular-nums">1.8%</p>
         <p class="text-muted-foreground mt-1 text-xs">-0.3% vs last week</p>
       </div>

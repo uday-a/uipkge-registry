@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { Label } from '@/components/ui/label'
-import { MaskedInput } from '@/components/ui/masked-input'
-const phone = ref('')
-const date = ref('')
-const ssn = ref('')
-const card = ref('')
-const custom = ref('')
-const rawOnly = ref('')
-const otp = ref('')
+import { ref } from "vue";
+import { Label } from "@/components/ui/label";
+import { MaskedInput } from "@/components/ui/masked-input";
+const phone = ref("");
+const date = ref("");
+const ssn = ref("");
+const card = ref("");
+const custom = ref("");
+const rawOnly = ref("");
+const otp = ref("");
 </script>
 
 <template>
@@ -17,7 +17,7 @@ const otp = ref('')
       <Label>Phone Number</Label>
       <MaskedInput v-model="phone" mask="(###) ###-####" class="mt-1.5" />
       <p class="text-muted-foreground mt-1 text-xs">
-        Value: <code class="text-foreground">{{ phone || '—' }}</code>
+        Value: <code class="text-foreground">{{ phone || "—" }}</code>
       </p>
     </div>
   </Story>
@@ -25,9 +25,14 @@ const otp = ref('')
   <Story title="Date" description="Date format: ##/##/####">
     <div class="max-w-sm">
       <Label>Date of Birth</Label>
-      <MaskedInput v-model="date" mask="##/##/####" placeholder-char="0" class="mt-1.5" />
+      <MaskedInput
+        v-model="date"
+        mask="##/##/####"
+        placeholder-char="0"
+        class="mt-1.5"
+      />
       <p class="text-muted-foreground mt-1 text-xs">
-        Value: <code class="text-foreground">{{ date || '—' }}</code>
+        Value: <code class="text-foreground">{{ date || "—" }}</code>
       </p>
     </div>
   </Story>
@@ -37,7 +42,7 @@ const otp = ref('')
       <Label>SSN</Label>
       <MaskedInput v-model="ssn" mask="###-##-####" class="mt-1.5" />
       <p class="text-muted-foreground mt-1 text-xs">
-        Value: <code class="text-foreground">{{ ssn || '—' }}</code>
+        Value: <code class="text-foreground">{{ ssn || "—" }}</code>
       </p>
     </div>
   </Story>
@@ -47,7 +52,7 @@ const otp = ref('')
       <Label>Credit Card</Label>
       <MaskedInput v-model="card" mask="#### #### #### ####" class="mt-1.5" />
       <p class="text-muted-foreground mt-1 text-xs">
-        Value: <code class="text-foreground">{{ card || '—' }}</code>
+        Value: <code class="text-foreground">{{ card || "—" }}</code>
       </p>
     </div>
   </Story>
@@ -55,24 +60,40 @@ const otp = ref('')
   <Story title="Custom Pattern" description="License plate format: AAA-####">
     <div class="max-w-sm">
       <Label>License Plate</Label>
-      <MaskedInput v-model="custom" mask="AAA-####" replacement="A" class="mt-1.5" />
+      <MaskedInput
+        v-model="custom"
+        mask="AAA-####"
+        replacement="A"
+        class="mt-1.5"
+      />
       <p class="text-muted-foreground mt-1 text-xs">
-        Value: <code class="text-foreground">{{ custom || '—' }}</code>
+        Value: <code class="text-foreground">{{ custom || "—" }}</code>
       </p>
     </div>
   </Story>
 
-  <Story title="Without Mask Display" description="Only shows typed characters, no placeholder underscores.">
+  <Story
+    title="Without Mask Display"
+    description="Only shows typed characters, no placeholder underscores."
+  >
     <div class="max-w-sm">
       <Label>Phone (no mask display)</Label>
-      <MaskedInput v-model="rawOnly" mask="(###) ###-####" :show-mask="false" class="mt-1.5" />
+      <MaskedInput
+        v-model="rawOnly"
+        mask="(###) ###-####"
+        :show-mask="false"
+        class="mt-1.5"
+      />
       <p class="text-muted-foreground mt-1 text-xs">
-        Value: <code class="text-foreground">{{ rawOnly || '—' }}</code>
+        Value: <code class="text-foreground">{{ rawOnly || "—" }}</code>
       </p>
     </div>
   </Story>
 
-  <Story title="Completed Event" description="Emits 'complete' when the mask is fully filled.">
+  <Story
+    title="Completed Event"
+    description="Emits 'complete' when the mask is fully filled."
+  >
     <div class="max-w-sm">
       <Label>OTP Code</Label>
       <MaskedInput
@@ -83,14 +104,24 @@ const otp = ref('')
         @complete="(v) => alert('Completed: ' + v)"
         class="mt-1.5"
       />
-      <p class="text-muted-foreground mt-1 text-xs">Type 6 digits to trigger complete event</p>
+      <p class="text-muted-foreground mt-1 text-xs">
+        Type 6 digits to trigger complete event
+      </p>
     </div>
   </Story>
 
   <Story title="Disabled & Readonly" description="Non-interactive states.">
     <div class="max-w-sm space-y-2">
-      <MaskedInput mask="(###) ###-####" model-value="(555) 123-4567" disabled />
-      <MaskedInput mask="(###) ###-####" model-value="(555) 999-8888" readonly />
+      <MaskedInput
+        mask="(###) ###-####"
+        model-value="(555) 123-4567"
+        disabled
+      />
+      <MaskedInput
+        mask="(###) ###-####"
+        model-value="(555) 999-8888"
+        readonly
+      />
     </div>
   </Story>
 </template>

@@ -1,17 +1,23 @@
 <script setup lang="ts">
-import type { MenubarRadioItemEmits, MenubarRadioItemProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
-import { reactiveOmit } from '@vueuse/core'
-import { Circle } from 'lucide-vue-next'
-import { MenubarItemIndicator, MenubarRadioItem, useForwardPropsEmits } from 'reka-ui'
-import { cn } from '@/lib/utils'
+import type { MenubarRadioItemEmits, MenubarRadioItemProps } from "reka-ui";
+import type { HTMLAttributes } from "vue";
+import { reactiveOmit } from "@vueuse/core";
+import { Circle } from "lucide-vue-next";
+import {
+  MenubarItemIndicator,
+  MenubarRadioItem,
+  useForwardPropsEmits,
+} from "reka-ui";
+import { cn } from "@/lib/utils";
 
-const props = defineProps<MenubarRadioItemProps & { class?: HTMLAttributes['class'] }>()
-const emits = defineEmits<MenubarRadioItemEmits>()
+const props = defineProps<
+  MenubarRadioItemProps & { class?: HTMLAttributes["class"] }
+>();
+const emits = defineEmits<MenubarRadioItemEmits>();
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegatedProps = reactiveOmit(props, "class");
 
-const forwarded = useForwardPropsEmits(delegatedProps, emits)
+const forwarded = useForwardPropsEmits(delegatedProps, emits);
 </script>
 
 <template>
@@ -26,7 +32,9 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
       )
     "
   >
-    <span class="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
+    <span
+      class="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center"
+    >
       <MenubarItemIndicator>
         <slot name="indicator-icon">
           <Circle class="size-2 fill-current" aria-hidden="true" />

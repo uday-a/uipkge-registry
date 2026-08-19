@@ -1,1 +1,1 @@
-export { BeeswarmChart, type BeeswarmChartProps } from './BeeswarmChart'
+export { BeeswarmChart, type BeeswarmChartProps } from "./BeeswarmChart";

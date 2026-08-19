@@ -1,9 +1,16 @@
 <script setup lang="ts">
-import { Skeleton, SkeletonLoader, SkeletonText } from '@/components/ui/skeleton'
+import {
+  Skeleton,
+  SkeletonLoader,
+  SkeletonText,
+} from "@/components/ui/skeleton";
 </script>
 
 <template>
-  <Story title="Profile placeholder" description="Hand-composed skeleton row using the base Skeleton primitive.">
+  <Story
+    title="Profile placeholder"
+    description="Hand-composed skeleton row using the base Skeleton primitive."
+  >
     <div class="max-w-md space-y-4">
       <div class="flex items-center gap-3">
         <Skeleton class="size-10 rounded-full" />
@@ -16,7 +23,10 @@ import { Skeleton, SkeletonLoader, SkeletonText } from '@/components/ui/skeleton
     </div>
   </Story>
 
-  <Story title="Card placeholder" description="Stack of muted blocks for card-sized loading content.">
+  <Story
+    title="Card placeholder"
+    description="Stack of muted blocks for card-sized loading content."
+  >
     <div class="grid max-w-sm gap-3">
       <Skeleton class="h-3 w-1/3" />
       <Skeleton class="h-7 w-full" />
@@ -29,7 +39,12 @@ import { Skeleton, SkeletonLoader, SkeletonText } from '@/components/ui/skeleton
     title="SkeletonText paragraph"
     description="SkeletonText paints N lines with first/last line width tweaks for a natural paragraph shape."
   >
-    <SkeletonText :lines="4" first-line-width="100%" last-line-width="60%" class="max-w-md" />
+    <SkeletonText
+      :lines="4"
+      first-line-width="100%"
+      last-line-width="60%"
+      class="max-w-md"
+    />
   </Story>
 
   <Story
@@ -38,25 +53,41 @@ import { Skeleton, SkeletonLoader, SkeletonText } from '@/components/ui/skeleton
   >
     <div class="grid max-w-3xl gap-6 md:grid-cols-2">
       <div class="space-y-2">
-        <p class="text-muted-foreground text-xs font-medium tracking-wide uppercase">article</p>
+        <p
+          class="text-muted-foreground text-xs font-medium tracking-wide uppercase"
+        >
+          article
+        </p>
         <div class="rounded-lg border p-4">
           <SkeletonLoader variant="article" :rows="3" />
         </div>
       </div>
       <div class="space-y-2">
-        <p class="text-muted-foreground text-xs font-medium tracking-wide uppercase">card-avatar</p>
+        <p
+          class="text-muted-foreground text-xs font-medium tracking-wide uppercase"
+        >
+          card-avatar
+        </p>
         <div class="rounded-lg border p-4">
           <SkeletonLoader variant="card-avatar" :rows="2" />
         </div>
       </div>
       <div class="space-y-2">
-        <p class="text-muted-foreground text-xs font-medium tracking-wide uppercase">list-item-three-line</p>
+        <p
+          class="text-muted-foreground text-xs font-medium tracking-wide uppercase"
+        >
+          list-item-three-line
+        </p>
         <div class="rounded-lg border p-4">
           <SkeletonLoader variant="list-item-three-line" :rows="3" />
         </div>
       </div>
       <div class="space-y-2">
-        <p class="text-muted-foreground text-xs font-medium tracking-wide uppercase">table</p>
+        <p
+          class="text-muted-foreground text-xs font-medium tracking-wide uppercase"
+        >
+          table
+        </p>
         <div class="rounded-lg border p-4">
           <SkeletonLoader variant="table" :rows="4" />
         </div>

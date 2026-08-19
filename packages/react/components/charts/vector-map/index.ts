@@ -8,5 +8,5 @@ export {
   type MapPin,
   type FlowRoute,
   type RegionDataRecord,
-} from './VectorMap'
-export { default } from './VectorMap'
+} from "./VectorMap";
+export { default } from "./VectorMap";

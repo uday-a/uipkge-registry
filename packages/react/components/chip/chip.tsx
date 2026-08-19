@@ -1,15 +1,16 @@
-'use client'
+"use client";
 
-import * as React from 'react'
-import { X } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { chipVariants, type ChipVariants } from './chip.variants'
+import * as React from "react";
+import { X } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { chipVariants, type ChipVariants } from "./chip.variants";
 
-export interface ChipProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'onClose'>, ChipVariants {
-  closable?: boolean
-  onClose?: () => void
+export interface ChipProps
+  extends Omit<React.HTMLAttributes<HTMLSpanElement>, "onClose">, ChipVariants {
+  closable?: boolean;
+  onClose?: () => void;
 }
-const STYLE_ID = 'chip-motion-styles'
+const STYLE_ID = "chip-motion-styles";
 const STYLE_CONTENT = `
 @keyframes chip-enter {
   from { opacity: 0; transform: scale(0.88); }
@@ -31,34 +32,39 @@ const STYLE_CONTENT = `
     animation: none !important;
   }
 }
-`
+`;
 
 const Chip = React.forwardRef<HTMLSpanElement, ChipProps>(
-  ({ className, variant, size, wrap, closable, onClose, children, ...props }, ref) => {
-    const [leaving, setLeaving] = React.useState(false)
+  (
+    { className, variant, size, wrap, closable, onClose, children, ...props },
+    ref,
+  ) => {
+    const [leaving, setLeaving] = React.useState(false);
 
     React.useLayoutEffect(() => {
-      if (typeof document === 'undefined') return
-      let el = document.getElementById(STYLE_ID) as HTMLStyleElement | null
+      if (typeof document === "undefined") return;
+      let el = document.getElementById(STYLE_ID) as HTMLStyleElement | null;
       if (!el) {
-        el = document.createElement('style')
-        el.id = STYLE_ID
-        document.head.appendChild(el)
+        el = document.createElement("style");
+        el.id = STYLE_ID;
+        document.head.appendChild(el);
       }
-      if (el.textContent !== STYLE_CONTENT) el.textContent = STYLE_CONTENT
-    }, [])
+      if (el.textContent !== STYLE_CONTENT) el.textContent = STYLE_CONTENT;
+    }, []);
 
     function handleClose(e: React.MouseEvent) {
-      e.stopPropagation()
-      if (leaving) return
-      setLeaving(true)
-      const reduce = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      e.stopPropagation();
+      if (leaving) return;
+      setLeaving(true);
+      const reduce =
+        typeof window !== "undefined" &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       window.setTimeout(
         () => {
-          onClose?.()
+          onClose?.();
         },
         reduce ? 0 : 160,
-      )
+      );
     }
 
     return (
@@ -67,7 +73,12 @@ const Chip = React.forwardRef<HTMLSpanElement, ChipProps>(
         data-uipkge=""
         data-slot="chip"
         data-leaving={leaving || undefined}
-        className={cn(chipVariants({ variant, size, wrap }), 'chip-enter', leaving && 'chip-leave', className)}
+        className={cn(
+          chipVariants({ variant, size, wrap }),
+          "chip-enter",
+          leaving && "chip-leave",
+          className,
+        )}
         {...props}
       >
         {children}
@@ -82,30 +93,30 @@ const Chip = React.forwardRef<HTMLSpanElement, ChipProps>(
           </button>
         ) : null}
       </span>
-    )
+    );
   },
-)
-Chip.displayName = 'Chip'
+);
+Chip.displayName = "Chip";
 
 export interface ChipGroupRenderProps {
-  selected: string[]
-  multiple: boolean
-  filter: boolean
-  isSelected: (value: string) => boolean
-  toggle: (value: string) => void
+  selected: string[];
+  multiple: boolean;
+  filter: boolean;
+  isSelected: (value: string) => boolean;
+  toggle: (value: string) => void;
 }
 
 export interface ChipGroupProps {
-  className?: string
-  selected?: string[]
-  multiple?: boolean
-  filter?: boolean
-  column?: boolean
-  mandatory?: boolean
-  max?: number
-  disabled?: boolean
-  onSelectedChange?: (value: string[]) => void
-  children?: (props: ChipGroupRenderProps) => React.ReactNode
+  className?: string;
+  selected?: string[];
+  multiple?: boolean;
+  filter?: boolean;
+  column?: boolean;
+  mandatory?: boolean;
+  max?: number;
+  disabled?: boolean;
+  onSelectedChange?: (value: string[]) => void;
+  children?: (props: ChipGroupRenderProps) => React.ReactNode;
 }
 
 const ChipGroup = React.forwardRef<HTMLDivElement, ChipGroupProps>(
@@ -124,48 +135,48 @@ const ChipGroup = React.forwardRef<HTMLDivElement, ChipGroupProps>(
     },
     ref,
   ) => {
-    const isSelected = (value: string) => selected.includes(value)
+    const isSelected = (value: string) => selected.includes(value);
 
     const toggle = (value: string) => {
-      if (disabled) return
+      if (disabled) return;
 
-      let newSelected: string[]
+      let newSelected: string[];
 
       if (multiple) {
         if (isSelected(value)) {
-          newSelected = selected.filter((v) => v !== value)
+          newSelected = selected.filter((v) => v !== value);
         } else {
           if (max && selected.length >= max) {
-            newSelected = [...selected.slice(1), value]
+            newSelected = [...selected.slice(1), value];
           } else {
-            newSelected = [...selected, value]
+            newSelected = [...selected, value];
           }
         }
       } else {
         if (isSelected(value) && !mandatory) {
-          newSelected = []
+          newSelected = [];
         } else {
-          newSelected = [value]
+          newSelected = [value];
         }
       }
 
-      onSelectedChange?.(newSelected)
-    }
+      onSelectedChange?.(newSelected);
+    };
 
     return (
       <div
         ref={ref}
         role="group"
-        className={cn('flex flex-wrap gap-2', column && 'flex-col', className)}
+        className={cn("flex flex-wrap gap-2", column && "flex-col", className)}
         data-chip-group="true"
         data-multiple={multiple || undefined}
         data-filter={filter || undefined}
       >
         {children?.({ selected, multiple, filter, isSelected, toggle })}
       </div>
-    )
+    );
   },
-)
-ChipGroup.displayName = 'ChipGroup'
+);
+ChipGroup.displayName = "ChipGroup";
 
-export { Chip, ChipGroup }
+export { Chip, ChipGroup };

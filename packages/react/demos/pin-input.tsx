@@ -1,22 +1,32 @@
-import { useState } from 'react'
-import Story from '../../components/story/Story'
-import { Label } from '@react-registry/label'
-import { PinInput, PinInputGroup, PinInputSeparator, PinInputSlot } from '@react-registry/pin-input'
+import { useState } from "react";
+import Story from "../../components/story/Story";
+import { Label } from "@react-registry/label";
+import {
+  PinInput,
+  PinInputGroup,
+  PinInputSeparator,
+  PinInputSlot,
+} from "@react-registry/pin-input";
 
 export default function PinInputDemo() {
-  const [value, setValue] = useState('')
-  const [password, setPassword] = useState('')
-  const [small, setSmall] = useState('')
-  const [large, setLarge] = useState('')
-  const [medium, setMedium] = useState('')
-  const [grouped, setGrouped] = useState('')
-  const [statusSuccess, setStatusSuccess] = useState('1234')
-  const [shakeCode, setShakeCode] = useState('')
-  const [shakeStatus, setShakeStatus] = useState<'default' | 'error'>('default')
+  const [value, setValue] = useState("");
+  const [password, setPassword] = useState("");
+  const [small, setSmall] = useState("");
+  const [large, setLarge] = useState("");
+  const [medium, setMedium] = useState("");
+  const [grouped, setGrouped] = useState("");
+  const [statusSuccess, setStatusSuccess] = useState("1234");
+  const [shakeCode, setShakeCode] = useState("");
+  const [shakeStatus, setShakeStatus] = useState<"default" | "error">(
+    "default",
+  );
 
   return (
     <>
-      <Story title="Default" description="Six-slot one-time code input bound to a string array model.">
+      <Story
+        title="Default"
+        description="Six-slot one-time code input bound to a string array model."
+      >
         <div className="space-y-2">
           <Label>One-time code</Label>
           <PinInput value={value} onChange={setValue} maxLength={6}>
@@ -27,12 +37,15 @@ export default function PinInputDemo() {
             </PinInputGroup>
           </PinInput>
           <p className="text-muted-foreground text-xs">
-            Value: <code className="text-foreground">{value || '—'}</code>
+            Value: <code className="text-foreground">{value || "—"}</code>
           </p>
         </div>
       </Story>
 
-      <Story title="Masked (Password)" description="Hides entered characters like a password field.">
+      <Story
+        title="Masked (Password)"
+        description="Hides entered characters like a password field."
+      >
         <div className="space-y-2">
           <Label>Secure PIN</Label>
           <PinInput value={password} onChange={setPassword} maxLength={4} mask>
@@ -43,12 +56,15 @@ export default function PinInputDemo() {
             </PinInputGroup>
           </PinInput>
           <p className="text-muted-foreground text-xs">
-            Value: <code className="text-foreground">{password || '—'}</code>
+            Value: <code className="text-foreground">{password || "—"}</code>
           </p>
         </div>
       </Story>
 
-      <Story title="Sizes" description="Small, medium (default), and large slot sizes.">
+      <Story
+        title="Sizes"
+        description="Small, medium (default), and large slot sizes."
+      >
         <div className="space-y-4">
           <div className="space-y-2">
             <Label className="text-xs">Small</Label>
@@ -83,7 +99,10 @@ export default function PinInputDemo() {
         </div>
       </Story>
 
-      <Story title="Status" description="Error, warning, and success visual states.">
+      <Story
+        title="Status"
+        description="Error, warning, and success visual states."
+      >
         <div className="space-y-4">
           <div className="space-y-2">
             <Label>Error</Label>
@@ -97,7 +116,12 @@ export default function PinInputDemo() {
           </div>
           <div className="space-y-2">
             <Label>Success</Label>
-            <PinInput value={statusSuccess} onChange={setStatusSuccess} maxLength={4} status="success">
+            <PinInput
+              value={statusSuccess}
+              onChange={setStatusSuccess}
+              maxLength={4}
+              status="success"
+            >
               <PinInputGroup>
                 {Array.from({ length: 4 }, (_, i) => (
                   <PinInputSlot key={i} index={i} />
@@ -119,18 +143,19 @@ export default function PinInputDemo() {
             maxLength={4}
             status={shakeStatus}
             onChange={(v) => {
-              setShakeCode(v)
-              if (shakeStatus === 'error' && v.length > 0) setShakeStatus('default')
+              setShakeCode(v);
+              if (shakeStatus === "error" && v.length > 0)
+                setShakeStatus("default");
             }}
             onComplete={(v) => {
-              if (v === '1234') {
-                setShakeStatus('default')
-                return
+              if (v === "1234") {
+                setShakeStatus("default");
+                return;
               }
-              setShakeStatus('error')
+              setShakeStatus("error");
               window.setTimeout(() => {
-                setShakeCode('')
-              }, 450)
+                setShakeCode("");
+              }, 450);
             }}
           >
             <PinInputGroup>
@@ -145,7 +170,10 @@ export default function PinInputDemo() {
         </div>
       </Story>
 
-      <Story title="With Separator" description="Visual grouping with separators.">
+      <Story
+        title="With Separator"
+        description="Visual grouping with separators."
+      >
         <div className="space-y-2">
           <Label>Grouped code</Label>
           <PinInput value={grouped} onChange={setGrouped} maxLength={6}>
@@ -164,17 +192,25 @@ export default function PinInputDemo() {
         </div>
       </Story>
 
-      <Story title="Auto Submit" description="Emits complete event when all slots are filled.">
+      <Story
+        title="Auto Submit"
+        description="Emits complete event when all slots are filled."
+      >
         <div className="space-y-2">
           <Label>Auto-submit PIN</Label>
-          <PinInput maxLength={4} onComplete={(v) => alert('PIN complete: ' + v)}>
+          <PinInput
+            maxLength={4}
+            onComplete={(v) => alert("PIN complete: " + v)}
+          >
             <PinInputGroup>
               {Array.from({ length: 4 }, (_, i) => (
                 <PinInputSlot key={i} index={i} />
               ))}
             </PinInputGroup>
           </PinInput>
-          <p className="text-muted-foreground text-xs">Fill all 4 digits to trigger the complete event</p>
+          <p className="text-muted-foreground text-xs">
+            Fill all 4 digits to trigger the complete event
+          </p>
         </div>
       </Story>
 
@@ -191,5 +227,5 @@ export default function PinInputDemo() {
         </div>
       </Story>
     </>
-  )
+  );
 }

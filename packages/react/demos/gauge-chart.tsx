@@ -1,15 +1,15 @@
-import Story from '../../components/story/Story'
-import { GaugeChart } from '@react-registry/charts'
+import Story from "../../components/story/Story";
+import { GaugeChart } from "@react-registry/charts";
 
 // Custom threshold ramps for the option-prop demo. The wrapper's default
 // (`gaugeThresholds` in useChartTheme) is teal/amber/red; consumers can
 // pass any array of [stop, color] pairs.
 // Demo override ramp — chart-token-adjacent hex (same family as default shadcn charts).
 const greenRamp: [number, string][] = [
-  [0.5, '#e9c46a'],
-  [0.85, '#2a9d8f'],
-  [1, '#264653'],
-]
+  [0.5, "#e9c46a"],
+  [0.85, "#2a9d8f"],
+  [1, "#264653"],
+];
 
 // Progress-ring variant — replace the stoplight axisLine with a single
 // chart-1 colour, hide the pointer/ticks, and bump the progress bar so it
@@ -17,8 +17,10 @@ const greenRamp: [number, string][] = [
 const progressRingOption = {
   series: [
     {
-      progress: { show: true, width: 18, itemStyle: { color: '#f59e0b' } },
-      axisLine: { lineStyle: { width: 18, color: [[1, '#f1f5f9']] as [number, string][] } },
+      progress: { show: true, width: 18, itemStyle: { color: "#f59e0b" } },
+      axisLine: {
+        lineStyle: { width: 18, color: [[1, "#f1f5f9"]] as [number, string][] },
+      },
       pointer: { show: false },
       axisTick: { show: false },
       splitLine: { show: false },
@@ -26,20 +28,20 @@ const progressRingOption = {
       anchor: { show: false },
     },
   ],
-}
+};
 
 // Multi-needle: two values sharing the same axis (e.g. current vs. target).
 const multiNeedleOption = {
   series: [
     {
       data: [
-        { value: 68, name: 'Current' },
-        { value: 85, name: 'Target' },
+        { value: 68, name: "Current" },
+        { value: 85, name: "Target" },
       ],
-      pointer: { show: true, length: '55%', width: 4 },
+      pointer: { show: true, length: "55%", width: 4 },
     },
   ],
-}
+};
 
 export default function GaugeChartDemo() {
   return (
@@ -58,7 +60,14 @@ export default function GaugeChartDemo() {
         description="Pass any `[stop, color]` array. Here, a brand-green ramp for a 'distance covered' style gauge."
       >
         <div className="mx-auto max-w-[420px]">
-          <GaugeChart value={72} max={100} unit="km" label="Distance" thresholds={greenRamp} height="280" />
+          <GaugeChart
+            value={72}
+            max={100}
+            unit="km"
+            label="Distance"
+            thresholds={greenRamp}
+            height="280"
+          />
         </div>
       </Story>
 
@@ -67,7 +76,13 @@ export default function GaugeChartDemo() {
         description="Override `axisLine` and hide the pointer for a circular progress indicator — useful in tighter dashboard tiles."
       >
         <div className="mx-auto max-w-[420px]">
-          <GaugeChart value={42} unit="%" label="Onboarding" option={progressRingOption} height="260" />
+          <GaugeChart
+            value={42}
+            unit="%"
+            label="Onboarding"
+            option={progressRingOption}
+            height="260"
+          />
         </div>
       </Story>
 
@@ -76,7 +91,12 @@ export default function GaugeChartDemo() {
         description="Two needles on the same axis — current vs. target, paced vs. plan. Pass a `data` array of {value, name} in the option override."
       >
         <div className="mx-auto max-w-[420px]">
-          <GaugeChart value={68} unit="%" option={multiNeedleOption} height="280" />
+          <GaugeChart
+            value={68}
+            unit="%"
+            option={multiNeedleOption}
+            height="280"
+          />
         </div>
       </Story>
 
@@ -97,5 +117,5 @@ export default function GaugeChartDemo() {
         </div>
       </Story>
     </>
-  )
+  );
 }

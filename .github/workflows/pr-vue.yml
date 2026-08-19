@@ -3,9 +3,9 @@ name: Vue Checks
 on:
   pull_request:
     paths:
-      - 'packages/vue/**'
-      - 'packages/shared/**'
-      - 'package.json'
+      - "packages/vue/**"
+      - "packages/shared/**"
+      - "package.json"
   workflow_dispatch:
 
 concurrency:

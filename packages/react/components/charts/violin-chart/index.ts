@@ -1,1 +1,5 @@
-export { ViolinChart, type ViolinChartProps, type ViolinGroup } from './ViolinChart'
+export {
+  ViolinChart,
+  type ViolinChartProps,
+  type ViolinGroup,
+} from "./ViolinChart";

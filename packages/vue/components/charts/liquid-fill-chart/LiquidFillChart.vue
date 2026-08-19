@@ -1,35 +1,39 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
+import { computed } from "vue";
+import type { HTMLAttributes } from "vue";
+import { cn } from "@/lib/utils";
 
 interface Props {
   /** Fill 0..100. */
-  value: number
+  value: number;
   /** Container height. Default 220. */
-  height?: number | string
+  height?: number | string;
   /** Wave colour. Defaults to chart-1 token. */
-  color?: string
+  color?: string;
   /** Show the % label in the centre. Default true. */
-  showLabel?: boolean
-  unit?: string
-  class?: HTMLAttributes['class']
+  showLabel?: boolean;
+  unit?: string;
+  class?: HTMLAttributes["class"];
   /** Accessible name announced for the chart image. Defaults to "Chart". */
-  ariaLabel?: string
+  ariaLabel?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   height: 220,
-  color: 'var(--chart-1)',
+  color: "var(--chart-1)",
   showLabel: true,
-  unit: '%',
-})
+  unit: "%",
+});
 
-const pct = computed(() => Math.max(0, Math.min(100, props.value)))
-const heightStyle = computed(() => (/^\d+$/.test(String(props.height)) ? `${props.height}px` : String(props.height)))
+const pct = computed(() => Math.max(0, Math.min(100, props.value)));
+const heightStyle = computed(() =>
+  /^\d+$/.test(String(props.height))
+    ? `${props.height}px`
+    : String(props.height),
+);
 // Wave offset: waterline rises as pct grows. Two phase-shifted paths give depth.
-const level = computed(() => 100 - pct.value * 0.72)
-const uid = `lf-${Math.random().toString(36).slice(2, 8)}`
+const level = computed(() => 100 - pct.value * 0.72);
+const uid = `lf-${Math.random().toString(36).slice(2, 8)}`;
 </script>
 
 <template>
@@ -46,13 +50,25 @@ const uid = `lf-${Math.random().toString(36).slice(2, 8)}`
       )
     "
   >
-    <svg viewBox="0 0 200 200" class="aspect-square h-full max-h-full" role="presentation">
+    <svg
+      viewBox="0 0 200 200"
+      class="aspect-square h-full max-h-full"
+      role="presentation"
+    >
       <defs>
         <clipPath :id="uid">
           <circle cx="100" cy="100" r="84" />
         </clipPath>
       </defs>
-      <circle cx="100" cy="100" r="88" fill="none" stroke="currentColor" stroke-width="3" class="text-border" />
+      <circle
+        cx="100"
+        cy="100"
+        r="88"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3"
+        class="text-border"
+      />
       <g :clip-path="`url(#${uid})`">
         <rect x="0" y="0" width="200" height="200" class="fill-muted/40" />
         <path

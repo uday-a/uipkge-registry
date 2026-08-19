@@ -1,117 +1,130 @@
 <script setup lang="ts">
-import { computed, inject } from 'vue'
-import { ChevronRight, File, Folder, FolderOpen } from 'lucide-vue-next'
-import { cn } from '@/lib/utils'
-import { TREE_VIEW_CONTEXT } from './context'
-import type { TreeViewItem } from './types'
+import { computed, inject } from "vue";
+import { ChevronRight, File, Folder, FolderOpen } from "lucide-vue-next";
+import { cn } from "@/lib/utils";
+import { TREE_VIEW_CONTEXT } from "./context";
+import type { TreeViewItem } from "./types";
 
 interface Props {
-  item: TreeViewItem
-  depth: number
-  isLast?: boolean
-  parentId?: string | null
+  item: TreeViewItem;
+  depth: number;
+  isLast?: boolean;
+  parentId?: string | null;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   isLast: false,
   parentId: null,
-})
+});
 
-const _maybeCtx = inject(TREE_VIEW_CONTEXT)
-if (!_maybeCtx) throw new Error('TreeViewNode must be used inside <TreeView>')
-const ctx: NonNullable<typeof _maybeCtx> = _maybeCtx
+const _maybeCtx = inject(TREE_VIEW_CONTEXT);
+if (!_maybeCtx) throw new Error("TreeViewNode must be used inside <TreeView>");
+const ctx: NonNullable<typeof _maybeCtx> = _maybeCtx;
 
-const isExpanded = computed(() => ctx.expandedIds.value.has(props.item.id))
-const isSelected = computed(() => ctx.selectedId.value === props.item.id)
-const hasChildren = computed(() => !!(props.item.children && props.item.children.length))
+const isExpanded = computed(() => ctx.expandedIds.value.has(props.item.id));
+const isSelected = computed(() => ctx.selectedId.value === props.item.id);
+const hasChildren = computed(
+  () => !!(props.item.children && props.item.children.length),
+);
 
 const Icon = computed(() => {
-  if (!ctx.showIcons.value) return null
-  if (props.item.icon) return props.item.icon
-  if (!hasChildren.value) return File
-  return isExpanded.value ? FolderOpen : Folder
-})
+  if (!ctx.showIcons.value) return null;
+  if (props.item.icon) return props.item.icon;
+  if (!hasChildren.value) return File;
+  return isExpanded.value ? FolderOpen : Folder;
+});
 
 function handleToggle(e?: Event) {
-  e?.stopPropagation()
-  ctx.toggle(props.item)
+  e?.stopPropagation();
+  ctx.toggle(props.item);
 }
 
 function handleSelect() {
-  if (props.item.disabled) return
-  ctx.select(props.item)
+  if (props.item.disabled) return;
+  ctx.select(props.item);
 }
 
 function getTreeRows(from: HTMLElement): HTMLElement[] {
-  const tree = from.closest('[role="tree"]')
-  if (!tree) return []
-  return Array.from(tree.querySelectorAll<HTMLElement>('[data-tree-row]:not([data-disabled="true"])'))
+  const tree = from.closest('[role="tree"]');
+  if (!tree) return [];
+  return Array.from(
+    tree.querySelectorAll<HTMLElement>(
+      '[data-tree-row]:not([data-disabled="true"])',
+    ),
+  );
 }
 
 function focusRow(row: HTMLElement | null | undefined) {
-  row?.focus()
+  row?.focus();
 }
 
 function handleRowKeydown(e: KeyboardEvent) {
-  if (props.item.disabled) return
-  const target = e.currentTarget as HTMLElement
+  if (props.item.disabled) return;
+  const target = e.currentTarget as HTMLElement;
 
-  if (e.key === 'Enter' || e.key === ' ') {
-    e.preventDefault()
-    handleSelect()
-    return
+  if (e.key === "Enter" || e.key === " ") {
+    e.preventDefault();
+    handleSelect();
+    return;
   }
 
-  if (e.key === 'ArrowRight') {
-    e.preventDefault()
+  if (e.key === "ArrowRight") {
+    e.preventDefault();
     if (hasChildren.value && !isExpanded.value) {
-      handleToggle()
+      handleToggle();
     } else if (hasChildren.value && isExpanded.value) {
       // Move into first visible child (next row in flattened list).
-      const rows = getTreeRows(target)
-      const idx = rows.indexOf(target)
-      if (idx >= 0 && idx < rows.length - 1) focusRow(rows[idx + 1])
+      const rows = getTreeRows(target);
+      const idx = rows.indexOf(target);
+      if (idx >= 0 && idx < rows.length - 1) focusRow(rows[idx + 1]);
     }
-    return
+    return;
   }
 
-  if (e.key === 'ArrowLeft') {
-    e.preventDefault()
+  if (e.key === "ArrowLeft") {
+    e.preventDefault();
     if (hasChildren.value && isExpanded.value) {
-      handleToggle()
+      handleToggle();
     } else if (props.parentId) {
-      const tree = target.closest('[role="tree"]')
-      const parent = tree?.querySelector<HTMLElement>(`[data-tree-row][data-tree-id="${CSS.escape(props.parentId)}"]`)
-      focusRow(parent)
+      const tree = target.closest('[role="tree"]');
+      const parent = tree?.querySelector<HTMLElement>(
+        `[data-tree-row][data-tree-id="${CSS.escape(props.parentId)}"]`,
+      );
+      focusRow(parent);
     }
-    return
+    return;
   }
 
-  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-    e.preventDefault()
-    const rows = getTreeRows(target)
-    const idx = rows.indexOf(target)
-    if (idx < 0) return
-    focusRow(e.key === 'ArrowDown' ? rows[idx + 1] : rows[idx - 1])
-    return
+  if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+    e.preventDefault();
+    const rows = getTreeRows(target);
+    const idx = rows.indexOf(target);
+    if (idx < 0) return;
+    focusRow(e.key === "ArrowDown" ? rows[idx + 1] : rows[idx - 1]);
+    return;
   }
 
-  if (e.key === 'Home') {
-    e.preventDefault()
-    focusRow(getTreeRows(target)[0])
-    return
+  if (e.key === "Home") {
+    e.preventDefault();
+    focusRow(getTreeRows(target)[0]);
+    return;
   }
 
-  if (e.key === 'End') {
-    e.preventDefault()
-    const rows = getTreeRows(target)
-    focusRow(rows[rows.length - 1])
+  if (e.key === "End") {
+    e.preventDefault();
+    const rows = getTreeRows(target);
+    focusRow(rows[rows.length - 1]);
   }
 }
 
 // 20px per level. Connector lives in parent's gutter (depth - 1).
-const rowPadLeft = computed(() => `calc(${props.depth} * var(--tree-indent) + var(--tree-row-offset))`)
-const connectorLeft = computed(() => `calc((${props.depth - 1}) * var(--tree-indent) + var(--tree-connector-offset))`)
+const rowPadLeft = computed(
+  () => `calc(${props.depth} * var(--tree-indent) + var(--tree-row-offset))`,
+);
+const connectorLeft = computed(
+  () =>
+    `calc((${props.depth - 1}) * var(--tree-indent) + var(--tree-connector-offset))`,
+);
 </script>
 
 <template>
@@ -120,7 +133,11 @@ const connectorLeft = computed(() => `calc((${props.depth - 1}) * var(--tree-ind
     :aria-expanded="hasChildren ? isExpanded : undefined"
     :aria-selected="isSelected"
     class="relative"
-    style="--tree-indent: 20px; --tree-row-offset: 4px; --tree-connector-offset: 10px"
+    style="
+      --tree-indent: 20px;
+      --tree-row-offset: 4px;
+      --tree-connector-offset: 10px;
+    "
   >
     <!-- Discord-style elbow + trunk for non-root nodes. The elbow points
          from the parent's chevron column down to this row's center; the
@@ -174,7 +191,10 @@ const connectorLeft = computed(() => `calc((${props.depth - 1}) * var(--tree-ind
         tabindex="-1"
         @click="handleToggle"
       >
-        <ChevronRight class="text-muted-foreground size-3.5" aria-hidden="true" />
+        <ChevronRight
+          class="text-muted-foreground size-3.5"
+          aria-hidden="true"
+        />
       </button>
       <span v-else class="size-4 shrink-0" />
 
@@ -194,7 +214,12 @@ const connectorLeft = computed(() => `calc((${props.depth - 1}) * var(--tree-ind
       <component
         :is="Icon"
         v-if="Icon"
-        :class="cn('size-4 shrink-0', hasChildren ? 'text-primary' : 'text-muted-foreground')"
+        :class="
+          cn(
+            'size-4 shrink-0',
+            hasChildren ? 'text-primary' : 'text-muted-foreground',
+          )
+        "
       />
 
       <!-- Label -->

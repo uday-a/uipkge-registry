@@ -1,28 +1,28 @@
-import { useState } from 'react'
-import Story from '../../components/story/Story'
-import { AlertModal } from '@react-registry/alert-modal'
-import { Button } from '@react-registry/button'
-import { Trash2 } from 'lucide-react'
+import { useState } from "react";
+import Story from "../../components/story/Story";
+import { AlertModal } from "@react-registry/alert-modal";
+import { Button } from "@react-registry/button";
+import { Trash2 } from "lucide-react";
 
 export default function AlertModalDemo() {
   // Destructive tone
-  const [open1, setOpen1] = useState(false)
+  const [open1, setOpen1] = useState(false);
 
   // Controlled (no trigger)
-  const [externalOpen, setExternalOpen] = useState(false)
+  const [externalOpen, setExternalOpen] = useState(false);
 
   // Async action
-  const [deleting, setDeleting] = useState(false)
-  const [deleteOpen, setDeleteOpen] = useState(false)
+  const [deleting, setDeleting] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
   async function handleDelete() {
-    setDeleting(true)
-    await new Promise((r) => setTimeout(r, 1200))
-    setDeleting(false)
-    setDeleteOpen(false)
+    setDeleting(true);
+    await new Promise((r) => setTimeout(r, 1200));
+    setDeleting(false);
+    setDeleteOpen(false);
   }
 
   // Slot-based extras
-  const [slotsOpen, setSlotsOpen] = useState(false)
+  const [slotsOpen, setSlotsOpen] = useState(false);
 
   return (
     <>
@@ -138,7 +138,9 @@ export default function AlertModalDemo() {
             tone="destructive"
             onAction={() => setExternalOpen(false)}
           />
-          <span className="text-muted-foreground text-xs">open = {String(externalOpen)}</span>
+          <span className="text-muted-foreground text-xs">
+            open = {String(externalOpen)}
+          </span>
         </div>
       </Story>
 
@@ -176,5 +178,5 @@ export default function AlertModalDemo() {
         </AlertModal>
       </Story>
     </>
-  )
+  );
 }

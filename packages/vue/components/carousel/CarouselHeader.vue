@@ -9,18 +9,22 @@
   </CarouselHeader>
 -->
 <script setup lang="ts">
-import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
+import type { HTMLAttributes } from "vue";
+import { cn } from "@/lib/utils";
 
 interface Props {
-  class?: HTMLAttributes['class']
+  class?: HTMLAttributes["class"];
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 </script>
 
 <template>
-  <div data-uipkge data-slot="carousel-header" :class="cn('flex items-center justify-between px-1 pb-2', props.class)">
+  <div
+    data-uipkge
+    data-slot="carousel-header"
+    :class="cn('flex items-center justify-between px-1 pb-2', props.class)"
+  >
     <slot />
   </div>
 </template>

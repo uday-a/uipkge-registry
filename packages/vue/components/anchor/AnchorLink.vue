@@ -1,43 +1,47 @@
 <script setup lang="ts">
-import { computed, inject, onBeforeUnmount, onMounted, useSlots } from 'vue'
-import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
-import { ANCHOR_INJECTION_KEY } from './context'
+import { computed, inject, onBeforeUnmount, onMounted, useSlots } from "vue";
+import type { HTMLAttributes } from "vue";
+import { cn } from "@/lib/utils";
+import { ANCHOR_INJECTION_KEY } from "./context";
 
 const props = defineProps<{
-  href: string
-  title: string
-  class?: HTMLAttributes['class']
-}>()
+  href: string;
+  title: string;
+  class?: HTMLAttributes["class"];
+}>();
 
-const _maybeCtx = inject(ANCHOR_INJECTION_KEY, null)
-if (!_maybeCtx) throw new Error('AnchorLink must be used inside <Anchor>.')
-const ctx: NonNullable<typeof _maybeCtx> = _maybeCtx
+const _maybeCtx = inject(ANCHOR_INJECTION_KEY, null);
+if (!_maybeCtx) throw new Error("AnchorLink must be used inside <Anchor>.");
+const ctx: NonNullable<typeof _maybeCtx> = _maybeCtx;
 
-const isActive = computed(() => ctx.activeHref.value === props.href)
-const slots = useSlots()
+const isActive = computed(() => ctx.activeHref.value === props.href);
+const slots = useSlots();
 
-onMounted(() => ctx.register(props.href))
-onBeforeUnmount(() => ctx.unregister(props.href))
+onMounted(() => ctx.register(props.href));
+onBeforeUnmount(() => ctx.unregister(props.href));
 
 function onClick(e: MouseEvent) {
-  e.preventDefault()
-  const el = document.querySelector(props.href) as HTMLElement | null
-  if (!el) return
-  const offset = ctx.offsetTop.value
-  const container = ctx.scrollContainer.value
-  const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  const behavior: ScrollBehavior = smooth ? 'smooth' : 'auto'
+  e.preventDefault();
+  const el = document.querySelector(props.href) as HTMLElement | null;
+  if (!el) return;
+  const offset = ctx.offsetTop.value;
+  const container = ctx.scrollContainer.value;
+  const smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const behavior: ScrollBehavior = smooth ? "smooth" : "auto";
   if (container === window) {
-    const top = el.getBoundingClientRect().top + window.scrollY - offset
-    window.scrollTo({ top, behavior })
+    const top = el.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top, behavior });
   } else {
-    const c = container as HTMLElement
-    const top = el.getBoundingClientRect().top - c.getBoundingClientRect().top + c.scrollTop - offset
-    c.scrollTo({ top, behavior })
+    const c = container as HTMLElement;
+    const top =
+      el.getBoundingClientRect().top -
+      c.getBoundingClientRect().top +
+      c.scrollTop -
+      offset;
+    c.scrollTo({ top, behavior });
   }
-  history.replaceState(null, '', props.href)
-  ctx.setActive(props.href)
+  history.replaceState(null, "", props.href);
+  ctx.setActive(props.href);
 }
 </script>
 

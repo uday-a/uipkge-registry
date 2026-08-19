@@ -1,4 +1,4 @@
-import Story from '../../components/story/Story'
+import Story from "../../components/story/Story";
 import {
   Menubar,
   MenubarCheckboxItem,
@@ -14,13 +14,13 @@ import {
   MenubarSubContent,
   MenubarSubTrigger,
   MenubarTrigger,
-} from '@react-registry/menubar'
-import { useState } from 'react'
+} from "@react-registry/menubar";
+import { useState } from "react";
 
 export default function MenubarDemo() {
-  const [showBookmarks, setShowBookmarks] = useState(true)
-  const [showFullUrls, setShowFullUrls] = useState(false)
-  const [profile, setProfile] = useState('benoit')
+  const [showBookmarks, setShowBookmarks] = useState(true);
+  const [showFullUrls, setShowFullUrls] = useState(false);
+  const [profile, setProfile] = useState("benoit");
 
   return (
     <>
@@ -77,17 +77,24 @@ export default function MenubarDemo() {
             <MenubarContent>
               <MenubarLabel>Appearance</MenubarLabel>
               <MenubarSeparator />
-              <MenubarCheckboxItem checked={showBookmarks} onCheckedChange={setShowBookmarks}>
+              <MenubarCheckboxItem
+                checked={showBookmarks}
+                onCheckedChange={setShowBookmarks}
+              >
                 Always Show Bookmarks Bar
               </MenubarCheckboxItem>
-              <MenubarCheckboxItem checked={showFullUrls} onCheckedChange={setShowFullUrls}>
+              <MenubarCheckboxItem
+                checked={showFullUrls}
+                onCheckedChange={setShowFullUrls}
+              >
                 Always Show Full URLs
               </MenubarCheckboxItem>
             </MenubarContent>
           </MenubarMenu>
         </Menubar>
         <p className="text-muted-foreground mt-2 text-xs">
-          Bookmarks: {showBookmarks ? 'on' : 'off'} · Full URLs: {showFullUrls ? 'on' : 'off'}
+          Bookmarks: {showBookmarks ? "on" : "off"} · Full URLs:{" "}
+          {showFullUrls ? "on" : "off"}
         </p>
       </Story>
 
@@ -109,7 +116,9 @@ export default function MenubarDemo() {
             </MenubarContent>
           </MenubarMenu>
         </Menubar>
-        <p className="text-muted-foreground mt-2 text-xs">Selected: {profile}</p>
+        <p className="text-muted-foreground mt-2 text-xs">
+          Selected: {profile}
+        </p>
       </Story>
 
       <Story
@@ -139,7 +148,10 @@ export default function MenubarDemo() {
         </Menubar>
       </Story>
 
-      <Story title="With shortcuts" description="MenubarShortcut right-aligns a hint string with a muted style.">
+      <Story
+        title="With shortcuts"
+        description="MenubarShortcut right-aligns a hint string with a muted style."
+      >
         <Menubar className="max-w-md">
           <MenubarMenu>
             <MenubarTrigger>Edit</MenubarTrigger>
@@ -220,10 +232,16 @@ export default function MenubarDemo() {
           <MenubarMenu>
             <MenubarTrigger>View</MenubarTrigger>
             <MenubarContent>
-              <MenubarCheckboxItem checked={showBookmarks} onCheckedChange={setShowBookmarks}>
+              <MenubarCheckboxItem
+                checked={showBookmarks}
+                onCheckedChange={setShowBookmarks}
+              >
                 Bookmarks bar
               </MenubarCheckboxItem>
-              <MenubarCheckboxItem checked={showFullUrls} onCheckedChange={setShowFullUrls}>
+              <MenubarCheckboxItem
+                checked={showFullUrls}
+                onCheckedChange={setShowFullUrls}
+              >
                 Full URLs
               </MenubarCheckboxItem>
               <MenubarSeparator />
@@ -262,5 +280,5 @@ export default function MenubarDemo() {
         </Menubar>
       </Story>
     </>
-  )
+  );
 }

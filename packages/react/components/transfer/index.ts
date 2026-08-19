@@ -5,4 +5,4 @@ export {
   type TransferProps,
   type TransferItem,
   type TransferSide,
-} from './transfer'
+} from "./transfer";

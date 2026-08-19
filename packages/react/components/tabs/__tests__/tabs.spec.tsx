@@ -1,8 +1,8 @@
-import { describe, it, expect } from 'vitest'
-import { render } from '@testing-library/react'
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '../tabs'
+import { describe, it, expect } from "vitest";
+import { render } from "@testing-library/react";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "../tabs";
 
-describe('Tabs', () => {
+describe("Tabs", () => {
   it('renders with data-slot="tabs"', () => {
     const { container } = render(
       <Tabs defaultValue="tab1">
@@ -13,11 +13,11 @@ describe('Tabs', () => {
         <TabsContent value="tab1">Content 1</TabsContent>
         <TabsContent value="tab2">Content 2</TabsContent>
       </Tabs>,
-    )
-    expect(container.querySelector('[data-slot="tabs"]')).toBeTruthy()
-  })
+    );
+    expect(container.querySelector('[data-slot="tabs"]')).toBeTruthy();
+  });
 
-  it('has data-uipkge', () => {
+  it("has data-uipkge", () => {
     const { container } = render(
       <Tabs defaultValue="tab1">
         <TabsList>
@@ -25,9 +25,13 @@ describe('Tabs', () => {
         </TabsList>
         <TabsContent value="tab1">Content 1</TabsContent>
       </Tabs>,
-    )
-    expect(container.querySelector('[data-slot="tabs"]')?.hasAttribute('data-uipkge')).toBe(true)
-  })
+    );
+    expect(
+      container
+        .querySelector('[data-slot="tabs"]')
+        ?.hasAttribute("data-uipkge"),
+    ).toBe(true);
+  });
 
   it('TabsList renders with data-slot="tabs-list"', () => {
     const { container } = render(
@@ -37,9 +41,9 @@ describe('Tabs', () => {
         </TabsList>
         <TabsContent value="tab1">Content 1</TabsContent>
       </Tabs>,
-    )
-    expect(container.querySelector('[data-slot="tabs-list"]')).toBeTruthy()
-  })
+    );
+    expect(container.querySelector('[data-slot="tabs-list"]')).toBeTruthy();
+  });
 
   it('TabsTrigger renders with data-slot="tabs-trigger"', () => {
     const { container } = render(
@@ -49,9 +53,9 @@ describe('Tabs', () => {
         </TabsList>
         <TabsContent value="tab1">Content 1</TabsContent>
       </Tabs>,
-    )
-    expect(container.querySelector('[data-slot="tabs-trigger"]')).toBeTruthy()
-  })
+    );
+    expect(container.querySelector('[data-slot="tabs-trigger"]')).toBeTruthy();
+  });
 
   it('TabsContent renders with data-slot="tabs-content"', () => {
     const { container } = render(
@@ -61,9 +65,9 @@ describe('Tabs', () => {
         </TabsList>
         <TabsContent value="tab1">Content 1</TabsContent>
       </Tabs>,
-    )
-    expect(container.querySelector('[data-slot="tabs-content"]')).toBeTruthy()
-  })
+    );
+    expect(container.querySelector('[data-slot="tabs-content"]')).toBeTruthy();
+  });
 
   it('TabsTrigger has role="tab"', () => {
     const { container } = render(
@@ -73,9 +77,13 @@ describe('Tabs', () => {
         </TabsList>
         <TabsContent value="tab1">Content 1</TabsContent>
       </Tabs>,
-    )
-    expect(container.querySelector('[data-slot="tabs-trigger"]')?.getAttribute('role')).toBe('tab')
-  })
+    );
+    expect(
+      container
+        .querySelector('[data-slot="tabs-trigger"]')
+        ?.getAttribute("role"),
+    ).toBe("tab");
+  });
 
   it('TabsContent has role="tabpanel"', () => {
     const { container } = render(
@@ -85,9 +93,13 @@ describe('Tabs', () => {
         </TabsList>
         <TabsContent value="tab1">Content 1</TabsContent>
       </Tabs>,
-    )
-    expect(container.querySelector('[data-slot="tabs-content"]')?.getAttribute('role')).toBe('tabpanel')
-  })
+    );
+    expect(
+      container
+        .querySelector('[data-slot="tabs-content"]')
+        ?.getAttribute("role"),
+    ).toBe("tabpanel");
+  });
 
   it('TabsTrigger shows data-state="active" when selected', () => {
     const { container } = render(
@@ -99,10 +111,10 @@ describe('Tabs', () => {
         <TabsContent value="tab1">Content 1</TabsContent>
         <TabsContent value="tab2">Content 2</TabsContent>
       </Tabs>,
-    )
-    const triggers = container.querySelectorAll('[data-slot="tabs-trigger"]')
-    expect(triggers[0].getAttribute('data-state')).toBe('active')
-  })
+    );
+    const triggers = container.querySelectorAll('[data-slot="tabs-trigger"]');
+    expect(triggers[0].getAttribute("data-state")).toBe("active");
+  });
 
   it('TabsTrigger shows data-state="inactive" when not selected', () => {
     const { container } = render(
@@ -114,12 +126,12 @@ describe('Tabs', () => {
         <TabsContent value="tab1">Content 1</TabsContent>
         <TabsContent value="tab2">Content 2</TabsContent>
       </Tabs>,
-    )
-    const triggers = container.querySelectorAll('[data-slot="tabs-trigger"]')
-    expect(triggers[1].getAttribute('data-state')).toBe('inactive')
-  })
+    );
+    const triggers = container.querySelectorAll('[data-slot="tabs-trigger"]');
+    expect(triggers[1].getAttribute("data-state")).toBe("inactive");
+  });
 
-  it('TabsTrigger renders children', () => {
+  it("TabsTrigger renders children", () => {
     const { container } = render(
       <Tabs defaultValue="tab1">
         <TabsList>
@@ -127,11 +139,13 @@ describe('Tabs', () => {
         </TabsList>
         <TabsContent value="tab1">Content 1</TabsContent>
       </Tabs>,
-    )
-    expect(container.querySelector('[data-slot="tabs-trigger"]')?.textContent).toContain('Tab 1')
-  })
+    );
+    expect(
+      container.querySelector('[data-slot="tabs-trigger"]')?.textContent,
+    ).toContain("Tab 1");
+  });
 
-  it('TabsContent renders children when active', () => {
+  it("TabsContent renders children when active", () => {
     const { container } = render(
       <Tabs defaultValue="tab1">
         <TabsList>
@@ -139,11 +153,13 @@ describe('Tabs', () => {
         </TabsList>
         <TabsContent value="tab1">Content 1</TabsContent>
       </Tabs>,
-    )
-    expect(container.querySelector('[data-slot="tabs-content"]')?.textContent).toContain('Content 1')
-  })
+    );
+    expect(
+      container.querySelector('[data-slot="tabs-content"]')?.textContent,
+    ).toContain("Content 1");
+  });
 
-  it('TabsTrigger is disabled when disabled prop is true', () => {
+  it("TabsTrigger is disabled when disabled prop is true", () => {
     const { container } = render(
       <Tabs defaultValue="tab1">
         <TabsList>
@@ -155,10 +171,10 @@ describe('Tabs', () => {
         <TabsContent value="tab1">Content 1</TabsContent>
         <TabsContent value="tab2">Content 2</TabsContent>
       </Tabs>,
-    )
-    const triggers = container.querySelectorAll('[data-slot="tabs-trigger"]')
-    expect(triggers[1].hasAttribute('disabled')).toBe(true)
-  })
+    );
+    const triggers = container.querySelectorAll('[data-slot="tabs-trigger"]');
+    expect(triggers[1].hasAttribute("disabled")).toBe(true);
+  });
 
   it('TabsList has data-slot="tabs-indicator" when animated', () => {
     const { container } = render(
@@ -168,11 +184,13 @@ describe('Tabs', () => {
         </TabsList>
         <TabsContent value="tab1">Content 1</TabsContent>
       </Tabs>,
-    )
-    expect(container.querySelector('[data-slot="tabs-indicator"]')).toBeTruthy()
-  })
+    );
+    expect(
+      container.querySelector('[data-slot="tabs-indicator"]'),
+    ).toBeTruthy();
+  });
 
-  it('Tabs applies data-orientation attribute', () => {
+  it("Tabs applies data-orientation attribute", () => {
     const { container } = render(
       <Tabs defaultValue="tab1" orientation="vertical">
         <TabsList>
@@ -180,11 +198,15 @@ describe('Tabs', () => {
         </TabsList>
         <TabsContent value="tab1">Content 1</TabsContent>
       </Tabs>,
-    )
-    expect(container.querySelector('[data-slot="tabs"]')?.getAttribute('data-orientation')).toBe('vertical')
-  })
+    );
+    expect(
+      container
+        .querySelector('[data-slot="tabs"]')
+        ?.getAttribute("data-orientation"),
+    ).toBe("vertical");
+  });
 
-  it('TabsTrigger has aria-selected when active', () => {
+  it("TabsTrigger has aria-selected when active", () => {
     const { container } = render(
       <Tabs defaultValue="tab1">
         <TabsList>
@@ -194,9 +216,9 @@ describe('Tabs', () => {
         <TabsContent value="tab1">Content 1</TabsContent>
         <TabsContent value="tab2">Content 2</TabsContent>
       </Tabs>,
-    )
-    const triggers = container.querySelectorAll('[data-slot="tabs-trigger"]')
-    expect(triggers[0].getAttribute('aria-selected')).toBe('true')
-    expect(triggers[1].getAttribute('aria-selected')).toBe('false')
-  })
-})
+    );
+    const triggers = container.querySelectorAll('[data-slot="tabs-trigger"]');
+    expect(triggers[0].getAttribute("aria-selected")).toBe("true");
+    expect(triggers[1].getAttribute("aria-selected")).toBe("false");
+  });
+});

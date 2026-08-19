@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { Button } from '@/components/ui/button'
-import { Toaster } from '@/components/ui/sonner'
-import { toast } from 'vue-sonner'
+import { Button } from "@/components/ui/button";
+import { Toaster } from "@/components/ui/sonner";
+import { toast } from "vue-sonner";
 
 function fakeAsync(ms = 1500, fail = false) {
   return new Promise((resolve, reject) => {
-    setTimeout(() => (fail ? reject(new Error('Network error')) : resolve('Saved')), ms)
-  })
+    setTimeout(
+      () => (fail ? reject(new Error("Network error")) : resolve("Saved")),
+      ms,
+    );
+  });
 }
 </script>
 
@@ -19,14 +22,26 @@ function fakeAsync(ms = 1500, fail = false) {
       description="Toast styles for default, success, info, warning, error, and with-description."
     >
       <div class="flex flex-wrap gap-2">
-        <Button variant="outline" @click="toast('Event has been created.')">Default</Button>
-        <Button variant="outline" @click="toast.success('Saved successfully.')">Success</Button>
+        <Button variant="outline" @click="toast('Event has been created.')"
+          >Default</Button
+        >
+        <Button variant="outline" @click="toast.success('Saved successfully.')"
+          >Success</Button
+        >
         <Button variant="outline" @click="toast.info('Heads up!')">Info</Button>
-        <Button variant="outline" @click="toast.warning('Please review.')">Warning</Button>
-        <Button variant="outline" @click="toast.error('Failed to save.')">Error</Button>
+        <Button variant="outline" @click="toast.warning('Please review.')"
+          >Warning</Button
+        >
+        <Button variant="outline" @click="toast.error('Failed to save.')"
+          >Error</Button
+        >
         <Button
           variant="outline"
-          @click="toast('Settings updated', { description: 'Your preferences have been saved.' })"
+          @click="
+            toast('Settings updated', {
+              description: 'Your preferences have been saved.',
+            })
+          "
         >
           With description
         </Button>
@@ -43,7 +58,10 @@ function fakeAsync(ms = 1500, fail = false) {
           @click="
             toast('Event has been created', {
               description: 'Sunday, December 03, 2023 at 9:00 AM',
-              action: { label: 'Undo', onClick: () => toast.success('Reverted') },
+              action: {
+                label: 'Undo',
+                onClick: () => toast.success('Reverted'),
+              },
             })
           "
         >
@@ -67,7 +85,14 @@ function fakeAsync(ms = 1500, fail = false) {
       description="Pass closeButton: true (or set globally on Toaster) to render an X dismiss control."
     >
       <div class="flex flex-wrap gap-2">
-        <Button variant="outline" @click="toast('Tap the X to dismiss this toast manually.', { closeButton: true })">
+        <Button
+          variant="outline"
+          @click="
+            toast('Tap the X to dismiss this toast manually.', {
+              closeButton: true,
+            })
+          "
+        >
           With close button
         </Button>
         <Button
@@ -105,8 +130,8 @@ function fakeAsync(ms = 1500, fail = false) {
           variant="outline"
           @click="
             () => {
-              const id = toast.loading('Processing… this may take a while.')
-              setTimeout(() => toast.success('Done!', { id }), 3000)
+              const id = toast.loading('Processing… this may take a while.');
+              setTimeout(() => toast.success('Done!', { id }), 3000);
             }
           "
         >

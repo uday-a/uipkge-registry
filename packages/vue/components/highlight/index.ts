@@ -1,1 +1,1 @@
-export { default as Highlight } from './Highlight.vue'
+export { default as Highlight } from "./Highlight.vue";

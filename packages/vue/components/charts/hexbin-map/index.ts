@@ -6,4 +6,4 @@ export {
   type HexbinMapProps,
   type HexbinDatum,
   type HexState,
-} from './HexbinMap.vue'
+} from "./HexbinMap.vue";

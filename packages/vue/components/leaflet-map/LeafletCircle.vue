@@ -1,26 +1,26 @@
 <script setup lang="ts">
-import { watch } from 'vue'
-import type * as L from 'leaflet'
-import { defined, toLatLng, useLeafletLayer } from './leaflet-context'
+import { watch } from "vue";
+import type * as L from "leaflet";
+import { defined, toLatLng, useLeafletLayer } from "./leaflet-context";
 
-defineOptions({ name: 'LeafletCircle' })
+defineOptions({ name: "LeafletCircle" });
 
 const props = defineProps<{
   /** [lng, lat] — Mapbox order. */
-  center: [number, number]
+  center: [number, number];
   /** Radius in meters. */
-  radius?: number
-  color?: string
-  weight?: number
-  opacity?: number
-  dashArray?: string | number[]
-  fill?: boolean
-  fillColor?: string
-  fillOpacity?: number
-  className?: string
-}>()
+  radius?: number;
+  color?: string;
+  weight?: number;
+  opacity?: number;
+  dashArray?: string | number[];
+  fill?: boolean;
+  fillColor?: string;
+  fillOpacity?: number;
+  className?: string;
+}>();
 
-const emit = defineEmits<{ (e: 'click', ev: L.LeafletMouseEvent): void }>()
+const emit = defineEmits<{ (e: "click", ev: L.LeafletMouseEvent): void }>();
 
 const pathOptions = () =>
   defined({
@@ -33,30 +33,41 @@ const pathOptions = () =>
     fillOpacity: props.fillOpacity,
     className: props.className,
     interactive: true,
-  } as L.CircleMarkerOptions)
+  } as L.CircleMarkerOptions);
 
 const layer = useLeafletLayer((map, L) => {
-  const circle = L.circle(toLatLng(props.center), { ...pathOptions(), radius: props.radius })
-  circle.on('click', (ev) => emit('click', ev))
-  return circle
-})
+  const circle = L.circle(toLatLng(props.center), {
+    ...pathOptions(),
+    radius: props.radius,
+  });
+  circle.on("click", (ev) => emit("click", ev));
+  return circle;
+});
 
 watch(
   () => props.center,
   (v) => {
-    if (v) layer.value?.setLatLng(toLatLng(v))
+    if (v) layer.value?.setLatLng(toLatLng(v));
   },
-)
+);
 watch(
   () => props.radius,
   (v) => {
-    if (v !== undefined) layer.value?.setRadius(v)
+    if (v !== undefined) layer.value?.setRadius(v);
   },
-)
+);
 watch(
-  () => [props.color, props.weight, props.opacity, props.fill, props.fillColor, props.fillOpacity, props.dashArray],
+  () => [
+    props.color,
+    props.weight,
+    props.opacity,
+    props.fill,
+    props.fillColor,
+    props.fillOpacity,
+    props.dashArray,
+  ],
   () => layer.value?.setStyle(pathOptions()),
-)
+);
 </script>
 
 <template>

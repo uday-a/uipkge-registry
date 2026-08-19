@@ -1,9 +1,15 @@
-import Story from '../../components/story/Story'
-import { Video } from '@react-registry/video'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@react-registry/card'
+import Story from "../../components/story/Story";
+import { Video } from "@react-registry/video";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@react-registry/card";
 
-const sampleMp4 = '/media/flower.mp4'
-const samplePoster = '/media/flower.jpg'
+const sampleMp4 = "/media/flower.mp4";
+const samplePoster = "/media/flower.jpg";
 
 export default function VideoDemo() {
   return (
@@ -19,14 +25,26 @@ export default function VideoDemo() {
         title="Autoplay (muted)"
         description="Autoplay starts muted to satisfy browser policies — ideal for background reels and silent promos."
       >
-        <Video src={sampleMp4} poster={samplePoster} autoplay muted loop className="max-w-2xl" />
+        <Video
+          src={sampleMp4}
+          poster={samplePoster}
+          autoplay
+          muted
+          loop
+          className="max-w-2xl"
+        />
       </Story>
 
       <Story
         title="Native controls"
         description="Drop in the browser's built-in controls when you don't need a branded overlay."
       >
-        <Video src={sampleMp4} poster={samplePoster} nativeControls className="max-w-2xl" />
+        <Video
+          src={sampleMp4}
+          poster={samplePoster}
+          nativeControls
+          className="max-w-2xl"
+        />
       </Story>
 
       <Story
@@ -44,7 +62,12 @@ export default function VideoDemo() {
           </div>
           <div className="space-y-1.5">
             <p className="text-muted-foreground text-xs">9/16 — portrait</p>
-            <Video src={sampleMp4} poster={samplePoster} aspectRatio="9/16" className="max-w-xs" />
+            <Video
+              src={sampleMp4}
+              poster={samplePoster}
+              aspectRatio="9/16"
+              className="max-w-xs"
+            />
           </div>
           <div className="space-y-1.5">
             <p className="text-muted-foreground text-xs">16/9 — widescreen</p>
@@ -53,7 +76,10 @@ export default function VideoDemo() {
         </div>
       </Story>
 
-      <Story title="Without poster" description="No poster image — the player area is black until playback starts.">
+      <Story
+        title="Without poster"
+        description="No poster image — the player area is black until playback starts."
+      >
         <Video src={sampleMp4} className="max-w-2xl" />
       </Story>
 
@@ -61,7 +87,12 @@ export default function VideoDemo() {
         title="Custom playback rate"
         description="Set an initial playback rate — 1.5× for tutorials, 0.5× for slow-motion analysis."
       >
-        <Video src={sampleMp4} poster={samplePoster} playbackRate={1.5} className="max-w-2xl" />
+        <Video
+          src={sampleMp4}
+          poster={samplePoster}
+          playbackRate={1.5}
+          className="max-w-2xl"
+        />
       </Story>
 
       <Story
@@ -79,5 +110,5 @@ export default function VideoDemo() {
         </Card>
       </Story>
     </>
-  )
+  );
 }

@@ -6,11 +6,22 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Page, PageBody, PageHeader, PageHeaderHeading } from '@/components/ui/page'
-import { Download, Filter, Plus } from 'lucide-vue-next'
+} from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Page,
+  PageBody,
+  PageHeader,
+  PageHeaderHeading,
+} from "@/components/ui/page";
+import { Download, Filter, Plus } from "lucide-vue-next";
 </script>
 
 <template>
@@ -33,7 +44,8 @@ import { Download, Filter, Plus } from 'lucide-vue-next'
       <PageBody>
         <Card>
           <CardContent class="text-muted-foreground py-8 text-center text-sm">
-            Page body content goes here. Use SectionCard, blocks, or your own grid layout below the header.
+            Page body content goes here. Use SectionCard, blocks, or your own
+            grid layout below the header.
           </CardContent>
         </Card>
       </PageBody>
@@ -46,35 +58,59 @@ import { Download, Filter, Plus } from 'lucide-vue-next'
   >
     <Page>
       <PageHeader>
-        <PageHeaderHeading title="Reports" description="Sales performance across all channels." />
+        <PageHeaderHeading
+          title="Reports"
+          description="Sales performance across all channels."
+        />
         <template #actions>
-          <Button variant="outline" size="sm"><Filter class="size-4" aria-hidden="true" /> Filter</Button>
-          <Button variant="outline" size="sm"><Download class="size-4" aria-hidden="true" /> Export</Button>
-          <Button size="sm"><Plus class="size-4" aria-hidden="true" /> New report</Button>
+          <Button variant="outline" size="sm"
+            ><Filter class="size-4" aria-hidden="true" /> Filter</Button
+          >
+          <Button variant="outline" size="sm"
+            ><Download class="size-4" aria-hidden="true" /> Export</Button
+          >
+          <Button size="sm"
+            ><Plus class="size-4" aria-hidden="true" /> New report</Button
+          >
         </template>
       </PageHeader>
 
       <PageBody>
         <Card>
-          <CardContent class="text-muted-foreground py-8 text-center text-sm"> Reports table goes here. </CardContent>
+          <CardContent class="text-muted-foreground py-8 text-center text-sm">
+            Reports table goes here.
+          </CardContent>
         </Card>
       </PageBody>
     </Page>
   </Story>
 
-  <Story title="Body with grid" description="PageBody is a plain region — drop your own grid of cards inside.">
+  <Story
+    title="Body with grid"
+    description="PageBody is a plain region — drop your own grid of cards inside."
+  >
     <Page>
       <PageHeader>
-        <PageHeaderHeading title="Dashboard" description="Key metrics and recent activity." />
+        <PageHeaderHeading
+          title="Dashboard"
+          description="Key metrics and recent activity."
+        />
       </PageHeader>
 
       <PageBody>
         <div class="grid gap-4 sm:grid-cols-3">
-          <Card v-for="kpi in ['Revenue', 'Active users', 'Conversion']" :key="kpi">
+          <Card
+            v-for="kpi in ['Revenue', 'Active users', 'Conversion']"
+            :key="kpi"
+          >
             <CardHeader class="pb-2">
               <CardDescription>{{ kpi }}</CardDescription>
               <CardTitle class="text-2xl">{{
-                kpi === 'Revenue' ? '$48.2k' : kpi === 'Active users' ? '12,310' : '3.4%'
+                kpi === "Revenue"
+                  ? "$48.2k"
+                  : kpi === "Active users"
+                    ? "12,310"
+                    : "3.4%"
               }}</CardTitle>
             </CardHeader>
             <CardContent>
@@ -86,7 +122,10 @@ import { Download, Filter, Plus } from 'lucide-vue-next'
     </Page>
   </Story>
 
-  <Story title="Title only" description="Description is optional — drop it for compact pages.">
+  <Story
+    title="Title only"
+    description="Description is optional — drop it for compact pages."
+  >
     <Page>
       <PageHeader>
         <PageHeaderHeading title="Settings" />
@@ -97,26 +136,44 @@ import { Download, Filter, Plus } from 'lucide-vue-next'
 
       <PageBody>
         <Card>
-          <CardContent class="text-muted-foreground py-8 text-center text-sm"> Settings form goes here. </CardContent>
+          <CardContent class="text-muted-foreground py-8 text-center text-sm">
+            Settings form goes here.
+          </CardContent>
         </Card>
       </PageBody>
     </Page>
   </Story>
 
-  <Story title="With breadcrumb" description="Stack a Breadcrumb above the heading for nested-page navigation context.">
+  <Story
+    title="With breadcrumb"
+    description="Stack a Breadcrumb above the heading for nested-page navigation context."
+  >
     <Page>
       <PageHeader>
         <div class="space-y-2">
           <Breadcrumb>
             <BreadcrumbList>
-              <BreadcrumbItem><BreadcrumbLink href="#">Workspace</BreadcrumbLink></BreadcrumbItem>
+              <BreadcrumbItem
+                ><BreadcrumbLink href="#"
+                  >Workspace</BreadcrumbLink
+                ></BreadcrumbItem
+              >
               <BreadcrumbSeparator />
-              <BreadcrumbItem><BreadcrumbLink href="#">Projects</BreadcrumbLink></BreadcrumbItem>
+              <BreadcrumbItem
+                ><BreadcrumbLink href="#"
+                  >Projects</BreadcrumbLink
+                ></BreadcrumbItem
+              >
               <BreadcrumbSeparator />
-              <BreadcrumbItem><BreadcrumbPage>Acme website</BreadcrumbPage></BreadcrumbItem>
+              <BreadcrumbItem
+                ><BreadcrumbPage>Acme website</BreadcrumbPage></BreadcrumbItem
+              >
             </BreadcrumbList>
           </Breadcrumb>
-          <PageHeaderHeading title="Acme website" description="Customer-facing marketing site." />
+          <PageHeaderHeading
+            title="Acme website"
+            description="Customer-facing marketing site."
+          />
         </div>
         <template #actions>
           <Button variant="outline" size="sm">Archive</Button>
@@ -126,7 +183,9 @@ import { Download, Filter, Plus } from 'lucide-vue-next'
 
       <PageBody>
         <Card>
-          <CardContent class="text-muted-foreground py-8 text-center text-sm"> Project details go here. </CardContent>
+          <CardContent class="text-muted-foreground py-8 text-center text-sm">
+            Project details go here.
+          </CardContent>
         </Card>
       </PageBody>
     </Page>

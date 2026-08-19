@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Timeline,
   TimelineContent,
@@ -12,7 +12,7 @@ import {
   TimelineMedia,
   TimelineSeparator,
   TimelineTitle,
-} from '@/components/ui/timeline'
+} from "@/components/ui/timeline";
 import {
   Bell,
   Calendar,
@@ -32,77 +32,184 @@ import {
   Rocket,
   AlertTriangle,
   Truck,
-} from 'lucide-vue-next'
+} from "lucide-vue-next";
 
 const events = [
-  { id: 1, title: 'Project created', time: 'May 1, 2026', icon: Rocket },
-  { id: 2, title: 'First commit pushed', time: 'May 2, 2026', icon: GitCommit },
-  { id: 3, title: 'Documentation drafted', time: 'May 3, 2026', icon: FileText },
-  { id: 4, title: 'Public release scheduled', time: 'May 5, 2026', icon: Calendar },
-]
+  { id: 1, title: "Project created", time: "May 1, 2026", icon: Rocket },
+  { id: 2, title: "First commit pushed", time: "May 2, 2026", icon: GitCommit },
+  {
+    id: 3,
+    title: "Documentation drafted",
+    time: "May 3, 2026",
+    icon: FileText,
+  },
+  {
+    id: 4,
+    title: "Public release scheduled",
+    time: "May 5, 2026",
+    icon: Calendar,
+  },
+];
 
 const statuses = [
-  { id: 1, title: 'Build #482', desc: 'Compiled in 38s', status: 'success' as const, icon: Check },
-  { id: 2, title: 'Build #483', desc: 'Compiled in 42s', status: 'success' as const, icon: Check },
-  { id: 3, title: 'Build #484', desc: 'Lint failed at app/utils.ts', status: 'error' as const, icon: AlertTriangle },
-  { id: 4, title: 'Build #485', desc: 'Queued · waiting on runner', status: 'warning' as const, icon: CircleDashed },
-]
-
-const ship = [
-  { id: 1, title: 'Order placed', time: 'May 1', icon: CreditCard, status: 'success' as const },
-  { id: 2, title: 'Packed', time: 'May 2', icon: Package, status: 'info' as const },
-  { id: 3, title: 'Out for delivery', time: 'May 3', icon: Truck, status: 'current' as const },
-  { id: 4, title: 'Delivered', time: 'May 4', icon: Check, status: 'muted' as const },
-]
-
-const milestones = [
-  { id: 1, title: 'Q1 Kickoff', time: 'Jan 2026', status: 'success' as const },
-  { id: 2, title: 'MVP launched', time: 'Mar 2026', status: 'success' as const },
-  { id: 3, title: 'GA release', time: 'Jun 2026', status: 'info' as const },
-  { id: 4, title: 'v2 planning', time: 'Sep 2026', status: 'muted' as const },
-]
-
-const compact = [
-  { id: 1, title: '09:14 — Logged in from Chrome' },
-  { id: 2, title: '09:22 — Created new workspace' },
-  { id: 3, title: '09:31 — Invited 3 members' },
-  { id: 4, title: '10:02 — Updated billing details' },
-  { id: 5, title: '10:15 — Generated API key' },
-]
-
-const activity = [
-  { id: 1, title: 'opened pull request', user: 'alice', time: '2h ago', icon: GitPullRequest, status: 'info' as const },
+  {
+    id: 1,
+    title: "Build #482",
+    desc: "Compiled in 38s",
+    status: "success" as const,
+    icon: Check,
+  },
   {
     id: 2,
-    title: 'merged main into feature/x',
-    user: 'bob',
-    time: '4h ago',
-    icon: GitMerge,
-    status: 'success' as const,
+    title: "Build #483",
+    desc: "Compiled in 42s",
+    status: "success" as const,
+    icon: Check,
   },
-  { id: 3, title: 'reviewed and approved', user: 'carol', time: '6h ago', icon: Check, status: 'success' as const },
-]
+  {
+    id: 3,
+    title: "Build #484",
+    desc: "Lint failed at app/utils.ts",
+    status: "error" as const,
+    icon: AlertTriangle,
+  },
+  {
+    id: 4,
+    title: "Build #485",
+    desc: "Queued · waiting on runner",
+    status: "warning" as const,
+    icon: CircleDashed,
+  },
+];
+
+const ship = [
+  {
+    id: 1,
+    title: "Order placed",
+    time: "May 1",
+    icon: CreditCard,
+    status: "success" as const,
+  },
+  {
+    id: 2,
+    title: "Packed",
+    time: "May 2",
+    icon: Package,
+    status: "info" as const,
+  },
+  {
+    id: 3,
+    title: "Out for delivery",
+    time: "May 3",
+    icon: Truck,
+    status: "current" as const,
+  },
+  {
+    id: 4,
+    title: "Delivered",
+    time: "May 4",
+    icon: Check,
+    status: "muted" as const,
+  },
+];
+
+const milestones = [
+  { id: 1, title: "Q1 Kickoff", time: "Jan 2026", status: "success" as const },
+  {
+    id: 2,
+    title: "MVP launched",
+    time: "Mar 2026",
+    status: "success" as const,
+  },
+  { id: 3, title: "GA release", time: "Jun 2026", status: "info" as const },
+  { id: 4, title: "v2 planning", time: "Sep 2026", status: "muted" as const },
+];
+
+const compact = [
+  { id: 1, title: "09:14 — Logged in from Chrome" },
+  { id: 2, title: "09:22 — Created new workspace" },
+  { id: 3, title: "09:31 — Invited 3 members" },
+  { id: 4, title: "10:02 — Updated billing details" },
+  { id: 5, title: "10:15 — Generated API key" },
+];
+
+const activity = [
+  {
+    id: 1,
+    title: "opened pull request",
+    user: "alice",
+    time: "2h ago",
+    icon: GitPullRequest,
+    status: "info" as const,
+  },
+  {
+    id: 2,
+    title: "merged main into feature/x",
+    user: "bob",
+    time: "4h ago",
+    icon: GitMerge,
+    status: "success" as const,
+  },
+  {
+    id: 3,
+    title: "reviewed and approved",
+    user: "carol",
+    time: "6h ago",
+    icon: Check,
+    status: "success" as const,
+  },
+];
 
 const activityFiles = [
-  { name: 'Project-Spec-v3.pdf', size: '1.9 MB', icon: FileText },
-  { name: 'Hero-mockups.zip', size: '18 KB', icon: FileText },
-  { name: 'Brand-system.css', size: '20 MB', icon: FileText },
-]
+  { name: "Project-Spec-v3.pdf", size: "1.9 MB", icon: FileText },
+  { name: "Hero-mockups.zip", size: "18 KB", icon: FileText },
+  { name: "Brand-system.css", size: "20 MB", icon: FileText },
+];
 
 const activityGallery = [
-  { id: 1, label: 'Concept A' },
-  { id: 2, label: 'Concept B' },
-  { id: 3, label: 'Concept C' },
-]
+  { id: 1, label: "Concept A" },
+  { id: 2, label: "Concept B" },
+  { id: 3, label: "Concept C" },
+];
 
 const onboarding = [
-  { id: 1, title: 'Create your workspace', desc: 'Pick a name and invite your team.', done: true },
-  { id: 2, title: 'Connect a data source', desc: 'Postgres, MySQL, or BigQuery.', done: true },
-  { id: 3, title: 'Configure billing', desc: 'Add a payment method to unlock production.', done: true },
-  { id: 4, title: 'Invite your first member', desc: 'Send a magic-link invitation by email.', done: false },
-  { id: 5, title: 'Publish your first dashboard', desc: 'Pick a template or start from scratch.', done: false },
-  { id: 6, title: 'Set up alerts', desc: 'Slack, email, or PagerDuty integrations.', done: false },
-]
+  {
+    id: 1,
+    title: "Create your workspace",
+    desc: "Pick a name and invite your team.",
+    done: true,
+  },
+  {
+    id: 2,
+    title: "Connect a data source",
+    desc: "Postgres, MySQL, or BigQuery.",
+    done: true,
+  },
+  {
+    id: 3,
+    title: "Configure billing",
+    desc: "Add a payment method to unlock production.",
+    done: true,
+  },
+  {
+    id: 4,
+    title: "Invite your first member",
+    desc: "Send a magic-link invitation by email.",
+    done: false,
+  },
+  {
+    id: 5,
+    title: "Publish your first dashboard",
+    desc: "Pick a template or start from scratch.",
+    done: false,
+  },
+  {
+    id: 6,
+    title: "Set up alerts",
+    desc: "Slack, email, or PagerDuty integrations.",
+    done: false,
+  },
+];
 </script>
 
 <template>
@@ -140,7 +247,10 @@ const onboarding = [
     </Timeline>
   </Story>
 
-  <Story title="Side: right" description="Move the rail to the right side with side='right' on Timeline.">
+  <Story
+    title="Side: right"
+    description="Move the rail to the right side with side='right' on Timeline."
+  >
     <Timeline side="right" class="max-w-md">
       <TimelineItem v-for="s in ship" :key="s.id" :status="s.status">
         <TimelineMedia variant="icon">
@@ -174,7 +284,12 @@ const onboarding = [
     description="direction='horizontal' threads the rail left-to-right; markers sit on top by default."
   >
     <Timeline direction="horizontal" class="w-full overflow-x-auto py-2">
-      <TimelineItem v-for="s in ship" :key="s.id" :status="s.status" class="min-w-32">
+      <TimelineItem
+        v-for="s in ship"
+        :key="s.id"
+        :status="s.status"
+        class="min-w-32"
+      >
         <TimelineMedia variant="icon">
           <component :is="s.icon" />
         </TimelineMedia>
@@ -237,7 +352,10 @@ const onboarding = [
     </Timeline>
   </Story>
 
-  <Story title="Mixed content" description="Rich event entries combining title, paragraph, and inline action buttons.">
+  <Story
+    title="Mixed content"
+    description="Rich event entries combining title, paragraph, and inline action buttons."
+  >
     <Timeline class="max-w-lg">
       <TimelineItem status="info">
         <TimelineMedia variant="icon"><Rocket /></TimelineMedia>
@@ -245,7 +363,8 @@ const onboarding = [
           <TimelineDate>May 1, 2026 · 09:14</TimelineDate>
           <TimelineTitle>v2.0 released</TimelineTitle>
           <TimelineDescription>
-            Major release with the new theming engine, 12 new components, and improved CLI ergonomics.
+            Major release with the new theming engine, 12 new components, and
+            improved CLI ergonomics.
           </TimelineDescription>
           <div class="flex gap-2 pt-1">
             <Button size="sm" variant="outline">Read changelog</Button>
@@ -259,7 +378,8 @@ const onboarding = [
           <TimelineDate>May 2, 2026 · 14:02</TimelineDate>
           <TimelineTitle>Pull request merged</TimelineTitle>
           <TimelineDescription>
-            feat(carousel): add vertical orientation and indicator pagination · #248
+            feat(carousel): add vertical orientation and indicator pagination ·
+            #248
           </TimelineDescription>
           <div class="flex gap-2 pt-1">
             <Button size="sm" variant="outline">View PR</Button>
@@ -272,7 +392,8 @@ const onboarding = [
           <TimelineDate>May 3, 2026 · 11:30</TimelineDate>
           <TimelineTitle>Docs updated</TimelineTitle>
           <TimelineDescription>
-            Component preview pages now extract demo source automatically with the Story block format.
+            Component preview pages now extract demo source automatically with
+            the Story block format.
           </TimelineDescription>
         </TimelineContent>
       </TimelineItem>
@@ -303,9 +424,14 @@ const onboarding = [
                 <span class="font-semibold">Meeting with customer</span>
                 <span class="text-muted-foreground">· 10:45 AM</span>
               </div>
-              <TimelineDescription>Discussed Q2 onboarding flow with Robert Fox.</TimelineDescription>
+              <TimelineDescription
+                >Discussed Q2 onboarding flow with Robert
+                Fox.</TimelineDescription
+              >
               <div class="flex items-center gap-2 pt-1">
-                <Avatar class="size-6"><AvatarFallback>RF</AvatarFallback></Avatar>
+                <Avatar class="size-6"
+                  ><AvatarFallback>RF</AvatarFallback></Avatar
+                >
                 <span class="text-muted-foreground text-xs">Robert Fox</span>
               </div>
             </TimelineContent>
@@ -318,12 +444,21 @@ const onboarding = [
                 <TimelineTitle>Project Delivery Preparation</TimelineTitle>
                 <Badge variant="secondary">In Progress</Badge>
               </div>
-              <TimelineDescription>CRM Project deliverables and pre-flight checklist.</TimelineDescription>
+              <TimelineDescription
+                >CRM Project deliverables and pre-flight
+                checklist.</TimelineDescription
+              >
               <div class="flex items-center justify-between pt-1">
                 <div class="flex -space-x-2">
-                  <Avatar class="ring-background size-6 ring-2"><AvatarFallback>AB</AvatarFallback></Avatar>
-                  <Avatar class="ring-background size-6 ring-2"><AvatarFallback>CD</AvatarFallback></Avatar>
-                  <Avatar class="ring-background size-6 ring-2"><AvatarFallback>EF</AvatarFallback></Avatar>
+                  <Avatar class="ring-background size-6 ring-2"
+                    ><AvatarFallback>AB</AvatarFallback></Avatar
+                  >
+                  <Avatar class="ring-background size-6 ring-2"
+                    ><AvatarFallback>CD</AvatarFallback></Avatar
+                  >
+                  <Avatar class="ring-background size-6 ring-2"
+                    ><AvatarFallback>EF</AvatarFallback></Avatar
+                  >
                 </div>
                 <Badge variant="outline">CRM</Badge>
               </div>
@@ -341,10 +476,15 @@ const onboarding = [
                   class="border-border bg-muted/40 flex items-center justify-between rounded-md border px-3 py-1.5 text-sm"
                 >
                   <span class="flex items-center gap-2">
-                    <component :is="f.icon" class="text-muted-foreground size-4" />
+                    <component
+                      :is="f.icon"
+                      class="text-muted-foreground size-4"
+                    />
                     <span class="font-medium">{{ f.name }}</span>
                   </span>
-                  <span class="text-muted-foreground text-xs">{{ f.size }}</span>
+                  <span class="text-muted-foreground text-xs">{{
+                    f.size
+                  }}</span>
                 </li>
               </ul>
             </TimelineContent>
@@ -359,7 +499,10 @@ const onboarding = [
             <TimelineMedia variant="icon"><ImageIcon /></TimelineMedia>
             <TimelineContent>
               <TimelineTitle>3 new design concepts shared</TimelineTitle>
-              <TimelineDescription>Explore the homepage and dashboard explorations.</TimelineDescription>
+              <TimelineDescription
+                >Explore the homepage and dashboard
+                explorations.</TimelineDescription
+              >
               <div class="grid grid-cols-3 gap-2 pt-2">
                 <div
                   v-for="img in activityGallery"
@@ -376,7 +519,9 @@ const onboarding = [
             <TimelineMedia variant="icon"><Database /></TimelineMedia>
             <TimelineContent>
               <TimelineTitle>Database Backup Process Completed!</TimelineTitle>
-              <TimelineDescription> All workspace snapshots are now mirrored to the EU region. </TimelineDescription>
+              <TimelineDescription>
+                All workspace snapshots are now mirrored to the EU region.
+              </TimelineDescription>
               <div class="pt-1">
                 <Button size="sm" variant="outline">Proceed</Button>
               </div>
@@ -404,18 +549,27 @@ const onboarding = [
     description="Map a boolean state to status: done items use status='success' (green) with a Check icon, pending items use status='muted' (gray) with an outlined Circle. Opt in to `colored-connector` on TimelineMedia so the line below each marker adopts the same status color — done rows get a green connector, pending rows get a muted one."
   >
     <Timeline class="max-w-lg">
-      <TimelineItem v-for="item in onboarding" :key="item.id" :status="item.done ? 'success' : 'muted'">
+      <TimelineItem
+        v-for="item in onboarding"
+        :key="item.id"
+        :status="item.done ? 'success' : 'muted'"
+      >
         <TimelineMedia variant="icon" colored-connector>
           <Check v-if="item.done" />
           <Circle v-else />
         </TimelineMedia>
         <TimelineContent>
           <div class="flex items-center gap-2">
-            <TimelineTitle :class="item.done && 'text-muted-foreground line-through'">
+            <TimelineTitle
+              :class="item.done && 'text-muted-foreground line-through'"
+            >
               {{ item.title }}
             </TimelineTitle>
-            <Badge :variant="item.done ? 'secondary' : 'outline'" class="text-xs">
-              {{ item.done ? 'Done' : 'Pending' }}
+            <Badge
+              :variant="item.done ? 'secondary' : 'outline'"
+              class="text-xs"
+            >
+              {{ item.done ? "Done" : "Pending" }}
             </Badge>
           </div>
           <TimelineDescription>{{ item.desc }}</TimelineDescription>

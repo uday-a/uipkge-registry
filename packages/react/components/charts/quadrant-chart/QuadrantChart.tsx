@@ -1,41 +1,44 @@
-'use client'
+"use client";
 
-import * as React from 'react'
-import { ChartFrame, EChart } from '../shared'
-import { useChartTheme, mergeOptionBlock } from '../useChartTheme'
+import * as React from "react";
+import { ChartFrame, EChart } from "../shared";
+import { useChartTheme, mergeOptionBlock } from "../useChartTheme";
 
 // QuadrantChart
 // ─────────────────────────────────────────────────────────────────────────
 
 function median(vals: number[]) {
-  const s = [...vals].sort((a, b) => a - b)
-  const m = Math.floor(s.length / 2)
-  return s.length % 2 ? s[m]! : ((s[m - 1] ?? 0) + (s[m] ?? 0)) / 2
+  const s = [...vals].sort((a, b) => a - b);
+  const m = Math.floor(s.length / 2);
+  return s.length % 2 ? s[m]! : ((s[m - 1] ?? 0) + (s[m] ?? 0)) / 2;
 }
 
 export interface QuadrantChartProps {
-  data: { x: number; y: number; label?: string }[]
+  data: { x: number; y: number; label?: string }[];
   /** Split lines. Default to the data medians. */
-  xMid?: number
-  yMid?: number
+  xMid?: number;
+  yMid?: number;
   /** Clockwise from top-right: [stars, question marks, dogs, cash cows]. */
-  quadrantLabels?: [string, string, string, string]
-  xName?: string
-  yName?: string
-  height?: number | string
-  option?: any
-  className?: string
+  quadrantLabels?: [string, string, string, string];
+  xName?: string;
+  yName?: string;
+  height?: number | string;
+  option?: any;
+  className?: string;
   /** Accessible name announced for the chart image. Defaults to "Chart". */
-  ariaLabel?: string
+  ariaLabel?: string;
 }
 
-export const QuadrantChart = React.forwardRef<HTMLDivElement, QuadrantChartProps>(
+export const QuadrantChart = React.forwardRef<
+  HTMLDivElement,
+  QuadrantChartProps
+>(
   (
     {
       data,
       xMid,
       yMid,
-      quadrantLabels = ['Stars', 'Question marks', 'Dogs', 'Cash cows'],
+      quadrantLabels = ["Stars", "Question marks", "Dogs", "Cash cows"],
       xName,
       yName,
       height = 340,
@@ -45,11 +48,11 @@ export const QuadrantChart = React.forwardRef<HTMLDivElement, QuadrantChartProps
     },
     ref,
   ) => {
-    const theme = useChartTheme()
+    const theme = useChartTheme();
 
     const mergedOption = React.useMemo(() => {
-      const x = xMid ?? median(data.map((d) => d.x))
-      const y = yMid ?? median(data.map((d) => d.y))
+      const x = xMid ?? median(data.map((d) => d.x));
+      const y = yMid ?? median(data.map((d) => d.y));
       const quad = (
         name: string,
         x0: number | string,
@@ -63,7 +66,7 @@ export const QuadrantChart = React.forwardRef<HTMLDivElement, QuadrantChartProps
           itemStyle: { color: theme.colors[0], opacity: 0.05 },
           label: {
             show: true,
-            position: 'inside',
+            position: "inside",
             color: theme.textColor,
             fontSize: 12,
             fontWeight: 700,
@@ -71,39 +74,39 @@ export const QuadrantChart = React.forwardRef<HTMLDivElement, QuadrantChartProps
           },
         },
         { xAxis: x1, yAxis: y1 },
-      ]
+      ];
       const series = [
         {
-          type: 'scatter',
+          type: "scatter",
           symbolSize: 12,
           itemStyle: { color: theme.colors[0], opacity: 0.85 },
           label: {
             show: true,
-            position: 'top',
+            position: "top",
             color: theme.textColor,
             fontSize: 10,
-            formatter: (p: any) => p.value[2] ?? '',
+            formatter: (p: any) => p.value[2] ?? "",
           },
           markLine: {
             silent: true,
-            symbol: 'none',
-            lineStyle: { type: 'dashed', color: theme.textColor, opacity: 0.6 },
+            symbol: "none",
+            lineStyle: { type: "dashed", color: theme.textColor, opacity: 0.6 },
             label: { show: false },
             data: [{ xAxis: x }, { yAxis: y }],
           },
           markArea: {
             silent: true,
             data: [
-              quad(quadrantLabels[0], x, 'max', y, 'max'),
-              quad(quadrantLabels[1], 'min', x, y, 'max'),
-              quad(quadrantLabels[2], 'min', x, 'min', y),
-              quad(quadrantLabels[3], x, 'max', 'min', y),
+              quad(quadrantLabels[0], x, "max", y, "max"),
+              quad(quadrantLabels[1], "min", x, y, "max"),
+              quad(quadrantLabels[2], "min", x, "min", y),
+              quad(quadrantLabels[3], x, "max", "min", y),
             ],
           },
-          data: data.map((d) => [d.x, d.y, d.label ?? '']),
+          data: data.map((d) => [d.x, d.y, d.label ?? ""]),
         },
-      ]
-      const userOption: any = option ?? {}
+      ];
+      const userOption: any = option ?? {};
       const {
         series: userSeries,
         xAxis: userXAxis,
@@ -111,18 +114,21 @@ export const QuadrantChart = React.forwardRef<HTMLDivElement, QuadrantChartProps
         grid: userGrid,
         tooltip: userTooltip,
         ...userRest
-      } = userOption
+      } = userOption;
       const mergedSeries = Array.isArray(userSeries)
         ? series.map((s, i) => ({ ...s, ...(userSeries[i] ?? {}) }))
-        : series
-      const xs = data.map((d) => d.x)
-      const ys = data.map((d) => d.y)
+        : series;
+      const xs = data.map((d) => d.x);
+      const ys = data.map((d) => d.y);
       return {
         color: theme.colors,
-        grid: mergeOptionBlock({ left: 16, right: 16, top: 24, bottom: 24, containLabel: true }, userGrid),
+        grid: mergeOptionBlock(
+          { left: 16, right: 16, top: 24, bottom: 24, containLabel: true },
+          userGrid,
+        ),
         tooltip: mergeOptionBlock(
           {
-            trigger: 'item',
+            trigger: "item",
             backgroundColor: theme.tooltipBg,
             borderColor: theme.tooltipBorder,
             textStyle: { color: theme.tooltipText, fontSize: 12 },
@@ -132,7 +138,7 @@ export const QuadrantChart = React.forwardRef<HTMLDivElement, QuadrantChartProps
         legend: { show: false },
         xAxis: mergeOptionBlock(
           {
-            type: 'value',
+            type: "value",
             name: xName,
             min: Math.min(...xs) - 1,
             max: Math.max(...xs) + 1,
@@ -144,7 +150,7 @@ export const QuadrantChart = React.forwardRef<HTMLDivElement, QuadrantChartProps
         ),
         yAxis: mergeOptionBlock(
           {
-            type: 'value',
+            type: "value",
             name: yName,
             min: Math.min(...ys) - 1,
             max: Math.max(...ys) + 1,
@@ -156,14 +162,19 @@ export const QuadrantChart = React.forwardRef<HTMLDivElement, QuadrantChartProps
         ),
         series: mergedSeries,
         ...userRest,
-      }
-    }, [data, xMid, yMid, quadrantLabels, xName, yName, option, theme])
+      };
+    }, [data, xMid, yMid, quadrantLabels, xName, yName, option, theme]);
 
     return (
-      <ChartFrame ref={ref} height={height} className={className} ariaLabel={ariaLabel}>
+      <ChartFrame
+        ref={ref}
+        height={height}
+        className={className}
+        ariaLabel={ariaLabel}
+      >
         <EChart option={mergedOption} />
       </ChartFrame>
-    )
+    );
   },
-)
-QuadrantChart.displayName = 'QuadrantChart'
+);
+QuadrantChart.displayName = "QuadrantChart";

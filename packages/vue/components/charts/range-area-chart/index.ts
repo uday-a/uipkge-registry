@@ -1,1 +1,1 @@
-export { default as RangeAreaChart } from './RangeAreaChart.vue'
+export { default as RangeAreaChart } from "./RangeAreaChart.vue";

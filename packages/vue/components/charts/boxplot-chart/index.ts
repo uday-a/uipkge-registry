@@ -1,1 +1,1 @@
-export { default as BoxplotChart } from './BoxplotChart.vue'
+export { default as BoxplotChart } from "./BoxplotChart.vue";

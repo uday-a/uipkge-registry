@@ -38,17 +38,24 @@ export default function Story({
       className={`relative overflow-hidden rounded-xl border border-border bg-card text-card-foreground shadow-xs transition-all ${
         isFullscreen
           ? "fixed inset-4 z-50 flex flex-col shadow-2xl bg-card"
-          : "my-4"
+          : "mb-8"
       }`}
     >
       {/* Header bar */}
       <div className="flex items-center justify-between border-b border-border bg-muted/30 px-4 py-2.5">
         <div className="flex flex-col gap-0.5">
-          <h3 className="text-xs font-semibold tracking-tight text-foreground">
-            {title}
-          </h3>
+          <div className="flex items-center gap-2">
+            <h3 className="text-xs font-semibold tracking-tight text-foreground">
+              {title}
+            </h3>
+            {isFullscreen && (
+              <span className="rounded bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+                Focused View
+              </span>
+            )}
+          </div>
           {description && (
-            <p className="text-[11px] text-muted-foreground">{description}</p>
+            <p className="text-xs text-muted-foreground">{description}</p>
           )}
         </div>
 
@@ -116,7 +123,7 @@ export default function Story({
 
       {/* Story Canvas / Preview Content */}
       <div
-        className={`relative overflow-x-auto p-5 sm:p-7 ${
+        className={`relative overflow-x-auto p-6 sm:p-8 ${
           isFullscreen ? "flex-1 overflow-y-auto" : ""
         } ${activeTab === "preview" ? "block" : "hidden"}`}
       >

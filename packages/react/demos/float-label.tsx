@@ -1,21 +1,29 @@
-import { useState } from 'react'
-import Story from '../../components/story/Story'
-import { FloatLabel } from '@react-registry/float-label'
-import { Input } from '@react-registry/input'
-import { Textarea } from '@react-registry/textarea'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@react-registry/card'
-import { Button } from '@react-registry/button'
+import { useState } from "react";
+import Story from "../../components/story/Story";
+import { FloatLabel } from "@react-registry/float-label";
+import { Input } from "@react-registry/input";
+import { Textarea } from "@react-registry/textarea";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@react-registry/card";
+import { Button } from "@react-registry/button";
 
 export default function FloatLabelDemo() {
-  const [nameValue, setNameValue] = useState('')
-  const [emailValue, setEmailValue] = useState('')
-  const [preselectedValue, setPreselectedValue] = useState('John Doe')
-  const [messageValue, setMessageValue] = useState('')
-  const [firstNameValue, setFirstNameValue] = useState('')
-  const [lastNameValue, setLastNameValue] = useState('')
-  const [profileName, setProfileName] = useState('Jane Smith')
-  const [profileEmail, setProfileEmail] = useState('jane.smith@example.com')
-  const [profileBio, setProfileBio] = useState('Product designer passionate about design systems.')
+  const [nameValue, setNameValue] = useState("");
+  const [emailValue, setEmailValue] = useState("");
+  const [preselectedValue, setPreselectedValue] = useState("John Doe");
+  const [messageValue, setMessageValue] = useState("");
+  const [firstNameValue, setFirstNameValue] = useState("");
+  const [lastNameValue, setLastNameValue] = useState("");
+  const [profileName, setProfileName] = useState("Jane Smith");
+  const [profileEmail, setProfileEmail] = useState("jane.smith@example.com");
+  const [profileBio, setProfileBio] = useState(
+    "Product designer passionate about design systems.",
+  );
 
   return (
     <>
@@ -25,9 +33,16 @@ export default function FloatLabelDemo() {
       >
         <div className="max-w-md space-y-2">
           <FloatLabel label="Full Name" className="w-full">
-            <Input value={nameValue} onChange={(e) => setNameValue(e.target.value)} placeholder=" " className="h-11" />
+            <Input
+              value={nameValue}
+              onChange={(e) => setNameValue(e.target.value)}
+              placeholder=" "
+              className="h-11"
+            />
           </FloatLabel>
-          <p className="text-muted-foreground text-xs">Value: {nameValue || 'empty'}</p>
+          <p className="text-muted-foreground text-xs">
+            Value: {nameValue || "empty"}
+          </p>
         </div>
       </Story>
 
@@ -71,7 +86,12 @@ export default function FloatLabelDemo() {
             <Input type="password" placeholder=" " className="h-11" />
           </FloatLabel>
           <FloatLabel label="Message" className="w-full">
-            <Textarea value={messageValue} onValueChange={setMessageValue} placeholder=" " className="min-h-24" />
+            <Textarea
+              value={messageValue}
+              onValueChange={setMessageValue}
+              placeholder=" "
+              className="min-h-24"
+            />
           </FloatLabel>
         </div>
       </Story>
@@ -118,7 +138,9 @@ export default function FloatLabelDemo() {
         <Card className="max-w-md">
           <CardHeader>
             <CardTitle>Edit profile</CardTitle>
-            <CardDescription>Update your personal information below.</CardDescription>
+            <CardDescription>
+              Update your personal information below.
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex gap-4">
@@ -144,12 +166,17 @@ export default function FloatLabelDemo() {
               />
             </FloatLabel>
             <FloatLabel label="Bio" className="w-full">
-              <Textarea value={profileBio} onValueChange={setProfileBio} placeholder=" " className="min-h-20" />
+              <Textarea
+                value={profileBio}
+                onValueChange={setProfileBio}
+                placeholder=" "
+                className="min-h-20"
+              />
             </FloatLabel>
             <Button className="w-full">Save changes</Button>
           </CardContent>
         </Card>
       </Story>
     </>
-  )
+  );
 }

@@ -1,129 +1,165 @@
-import Story from '../../components/story/Story'
-import { cn } from '@/lib/utils'
-import { RelativeTime } from '@react-registry/relative-time'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@react-registry/card'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@react-registry/table'
-import { Avatar, AvatarFallback } from '@react-registry/avatar'
-import { Badge } from '@react-registry/badge'
-import { Chip } from '@react-registry/chip'
-import { Kbd } from '@react-registry/kbd'
-import { AlertCircle, Clock, GitCommit, Globe, RefreshCw, UserCheck } from 'lucide-react'
+import Story from "../../components/story/Story";
+import { cn } from "@/lib/utils";
+import { RelativeTime } from "@react-registry/relative-time";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@react-registry/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@react-registry/table";
+import { Avatar, AvatarFallback } from "@react-registry/avatar";
+import { Badge } from "@react-registry/badge";
+import { Chip } from "@react-registry/chip";
+import { Kbd } from "@react-registry/kbd";
+import {
+  AlertCircle,
+  Clock,
+  GitCommit,
+  Globe,
+  RefreshCw,
+  UserCheck,
+} from "lucide-react";
 
-const now = new Date('2026-08-14T12:00:00.000Z')
+const now = new Date("2026-08-14T12:00:00.000Z");
 
 const users = [
   {
-    id: 'usr_01',
-    name: 'Maya Chen',
-    email: 'maya.chen@acme.corp',
-    initials: 'MC',
-    role: 'Admin',
-    status: 'active' as const,
-    createdAt: '2026-08-14T10:15:00.000Z',
-    lastActive: '2026-08-14T11:58:00.000Z',
+    id: "usr_01",
+    name: "Maya Chen",
+    email: "maya.chen@acme.corp",
+    initials: "MC",
+    role: "Admin",
+    status: "active" as const,
+    createdAt: "2026-08-14T10:15:00.000Z",
+    lastActive: "2026-08-14T11:58:00.000Z",
   },
   {
-    id: 'usr_02',
-    name: 'Omar Farid',
-    email: 'omar.f@acme.corp',
-    initials: 'OF',
-    role: 'Engineer',
-    status: 'active' as const,
-    createdAt: '2026-08-13T14:30:00.000Z',
-    lastActive: '2026-08-14T09:40:00.000Z',
+    id: "usr_02",
+    name: "Omar Farid",
+    email: "omar.f@acme.corp",
+    initials: "OF",
+    role: "Engineer",
+    status: "active" as const,
+    createdAt: "2026-08-13T14:30:00.000Z",
+    lastActive: "2026-08-14T09:40:00.000Z",
   },
   {
-    id: 'usr_03',
-    name: 'Priya Shah',
-    email: 'priya.s@acme.corp',
-    initials: 'PS',
-    role: 'Designer',
-    status: 'away' as const,
-    createdAt: '2026-08-07T08:00:00.000Z',
-    lastActive: '2026-08-13T16:20:00.000Z',
+    id: "usr_03",
+    name: "Priya Shah",
+    email: "priya.s@acme.corp",
+    initials: "PS",
+    role: "Designer",
+    status: "away" as const,
+    createdAt: "2026-08-07T08:00:00.000Z",
+    lastActive: "2026-08-13T16:20:00.000Z",
   },
   {
-    id: 'usr_04',
-    name: 'Leo Park',
-    email: 'leo.park@acme.corp',
-    initials: 'LP',
-    role: 'Member',
-    status: 'offline' as const,
-    createdAt: '2026-07-12T11:00:00.000Z',
-    lastActive: '2026-08-01T15:10:00.000Z',
+    id: "usr_04",
+    name: "Leo Park",
+    email: "leo.park@acme.corp",
+    initials: "LP",
+    role: "Member",
+    status: "offline" as const,
+    createdAt: "2026-07-12T11:00:00.000Z",
+    lastActive: "2026-08-01T15:10:00.000Z",
   },
-]
+];
 
 const commits = [
   {
-    hash: '7a2f1b4',
-    message: 'fix(auth): handle expired refresh tokens gracefully',
-    author: 'maya',
-    time: '2026-08-14T11:42:00.000Z',
+    hash: "7a2f1b4",
+    message: "fix(auth): handle expired refresh tokens gracefully",
+    author: "maya",
+    time: "2026-08-14T11:42:00.000Z",
   },
   {
-    hash: 'c89e023',
-    message: 'feat(billing): add stripe webhook verification',
-    author: 'omar',
-    time: '2026-08-14T08:15:00.000Z',
+    hash: "c89e023",
+    message: "feat(billing): add stripe webhook verification",
+    author: "omar",
+    time: "2026-08-14T08:15:00.000Z",
   },
   {
-    hash: '419d8ea',
-    message: 'chore(deps): bump tailwindcss from 4.2 to 4.3',
-    author: 'renovate',
-    time: '2026-08-13T22:00:00.000Z',
+    hash: "419d8ea",
+    message: "chore(deps): bump tailwindcss from 4.2 to 4.3",
+    author: "renovate",
+    time: "2026-08-13T22:00:00.000Z",
   },
   {
-    hash: '9d3a1f8',
-    message: 'docs(api): update rate limiting headers specification',
-    author: 'priya',
-    time: '2026-08-07T14:30:00.000Z',
+    hash: "9d3a1f8",
+    message: "docs(api): update rate limiting headers specification",
+    author: "priya",
+    time: "2026-08-07T14:30:00.000Z",
   },
-]
+];
 
 const scheduledJobs = [
-  { name: 'Database backup', nextRun: '2026-08-14T12:20:00.000Z', sla: 'normal' as const },
-  { name: 'Weekly analytics sync', nextRun: '2026-08-15T00:00:00.000Z', sla: 'normal' as const },
-  { name: 'Invoice consolidation', nextRun: '2026-08-17T09:00:00.000Z', sla: 'urgent' as const },
-  { name: 'Quarterly compliance audit', nextRun: '2026-09-01T00:00:00.000Z', sla: 'normal' as const },
-]
+  {
+    name: "Database backup",
+    nextRun: "2026-08-14T12:20:00.000Z",
+    sla: "normal" as const,
+  },
+  {
+    name: "Weekly analytics sync",
+    nextRun: "2026-08-15T00:00:00.000Z",
+    sla: "normal" as const,
+  },
+  {
+    name: "Invoice consolidation",
+    nextRun: "2026-08-17T09:00:00.000Z",
+    sla: "urgent" as const,
+  },
+  {
+    name: "Quarterly compliance audit",
+    nextRun: "2026-09-01T00:00:00.000Z",
+    sla: "normal" as const,
+  },
+];
 
 const auditEvents = [
   {
     id: 1,
-    action: 'API key created',
-    target: 'prod_read_only',
-    actor: 'Maya Chen',
-    time: '2026-08-14T11:55:00.000Z',
-    badge: 'Security',
+    action: "API key created",
+    target: "prod_read_only",
+    actor: "Maya Chen",
+    time: "2026-08-14T11:55:00.000Z",
+    badge: "Security",
   },
   {
     id: 2,
-    action: 'Billing plan changed',
-    target: 'Team → Enterprise',
-    actor: 'Priya Shah',
-    time: '2026-08-14T09:12:00.000Z',
-    badge: 'Billing',
+    action: "Billing plan changed",
+    target: "Team → Enterprise",
+    actor: "Priya Shah",
+    time: "2026-08-14T09:12:00.000Z",
+    badge: "Billing",
   },
   {
     id: 3,
-    action: 'Member invited',
-    target: 'alex.k@acme.corp',
-    actor: 'Maya Chen',
-    time: '2026-08-13T17:00:00.000Z',
-    badge: 'Team',
+    action: "Member invited",
+    target: "alex.k@acme.corp",
+    actor: "Maya Chen",
+    time: "2026-08-13T17:00:00.000Z",
+    badge: "Team",
   },
   {
     id: 4,
-    action: 'SSO enforced',
-    target: 'Google Workspace',
-    actor: 'System',
-    time: '2026-08-01T00:00:00.000Z',
-    badge: 'Security',
+    action: "SSO enforced",
+    target: "Google Workspace",
+    actor: "System",
+    time: "2026-08-01T00:00:00.000Z",
+    badge: "Security",
   },
-]
+];
 
-const globalRelease = '2026-08-14T15:30:00.000Z'
+const globalRelease = "2026-08-14T15:30:00.000Z";
 
 export default function RelativeTimeDemo() {
   return (
@@ -153,7 +189,9 @@ export default function RelativeTimeDemo() {
                       </Avatar>
                       <div>
                         <p className="text-sm font-medium">{u.name}</p>
-                        <p className="text-muted-foreground text-xs">{u.email}</p>
+                        <p className="text-muted-foreground text-xs">
+                          {u.email}
+                        </p>
                       </div>
                     </div>
                   </TableCell>
@@ -161,22 +199,33 @@ export default function RelativeTimeDemo() {
                     <span className="text-muted-foreground inline-flex items-center gap-1.5 text-xs">
                       <span
                         className={cn(
-                          'size-1.5 rounded-full',
-                          u.status === 'active'
-                            ? 'bg-emerald-500'
-                            : u.status === 'away'
-                              ? 'bg-amber-500'
-                              : 'bg-muted-foreground',
+                          "size-1.5 rounded-full",
+                          u.status === "active"
+                            ? "bg-emerald-500"
+                            : u.status === "away"
+                              ? "bg-amber-500"
+                              : "bg-muted-foreground",
                         )}
                       />
-                      <span>{u.status === 'active' ? 'Active' : u.status === 'away' ? 'Away' : 'Offline'}</span>
+                      <span>
+                        {u.status === "active"
+                          ? "Active"
+                          : u.status === "away"
+                            ? "Away"
+                            : "Offline"}
+                      </span>
                     </span>
                   </TableCell>
                   <TableCell>
                     <Badge variant="outline">{u.role}</Badge>
                   </TableCell>
                   <TableCell>
-                    <RelativeTime date={u.createdAt} now={now} locale="en" formatStyle="short" />
+                    <RelativeTime
+                      date={u.createdAt}
+                      now={now}
+                      locale="en"
+                      formatStyle="short"
+                    />
                   </TableCell>
                   <TableCell className="text-right">
                     <RelativeTime date={u.lastActive} now={now} locale="en" />
@@ -196,25 +245,43 @@ export default function RelativeTimeDemo() {
           <Chip variant="filled" className="gap-1.5">
             <Clock className="size-3" aria-hidden="true" />
             <span>Synced</span>
-            <RelativeTime date="2026-08-14T11:58:00.000Z" now={now} locale="en" formatStyle="narrow" />
+            <RelativeTime
+              date="2026-08-14T11:58:00.000Z"
+              now={now}
+              locale="en"
+              formatStyle="narrow"
+            />
           </Chip>
 
           <Chip variant="outlined" className="gap-1.5">
             <RefreshCw className="size-3" aria-hidden="true" />
             <span>Last polled:</span>
-            <RelativeTime date="2026-08-14T11:50:00.000Z" now={now} locale="en" formatStyle="short" />
+            <RelativeTime
+              date="2026-08-14T11:50:00.000Z"
+              now={now}
+              locale="en"
+              formatStyle="short"
+            />
           </Chip>
 
           <Badge variant="secondary" className="gap-1">
             <UserCheck className="size-3" aria-hidden="true" />
             <span>Verified</span>
-            <RelativeTime date="2026-08-13T10:00:00.000Z" now={now} locale="en" />
+            <RelativeTime
+              date="2026-08-13T10:00:00.000Z"
+              now={now}
+              locale="en"
+            />
           </Badge>
 
           <Badge variant="destructive" className="gap-1">
             <AlertCircle className="size-3" aria-hidden="true" />
             <span>Failed</span>
-            <RelativeTime date="2026-08-14T11:15:00.000Z" now={now} locale="en" />
+            <RelativeTime
+              date="2026-08-14T11:15:00.000Z"
+              now={now}
+              locale="en"
+            />
           </Badge>
         </div>
       </Story>
@@ -235,10 +302,19 @@ export default function RelativeTimeDemo() {
                     <p className="text-sm font-medium">{e.action}</p>
                   </div>
                   <p className="text-muted-foreground text-xs">
-                    Target: <span className="text-foreground font-mono">{e.target}</span> · Actor: {e.actor}
+                    Target:{" "}
+                    <span className="text-foreground font-mono">
+                      {e.target}
+                    </span>{" "}
+                    · Actor: {e.actor}
                   </p>
                 </div>
-                <RelativeTime date={e.time} now={now} locale="en" className="shrink-0 text-xs" />
+                <RelativeTime
+                  date={e.time}
+                  now={now}
+                  locale="en"
+                  className="shrink-0 text-xs"
+                />
               </CardContent>
             </Card>
           ))}
@@ -258,15 +334,26 @@ export default function RelativeTimeDemo() {
           </CardHeader>
           <CardContent className="divide-y p-0">
             {commits.map((c) => (
-              <div key={c.hash} className="flex items-center justify-between gap-4 px-6 py-3 text-sm">
+              <div
+                key={c.hash}
+                className="flex items-center justify-between gap-4 px-6 py-3 text-sm"
+              >
                 <div className="flex min-w-0 items-center gap-3">
                   <Kbd>{c.hash}</Kbd>
                   <span className="truncate">{c.message}</span>
                 </div>
                 <div className="flex shrink-0 items-center gap-2">
-                  <span className="text-muted-foreground font-mono text-xs">@{c.author}</span>
+                  <span className="text-muted-foreground font-mono text-xs">
+                    @{c.author}
+                  </span>
                   <span className="text-muted-foreground text-xs">·</span>
-                  <RelativeTime date={c.time} now={now} locale="en" formatStyle="narrow" className="text-xs" />
+                  <RelativeTime
+                    date={c.time}
+                    now={now}
+                    locale="en"
+                    formatStyle="narrow"
+                    className="text-xs"
+                  />
                 </div>
               </div>
             ))}
@@ -285,12 +372,19 @@ export default function RelativeTimeDemo() {
                 <div>
                   <p className="text-sm font-medium">{job.name}</p>
                   <p className="text-muted-foreground mt-1 text-xs">
-                    Scheduled for{' '}
-                    <RelativeTime date={job.nextRun} now={now} locale="en" className="text-foreground font-medium" />
+                    Scheduled for{" "}
+                    <RelativeTime
+                      date={job.nextRun}
+                      now={now}
+                      locale="en"
+                      className="text-foreground font-medium"
+                    />
                   </p>
                 </div>
-                <Badge variant={job.sla === 'urgent' ? 'destructive' : 'secondary'}>
-                  {job.sla === 'urgent' ? 'High priority' : 'Queued'}
+                <Badge
+                  variant={job.sla === "urgent" ? "destructive" : "secondary"}
+                >
+                  {job.sla === "urgent" ? "High priority" : "Queued"}
                 </Badge>
               </CardContent>
             </Card>
@@ -307,17 +401,23 @@ export default function RelativeTimeDemo() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Globe className="text-primary size-4" aria-hidden="true" />
-                <CardTitle className="text-sm font-semibold">v2.4.0 Global Deployment</CardTitle>
+                <CardTitle className="text-sm font-semibold">
+                  v2.4.0 Global Deployment
+                </CardTitle>
               </div>
               <Badge variant="outline">
                 <RelativeTime date={globalRelease} now={now} locale="en" />
               </Badge>
             </div>
-            <CardDescription>Target release scheduled in 3 hours 30 minutes.</CardDescription>
+            <CardDescription>
+              Target release scheduled in 3 hours 30 minutes.
+            </CardDescription>
           </CardHeader>
           <CardContent className="divide-y p-0">
             <div className="flex items-center justify-between px-6 py-2.5 text-sm">
-              <span className="text-muted-foreground">Universal Coordinated Time (UTC)</span>
+              <span className="text-muted-foreground">
+                Universal Coordinated Time (UTC)
+              </span>
               <RelativeTime
                 date={globalRelease}
                 now={now}
@@ -371,7 +471,9 @@ export default function RelativeTimeDemo() {
         <div className="space-y-2">
           <Card className="max-w-md">
             <CardContent className="py-4">
-              <p className="text-muted-foreground text-xs font-medium tracking-wider uppercase">Payment Received</p>
+              <p className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
+                Payment Received
+              </p>
               <p className="mt-0.5 text-lg font-semibold">$4,250.00 USD</p>
               <div className="mt-2 text-xs">
                 <RelativeTime
@@ -395,15 +497,33 @@ export default function RelativeTimeDemo() {
         <div className="grid max-w-lg gap-3 rounded-lg border p-4 text-sm">
           <div className="flex items-center justify-between">
             <span className="text-muted-foreground">Long (default):</span>
-            <RelativeTime date="2026-08-14T09:00:00.000Z" now={now} locale="en" formatStyle="long" numeric="always" />
+            <RelativeTime
+              date="2026-08-14T09:00:00.000Z"
+              now={now}
+              locale="en"
+              formatStyle="long"
+              numeric="always"
+            />
           </div>
           <div className="flex items-center justify-between">
             <span className="text-muted-foreground">Short:</span>
-            <RelativeTime date="2026-08-14T09:00:00.000Z" now={now} locale="en" formatStyle="short" numeric="always" />
+            <RelativeTime
+              date="2026-08-14T09:00:00.000Z"
+              now={now}
+              locale="en"
+              formatStyle="short"
+              numeric="always"
+            />
           </div>
           <div className="flex items-center justify-between">
             <span className="text-muted-foreground">Narrow:</span>
-            <RelativeTime date="2026-08-14T09:00:00.000Z" now={now} locale="en" formatStyle="narrow" numeric="always" />
+            <RelativeTime
+              date="2026-08-14T09:00:00.000Z"
+              now={now}
+              locale="en"
+              formatStyle="narrow"
+              numeric="always"
+            />
           </div>
         </div>
       </Story>
@@ -427,5 +547,5 @@ export default function RelativeTimeDemo() {
         </div>
       </Story>
     </>
-  )
+  );
 }

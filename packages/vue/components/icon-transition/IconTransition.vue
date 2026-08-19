@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref } from 'vue'
-import type { Component, HTMLAttributes } from 'vue'
+import { computed, onBeforeUnmount, ref } from "vue";
+import type { Component, HTMLAttributes } from "vue";
 
 // Self-contained icon-swap control. Click runs an optional async `action`,
 // then flips from `defaultIcon` to `activeIcon` with a spring pop. By default
@@ -20,76 +20,78 @@ import type { Component, HTMLAttributes } from 'vue'
 
 const props = withDefaults(
   defineProps<{
-    defaultIcon: Component
-    activeIcon: Component
+    defaultIcon: Component;
+    activeIcon: Component;
     /** Tailwind size/color applied to the icons. */
-    iconClass?: HTMLAttributes['class']
+    iconClass?: HTMLAttributes["class"];
     /** Async work executed on click before the icon flips. Return `false` to skip the flip. */
-    action?: () => boolean | void | Promise<boolean | void>
+    action?: () => boolean | void | Promise<boolean | void>;
     /** ms before reverting to defaultIcon. Set to `0` (or null) to stay active. */
-    resetAfter?: number | null
+    resetAfter?: number | null;
     /** Pop animation duration in ms (also scales the leave fade). */
-    duration?: number
+    duration?: number;
     /** aria-label shown in default state. */
-    label?: string
+    label?: string;
     /** aria-label shown after activation; falls back to `label`. */
-    activeLabel?: string
+    activeLabel?: string;
     /** Tailwind class applied while active (e.g. "text-success"). */
-    activeClass?: string
+    activeClass?: string;
     /** Render element. `button` adds click handler + focus styling; `span` is purely visual. */
-    as?: 'button' | 'span'
+    as?: "button" | "span";
     /** External control. When provided, this prop wins over internal state. */
-    active?: boolean
+    active?: boolean;
   }>(),
   {
-    iconClass: 'size-4',
+    iconClass: "size-4",
     resetAfter: 1500,
     duration: 240,
-    activeClass: 'text-success',
-    as: 'button',
+    activeClass: "text-success",
+    as: "button",
     active: undefined,
   },
-)
+);
 
 const emit = defineEmits<{
-  activate: []
-  reset: []
-}>()
+  activate: [];
+  reset: [];
+}>();
 
-const internalActive = ref(false)
-const isActive = computed(() => (props.active !== undefined ? props.active : internalActive.value))
+const internalActive = ref(false);
+const isActive = computed(() =>
+  props.active !== undefined ? props.active : internalActive.value,
+);
 
-let timer: ReturnType<typeof setTimeout> | null = null
+let timer: ReturnType<typeof setTimeout> | null = null;
 
 async function trigger() {
   if (props.action) {
-    const result = await props.action()
-    if (result === false) return
+    const result = await props.action();
+    if (result === false) return;
   }
-  internalActive.value = true
-  emit('activate')
-  clearTimer()
+  internalActive.value = true;
+  emit("activate");
+  clearTimer();
   if (props.resetAfter && props.resetAfter > 0) {
-    timer = setTimeout(reset, props.resetAfter)
+    timer = setTimeout(reset, props.resetAfter);
   }
 }
 
 function reset() {
-  internalActive.value = false
-  emit('reset')
-  clearTimer()
+  internalActive.value = false;
+  emit("reset");
+  clearTimer();
 }
 
 function clearTimer() {
   if (timer) {
-    clearTimeout(timer)
-    timer = null
+    clearTimeout(timer);
+    timer = null;
   }
 }
 
-defineExpose({ trigger, reset })
+defineExpose({ trigger, reset });
 
-onBeforeUnmount(clearTimer)
+onBeforeUnmount(clearTimer);
 </script>
 
 <template>
@@ -115,7 +117,11 @@ onBeforeUnmount(clearTimer)
         wrapper takes the layout role and the SVG keeps its intrinsic
         iconClass-driven size. -->
       <span :key="isActive ? 'active' : 'default'" class="icon-transition-slot">
-        <component :is="isActive ? activeIcon : defaultIcon" :class="iconClass" aria-hidden="true" />
+        <component
+          :is="isActive ? activeIcon : defaultIcon"
+          :class="iconClass"
+          aria-hidden="true"
+        />
       </span>
     </Transition>
   </component>
@@ -137,10 +143,12 @@ onBeforeUnmount(clearTimer)
   transform-origin: center;
 }
 .icon-transition-enter-active {
-  animation: icon-transition-pop var(--it-duration, 240ms) cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation: icon-transition-pop var(--it-duration, 240ms)
+    cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 .icon-transition-leave-active {
-  animation: icon-transition-fade calc(var(--it-duration, 240ms) * 0.66) ease-in both;
+  animation: icon-transition-fade calc(var(--it-duration, 240ms) * 0.66) ease-in
+    both;
 }
 @keyframes icon-transition-pop {
   0% {

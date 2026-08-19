@@ -1,4 +1,4 @@
-import Story from '../../components/story/Story'
+import Story from "../../components/story/Story";
 import {
   Breadcrumb,
   BreadcrumbEllipsis,
@@ -7,9 +7,14 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@react-registry/breadcrumb'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@react-registry/dropdown-menu'
-import { ChevronDown, Home, Slash } from 'lucide-react'
+} from "@react-registry/breadcrumb";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@react-registry/dropdown-menu";
+import { ChevronDown, Home, Slash } from "lucide-react";
 
 export default function BreadcrumbDemo() {
   return (
@@ -35,7 +40,10 @@ export default function BreadcrumbDemo() {
         </Breadcrumb>
       </Story>
 
-      <Story title="With leading icon" description="Wrap a Lucide icon in BreadcrumbLink for an iconic Home root.">
+      <Story
+        title="With leading icon"
+        description="Wrap a Lucide icon in BreadcrumbLink for an iconic Home root."
+      >
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -99,7 +107,10 @@ export default function BreadcrumbDemo() {
         </div>
       </Story>
 
-      <Story title="Long path with ellipsis" description="Use BreadcrumbEllipsis to collapse middle segments visually.">
+      <Story
+        title="Long path with ellipsis"
+        description="Use BreadcrumbEllipsis to collapse middle segments visually."
+      >
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -185,5 +196,5 @@ export default function BreadcrumbDemo() {
         </Breadcrumb>
       </Story>
     </>
-  )
+  );
 }

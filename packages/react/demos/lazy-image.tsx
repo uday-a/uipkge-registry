@@ -1,22 +1,24 @@
-import Story from '../../components/story/Story'
-import { Button } from '@react-registry/button'
-import { Img } from '@react-registry/lazy-image'
-import { useState } from 'react'
+import Story from "../../components/story/Story";
+import { Button } from "@react-registry/button";
+import { Img } from "@react-registry/lazy-image";
+import { useState } from "react";
 
 const galleryItems = Array.from({ length: 12 }, (_, i) => ({
   id: i,
   src: `https://picsum.photos/seed/uipkge-${i}/600/400`,
   alt: `Stock photo ${i + 1}`,
-}))
+}));
 
 export default function LazyImageDemo() {
-  const [swapSrc, setSwapSrc] = useState('https://picsum.photos/seed/uipkge-swap-a/800/450')
+  const [swapSrc, setSwapSrc] = useState(
+    "https://picsum.photos/seed/uipkge-swap-a/800/450",
+  );
   function swap() {
     setSwapSrc((prev) =>
-      prev.includes('swap-a')
-        ? 'https://picsum.photos/seed/uipkge-swap-b/800/450'
-        : 'https://picsum.photos/seed/uipkge-swap-a/800/450',
-    )
+      prev.includes("swap-a")
+        ? "https://picsum.photos/seed/uipkge-swap-b/800/450"
+        : "https://picsum.photos/seed/uipkge-swap-a/800/450",
+    );
   }
 
   return (
@@ -27,7 +29,13 @@ export default function LazyImageDemo() {
       >
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           {galleryItems.slice(0, 6).map((item) => (
-            <Img key={item.id} src={item.src} alt={item.alt} aspectRatio="3/2" className="rounded-md" />
+            <Img
+              key={item.id}
+              src={item.src}
+              alt={item.alt}
+              aspectRatio="3/2"
+              className="rounded-md"
+            />
           ))}
         </div>
       </Story>
@@ -64,7 +72,9 @@ export default function LazyImageDemo() {
       >
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <p className="text-muted-foreground mb-2 text-xs">cover (default)</p>
+            <p className="text-muted-foreground mb-2 text-xs">
+              cover (default)
+            </p>
             <Img
               src="https://picsum.photos/seed/uipkge-cover/400/600"
               alt="Cover example"
@@ -92,7 +102,12 @@ export default function LazyImageDemo() {
         <div className="grid grid-cols-3 gap-3">
           <div>
             <p className="text-muted-foreground mb-2 text-xs">No fallback</p>
-            <Img src="https://example.invalid/missing.jpg" alt="Broken" aspectRatio="1/1" className="rounded-md" />
+            <Img
+              src="https://example.invalid/missing.jpg"
+              alt="Broken"
+              aspectRatio="1/1"
+              className="rounded-md"
+            />
           </div>
           <div>
             <p className="text-muted-foreground mb-2 text-xs">Fallback URL</p>
@@ -143,11 +158,18 @@ export default function LazyImageDemo() {
             <Button size="sm" onClick={swap}>
               Swap image
             </Button>
-            <span className="text-muted-foreground self-center text-xs">{swapSrc.split('/').slice(-3).join('/')}</span>
+            <span className="text-muted-foreground self-center text-xs">
+              {swapSrc.split("/").slice(-3).join("/")}
+            </span>
           </div>
-          <Img src={swapSrc} alt="Swappable" aspectRatio="16/9" className="rounded-md" />
+          <Img
+            src={swapSrc}
+            alt="Swappable"
+            aspectRatio="16/9"
+            className="rounded-md"
+          />
         </div>
       </Story>
     </>
-  )
+  );
 }

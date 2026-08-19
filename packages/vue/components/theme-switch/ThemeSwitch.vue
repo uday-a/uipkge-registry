@@ -1,70 +1,83 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { ChevronDown, Monitor, Moon, Palette, Sparkles, Sun } from 'lucide-vue-next'
-import { SectionCard } from '@/components/ui/section-card'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { computed } from "vue";
+import {
+  ChevronDown,
+  Monitor,
+  Moon,
+  Palette,
+  Sparkles,
+  Sun,
+} from "lucide-vue-next";
+import { SectionCard } from "@/components/ui/section-card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-type Theme = 'light' | 'dark' | 'system' | 'black'
-type Variant = 'cards' | 'icons' | 'icon-only' | 'dropdown' | 'pill' | 'pill-4' | 'switch'
+type Theme = "light" | "dark" | "system" | "black";
+type Variant =
+  "cards" | "icons" | "icon-only" | "dropdown" | "pill" | "pill-4" | "switch";
 
 const ICONS: Record<Theme, any> = {
   light: Sun,
   dark: Moon,
   system: Monitor,
   black: Sparkles,
-}
+};
 
 const LABELS: Record<Theme, string> = {
-  light: 'Light',
-  dark: 'Dark',
-  system: 'System',
-  black: 'Black',
-}
+  light: "Light",
+  dark: "Dark",
+  system: "System",
+  black: "Black",
+};
 
 const VARIANT_OPTIONS: Record<Variant, Theme[]> = {
-  cards: ['light', 'dark', 'system'],
-  icons: ['light', 'dark', 'system'],
-  'icon-only': ['light', 'dark'],
-  dropdown: ['light', 'dark', 'system'],
-  pill: ['light', 'dark', 'system'],
-  'pill-4': ['system', 'light', 'dark', 'black'],
-  switch: ['light', 'dark'],
-}
+  cards: ["light", "dark", "system"],
+  icons: ["light", "dark", "system"],
+  "icon-only": ["light", "dark"],
+  dropdown: ["light", "dark", "system"],
+  pill: ["light", "dark", "system"],
+  "pill-4": ["system", "light", "dark", "black"],
+  switch: ["light", "dark"],
+};
 
 const props = withDefaults(
   defineProps<{
-    modelValue: Theme
-    variant?: Variant
-    title?: string
-    description?: string
-    class?: string
+    modelValue: Theme;
+    variant?: Variant;
+    title?: string;
+    description?: string;
+    class?: string;
   }>(),
-  { variant: 'cards' },
-)
+  { variant: "cards" },
+);
 
-const emit = defineEmits<{ 'update:modelValue': [Theme] }>()
+const emit = defineEmits<{ "update:modelValue": [Theme] }>();
 
-const options = computed(() => VARIANT_OPTIONS[props.variant])
+const options = computed(() => VARIANT_OPTIONS[props.variant]);
 const activeIndex = computed(() => {
-  const i = options.value.indexOf(props.modelValue)
-  return i === -1 ? 0 : i
-})
+  const i = options.value.indexOf(props.modelValue);
+  return i === -1 ? 0 : i;
+});
 
 const indicatorStyle = computed(() => ({
   width: `calc((100% - 4px) / ${options.value.length})`,
   transform: `translateX(calc(${activeIndex.value} * 100%))`,
-}))
+}));
 
 const switchThumbStyle = computed(() => ({
-  transform: `translateX(${props.modelValue === 'dark' ? '36px' : '4px'})`,
-}))
+  transform: `translateX(${props.modelValue === "dark" ? "36px" : "4px"})`,
+}));
 
 function set(t: Theme) {
-  emit('update:modelValue', t)
+  emit("update:modelValue", t);
 }
 function cycle() {
-  const next = options.value[(activeIndex.value + 1) % options.value.length]
-  if (next) emit('update:modelValue', next)
+  const next = options.value[(activeIndex.value + 1) % options.value.length];
+  if (next) emit("update:modelValue", next);
 }
 </script>
 
@@ -79,7 +92,11 @@ function cycle() {
     <template #header-action>
       <Palette class="text-muted-foreground size-5" />
     </template>
-    <div class="grid grid-cols-3 gap-2" role="radiogroup" :aria-label="title ?? 'Theme'">
+    <div
+      class="grid grid-cols-3 gap-2"
+      role="radiogroup"
+      :aria-label="title ?? 'Theme'"
+    >
       <button
         type="button"
         v-for="t in options"
@@ -88,11 +105,17 @@ function cycle() {
         :aria-checked="modelValue === t"
         class="focus-visible:ring-ring rounded-md border p-3 text-left transition focus:outline-none focus-visible:ring-2 focus-visible:outline-none"
         :class="
-          modelValue === t ? 'border-primary ring-primary bg-primary/5 ring-1' : 'border-border hover:bg-muted/50'
+          modelValue === t
+            ? 'border-primary ring-primary bg-primary/5 ring-1'
+            : 'border-border hover:bg-muted/50'
         "
         @click="set(t)"
       >
-        <component :is="ICONS[t]" class="text-muted-foreground mb-2 size-4" aria-hidden="true" />
+        <component
+          :is="ICONS[t]"
+          class="text-muted-foreground mb-2 size-4"
+          aria-hidden="true"
+        />
         <p class="text-xs font-medium">{{ LABELS[t] }}</p>
       </button>
     </div>
@@ -103,7 +126,10 @@ function cycle() {
     v-else-if="variant === 'icons'"
     role="radiogroup"
     :aria-label="title ?? 'Theme'"
-    :class="['border-border bg-card inline-flex items-center gap-0.5 rounded-md border p-0.5', $props.class]"
+    :class="[
+      'border-border bg-card inline-flex items-center gap-0.5 rounded-md border p-0.5',
+      $props.class,
+    ]"
   >
     <button
       type="button"
@@ -165,7 +191,12 @@ function cycle() {
       </button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end" class="min-w-[140px]">
-      <DropdownMenuItem v-for="t in options" :key="t" @select="set(t)" @click="set(t)">
+      <DropdownMenuItem
+        v-for="t in options"
+        :key="t"
+        @select="set(t)"
+        @click="set(t)"
+      >
         <component :is="ICONS[t]" class="mr-2 size-4" aria-hidden="true" />
         <span>{{ LABELS[t] }}</span>
       </DropdownMenuItem>
@@ -177,7 +208,10 @@ function cycle() {
     v-else-if="variant === 'pill' || variant === 'pill-4'"
     role="radiogroup"
     :aria-label="title ?? 'Theme'"
-    :class="['border-border bg-card relative inline-flex w-full max-w-md rounded-full border p-0.5', $props.class]"
+    :class="[
+      'border-border bg-card relative inline-flex w-full max-w-md rounded-full border p-0.5',
+      $props.class,
+    ]"
   >
     <span
       aria-hidden
@@ -192,7 +226,11 @@ function cycle() {
       :aria-checked="modelValue === t"
       :aria-label="LABELS[t]"
       class="focus-visible:ring-ring relative z-[1] inline-flex h-7 flex-1 items-center justify-center gap-1.5 rounded-full px-3 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
-      :class="modelValue === t ? 'text-primary-foreground' : 'text-muted-foreground hover:text-foreground'"
+      :class="
+        modelValue === t
+          ? 'text-primary-foreground'
+          : 'text-muted-foreground hover:text-foreground'
+      "
       @click="set(t)"
     >
       <component :is="ICONS[t]" class="size-3.5" aria-hidden="true" />

@@ -1,1 +1,5 @@
-export { WordCloudChart, type WordCloudChartProps, type WordDatum } from './WordCloudChart'
+export {
+  WordCloudChart,
+  type WordCloudChartProps,
+  type WordDatum,
+} from "./WordCloudChart";

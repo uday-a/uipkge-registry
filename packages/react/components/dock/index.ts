@@ -1,1 +1,1 @@
-export { Dock, type DockProps, type DockItem } from './Dock'
+export { Dock, type DockProps, type DockItem } from "./Dock";

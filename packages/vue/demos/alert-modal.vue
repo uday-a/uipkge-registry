@@ -1,27 +1,27 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { AlertModal } from '@/components/ui/alert-modal'
-import { Button } from '@/components/ui/button'
-import { Trash2 } from 'lucide-vue-next'
+import { ref } from "vue";
+import { AlertModal } from "@/components/ui/alert-modal";
+import { Button } from "@/components/ui/button";
+import { Trash2 } from "lucide-vue-next";
 
 // Confirm-with-trigger
-const open1 = ref(false)
+const open1 = ref(false);
 
 // Controlled (no trigger slot)
-const externalOpen = ref(false)
+const externalOpen = ref(false);
 
 // Async action
-const deleting = ref(false)
-const deleteOpen = ref(false)
+const deleting = ref(false);
+const deleteOpen = ref(false);
 async function handleDelete() {
-  deleting.value = true
-  await new Promise((r) => setTimeout(r, 1200))
-  deleting.value = false
-  deleteOpen.value = false
+  deleting.value = true;
+  await new Promise((r) => setTimeout(r, 1200));
+  deleting.value = false;
+  deleteOpen.value = false;
 }
 
 // Slot-based extras
-const slotsOpen = ref(false)
+const slotsOpen = ref(false);
 </script>
 
 <template>
@@ -134,7 +134,9 @@ const slotsOpen = ref(false)
     description="Drive open state externally — common when the modal is summoned from a menu, keyboard shortcut, or after an async event."
   >
     <div class="flex items-center gap-3">
-      <Button variant="outline" @click="externalOpen = true">Open externally</Button>
+      <Button variant="outline" @click="externalOpen = true"
+        >Open externally</Button
+      >
       <AlertModal
         v-model:open="externalOpen"
         title="Continue without saving?"
@@ -143,7 +145,9 @@ const slotsOpen = ref(false)
         tone="destructive"
         @action="externalOpen = false"
       />
-      <span class="text-muted-foreground text-xs">open = {{ externalOpen }}</span>
+      <span class="text-muted-foreground text-xs"
+        >open = {{ externalOpen }}</span
+      >
     </div>
   </Story>
 
@@ -169,9 +173,15 @@ const slotsOpen = ref(false)
       </ul>
 
       <template #actions>
-        <Button variant="outline" @click="slotsOpen = false">Stay on plan</Button>
-        <Button variant="ghost" @click="slotsOpen = false">Downgrade to Free</Button>
-        <Button variant="destructive" @click="slotsOpen = false">Cancel anyway</Button>
+        <Button variant="outline" @click="slotsOpen = false"
+          >Stay on plan</Button
+        >
+        <Button variant="ghost" @click="slotsOpen = false"
+          >Downgrade to Free</Button
+        >
+        <Button variant="destructive" @click="slotsOpen = false"
+          >Cancel anyway</Button
+        >
       </template>
     </AlertModal>
   </Story>

@@ -1,5 +1,5 @@
-import Story from '../../components/story/Story'
-import { Card, CardContent } from '@react-registry/card'
+import Story from "../../components/story/Story";
+import { Card, CardContent } from "@react-registry/card";
 import {
   Carousel,
   CarouselContent,
@@ -9,27 +9,36 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from '@react-registry/carousel'
-import { Quote, Star } from 'lucide-react'
+} from "@react-registry/carousel";
+import { Quote, Star } from "lucide-react";
 
 const slides = [
-  { id: 1, color: 'bg-rose-100 dark:bg-rose-950/40', label: 'Mountains' },
-  { id: 2, color: 'bg-sky-100 dark:bg-sky-950/40', label: 'Ocean' },
-  { id: 3, color: 'bg-emerald-100 dark:bg-emerald-950/40', label: 'Forest' },
-  { id: 4, color: 'bg-amber-100 dark:bg-amber-950/40', label: 'Desert' },
-  { id: 5, color: 'bg-violet-100 dark:bg-violet-950/40', label: 'Aurora' },
-]
+  { id: 1, color: "bg-rose-100 dark:bg-rose-950/40", label: "Mountains" },
+  { id: 2, color: "bg-sky-100 dark:bg-sky-950/40", label: "Ocean" },
+  { id: 3, color: "bg-emerald-100 dark:bg-emerald-950/40", label: "Forest" },
+  { id: 4, color: "bg-amber-100 dark:bg-amber-950/40", label: "Desert" },
+  { id: 5, color: "bg-violet-100 dark:bg-violet-950/40", label: "Aurora" },
+];
 
 const testimonials = [
-  { quote: 'Shipped our dashboard in two days flat.', author: 'Lena · Acme' },
-  { quote: 'Cleanest registry I have used. Period.', author: 'Marcus · Northwind' },
-  { quote: 'Tokens, blocks, components — all sane defaults.', author: 'Priya · Globex' },
-]
+  { quote: "Shipped our dashboard in two days flat.", author: "Lena · Acme" },
+  {
+    quote: "Cleanest registry I have used. Period.",
+    author: "Marcus · Northwind",
+  },
+  {
+    quote: "Tokens, blocks, components — all sane defaults.",
+    author: "Priya · Globex",
+  },
+];
 
 export default function CarouselDemo() {
   return (
     <>
-      <Story title="Default" description="Five-slide horizontal carousel with previous and next controls.">
+      <Story
+        title="Default"
+        description="Five-slide horizontal carousel with previous and next controls."
+      >
         <Carousel className="max-w-md">
           <CarouselContent>
             {Array.from({ length: 5 }).map((_, i) => (
@@ -47,7 +56,10 @@ export default function CarouselDemo() {
         </Carousel>
       </Story>
 
-      <Story title="Vertical orientation" description="Stacks slides top-to-bottom with controls on the vertical axis.">
+      <Story
+        title="Vertical orientation"
+        description="Stacks slides top-to-bottom with controls on the vertical axis."
+      >
         <Carousel orientation="vertical" className="h-[280px] max-w-xs">
           <CarouselContent className="h-[280px]">
             {Array.from({ length: 4 }).map((_, i) => (
@@ -65,14 +77,19 @@ export default function CarouselDemo() {
         </Carousel>
       </Story>
 
-      <Story title="With loop" description="Wraps from the last slide back to the first when navigating past the end.">
+      <Story
+        title="With loop"
+        description="Wraps from the last slide back to the first when navigating past the end."
+      >
         <Carousel opts={{ loop: true }} className="max-w-md">
           <CarouselContent>
             {Array.from({ length: 4 }).map((_, i) => (
               <CarouselItem key={i}>
                 <Card>
                   <CardContent className="flex aspect-[16/9] items-center justify-center p-6">
-                    <span className="text-2xl font-semibold">Loop · Slide {i + 1}</span>
+                    <span className="text-2xl font-semibold">
+                      Loop · Slide {i + 1}
+                    </span>
                   </CardContent>
                 </Card>
               </CarouselItem>
@@ -91,8 +108,15 @@ export default function CarouselDemo() {
           <CarouselContent>
             {slides.map((s) => (
               <CarouselItem key={s.id}>
-                <div className={['flex aspect-[16/9] items-center justify-center rounded-lg', s.color].join(' ')}>
-                  <span className="text-2xl font-semibold tracking-tight">{s.label}</span>
+                <div
+                  className={[
+                    "flex aspect-[16/9] items-center justify-center rounded-lg",
+                    s.color,
+                  ].join(" ")}
+                >
+                  <span className="text-2xl font-semibold tracking-tight">
+                    {s.label}
+                  </span>
                 </div>
               </CarouselItem>
             ))}
@@ -111,11 +135,16 @@ export default function CarouselDemo() {
           <CarouselHeader>
             <div>
               <p className="text-sm font-semibold">What people say</p>
-              <p className="text-muted-foreground text-xs">Recent testimonials</p>
+              <p className="text-muted-foreground text-xs">
+                Recent testimonials
+              </p>
             </div>
             <div className="flex items-center gap-0.5">
               {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className="size-3.5 fill-amber-500 text-amber-500" />
+                <Star
+                  key={i}
+                  className="size-3.5 fill-amber-500 text-amber-500"
+                />
               ))}
             </div>
           </CarouselHeader>
@@ -151,9 +180,16 @@ export default function CarouselDemo() {
             {slides.map((s) => (
               <CarouselItem key={s.id}>
                 <div className="relative overflow-hidden rounded-lg">
-                  <div className={['flex aspect-[4/3] items-end p-4', s.color].join(' ')}>
+                  <div
+                    className={[
+                      "flex aspect-[4/3] items-end p-4",
+                      s.color,
+                    ].join(" ")}
+                  >
                     <div>
-                      <p className="text-xs font-medium tracking-wider uppercase opacity-70">Landscape</p>
+                      <p className="text-xs font-medium tracking-wider uppercase opacity-70">
+                        Landscape
+                      </p>
                       <p className="text-lg font-semibold">{s.label}</p>
                     </div>
                   </div>
@@ -169,5 +205,5 @@ export default function CarouselDemo() {
         </Carousel>
       </Story>
     </>
-  )
+  );
 }

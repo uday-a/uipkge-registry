@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type { RangeCalendarRootEmits, RangeCalendarRootProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
-import { reactiveOmit } from '@vueuse/core'
-import { RangeCalendarRoot, useForwardPropsEmits } from 'reka-ui'
-import { cn } from '@/lib/utils'
+import type { RangeCalendarRootEmits, RangeCalendarRootProps } from "reka-ui";
+import type { HTMLAttributes } from "vue";
+import { reactiveOmit } from "@vueuse/core";
+import { RangeCalendarRoot, useForwardPropsEmits } from "reka-ui";
+import { cn } from "@/lib/utils";
 import {
   RangeCalendarCell,
   RangeCalendarCellTrigger,
@@ -16,15 +16,17 @@ import {
   RangeCalendarHeading,
   RangeCalendarNextButton,
   RangeCalendarPrevButton,
-} from '.'
+} from ".";
 
-const props = defineProps<RangeCalendarRootProps & { class?: HTMLAttributes['class'] }>()
+const props = defineProps<
+  RangeCalendarRootProps & { class?: HTMLAttributes["class"] }
+>();
 
-const emits = defineEmits<RangeCalendarRootEmits>()
+const emits = defineEmits<RangeCalendarRootEmits>();
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegatedProps = reactiveOmit(props, "class");
 
-const forwarded = useForwardPropsEmits(delegatedProps, emits)
+const forwarded = useForwardPropsEmits(delegatedProps, emits);
 </script>
 
 <template>
@@ -54,8 +56,16 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
           </RangeCalendarGridRow>
         </RangeCalendarGridHead>
         <RangeCalendarGridBody>
-          <RangeCalendarGridRow v-for="(weekDates, index) in month.rows" :key="`weekDate-${index}`" class="mt-2 w-full">
-            <RangeCalendarCell v-for="weekDate in weekDates" :key="weekDate.toString()" :date="weekDate">
+          <RangeCalendarGridRow
+            v-for="(weekDates, index) in month.rows"
+            :key="`weekDate-${index}`"
+            class="mt-2 w-full"
+          >
+            <RangeCalendarCell
+              v-for="weekDate in weekDates"
+              :key="weekDate.toString()"
+              :date="weekDate"
+            >
               <RangeCalendarCellTrigger :day="weekDate" :month="month.value" />
             </RangeCalendarCell>
           </RangeCalendarGridRow>

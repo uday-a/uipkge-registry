@@ -12,6 +12,7 @@ In UIPKGE, the **components are the product**, not an npm package. Source code i
 ## Installation
 
 ### Vue 3.5 / Nuxt 4
+
 ```bash
 # Bootstrap Tailwind tokens and utilities
 npx shadcn-vue@latest add https://uipkge.dev/r/vue/init.json -y
@@ -21,6 +22,7 @@ npx shadcn-vue@latest add https://uipkge.dev/r/vue/button.json -y
 ```
 
 ### React 19 / Next.js 16
+
 ```bash
 # Bootstrap Tailwind tokens and utilities
 npx shadcn@latest add https://uipkge.dev/r/react/init.json

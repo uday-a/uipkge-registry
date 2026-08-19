@@ -1,21 +1,22 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { CircularProgress } from '@/components/ui/circular-progress'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Check, Upload, Loader2 } from 'lucide-vue-next'
+import { ref, onMounted, onBeforeUnmount } from "vue";
+import { CircularProgress } from "@/components/ui/circular-progress";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Check, Upload, Loader2 } from "lucide-vue-next";
 
-const uploadProgress = ref(0)
-let uploadTimer: number | undefined
+const uploadProgress = ref(0);
+let uploadTimer: number | undefined;
 
 onMounted(() => {
   uploadTimer = window.setInterval(() => {
-    uploadProgress.value = uploadProgress.value >= 100 ? 0 : uploadProgress.value + 4
-  }, 400)
-})
+    uploadProgress.value =
+      uploadProgress.value >= 100 ? 0 : uploadProgress.value + 4;
+  }, 400);
+});
 
 onBeforeUnmount(() => {
-  if (uploadTimer) window.clearInterval(uploadTimer)
-})
+  if (uploadTimer) window.clearInterval(uploadTimer);
+});
 </script>
 
 <template>
@@ -35,7 +36,13 @@ onBeforeUnmount(() => {
       </Card>
       <Card>
         <CardContent class="flex items-center gap-4 p-5">
-          <CircularProgress :value="42" size="lg" color="#3b82f6" track-color="#dbeafe" show-value />
+          <CircularProgress
+            :value="42"
+            size="lg"
+            color="#3b82f6"
+            track-color="#dbeafe"
+            show-value
+          />
           <div>
             <p class="text-2xl font-semibold tabular-nums">42%</p>
             <p class="text-muted-foreground text-xs">Quarterly goal</p>
@@ -51,7 +58,11 @@ onBeforeUnmount(() => {
   >
     <Card class="max-w-md">
       <CardContent class="flex items-center gap-4 p-5">
-        <CircularProgress :value="uploadProgress" size="lg" :color="uploadProgress >= 100 ? '#22c55e' : undefined">
+        <CircularProgress
+          :value="uploadProgress"
+          size="lg"
+          :color="uploadProgress >= 100 ? '#22c55e' : undefined"
+        >
           <Check v-if="uploadProgress >= 100" class="size-7 text-emerald-500" />
           <Loader2 v-else class="text-muted-foreground size-6 animate-spin" />
         </CircularProgress>
@@ -61,7 +72,11 @@ onBeforeUnmount(() => {
             <p class="truncate text-sm font-medium">quarterly-report.xlsx</p>
           </div>
           <p class="text-muted-foreground mt-1 text-xs">
-            {{ uploadProgress >= 100 ? 'Upload complete' : `Uploading… ${uploadProgress}%` }}
+            {{
+              uploadProgress >= 100
+                ? "Upload complete"
+                : `Uploading… ${uploadProgress}%`
+            }}
           </p>
         </div>
       </CardContent>
@@ -98,15 +113,30 @@ onBeforeUnmount(() => {
   >
     <div class="flex items-center gap-8">
       <div class="flex flex-col items-center gap-2">
-        <CircularProgress :value="100" color="#22c55e" track-color="#dcfce7" show-value />
+        <CircularProgress
+          :value="100"
+          color="#22c55e"
+          track-color="#dcfce7"
+          show-value
+        />
         <span class="text-muted-foreground text-xs">Complete</span>
       </div>
       <div class="flex flex-col items-center gap-2">
-        <CircularProgress :value="35" color="#ef4444" track-color="#fee2e2" show-value />
+        <CircularProgress
+          :value="35"
+          color="#ef4444"
+          track-color="#fee2e2"
+          show-value
+        />
         <span class="text-muted-foreground text-xs">At risk</span>
       </div>
       <div class="flex flex-col items-center gap-2">
-        <CircularProgress :value="65" color="#3b82f6" track-color="#dbeafe" show-value />
+        <CircularProgress
+          :value="65"
+          color="#3b82f6"
+          track-color="#dbeafe"
+          show-value
+        />
         <span class="text-muted-foreground text-xs">In progress</span>
       </div>
     </div>
@@ -133,7 +163,9 @@ onBeforeUnmount(() => {
       </CardHeader>
       <CardContent class="flex items-center gap-5">
         <CircularProgress :value="67" size="lg">
-          <span class="text-foreground text-sm font-semibold tabular-nums">4/6</span>
+          <span class="text-foreground text-sm font-semibold tabular-nums"
+            >4/6</span
+          >
         </CircularProgress>
         <ul class="text-muted-foreground flex-1 space-y-1.5 text-sm">
           <li class="text-foreground flex items-center gap-2">

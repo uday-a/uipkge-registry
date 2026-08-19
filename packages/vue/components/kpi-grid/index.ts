@@ -1,1 +1,1 @@
-export { default as KpiGrid } from './KpiGrid.vue'
+export { default as KpiGrid } from "./KpiGrid.vue";

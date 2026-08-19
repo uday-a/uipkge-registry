@@ -1,44 +1,47 @@
 <script setup lang="ts">
-import type { PopoverContentEmits, PopoverContentProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
-import { reactiveOmit } from '@vueuse/core'
-import { PopoverContent, PopoverPortal, useForwardPropsEmits } from 'reka-ui'
-import { inject } from 'vue'
-import { cn } from '@/lib/utils'
-import { POPOVER_INJECTION_KEY } from './context'
+import type { PopoverContentEmits, PopoverContentProps } from "reka-ui";
+import type { HTMLAttributes } from "vue";
+import { reactiveOmit } from "@vueuse/core";
+import { PopoverContent, PopoverPortal, useForwardPropsEmits } from "reka-ui";
+import { inject } from "vue";
+import { cn } from "@/lib/utils";
+import { POPOVER_INJECTION_KEY } from "./context";
 
 defineOptions({
   inheritAttrs: false,
-})
+});
 
-const props = withDefaults(defineProps<PopoverContentProps & { class?: HTMLAttributes['class'] }>(), {
-  align: 'center',
-  sideOffset: 4,
-})
-const emits = defineEmits<PopoverContentEmits>()
+const props = withDefaults(
+  defineProps<PopoverContentProps & { class?: HTMLAttributes["class"] }>(),
+  {
+    align: "center",
+    sideOffset: 4,
+  },
+);
+const emits = defineEmits<PopoverContentEmits>();
 
-const ctx = inject(POPOVER_INJECTION_KEY, null)
+const ctx = inject(POPOVER_INJECTION_KEY, null);
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegatedProps = reactiveOmit(props, "class");
 
-const forwarded = useForwardPropsEmits(delegatedProps, emits)
+const forwarded = useForwardPropsEmits(delegatedProps, emits);
 
 // Compose so closeBehavior still applies when consumers pass their own handlers.
 // Spread after `forwarded` so we replace (not merge-double) the emit wrappers.
 function onPointerDownOutside(e: Event) {
-  const mode = ctx?.closeBehavior.value ?? 'auto'
-  if (mode === 'esc' || mode === 'manual' || mode === 'none') {
-    e.preventDefault()
+  const mode = ctx?.closeBehavior.value ?? "auto";
+  if (mode === "esc" || mode === "manual" || mode === "none") {
+    e.preventDefault();
   }
-  emits('pointerDownOutside', e as never)
+  emits("pointerDownOutside", e as never);
 }
 
 function onEscapeKeyDown(e: KeyboardEvent) {
-  const mode = ctx?.closeBehavior.value ?? 'auto'
-  if (mode === 'click-outside' || mode === 'manual' || mode === 'none') {
-    e.preventDefault()
+  const mode = ctx?.closeBehavior.value ?? "auto";
+  if (mode === "click-outside" || mode === "manual" || mode === "none") {
+    e.preventDefault();
   }
-  emits('escapeKeyDown', e)
+  emits("escapeKeyDown", e);
 }
 </script>
 

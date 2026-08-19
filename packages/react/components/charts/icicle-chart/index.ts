@@ -1,1 +1,5 @@
-export { IcicleChart, type IcicleChartProps, type IcicleNode } from './IcicleChart'
+export {
+  IcicleChart,
+  type IcicleChartProps,
+  type IcicleNode,
+} from "./IcicleChart";

@@ -1,20 +1,22 @@
 <script setup lang="ts">
-import { computed, inject } from 'vue'
-import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
-import { TIMELINE_ITEM_CONTEXT } from './context'
+import { computed, inject } from "vue";
+import type { HTMLAttributes } from "vue";
+import { cn } from "@/lib/utils";
+import { TIMELINE_ITEM_CONTEXT } from "./context";
 
 const props = defineProps<{
-  class?: HTMLAttributes['class']
+  class?: HTMLAttributes["class"];
   /** Manually hide the auto-generated connector line. */
-  hideConnector?: boolean
-}>()
+  hideConnector?: boolean;
+}>();
 
-const item = inject(TIMELINE_ITEM_CONTEXT, null)
-const direction = computed(() => item?.direction.value ?? 'vertical')
-const isFirst = computed(() => item?.isFirst.value ?? true)
-const isLast = computed(() => item?.isLast.value ?? true)
-const showConnector = computed(() => !props.hideConnector && !(isFirst.value && isLast.value))
+const item = inject(TIMELINE_ITEM_CONTEXT, null);
+const direction = computed(() => item?.direction.value ?? "vertical");
+const isFirst = computed(() => item?.isFirst.value ?? true);
+const isLast = computed(() => item?.isLast.value ?? true);
+const showConnector = computed(
+  () => !props.hideConnector && !(isFirst.value && isLast.value),
+);
 </script>
 
 <template>
@@ -28,7 +30,9 @@ const showConnector = computed(() => !props.hideConnector && !(isFirst.value && 
     :class="
       cn(
         'relative shrink-0 self-stretch',
-        direction === 'vertical' ? 'flex w-4 flex-col items-center' : 'flex h-4 flex-row items-center',
+        direction === 'vertical'
+          ? 'flex w-4 flex-col items-center'
+          : 'flex h-4 flex-row items-center',
         props.class,
       )
     "

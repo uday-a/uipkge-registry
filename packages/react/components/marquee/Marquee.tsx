@@ -1,23 +1,23 @@
-'use client'
+"use client";
 
-import * as React from 'react'
-import { cn } from '@/lib/utils'
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
 export interface MarqueeProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Scroll axis. */
-  orientation?: 'horizontal' | 'vertical'
+  orientation?: "horizontal" | "vertical";
   /** Travel direction. */
-  direction?: 'left' | 'right' | 'up' | 'down'
+  direction?: "left" | "right" | "up" | "down";
   /** Animation duration in seconds. Lower = faster. */
-  speed?: number
+  speed?: number;
   /** Pause the animation on hover. */
-  pauseOnHover?: boolean
+  pauseOnHover?: boolean;
   /** Gap between repeated content groups (px). */
-  gap?: number
+  gap?: number;
   /** Number of times the slot content is duplicated for a seamless loop. */
-  repeat?: number
+  repeat?: number;
   /** Hard pause the animation. */
-  paused?: boolean
+  paused?: boolean;
 }
 
 /* ------------------------------------------------------------------ */
@@ -50,18 +50,18 @@ const marqueeCss = `
     animation: none !important;
   }
 }
-`
+`;
 
 function MarqueeStyle() {
-  return <style dangerouslySetInnerHTML={{ __html: marqueeCss }} />
+  return <style dangerouslySetInnerHTML={{ __html: marqueeCss }} />;
 }
 
 const Marquee = React.forwardRef<HTMLDivElement, MarqueeProps>(
   (
     {
       className,
-      orientation = 'horizontal',
-      direction = 'left',
+      orientation = "horizontal",
+      direction = "left",
       speed = 20,
       pauseOnHover = false,
       gap = 16,
@@ -73,41 +73,48 @@ const Marquee = React.forwardRef<HTMLDivElement, MarqueeProps>(
     },
     ref,
   ) => {
-    const isVertical = orientation === 'vertical'
-    const reverse = direction === 'right' || direction === 'down'
+    const isVertical = orientation === "vertical";
+    const reverse = direction === "right" || direction === "down";
 
     const containerClass = React.useMemo(
       () =>
         cn(
-          'group flex overflow-hidden',
-          isVertical ? 'flex-col' : 'flex-row',
-          pauseOnHover ? 'hover:[&>[data-slot=marquee-track]]:[animation-play-state:paused]' : '',
+          "group flex overflow-hidden",
+          isVertical ? "flex-col" : "flex-row",
+          pauseOnHover
+            ? "hover:[&>[data-slot=marquee-track]]:[animation-play-state:paused]"
+            : "",
           className,
         ),
       [isVertical, pauseOnHover, className],
-    )
+    );
 
     const trackClass = React.useMemo(
-      () => cn('flex shrink-0', isVertical ? 'flex-col' : 'flex-row', paused ? '![animation-play-state:paused]' : ''),
+      () =>
+        cn(
+          "flex shrink-0",
+          isVertical ? "flex-col" : "flex-row",
+          paused ? "![animation-play-state:paused]" : "",
+        ),
       [isVertical, paused],
-    )
+    );
 
     const trackStyle = React.useMemo<React.CSSProperties>(
       () => ({
-        gap: 'var(--marquee-gap)',
-        animationName: isVertical ? 'uipkge-marquee-y' : 'uipkge-marquee-x',
+        gap: "var(--marquee-gap)",
+        animationName: isVertical ? "uipkge-marquee-y" : "uipkge-marquee-x",
         animationDuration: `${speed}s`,
-        animationTimingFunction: 'linear',
-        animationIterationCount: 'infinite',
-        animationDirection: reverse ? 'reverse' : 'normal',
+        animationTimingFunction: "linear",
+        animationIterationCount: "infinite",
+        animationDirection: reverse ? "reverse" : "normal",
       }),
       [isVertical, speed, reverse],
-    )
+    );
 
     const containerStyle = React.useMemo<React.CSSProperties>(
-      () => ({ '--marquee-gap': `${gap}px`, ...style }) as React.CSSProperties,
+      () => ({ "--marquee-gap": `${gap}px`, ...style }) as React.CSSProperties,
       [gap, style],
-    )
+    );
 
     return (
       <>
@@ -137,9 +144,9 @@ const Marquee = React.forwardRef<HTMLDivElement, MarqueeProps>(
           ))}
         </div>
       </>
-    )
+    );
   },
-)
-Marquee.displayName = 'Marquee'
+);
+Marquee.displayName = "Marquee";
 
-export { Marquee }
+export { Marquee };

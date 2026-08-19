@@ -9,4 +9,4 @@ export {
   type MapPin,
   type FlowRoute,
   type RegionDataRecord,
-} from './VectorMap.vue'
+} from "./VectorMap.vue";

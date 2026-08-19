@@ -1,101 +1,102 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from 'vue'
-import { provide, computed, ref, nextTick, watch, onMounted } from 'vue'
-import { useId } from 'reka-ui'
-import { useVModel } from '@vueuse/core'
-import { cn } from '@/lib/utils'
-import { Loader, Check, AlertCircle, X } from 'lucide-vue-next'
-import { Label } from '@/components/ui/label'
+import type { HTMLAttributes } from "vue";
+import { provide, computed, ref, nextTick, watch, onMounted } from "vue";
+import { useId } from "reka-ui";
+import { useVModel } from "@vueuse/core";
+import { cn } from "@/lib/utils";
+import { Loader, Check, AlertCircle, X } from "lucide-vue-next";
+import { Label } from "@/components/ui/label";
 
 export interface TextareaProps {
   // Core
-  modelValue?: string | number
-  defaultValue?: string | number
-  label?: string
-  placeholder?: string
-  hint?: string
-  error?: string
-  success?: string
-  messages?: string[]
-  disabled?: boolean
-  readonly?: boolean
-  required?: boolean
-  autofocus?: boolean
-  name?: string
-  id?: string
+  modelValue?: string | number;
+  defaultValue?: string | number;
+  label?: string;
+  placeholder?: string;
+  hint?: string;
+  error?: string;
+  success?: string;
+  messages?: string[];
+  disabled?: boolean;
+  readonly?: boolean;
+  required?: boolean;
+  autofocus?: boolean;
+  name?: string;
+  id?: string;
 
   // Variants (Vuetify-style)
-  variant?: 'outlined' | 'filled' | 'solo' | 'underlined' | 'plain'
-  color?: 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success'
-  density?: 'compact' | 'comfortable' | 'default'
+  variant?: "outlined" | "filled" | "solo" | "underlined" | "plain";
+  color?: "primary" | "secondary" | "error" | "warning" | "info" | "success";
+  density?: "compact" | "comfortable" | "default";
 
   // Appearance
-  rounded?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'pill' | 'circle' | 'full'
+  rounded?: "none" | "sm" | "md" | "lg" | "xl" | "pill" | "circle" | "full";
 
   // Auto size (Ant Design API)
-  autoSize?: boolean | { minRows?: number; maxRows?: number }
+  autoSize?: boolean | { minRows?: number; maxRows?: number };
 
   // Legacy auto grow / resize
-  autoGrow?: boolean
-  noResize?: boolean
-  autoResize?: boolean
+  autoGrow?: boolean;
+  noResize?: boolean;
+  autoResize?: boolean;
 
   // Rows -- accept both number and string ("3" vs :rows="3") so unbound
   // attribute usage doesn't trip the Vue prop-type warning.
-  rows?: number | string
-  rowHeight?: number
+  rows?: number | string;
+  rowHeight?: number;
 
   // Prefix/Suffix
-  prefix?: string
-  suffix?: string
+  prefix?: string;
+  suffix?: string;
 
   // Counter (legacy)
-  counter?: boolean | number
+  counter?: boolean | number;
 
   // Show count (Ant Design API)
-  showCount?: boolean | { formatter?: (count: number, maxLength?: number) => string }
+  showCount?:
+    boolean | { formatter?: (count: number, maxLength?: number) => string };
 
   // Max length
-  maxLength?: number
+  maxLength?: number;
 
   // Allow clear
-  allowClear?: boolean
+  allowClear?: boolean;
 
   // Validation
-  rules?: Array<(value: any) => true | string>
-  errorMessages?: string | string[]
-  successMessages?: string | string[]
-  validateOn?: 'blur' | 'input' | 'submit' | 'lazy' | 'blurlazy' | 'inputlazy'
+  rules?: Array<(value: any) => true | string>;
+  errorMessages?: string | string[];
+  successMessages?: string | string[];
+  validateOn?: "blur" | "input" | "submit" | "lazy" | "blurlazy" | "inputlazy";
 
   // States
-  loading?: boolean
-  persistentHint?: boolean
-  persistentError?: boolean
-  persistentPlaceholder?: boolean
-  persistentPrefix?: boolean
-  persistentSuffix?: boolean
+  loading?: boolean;
+  persistentHint?: boolean;
+  persistentError?: boolean;
+  persistentPlaceholder?: boolean;
+  persistentPrefix?: boolean;
+  persistentSuffix?: boolean;
 
   // Misc
-  class?: HTMLAttributes['class']
-  inputClass?: HTMLAttributes['class']
-  labelClass?: HTMLAttributes['class']
-  hintClass?: HTMLAttributes['class']
-  bgColor?: string
-  flat?: boolean
-  bordered?: boolean
+  class?: HTMLAttributes["class"];
+  inputClass?: HTMLAttributes["class"];
+  labelClass?: HTMLAttributes["class"];
+  hintClass?: HTMLAttributes["class"];
+  bgColor?: string;
+  flat?: boolean;
+  bordered?: boolean;
 
   // Browser
-  spellcheck?: boolean
-  autocomplete?: string
+  spellcheck?: boolean;
+  autocomplete?: string;
 
   // Direction
-  direction?: 'ltr' | 'rtl'
+  direction?: "ltr" | "rtl";
 }
 
 const props = withDefaults(defineProps<TextareaProps>(), {
-  variant: 'outlined',
-  density: 'default',
-  rounded: 'none',
+  variant: "outlined",
+  density: "default",
+  rounded: "none",
   rows: 3,
   rowHeight: 24,
   autoGrow: false,
@@ -106,321 +107,337 @@ const props = withDefaults(defineProps<TextareaProps>(), {
   persistentHint: false,
   persistentError: false,
   persistentPlaceholder: false,
-  direction: 'ltr',
-})
+  direction: "ltr",
+});
 
 const emits = defineEmits<{
-  (e: 'update:modelValue', payload: string | number): void
-  (e: 'click:clear'): void
-  (e: 'focus'): void
-  (e: 'blur'): void
-  (e: 'keydown', event: KeyboardEvent): void
-  (e: 'keyup'): void
-}>()
+  (e: "update:modelValue", payload: string | number): void;
+  (e: "click:clear"): void;
+  (e: "focus"): void;
+  (e: "blur"): void;
+  (e: "keydown", event: KeyboardEvent): void;
+  (e: "keyup"): void;
+}>();
 
-const textareaId = props.id ?? `textarea-${useId()}`
-const descriptionId = `${textareaId}-description`
-const messageId = `${textareaId}-message`
+const textareaId = props.id ?? `textarea-${useId()}`;
+const descriptionId = `${textareaId}-description`;
+const messageId = `${textareaId}-message`;
 
-provide('form-item', {
+provide("form-item", {
   id: textareaId,
   descriptionId,
   messageId,
-})
+});
 
 // Internal state
-const internalValue = useVModel(props, 'modelValue', emits, {
+const internalValue = useVModel(props, "modelValue", emits, {
   passive: true,
   defaultValue: props.defaultValue,
-})
-const focused = ref(false)
-const internalErrorMessages = ref<string[]>([])
-const validated = ref(false) // set by validate(); reserved for future rule-success UI
-const textareaRef = ref<HTMLTextAreaElement | null>(null)
+});
+const focused = ref(false);
+const internalErrorMessages = ref<string[]>([]);
+const validated = ref(false); // set by validate(); reserved for future rule-success UI
+const textareaRef = ref<HTMLTextAreaElement | null>(null);
 
 // Auto size
-const autoSizeEnabled = computed(() => props.autoSize !== undefined)
-const anyAutoResize = computed(() => autoSizeEnabled.value || props.autoResize || props.autoGrow)
+const autoSizeEnabled = computed(() => props.autoSize !== undefined);
+const anyAutoResize = computed(
+  () => autoSizeEnabled.value || props.autoResize || props.autoGrow,
+);
 
 const autoSizeConfig = computed<{ minRows?: number; maxRows?: number }>(() => {
-  if (typeof props.autoSize === 'object') {
-    return props.autoSize
+  if (typeof props.autoSize === "object") {
+    return props.autoSize;
   }
-  return {}
-})
+  return {};
+});
 
-const minHeightPx = ref(0)
-const maxHeightPx = ref(Infinity)
+const minHeightPx = ref(0);
+const maxHeightPx = ref(Infinity);
 
 const measureHeights = () => {
-  if (!textareaRef.value) return
-  if (!autoSizeEnabled.value) return
+  if (!textareaRef.value) return;
+  if (!autoSizeEnabled.value) return;
 
-  const el = textareaRef.value
-  const originalValue = el.value
-  const originalRows = el.rows
-  const originalOverflow = el.style.overflowY
+  const el = textareaRef.value;
+  const originalValue = el.value;
+  const originalRows = el.rows;
+  const originalOverflow = el.style.overflowY;
 
-  el.value = ''
-  el.style.overflowY = 'hidden'
+  el.value = "";
+  el.style.overflowY = "hidden";
 
-  const { minRows, maxRows } = autoSizeConfig.value
+  const { minRows, maxRows } = autoSizeConfig.value;
 
   if (minRows) {
-    el.rows = minRows
-    minHeightPx.value = el.scrollHeight
+    el.rows = minRows;
+    minHeightPx.value = el.scrollHeight;
   } else {
-    minHeightPx.value = 0
+    minHeightPx.value = 0;
   }
 
   if (maxRows) {
-    el.rows = maxRows
-    maxHeightPx.value = el.scrollHeight
+    el.rows = maxRows;
+    maxHeightPx.value = el.scrollHeight;
   } else {
-    maxHeightPx.value = Infinity
+    maxHeightPx.value = Infinity;
   }
 
-  el.value = originalValue
-  el.rows = originalRows
-  el.style.overflowY = originalOverflow
+  el.value = originalValue;
+  el.rows = originalRows;
+  el.style.overflowY = originalOverflow;
 
-  autoResize()
-}
+  autoResize();
+};
 
-watch(() => autoSizeConfig.value, measureHeights, { deep: true })
+watch(() => autoSizeConfig.value, measureHeights, { deep: true });
 
 // Auto grow functionality (legacy)
-const rowsNum = computed(() => Number(props.rows) || 3)
+const rowsNum = computed(() => Number(props.rows) || 3);
 
 const computedRows = computed(() => {
-  if (autoSizeEnabled.value || props.autoResize) return rowsNum.value
-  if (!props.autoGrow) return rowsNum.value
-  if (!textareaRef.value) return rowsNum.value
+  if (autoSizeEnabled.value || props.autoResize) return rowsNum.value;
+  if (!props.autoGrow) return rowsNum.value;
+  if (!textareaRef.value) return rowsNum.value;
 
-  const lineHeight = props.rowHeight
-  const computedHeight = textareaRef.value.scrollHeight
-  const newRows = Math.ceil((computedHeight - lineHeight) / lineHeight) + 1
-  return Math.max(rowsNum.value, newRows)
-})
+  const lineHeight = props.rowHeight;
+  const computedHeight = textareaRef.value.scrollHeight;
+  const newRows = Math.ceil((computedHeight - lineHeight) / lineHeight) + 1;
+  return Math.max(rowsNum.value, newRows);
+});
 
 // Validation
 const validate = () => {
   if (!props.rules || props.rules.length === 0) {
-    validated.value = true
-    return true
+    validated.value = true;
+    return true;
   }
-  internalErrorMessages.value = []
+  internalErrorMessages.value = [];
   for (const rule of props.rules) {
-    const result = rule(internalValue.value)
+    const result = rule(internalValue.value);
     if (result !== true) {
-      internalErrorMessages.value.push(result as string)
+      internalErrorMessages.value.push(result as string);
     }
   }
-  const ok = internalErrorMessages.value.length === 0
-  validated.value = ok
-  return ok
-}
+  const ok = internalErrorMessages.value.length === 0;
+  validated.value = ok;
+  return ok;
+};
 
 // Handle input
 const handleInput = (e: Event) => {
-  const target = e.target as HTMLTextAreaElement
-  internalValue.value = target.value
+  const target = e.target as HTMLTextAreaElement;
+  internalValue.value = target.value;
 
   if (anyAutoResize.value) {
-    autoResize()
+    autoResize();
   }
 
-  if (props.validateOn === 'input' || props.validateOn === 'inputlazy') {
+  if (props.validateOn === "input" || props.validateOn === "inputlazy") {
     // nextTick so internalValue is settled before rules run
-    nextTick(() => validate())
+    nextTick(() => validate());
   }
-}
+};
 
 const autoResize = () => {
-  if (!textareaRef.value) return
-  if (!anyAutoResize.value) return
+  if (!textareaRef.value) return;
+  if (!anyAutoResize.value) return;
 
-  const el = textareaRef.value
+  const el = textareaRef.value;
 
-  el.style.height = 'auto'
-  let newHeight = el.scrollHeight
+  el.style.height = "auto";
+  let newHeight = el.scrollHeight;
 
   if (minHeightPx.value && newHeight < minHeightPx.value) {
-    newHeight = minHeightPx.value
+    newHeight = minHeightPx.value;
   }
 
   if (newHeight > maxHeightPx.value) {
-    newHeight = maxHeightPx.value
-    el.style.overflowY = 'auto'
+    newHeight = maxHeightPx.value;
+    el.style.overflowY = "auto";
   } else {
-    el.style.overflowY = 'hidden'
+    el.style.overflowY = "hidden";
   }
 
-  el.style.height = `${newHeight}px`
-}
+  el.style.height = `${newHeight}px`;
+};
 
 // Handle clear
 const handleClear = () => {
-  internalValue.value = ''
-  emits('click:clear')
+  internalValue.value = "";
+  emits("click:clear");
   nextTick(() => {
-    autoResize()
-    textareaRef.value?.focus()
-  })
-}
+    autoResize();
+    textareaRef.value?.focus();
+  });
+};
 
 // Handle focus/blur
 const handleFocus = () => {
-  focused.value = true
-  emits('focus')
-}
+  focused.value = true;
+  emits("focus");
+};
 
 const handleBlur = () => {
-  focused.value = false
-  if (props.validateOn === 'blur' || props.validateOn === 'blurlazy') {
-    validate()
+  focused.value = false;
+  if (props.validateOn === "blur" || props.validateOn === "blurlazy") {
+    validate();
   }
-  emits('blur')
-}
+  emits("blur");
+};
 
 // Compute error/success messages
 const computedErrorMessages = computed(() => {
   if (props.errorMessages) {
-    return Array.isArray(props.errorMessages) ? props.errorMessages : [props.errorMessages]
+    return Array.isArray(props.errorMessages)
+      ? props.errorMessages
+      : [props.errorMessages];
   }
   if (props.error) {
-    return [props.error]
+    return [props.error];
   }
-  return internalErrorMessages.value
-})
+  return internalErrorMessages.value;
+});
 
 const computedSuccessMessages = computed(() => {
   if (props.successMessages) {
-    return Array.isArray(props.successMessages) ? props.successMessages : [props.successMessages]
+    return Array.isArray(props.successMessages)
+      ? props.successMessages
+      : [props.successMessages];
   }
   if (props.success) {
-    return [props.success]
+    return [props.success];
   }
-  return []
-})
+  return [];
+});
 
-const hasError = computed(() => computedErrorMessages.value.length > 0)
+const hasError = computed(() => computedErrorMessages.value.length > 0);
 // Success messages are authoritative when provided by the consumer; `validated`
 // only gates rule-based success (set after a passing validate() call).
-const hasSuccess = computed(() => computedSuccessMessages.value.length > 0)
+const hasSuccess = computed(() => computedSuccessMessages.value.length > 0);
 
 // Counter (legacy)
 const computedCounter = computed(() => {
-  if (typeof props.counter === 'number') return props.counter
-  if (props.counter) return props.maxLength ?? 100
-  return null
-})
+  if (typeof props.counter === "number") return props.counter;
+  if (props.counter) return props.maxLength ?? 100;
+  return null;
+});
 
-const currentLength = computed(() => String(internalValue.value ?? '').length)
+const currentLength = computed(() => String(internalValue.value ?? "").length);
 
 // Show count (Ant Design API)
 const showCountEnabled = computed(() => {
-  return props.showCount !== undefined && props.showCount !== false
-})
+  return props.showCount !== undefined && props.showCount !== false;
+});
 
-const showCountConfig = computed<{ formatter?: (count: number, maxLength?: number) => string }>(() => {
-  if (typeof props.showCount === 'object') {
-    return props.showCount
+const showCountConfig = computed<{
+  formatter?: (count: number, maxLength?: number) => string;
+}>(() => {
+  if (typeof props.showCount === "object") {
+    return props.showCount;
   }
-  return {}
-})
+  return {};
+});
 
 const countText = computed(() => {
-  const formatter = showCountConfig.value.formatter
+  const formatter = showCountConfig.value.formatter;
   if (formatter) {
-    return formatter(currentLength.value, props.maxLength)
+    return formatter(currentLength.value, props.maxLength);
   }
   if (props.maxLength !== undefined) {
-    return `${currentLength.value} / ${props.maxLength}`
+    return `${currentLength.value} / ${props.maxLength}`;
   }
-  return `${currentLength.value}`
-})
+  return `${currentLength.value}`;
+});
 
 // Allow clear
 const showClear = computed(() => {
-  return props.allowClear && !props.disabled && !props.readonly && String(internalValue.value ?? '').length > 0
-})
+  return (
+    props.allowClear &&
+    !props.disabled &&
+    !props.readonly &&
+    String(internalValue.value ?? "").length > 0
+  );
+});
 
 // Variant classes
 const variantClasses = computed(() => {
-  const base = 'w-full transition-colors duration-200'
+  const base = "w-full transition-colors duration-200";
 
   switch (props.variant) {
-    case 'outlined':
+    case "outlined":
       return cn(
         base,
-        'border-2 rounded-lg',
-        focused.value ? 'border-primary ring-2 ring-primary/20' : 'border-input',
-        hasError.value && 'border-destructive focus:border-destructive focus:ring-destructive/20',
-      )
-    case 'filled':
+        "border-2 rounded-lg",
+        focused.value
+          ? "border-primary ring-2 ring-primary/20"
+          : "border-input",
+        hasError.value &&
+          "border-destructive focus:border-destructive focus:ring-destructive/20",
+      );
+    case "filled":
       return cn(
         base,
-        'border-b-2 bg-muted/50 rounded-t-lg',
-        focused.value ? 'border-primary bg-muted' : 'border-transparent',
-        hasError.value && 'border-destructive',
-      )
-    case 'solo':
+        "border-b-2 bg-muted/50 rounded-t-lg",
+        focused.value ? "border-primary bg-muted" : "border-transparent",
+        hasError.value && "border-destructive",
+      );
+    case "solo":
       return cn(
         base,
-        'rounded-lg shadow-sm',
-        focused.value ? 'shadow-md' : 'shadow-sm',
-        'bg-card border border-transparent',
-      )
-    case 'underlined':
+        "rounded-lg shadow-sm",
+        focused.value ? "shadow-md" : "shadow-sm",
+        "bg-card border border-transparent",
+      );
+    case "underlined":
       return cn(
         base,
-        'border-b-2 rounded-none border-x-0 border-t-0 px-0',
-        focused.value ? 'border-primary' : 'border-muted-foreground/30',
-        hasError.value && 'border-destructive',
-      )
-    case 'plain':
-      return cn(base, 'border-0 bg-transparent')
+        "border-b-2 rounded-none border-x-0 border-t-0 px-0",
+        focused.value ? "border-primary" : "border-muted-foreground/30",
+        hasError.value && "border-destructive",
+      );
+    case "plain":
+      return cn(base, "border-0 bg-transparent");
     default:
-      return base
+      return base;
   }
-})
+});
 
 // Density classes
 const densityClasses = computed(() => {
   switch (props.density) {
-    case 'compact':
-      return 'text-sm min-h-8'
-    case 'comfortable':
-      return 'text-base min-h-10'
-    case 'default':
+    case "compact":
+      return "text-sm min-h-8";
+    case "comfortable":
+      return "text-base min-h-10";
+    case "default":
     default:
-      return 'text-base min-h-12'
+      return "text-base min-h-12";
   }
-})
+});
 
 // Resize classes
 const resizeClasses = computed(() => {
-  if (props.noResize) return 'resize-none'
-  if (anyAutoResize.value) return 'resize-none'
-  return 'resize-y'
-})
+  if (props.noResize) return "resize-none";
+  if (anyAutoResize.value) return "resize-none";
+  return "resize-y";
+});
 
 // Watch for programmatic value changes to trigger auto-resize
 watch(internalValue, () => {
   if (anyAutoResize.value) {
-    nextTick(() => autoResize())
+    nextTick(() => autoResize());
   }
-})
+});
 
 onMounted(() => {
   nextTick(() => {
-    measureHeights()
+    measureHeights();
     if (anyAutoResize.value) {
-      autoResize()
+      autoResize();
     }
-  })
-})
+  });
+});
 </script>
 
 <template>
@@ -468,7 +485,7 @@ onMounted(() => {
         :id="textareaId"
         :ref="
           (el) => {
-            textareaRef = el as HTMLTextAreaElement
+            textareaRef = el as HTMLTextAreaElement;
           }
         "
         :value="internalValue"
@@ -482,7 +499,9 @@ onMounted(() => {
         :spellcheck="spellcheck"
         :maxlength="maxLength"
         :rows="computedRows"
-        :aria-describedby="hasError || hasSuccess || hint ? descriptionId : undefined"
+        :aria-describedby="
+          hasError || hasSuccess || hint ? descriptionId : undefined
+        "
         :aria-invalid="hasError || undefined"
         :class="
           cn(
@@ -526,15 +545,24 @@ onMounted(() => {
       </button>
 
       <!-- Loading spinner -->
-      <div v-if="loading" class="absolute top-3 right-3 flex items-center justify-center">
+      <div
+        v-if="loading"
+        class="absolute top-3 right-3 flex items-center justify-center"
+      >
         <Loader class="text-muted-foreground size-4 animate-spin" />
       </div>
 
       <!-- Success/Error indicators -->
-      <div v-if="hasSuccess && !loading" class="text-success absolute top-3 right-3 flex items-center justify-center">
+      <div
+        v-if="hasSuccess && !loading"
+        class="text-success absolute top-3 right-3 flex items-center justify-center"
+      >
         <Check class="size-4" aria-hidden="true" />
       </div>
-      <div v-if="hasError && !loading" class="text-destructive absolute top-3 right-3 flex items-center justify-center">
+      <div
+        v-if="hasError && !loading"
+        class="text-destructive absolute top-3 right-3 flex items-center justify-center"
+      >
         <AlertCircle class="size-4" aria-hidden="true" />
       </div>
 
@@ -542,7 +570,10 @@ onMounted(() => {
       <div
         v-if="showCountEnabled"
         class="text-muted-foreground pointer-events-none absolute right-3 bottom-1.5 text-xs"
-        :class="{ 'text-destructive': props.maxLength !== undefined && currentLength > props.maxLength }"
+        :class="{
+          'text-destructive':
+            props.maxLength !== undefined && currentLength > props.maxLength,
+        }"
       >
         {{ countText }}
       </div>

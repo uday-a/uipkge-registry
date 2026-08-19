@@ -1,32 +1,32 @@
 <script setup lang="ts">
 // SegmentedGauge lives in a charts subdir (Nuxt auto-imports it by filename;
 // it's not re-exported from the charts index), so import the file directly.
-import SegmentedGauge from '@/components/ui/charts/segmented-gauge/SegmentedGauge.vue'
+import SegmentedGauge from "@/components/ui/charts/segmented-gauge/SegmentedGauge.vue";
 
 const browsers = [
-  { value: 76.1, label: 'Chrome' },
-  { value: 13.4, label: 'Safari' },
-  { value: 6.2, label: 'Firefox' },
-  { value: 3.4, label: 'Edge' },
-]
+  { value: 76.1, label: "Chrome" },
+  { value: 13.4, label: "Safari" },
+  { value: 6.2, label: "Firefox" },
+  { value: 3.4, label: "Edge" },
+];
 
 const regions = [
-  { value: 42, color: 'var(--chart-1)', label: 'AMER' },
-  { value: 31, color: 'var(--chart-2)', label: 'EMEA' },
-  { value: 18, color: 'var(--chart-3)', label: 'APAC' },
-  { value: 9, color: 'var(--chart-5)', label: 'LATAM' },
-]
+  { value: 42, color: "var(--chart-1)", label: "AMER" },
+  { value: 31, color: "var(--chart-2)", label: "EMEA" },
+  { value: 18, color: "var(--chart-3)", label: "APAC" },
+  { value: 9, color: "var(--chart-5)", label: "LATAM" },
+];
 
 const sentiment = [
-  { value: 64, color: '#34d399', label: 'Positive' },
-  { value: 24, color: '#94a3b8', label: 'Neutral' },
-  { value: 12, color: '#fb7185', label: 'Negative' },
-]
+  { value: 64, color: "#34d399", label: "Positive" },
+  { value: 24, color: "#94a3b8", label: "Neutral" },
+  { value: 12, color: "#fb7185", label: "Negative" },
+];
 
 const splitFifty = [
-  { value: 1, color: 'var(--chart-1)' },
-  { value: 1, color: 'var(--chart-2)' },
-]
+  { value: 1, color: "var(--chart-1)" },
+  { value: 1, color: "var(--chart-2)" },
+];
 </script>
 
 <template>
@@ -77,7 +77,12 @@ const splitFifty = [
     description="Bump stroke to 28 and turn off the background track for a pill-cluster look — works when the chart sits on a dark surface and the muted track would compete with the segments."
   >
     <div class="mx-auto max-w-sm">
-      <SegmentedGauge :segments="splitFifty" :stroke="28" :show-track="false" :gap="6" />
+      <SegmentedGauge
+        :segments="splitFifty"
+        :stroke="28"
+        :show-track="false"
+        :gap="6"
+      />
     </div>
   </Story>
 

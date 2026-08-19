@@ -77,7 +77,8 @@ const activeColorTheme = ref("default");
 const activeRadius = ref("0.5rem");
 const activeViewport = ref("fluid");
 const canvasBg = ref<CanvasBackground>("dots");
-const isInspectorOpen = ref(true);
+const isInspectorOpen = ref(false);
+const isSidebarOpen = ref(true);
 
 // Component Metadata loaded from /r/vue/<name>.json
 const currentMeta = ref<{
@@ -275,6 +276,21 @@ const clearEvents = () => {
   loggedEvents.value = [];
 };
 
+// Global hotkeys: ⌘B / Ctrl+B for sidebar, ⌘J / Ctrl+J for inspector
+const handleKeydown = (e: KeyboardEvent) => {
+  const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
+  const modKey = isMac ? e.metaKey : e.ctrlKey;
+
+  if (modKey && e.key.toLowerCase() === "b") {
+    e.preventDefault();
+    isSidebarOpen.value = !isSidebarOpen.value;
+  }
+  if (modKey && e.key.toLowerCase() === "j") {
+    e.preventDefault();
+    isInspectorOpen.value = !isInspectorOpen.value;
+  }
+};
+
 // Event capture listeners on canvas
 onMounted(() => {
   if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
@@ -282,6 +298,7 @@ onMounted(() => {
   }
   applyTheme();
   loadComponent(selectedId.value);
+  window.addEventListener("keydown", handleKeydown);
 
   const el = previewContainerRef.value;
   if (el) {
@@ -293,6 +310,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
+  window.removeEventListener("keydown", handleKeydown);
   const el = previewContainerRef.value;
   if (el) {
     el.removeEventListener("click", logEvent, { capture: true });
@@ -315,6 +333,7 @@ const activeItemName = computed(() => {
     <WorkbenchSidebar
       :items="items"
       :selected-id="selectedId"
+      :collapsed="!isSidebarOpen"
       @select="selectComponent"
     />
 
@@ -332,6 +351,8 @@ const activeItemName = computed(() => {
         :active-viewport="activeViewport"
         :canvas-bg="canvasBg"
         :is-inspector-open="isInspectorOpen"
+        :is-sidebar-open="isSidebarOpen"
+        @toggle-sidebar="isSidebarOpen = !isSidebarOpen"
         @toggle-theme="toggleTheme"
         @update:active-color-theme="activeColorTheme = $event"
         @update:active-radius="activeRadius = $event"
@@ -344,7 +365,7 @@ const activeItemName = computed(() => {
       <!-- Middle: Canvas Preview Stage -->
       <div
         ref="previewContainerRef"
-        class="flex-1 overflow-y-auto overflow-x-hidden p-6 transition-colors duration-200"
+        class="flex-1 overflow-y-auto overflow-x-hidden p-6 sm:p-8 lg:p-10 transition-colors duration-200"
         :class="[
           canvasBg === 'dots' ? 'canvas-dots' : '',
           canvasBg === 'grid' ? 'canvas-grid' : '',
@@ -357,8 +378,8 @@ const activeItemName = computed(() => {
           class="mx-auto transition-all duration-300"
           :class="[
             activeViewport === 'fluid'
-              ? 'w-full max-w-6xl'
-              : 'rounded-xl border border-border bg-card p-6 shadow-2xl ring-1 ring-border/50',
+              ? 'w-full max-w-7xl'
+              : 'rounded-xl border border-border bg-card p-6 sm:p-8 shadow-2xl ring-1 ring-border/50',
           ]"
           :style="
             activeViewport !== 'fluid'
