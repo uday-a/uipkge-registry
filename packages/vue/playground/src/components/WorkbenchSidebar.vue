@@ -36,35 +36,13 @@ const emit = defineEmits<{
 
 const search = ref("");
 const searchInputRef = ref<HTMLInputElement | null>(null);
-type FilterTab = "all" | "ui" | "charts";
-const activeTab = ref<FilterTab>("all");
 const collapsedCategories = ref<Record<string, boolean>>({});
 
-// Filter items by search query and type tab
+// Filter items by search query
 const filteredItems = computed(() => {
-  let list = props.items;
-
-  if (activeTab.value === "ui") {
-    list = list.filter(
-      (i) =>
-        i.type === "registry:ui" &&
-        !i.id.includes("chart") &&
-        !i.categories?.includes("chart"),
-    );
-  } else if (activeTab.value === "charts") {
-    list = list.filter(
-      (i) =>
-        i.id.includes("chart") ||
-        i.category === "Charts" ||
-        i.categories?.some(
-          (c) => c.includes("chart") || c.includes("visualization"),
-        ),
-    );
-  }
-
   const q = search.value.toLowerCase().trim();
-  if (!q) return list;
-  return list.filter(
+  if (!q) return props.items;
+  return props.items.filter(
     (i) =>
       i.id.toLowerCase().includes(q) ||
       i.name.toLowerCase().includes(q) ||
@@ -146,48 +124,6 @@ onUnmounted(() => {
           <X class="size-3.5" />
         </button>
       </div>
-
-      <!-- Segmented Type Filter Tabs -->
-      <div
-        class="mt-2.5 grid grid-cols-3 gap-1 rounded-lg border border-border bg-muted/40 p-0.5 text-xs font-medium"
-      >
-        <button
-          type="button"
-          class="rounded-md py-1 text-center transition"
-          :class="
-            activeTab === 'all'
-              ? 'bg-background text-foreground shadow-xs font-semibold'
-              : 'text-muted-foreground hover:text-foreground'
-          "
-          @click="activeTab = 'all'"
-        >
-          All
-        </button>
-        <button
-          type="button"
-          class="rounded-md py-1 text-center transition"
-          :class="
-            activeTab === 'ui'
-              ? 'bg-background text-foreground shadow-xs font-semibold'
-              : 'text-muted-foreground hover:text-foreground'
-          "
-          @click="activeTab = 'ui'"
-        >
-          UI
-        </button>
-        <button
-          type="button"
-          class="rounded-md py-1 text-center transition"
-          :class="
-            activeTab === 'charts'
-              ? 'bg-background text-foreground shadow-xs font-semibold'
-              : 'text-muted-foreground hover:text-foreground'
-          "
-          @click="activeTab = 'charts'"
-        >
-          Charts
-        </button>
-      </div>
     </div>
 
     <!-- Grouped Component List -->
@@ -254,7 +190,7 @@ onUnmounted(() => {
     <div
       class="border-t border-border p-3 bg-muted/20 flex items-center justify-between text-xs text-muted-foreground font-mono"
     >
-      <span>{{ filteredItems.length }} items</span>
+      <span>{{ filteredItems.length }} components</span>
       <span>UIPKGE v1.0</span>
     </div>
   </aside>
