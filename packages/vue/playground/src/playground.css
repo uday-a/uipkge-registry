@@ -1,6 +1,10 @@
 @import "../../styles/tailwind.css";
 @import "../../../shared/styles/color-themes.css";
 
+@source "../../components";
+@source "../../demos";
+@source "../../bootstrap";
+
 /* Canvas background textures */
 .canvas-dots {
   background-image: radial-gradient(
