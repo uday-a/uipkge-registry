@@ -109,7 +109,7 @@ export default function WorkbenchHeader({
             React 19
           </span>
           <a
-            href="http://localhost:5173"
+            href={`http://localhost:5173?c=${componentId}`}
             title="Open Vue 3.5 Playground"
             className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground font-mono transition"
           >

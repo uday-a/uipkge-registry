@@ -59,10 +59,26 @@ const items: SidebarItem[] = demoKeys
       categories: meta?.categories || [],
     };
   })
+  .filter(
+    (item) =>
+      item.type !== "registry:block" &&
+      item.category !== "Blocks" &&
+      !item.id.includes("dashboard-") &&
+      !item.id.includes("block-"),
+  )
   .sort((a, b) => a.name.localeCompare(b.name));
 
 export default function App() {
-  const [selectedId, setSelectedId] = useState("button");
+  const [selectedId, setSelectedId] = useState(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const param = params.get("c") || params.get("component");
+      if (param && items.some((it) => it.id === param)) {
+        return param;
+      }
+    }
+    return items.some((it) => it.id === "button") ? "button" : items[0]?.id || "";
+  });
   const [ActiveComponent, setActiveComponent] =
     useState<React.ComponentType | null>(null);
   const [loading, setLoading] = useState(false);
@@ -152,6 +168,32 @@ export default function App() {
       el.removeEventListener("submit", logEvent, opts);
     };
   }, [remountKey, ActiveComponent]);
+
+  // Sync selectedId to URL query param (?c=<id>)
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      if (url.searchParams.get("c") !== selectedId) {
+        url.searchParams.set("c", selectedId);
+        url.searchParams.delete("component");
+        window.history.replaceState({ component: selectedId }, "", url.toString());
+      }
+    }
+  }, [selectedId]);
+
+  // Handle browser back/forward buttons
+  useEffect(() => {
+    const handlePopState = () => {
+      if (typeof window === "undefined") return;
+      const params = new URLSearchParams(window.location.search);
+      const param = params.get("c") || params.get("component");
+      if (param && items.some((it) => it.id === param)) {
+        setSelectedId(param);
+      }
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
 
   // Load Component
   useEffect(() => {
