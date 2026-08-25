@@ -110,7 +110,9 @@ export default function WorkbenchHeader({
           </span>
           <a
             href={`http://localhost:5173?c=${componentId}`}
-            title="Open Vue 3.5 Playground"
+            target="_blank"
+            rel="noreferrer"
+            title="Open Vue 3.5 Playground on :5173"
             className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground font-mono transition"
           >
             <span>Vue 3.5</span>
