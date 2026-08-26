@@ -78,40 +78,40 @@ const copyCommand = async () => {
 
 <template>
   <header
-    class="flex h-14 shrink-0 items-center justify-between border-b border-border bg-card px-4 z-20"
+    class="flex h-14 shrink-0 items-center justify-between border-b border-border bg-card px-3 sm:px-4 z-20 gap-2 sm:gap-4 overflow-hidden select-none"
   >
     <!-- Left Section: Monogram & Component Info -->
-    <div class="flex items-center gap-2.5 sm:gap-3">
+    <div class="flex items-center gap-2 sm:gap-2.5 shrink-0 min-w-0">
       <!-- Toggle sidebar button -->
       <button
         type="button"
-        class="flex size-8 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-2xs"
+        class="flex size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-2xs cursor-pointer"
         @click="emit('toggleSidebar')"
         :title="isSidebarOpen ? 'Hide sidebar (⌘B)' : 'Show sidebar (⌘B)'"
       >
-        <PanelLeftClose v-if="isSidebarOpen" class="size-4" />
-        <PanelLeft v-else class="size-4" />
+        <PanelLeftClose v-if="isSidebarOpen" class="size-4 shrink-0" />
+        <PanelLeft v-else class="size-4 shrink-0" />
       </button>
 
       <!-- UIPKGE brand & framework switch -->
-      <div class="flex items-center gap-2">
-        <button
-          type="button"
-          class="flex size-8 items-center justify-center rounded-lg bg-foreground text-background font-mono text-xs font-bold shadow-xs hover:opacity-90 transition cursor-pointer"
+      <div class="flex items-center gap-1.5 shrink-0">
+        <div
+          class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-foreground text-background font-mono text-xs font-bold shadow-xs select-none"
           title="UIPKGE Dev Workbench"
         >
           UI
-        </button>
-        <div class="flex items-center gap-1.5">
+        </div>
+        <div class="flex items-center gap-1 shrink-0">
           <span
-            class="rounded-md bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 font-mono text-xs font-semibold text-emerald-600 dark:text-emerald-400"
+            class="inline-flex items-center h-7 px-2 rounded-md bg-emerald-500/10 border border-emerald-500/20 font-mono text-xs font-semibold text-emerald-600 dark:text-emerald-400 whitespace-nowrap shrink-0"
           >
             Vue 3.5
           </span>
           <a
             :href="'http://localhost:5174?c=' + componentId"
             target="_blank"
-            class="hidden sm:inline-flex items-center rounded-md border border-border bg-muted/40 px-2 py-0.5 font-mono text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition"
+            rel="noreferrer"
+            class="hidden sm:inline-flex items-center h-7 px-2 rounded-md border border-border bg-muted/40 font-mono text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition whitespace-nowrap shrink-0"
             title="Open React 19 Playground on :5174"
           >
             React 19 ↗
@@ -119,43 +119,52 @@ const copyCommand = async () => {
         </div>
       </div>
 
-      <div class="hidden sm:block h-4 w-px bg-border" />
+      <div class="hidden sm:block h-4 w-px bg-border shrink-0" />
 
       <!-- Breadcrumbs & metadata -->
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-1.5 min-w-0 shrink">
         <h2
-          class="text-xs sm:text-sm font-semibold tracking-tight text-foreground truncate max-w-[140px] sm:max-w-xs"
+          class="text-xs sm:text-sm font-semibold tracking-tight text-foreground truncate whitespace-nowrap shrink min-w-0 max-w-[110px] md:max-w-[160px] 2xl:max-w-xs"
         >
           {{ componentName }}
         </h2>
         <span
           v-if="categories && categories[0]"
-          class="hidden md:inline-block rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground"
+          class="hidden 2xl:inline-block rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground whitespace-nowrap shrink-0"
         >
           {{ categories[0] }}
         </span>
       </div>
 
-      <!-- Quick copy install command -->
+      <!-- Quick copy install command: Full command on 2xl+, compact icon on smaller -->
       <button
         type="button"
-        class="hidden xl:flex items-center gap-1.5 rounded-lg border border-border bg-background px-2.5 py-1 text-xs font-mono text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs"
+        class="hidden 2xl:flex items-center gap-1.5 rounded-lg border border-border bg-background px-2.5 h-8 text-xs font-mono text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs whitespace-nowrap shrink-0 cursor-pointer"
         @click="copyCommand"
         title="Copy install command"
       >
-        <Check v-if="copied" class="size-3 text-emerald-500" />
-        <Copy v-else class="size-3" />
-        <span>add @uipkge/{{ componentId }}</span>
+        <Check v-if="copied" class="size-3 text-emerald-500 shrink-0" />
+        <Copy v-else class="size-3 shrink-0" />
+        <span class="whitespace-nowrap">add @uipkge/{{ componentId }}</span>
+      </button>
+      <button
+        type="button"
+        class="flex 2xl:hidden size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs cursor-pointer"
+        @click="copyCommand"
+        :title="'Copy add @uipkge/' + componentId"
+      >
+        <Check v-if="copied" class="size-3.5 text-emerald-500 shrink-0" />
+        <Copy v-else class="size-3.5 shrink-0" />
       </button>
     </div>
 
-    <!-- Center Section: Viewport Switcher Toolbar -->
+    <!-- Center Section: Viewport Switcher Toolbar (Visible on xl+) -->
     <div
-      class="hidden md:flex items-center rounded-lg border border-border bg-muted/40 p-0.5 shadow-xs"
+      class="hidden xl:flex items-center rounded-lg border border-border bg-muted/40 p-0.5 shadow-xs shrink-0"
     >
       <button
         type="button"
-        class="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition"
+        class="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition whitespace-nowrap shrink-0 cursor-pointer"
         :class="
           activeViewport === 'fluid'
             ? 'bg-background text-foreground shadow-xs'
@@ -164,13 +173,13 @@ const copyCommand = async () => {
         @click="emit('update:activeViewport', 'fluid')"
         title="Fluid 100%"
       >
-        <Maximize2 class="size-3.5" />
+        <Maximize2 class="size-3.5 shrink-0" />
         <span>Full</span>
       </button>
 
       <button
         type="button"
-        class="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition"
+        class="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition whitespace-nowrap shrink-0 cursor-pointer"
         :class="
           activeViewport === 'desktop'
             ? 'bg-background text-foreground shadow-xs'
@@ -179,13 +188,13 @@ const copyCommand = async () => {
         @click="emit('update:activeViewport', 'desktop')"
         title="Desktop (1280px)"
       >
-        <Monitor class="size-3.5" />
+        <Monitor class="size-3.5 shrink-0" />
         <span>1280</span>
       </button>
 
       <button
         type="button"
-        class="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition"
+        class="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition whitespace-nowrap shrink-0 cursor-pointer"
         :class="
           activeViewport === 'laptop'
             ? 'bg-background text-foreground shadow-xs'
@@ -194,13 +203,13 @@ const copyCommand = async () => {
         @click="emit('update:activeViewport', 'laptop')"
         title="Laptop (1024px)"
       >
-        <Laptop class="size-3.5" />
+        <Laptop class="size-3.5 shrink-0" />
         <span>1024</span>
       </button>
 
       <button
         type="button"
-        class="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition"
+        class="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition whitespace-nowrap shrink-0 cursor-pointer"
         :class="
           activeViewport === 'tablet'
             ? 'bg-background text-foreground shadow-xs'
@@ -209,13 +218,13 @@ const copyCommand = async () => {
         @click="emit('update:activeViewport', 'tablet')"
         title="Tablet (768px)"
       >
-        <Tablet class="size-3.5" />
+        <Tablet class="size-3.5 shrink-0" />
         <span>768</span>
       </button>
 
       <button
         type="button"
-        class="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition"
+        class="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition whitespace-nowrap shrink-0 cursor-pointer"
         :class="
           activeViewport === 'mobile'
             ? 'bg-background text-foreground shadow-xs'
@@ -224,20 +233,20 @@ const copyCommand = async () => {
         @click="emit('update:activeViewport', 'mobile')"
         title="Mobile (375px)"
       >
-        <Smartphone class="size-3.5" />
+        <Smartphone class="size-3.5 shrink-0" />
         <span>375</span>
       </button>
     </div>
 
     <!-- Right Section: Canvas Controls & Theme -->
-    <div class="flex items-center gap-1.5 sm:gap-2">
+    <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
       <!-- Canvas Background Selector -->
       <div
-        class="hidden sm:flex items-center rounded-lg border border-border bg-muted/40 p-0.5 shadow-xs"
+        class="hidden lg:flex items-center rounded-lg border border-border bg-muted/40 p-0.5 shadow-xs shrink-0"
       >
         <button
           type="button"
-          class="flex size-7 items-center justify-center rounded-md transition"
+          class="flex size-7 items-center justify-center rounded-md transition shrink-0 cursor-pointer"
           :class="
             canvasBg === 'dots'
               ? 'bg-background text-foreground shadow-xs'
@@ -246,11 +255,11 @@ const copyCommand = async () => {
           @click="emit('update:canvasBg', 'dots')"
           title="Dot pattern canvas"
         >
-          <CircleDot class="size-3.5" />
+          <CircleDot class="size-3.5 shrink-0" />
         </button>
         <button
           type="button"
-          class="flex size-7 items-center justify-center rounded-md transition"
+          class="flex size-7 items-center justify-center rounded-md transition shrink-0 cursor-pointer"
           :class="
             canvasBg === 'grid'
               ? 'bg-background text-foreground shadow-xs'
@@ -259,11 +268,11 @@ const copyCommand = async () => {
           @click="emit('update:canvasBg', 'grid')"
           title="Grid pattern canvas"
         >
-          <Grid class="size-3.5" />
+          <Grid class="size-3.5 shrink-0" />
         </button>
         <button
           type="button"
-          class="flex size-7 items-center justify-center rounded-md transition"
+          class="flex size-7 items-center justify-center rounded-md transition shrink-0 cursor-pointer"
           :class="
             canvasBg === 'solid'
               ? 'bg-background text-foreground shadow-xs'
@@ -272,29 +281,29 @@ const copyCommand = async () => {
           @click="emit('update:canvasBg', 'solid')"
           title="Solid clean canvas"
         >
-          <Square class="size-3.5" />
+          <Square class="size-3.5 shrink-0" />
         </button>
       </div>
 
       <!-- Remount Canvas Button -->
       <button
         type="button"
-        class="flex size-8 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-muted hover:text-foreground transition shadow-xs"
+        class="flex size-8 shrink-0 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-muted hover:text-foreground transition shadow-xs cursor-pointer"
         @click="emit('remount')"
         title="Reset & remount component"
       >
-        <RotateCcw class="size-3.5" />
+        <RotateCcw class="size-3.5 shrink-0" />
       </button>
 
       <!-- Theme Customizer Popover Toggle -->
-      <div class="relative">
+      <div class="relative shrink-0">
         <button
           type="button"
-          class="flex size-8 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-muted hover:text-foreground transition shadow-xs"
+          class="flex size-8 shrink-0 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-muted hover:text-foreground transition shadow-xs cursor-pointer"
           @click="showThemeMenu = !showThemeMenu"
           title="Customize Theme & Radius"
         >
-          <Palette class="size-3.5" />
+          <Palette class="size-3.5 shrink-0" />
         </button>
 
         <!-- Dropdown Popover -->
@@ -369,20 +378,20 @@ const copyCommand = async () => {
       <!-- Dark / Light Mode Toggle -->
       <button
         type="button"
-        class="flex size-8 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs"
+        class="flex size-8 shrink-0 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs cursor-pointer"
         @click="emit('toggleTheme')"
         :title="isDark ? 'Switch to Light' : 'Switch to Dark'"
       >
-        <Sun v-if="isDark" class="size-4" />
-        <Moon v-else class="size-4" />
+        <Sun v-if="isDark" class="size-4 shrink-0" />
+        <Moon v-else class="size-4 shrink-0" />
       </button>
 
-      <div class="h-4 w-px bg-border" />
+      <div class="h-4 w-px bg-border shrink-0" />
 
       <!-- Inspector Toggle Button -->
       <button
         type="button"
-        class="flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition shadow-xs border"
+        class="flex items-center gap-1.5 rounded-md px-2.5 h-8 text-xs font-medium transition shadow-xs border whitespace-nowrap shrink-0 cursor-pointer"
         :class="
           isInspectorOpen
             ? 'bg-primary text-primary-foreground border-primary'
@@ -391,8 +400,8 @@ const copyCommand = async () => {
         @click="emit('update:isInspectorOpen', !isInspectorOpen)"
         title="Toggle Test Bench & Inspector"
       >
-        <Sliders class="size-3.5" />
-        <span class="hidden sm:inline">Test Bench</span>
+        <Sliders class="size-3.5 shrink-0" />
+        <span class="hidden md:inline whitespace-nowrap">Test Bench</span>
       </button>
     </div>
   </header>
