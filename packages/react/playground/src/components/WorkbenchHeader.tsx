@@ -184,7 +184,7 @@ export default function WorkbenchHeader({
               {vp.id === "laptop" && <Laptop className="size-3 shrink-0" />}
               {vp.id === "tablet" && <Tablet className="size-3 shrink-0" />}
               {vp.id === "mobile" && <Smartphone className="size-3 shrink-0" />}
-              <span>{vp.name}</span>
+              <span className="hidden 2xl:inline">{vp.name}</span>
             </button>
           ))}
         </div>

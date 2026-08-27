@@ -171,10 +171,10 @@ const copyCommand = async () => {
             : 'text-muted-foreground hover:text-foreground'
         "
         @click="emit('update:activeViewport', 'fluid')"
-        title="Fluid 100%"
+        title="Fluid (100%)"
       >
         <Maximize2 class="size-3.5 shrink-0" />
-        <span>Full</span>
+        <span class="hidden 2xl:inline">Full</span>
       </button>
 
       <button
@@ -189,7 +189,7 @@ const copyCommand = async () => {
         title="Desktop (1280px)"
       >
         <Monitor class="size-3.5 shrink-0" />
-        <span>1280</span>
+        <span class="hidden 2xl:inline">1280</span>
       </button>
 
       <button
@@ -204,7 +204,7 @@ const copyCommand = async () => {
         title="Laptop (1024px)"
       >
         <Laptop class="size-3.5 shrink-0" />
-        <span>1024</span>
+        <span class="hidden 2xl:inline">1024</span>
       </button>
 
       <button
@@ -219,7 +219,7 @@ const copyCommand = async () => {
         title="Tablet (768px)"
       >
         <Tablet class="size-3.5 shrink-0" />
-        <span>768</span>
+        <span class="hidden 2xl:inline">768</span>
       </button>
 
       <button
@@ -234,7 +234,7 @@ const copyCommand = async () => {
         title="Mobile (375px)"
       >
         <Smartphone class="size-3.5 shrink-0" />
-        <span>375</span>
+        <span class="hidden 2xl:inline">375</span>
       </button>
     </div>
 
