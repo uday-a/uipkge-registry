@@ -293,9 +293,9 @@ const applyTheme = () => {
 
 watch(activeColorTheme, (theme) => {
   if (theme === "default") {
-    delete document.documentElement.dataset.colorTheme;
+    document.documentElement.removeAttribute("data-color-theme");
   } else {
-    document.documentElement.dataset.colorTheme = theme;
+    document.documentElement.setAttribute("data-color-theme", theme);
   }
 });
 
@@ -416,14 +416,20 @@ const activeItemName = computed(() => {
         :active-viewport="activeViewport"
         :canvas-bg="canvasBg"
         :is-inspector-open="isInspectorOpen"
-        :is-sidebar-open="isSidebarOpen"
         @toggle-sidebar="isSidebarOpen = !isSidebarOpen"
         @toggle-theme="toggleTheme"
         @update:active-color-theme="activeColorTheme = $event"
+        @update:activeColorTheme="activeColorTheme = $event"
         @update:active-radius="activeRadius = $event"
+        @update:activeRadius="activeRadius = $event"
         @update:active-viewport="activeViewport = $event"
+        @update:activeViewport="activeViewport = $event"
         @update:canvas-bg="canvasBg = $event"
+        @update:canvasBg="canvasBg = $event"
         @update:is-inspector-open="isInspectorOpen = $event"
+        @update:isInspectorOpen="isInspectorOpen = $event"
+        @update:is-sidebar-open="isSidebarOpen = $event"
+        @update:isSidebarOpen="isSidebarOpen = $event"
         @remount="remount"
       />
 

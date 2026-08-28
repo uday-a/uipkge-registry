@@ -48,6 +48,14 @@ export interface WorkbenchHeaderProps {
   onToggleSidebar?: () => void;
 }
 
+const VIEWPORT_LABELS: Record<string, { title: string; short: string }> = {
+  fluid: { title: "Fluid (100%)", short: "Full" },
+  desktop: { title: "Desktop (1280px)", short: "1280" },
+  laptop: { title: "Laptop (1024px)", short: "1024" },
+  tablet: { title: "Tablet (768px)", short: "768" },
+  mobile: { title: "Mobile (375px)", short: "375" },
+};
+
 export default function WorkbenchHeader({
   componentId,
   componentName,
@@ -84,7 +92,7 @@ export default function WorkbenchHeader({
   };
 
   return (
-    <header className="flex h-14 shrink-0 items-center justify-between border-b border-border bg-card px-3 sm:px-4 select-none z-20 gap-2 sm:gap-4 overflow-hidden">
+    <header className="flex h-14 shrink-0 items-center justify-between border-b border-border bg-card px-3 sm:px-4 select-none z-20 gap-2 sm:gap-4">
       {/* Left: Brand & Component Info */}
       <div className="flex items-center gap-2 sm:gap-2.5 shrink-0 min-w-0">
         {/* Toggle sidebar button */}
@@ -171,20 +179,20 @@ export default function WorkbenchHeader({
             <button
               key={vp.id}
               type="button"
-              title={`${vp.name} (${vp.width === "100%" ? "fluid" : vp.width})`}
-              className={`flex items-center gap-1 rounded-md px-2 py-1 text-xs font-mono transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+              title={VIEWPORT_LABELS[vp.id]?.title || vp.name}
+              className={`flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition whitespace-nowrap shrink-0 cursor-pointer ${
                 activeViewport === vp.id
-                  ? "bg-background text-foreground shadow-xs font-medium"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "bg-background text-foreground shadow-xs font-semibold border border-border/80"
+                  : "text-muted-foreground hover:text-foreground border border-transparent"
               }`}
               onClick={() => onChangeViewport(vp.id)}
             >
-              {vp.id === "fluid" && <Maximize className="size-3 shrink-0" />}
-              {vp.id === "desktop" && <Monitor className="size-3 shrink-0" />}
-              {vp.id === "laptop" && <Laptop className="size-3 shrink-0" />}
-              {vp.id === "tablet" && <Tablet className="size-3 shrink-0" />}
-              {vp.id === "mobile" && <Smartphone className="size-3 shrink-0" />}
-              <span className="hidden 2xl:inline">{vp.name}</span>
+              {vp.id === "fluid" && <Maximize className="size-3.5 shrink-0" />}
+              {vp.id === "desktop" && <Monitor className="size-3.5 shrink-0" />}
+              {vp.id === "laptop" && <Laptop className="size-3.5 shrink-0" />}
+              {vp.id === "tablet" && <Tablet className="size-3.5 shrink-0" />}
+              {vp.id === "mobile" && <Smartphone className="size-3.5 shrink-0" />}
+              <span className="hidden 2xl:inline">{VIEWPORT_LABELS[vp.id]?.short || vp.name}</span>
             </button>
           ))}
         </div>
@@ -196,8 +204,8 @@ export default function WorkbenchHeader({
             title="Dots canvas background"
             className={`flex size-7 shrink-0 items-center justify-center rounded-md transition-colors cursor-pointer ${
               canvasBg === "dots"
-                ? "bg-background text-foreground shadow-xs"
-                : "text-muted-foreground hover:text-foreground"
+                ? "bg-background text-foreground shadow-xs border border-border/80"
+                : "text-muted-foreground hover:text-foreground border border-transparent"
             }`}
             onClick={() => onChangeCanvasBg("dots")}
           >
@@ -208,8 +216,8 @@ export default function WorkbenchHeader({
             title="Grid canvas background"
             className={`flex size-7 shrink-0 items-center justify-center rounded-md transition-colors cursor-pointer ${
               canvasBg === "grid"
-                ? "bg-background text-foreground shadow-xs"
-                : "text-muted-foreground hover:text-foreground"
+                ? "bg-background text-foreground shadow-xs border border-border/80"
+                : "text-muted-foreground hover:text-foreground border border-transparent"
             }`}
             onClick={() => onChangeCanvasBg("grid")}
           >
@@ -220,8 +228,8 @@ export default function WorkbenchHeader({
             title="Solid canvas background"
             className={`flex size-7 shrink-0 items-center justify-center rounded-md transition-colors cursor-pointer ${
               canvasBg === "solid"
-                ? "bg-background text-foreground shadow-xs"
-                : "text-muted-foreground hover:text-foreground"
+                ? "bg-background text-foreground shadow-xs border border-border/80"
+                : "text-muted-foreground hover:text-foreground border border-transparent"
             }`}
             onClick={() => onChangeCanvasBg("solid")}
           >
@@ -233,7 +241,7 @@ export default function WorkbenchHeader({
         <button
           type="button"
           title="Remount component"
-          className="flex size-8 shrink-0 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs cursor-pointer"
+          className="flex size-8 shrink-0 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted active:rotate-180 transition-all duration-300 shadow-xs cursor-pointer"
           onClick={onRemount}
         >
           <RotateCcw className="size-3.5 shrink-0" />
@@ -250,9 +258,17 @@ export default function WorkbenchHeader({
             <Palette className="size-3.5 shrink-0" />
           </button>
 
+          {/* Click outside backdrop */}
+          {showThemePopover && (
+            <div
+              className="fixed inset-0 z-40"
+              onClick={() => setShowThemePopover(false)}
+            />
+          )}
+
           {/* Theme Customizer Popover */}
           {showThemePopover && (
-            <div className="absolute right-0 top-10 w-72 rounded-xl border border-border bg-card p-4 shadow-xl z-50 animate-in fade-in zoom-in-95 duration-100">
+            <div className="absolute right-0 top-11 w-72 rounded-xl border border-border bg-card p-4 shadow-xl z-50 animate-in fade-in zoom-in-95 duration-100">
               <div className="flex items-center justify-between border-b border-border pb-2 mb-3">
                 <span className="text-xs font-semibold text-foreground">
                   Theme Customizer
@@ -272,7 +288,7 @@ export default function WorkbenchHeader({
                     <button
                       key={theme.id}
                       type="button"
-                      className={`group flex flex-col items-center gap-1 rounded-lg border p-1.5 transition ${
+                      className={`group flex flex-col items-center gap-1 rounded-lg border p-1.5 transition cursor-pointer ${
                         activeColorTheme === theme.id
                           ? "border-primary bg-primary/10 shadow-xs"
                           : "border-border/60 hover:border-border hover:bg-muted/40"
@@ -301,9 +317,9 @@ export default function WorkbenchHeader({
                     <button
                       key={r.id}
                       type="button"
-                      className={`rounded-md border py-1 text-xs font-mono transition ${
+                      className={`rounded-md border py-1 text-xs font-mono transition cursor-pointer ${
                         activeRadius === r.value
-                          ? "border-primary bg-primary text-primary-foreground font-medium shadow-xs"
+                          ? "border-primary bg-primary text-primary-foreground font-semibold shadow-xs"
                           : "border-border text-muted-foreground hover:bg-muted hover:text-foreground"
                       }`}
                       onClick={() => onChangeRadius(r.value)}
