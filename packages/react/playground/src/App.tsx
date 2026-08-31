@@ -366,7 +366,7 @@ export default function App() {
     if (!vp || vp.width === "100%") return { width: "100%" };
     return {
       width: vp.width,
-      maxWidth: "100%",
+      flexShrink: 0,
       margin: "0 auto",
       transition: "width 200ms ease-out",
     };

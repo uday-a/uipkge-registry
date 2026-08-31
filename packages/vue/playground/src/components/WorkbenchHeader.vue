@@ -92,14 +92,11 @@ const setRadius = (rad: string) => {
 
 const toggleSidebarAction = () => {
   emit("toggleSidebar");
-  emit("toggle-sidebar");
   emit("update:isSidebarOpen", !props.isSidebarOpen);
-  emit("update:is-sidebar-open", !props.isSidebarOpen);
 };
 
 const toggleThemeAction = () => {
   emit("toggleTheme");
-  emit("toggle-theme");
 };
 
 const toggleInspectorAction = () => {
@@ -197,7 +194,7 @@ const copyCommand = async () => {
         type="button"
         class="flex 2xl:hidden size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs cursor-pointer"
         @click="copyCommand"
-        :title="'Copy add @uipkge/' + componentId"
+        :title="'Copy install command: add @uipkge/' + componentId"
       >
         <Check v-if="copied" class="size-3.5 text-emerald-500 shrink-0" />
         <Copy v-else class="size-3.5 shrink-0" />
@@ -299,7 +296,7 @@ const copyCommand = async () => {
               : 'text-muted-foreground hover:text-foreground border border-transparent'
           "
           @click="setCanvas('dots')"
-          title="Dot pattern canvas"
+          title="Dots canvas background"
         >
           <CircleDot class="size-3.5 shrink-0" />
         </button>
@@ -312,7 +309,7 @@ const copyCommand = async () => {
               : 'text-muted-foreground hover:text-foreground border border-transparent'
           "
           @click="setCanvas('grid')"
-          title="Grid pattern canvas"
+          title="Grid canvas background"
         >
           <Grid class="size-3.5 shrink-0" />
         </button>
@@ -325,7 +322,7 @@ const copyCommand = async () => {
               : 'text-muted-foreground hover:text-foreground border border-transparent'
           "
           @click="setCanvas('solid')"
-          title="Solid clean canvas"
+          title="Solid canvas background"
         >
           <Square class="size-3.5 shrink-0" />
         </button>
@@ -433,7 +430,7 @@ const copyCommand = async () => {
         type="button"
         class="flex size-8 shrink-0 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs cursor-pointer"
         @click="toggleThemeAction"
-        :title="isDark ? 'Switch to Light' : 'Switch to Dark'"
+        :title="isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
       >
         <Sun v-if="isDark" class="size-4 shrink-0" />
         <Moon v-else class="size-4 shrink-0" />
