@@ -145,13 +145,63 @@ Design tokens (Tailwind CSS v4 OKLCH tokens) live in `packages/shared/styles/tai
 
 ---
 
+## 🧱 Contributing Blocks (`registry:block`)
+
+Blocks compose existing UI primitives (`Card`, `Button`, `Badge`, `Input`, `Progress`, etc.) into higher-level domain patterns (e.g. dashboards, settings, metrics).
+
+### Block Authoring Rules
+
+1. **Pure Primitive Composition**:
+   - Primitives abstract mechanics; blocks compose layout.
+   - Blocks must read top-to-bottom at the call site. Spell out tile titles, metrics, badges, and action buttons inline.
+   - **Never create hidden template wrappers** (e.g. no `StatCard` wrapper that takes an `items` array). Use raw `Card` composition.
+2. **Proper Naming & Collision Prevention**:
+   - Use descriptive, lower kebab-case names: `cloud-backup-schedule`, `api-keys`, `workspace-quota`.
+   - Check existing directories under `packages/vue/blocks/` and `packages/react/blocks/` before naming a new block.
+   - Do not reuse or duplicate existing primitive or block names.
+3. **Accurate Manifests & Dependencies**:
+   - Every UI primitive imported in the block (`@/components/ui/<primitive>`) **must** be listed in `registryDependencies` using `https://uipkge.dev/r/<primitive>.json`.
+   - Third-party packages (e.g. `lucide-vue-next` or `lucide-react`) must be listed in `dependencies`.
+4. **Testing Requirements**:
+   - Every block must provide a unit test under `__tests__/<name>.spec.ts` (or `.spec.tsx`) ensuring it renders without crashing and validates key interactive elements.
+
+---
+
+## 🛡️ Contributor & Maintainer Precautions
+
+### Pre-flight Checklist Before Submitting a PR
+- [ ] `bun run typecheck`: TypeScript passes without diagnostics.
+- [ ] `bun test`: All unit tests pass in both frameworks.
+- [ ] `bun run verify`: Sidecar schemas conform to registry spec.
+- [ ] `bun run build`: Registry build succeeds and JSON outputs are clean.
+- [ ] No arbitrary pixel values (`text-[10px]` or hardcoded `#hex` colors). Use semantic OKLCH tokens (`border-border`, `bg-card`, `text-foreground`).
+
+### Maintainer Sync Procedure
+When a community or registry PR is merged into `main` of `uipkge-registry`:
+```bash
+# 1. Inside the main uipkge-ui monorepo:
+# Copy the new block source & sidecar from uipkge-registry:
+cp -r ../uipkge-registry/packages/vue/blocks/<name> packages/registry-vue/blocks/
+cp -r ../uipkge-registry/packages/react/blocks/<name> packages/registry-react/blocks/
+
+# 2. Add companion preview demos in astro-site:
+# apps/astro-site/src/demos/vue/<name>.vue
+# apps/astro-site/src/demos/react/<name>.tsx
+
+# 3. Build & verify monorepo:
+bun run build:registry
+bun run verify
+```
+
+---
+
 ## 📦 Pull Request Guidelines
 
-1. Prefix your PR title with the framework, e.g.:
+1. Prefix your PR title with conventional commits, e.g.:
+   - `feat(block): add cloud-backup-schedule block`
    - `feat(vue): add spotlight-card component`
    - `fix(react): resolve focus trap in dialog`
-   - `style(shared): update warning token palette`
-2. If your PR only implements one framework, add the label `needs-port` in the PR description so community members can pick up the companion port.
-3. Keep PRs focused: one component or fix per pull request.
+2. If your PR only implements one framework, add the note `needs-port` in the PR description so community members can pick up the companion port.
+3. Keep PRs focused: one component, block, or fix per pull request.
 
 Thank you for helping build UIPKGE!

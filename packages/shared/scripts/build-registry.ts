@@ -163,7 +163,11 @@ export async function buildRegistry(cfg: RegistryBuildConfig) {
   await mkdir(OUT_DIR, { recursive: true });
 
   const registryFiles = await fg(
-    ["components/**/*.registry.ts", "bootstrap/**/*.registry.ts"],
+    [
+      "components/**/*.registry.ts",
+      "blocks/**/*.registry.ts",
+      "bootstrap/**/*.registry.ts",
+    ],
     { cwd: ROOT, absolute: true },
   );
   if (registryFiles.length === 0) {
