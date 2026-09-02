@@ -12,6 +12,21 @@ function registryBlocksAlias(): Plugin {
     name: "uipkge-registry-blocks-alias",
     enforce: "pre",
     resolveId(source: string) {
+      if (source.startsWith("@/components/blocks/")) {
+        let name = source.slice("@/components/blocks/".length);
+        if (!name.includes("/")) {
+          const file = name.replace(/\.(tsx?)$/, "");
+          const dir = file.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
+          name = `${dir}/${name}`;
+        }
+        const candidate = path.join(root, "blocks", name);
+        if (existsSync(candidate)) return candidate;
+        if (existsSync(`${candidate}.tsx`)) return `${candidate}.tsx`;
+        if (existsSync(`${candidate}.ts`)) return `${candidate}.ts`;
+        if (existsSync(path.join(candidate, "index.ts"))) return path.join(candidate, "index.ts");
+        if (existsSync(path.join(candidate, "index.tsx"))) return path.join(candidate, "index.tsx");
+        return candidate;
+      }
       if (source.startsWith("@/lib/") && !source.endsWith("utils")) {
         const name = source.slice("@/lib/".length);
         const camel = name.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
