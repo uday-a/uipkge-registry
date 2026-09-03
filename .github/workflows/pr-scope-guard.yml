@@ -1,0 +1,36 @@
+name: PR Scope Guard
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  group: pr-scope-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  scope-guard:
+    name: Validate PR File Boundaries & Primitive Integrity
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout Repository with Full Git History
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+
+      - name: Fetch Target Base Branch
+        run: |
+          git fetch origin ${{ github.base_ref }}:origin/${{ github.base_ref }} || true
+
+      - name: Run Scope & Primitive Protection Check
+        env:
+          GITHUB_BASE_REF: ${{ github.base_ref }}
+        run: |
+          bun run check:scope

@@ -22,6 +22,7 @@
     "verify:vue": "bun --cwd packages/vue verify",
     "verify:react": "bun --cwd packages/react verify",
     "verify": "bun run verify:vue && bun run verify:react",
+    "check:scope": "bun run scripts/check-pr-scope.ts",
     "format": "prettier --write ."
   },
   "devDependencies": {

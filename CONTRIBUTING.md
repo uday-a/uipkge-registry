@@ -170,10 +170,12 @@ Blocks compose existing UI primitives (`Card`, `Button`, `Badge`, `Input`, `Prog
 ## 🛡️ Contributor & Maintainer Precautions
 
 ### Pre-flight Checklist Before Submitting a PR
+- [ ] `bun run check:scope`: Validates that block PRs do NOT touch existing primitives or shared tokens.
 - [ ] `bun run typecheck`: TypeScript passes without diagnostics.
 - [ ] `bun test`: All unit tests pass in both frameworks.
 - [ ] `bun run verify`: Sidecar schemas conform to registry spec.
 - [ ] `bun run build`: Registry build succeeds and JSON outputs are clean.
+- [ ] **Strict Scope Isolation**: Block contributions must ONLY add files under `packages/{vue,react}/blocks/<name>/` and `packages/{vue,react}/demos/<name>.*`. Never modify existing primitives (`components/ui/*`) or shared styles (`packages/shared/*`).
 - [ ] No arbitrary pixel values (`text-[10px]` or hardcoded `#hex` colors). Use semantic OKLCH tokens (`border-border`, `bg-card`, `text-foreground`).
 
 ### Maintainer Sync Procedure
