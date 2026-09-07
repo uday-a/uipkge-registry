@@ -63,10 +63,11 @@ const items: SidebarItem[] = demoKeys
   })
   .filter(
     (item) =>
-      item.type !== "registry:block" &&
-      item.category !== "Blocks" &&
-      !item.id.includes("dashboard-") &&
-      !item.id.includes("block-"),
+      item.id === "cloud-backup-schedule" ||
+      (item.type !== "registry:block" &&
+        item.category !== "Blocks" &&
+        !item.id.includes("dashboard-") &&
+        !item.id.includes("block-")),
   )
   .sort((a, b) => a.name.localeCompare(b.name));
 
