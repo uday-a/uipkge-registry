@@ -4,8 +4,6 @@ import {
   X,
   Layers,
   LayoutGrid,
-  BarChart3,
-  Sparkles,
   ChevronRight,
   ChevronDown,
 } from "lucide-react";
@@ -37,6 +35,54 @@ export default function WorkbenchSidebar({
   >({});
   const searchInputRef = useRef<HTMLInputElement | null>(null);
 
+  const isBlockItem = (item: SidebarItem) =>
+    item.type === "registry:block" ||
+    item.category === "Blocks" ||
+    item.id === "cloud-backup-schedule";
+
+  const componentsList = useMemo(
+    () => items.filter((i) => !isBlockItem(i)),
+    [items]
+  );
+  const blocksList = useMemo(
+    () => items.filter((i) => isBlockItem(i)),
+    [items]
+  );
+
+  const [activeTab, setActiveTab] = useState<"components" | "blocks">(() => {
+    const match = items.find((i) => i.id === selectedId);
+    return match && isBlockItem(match) ? "blocks" : "components";
+  });
+
+  // Sync active tab with selected component
+  useEffect(() => {
+    if (selectedId) {
+      const match = items.find((i) => i.id === selectedId);
+      if (match) {
+        setActiveTab(isBlockItem(match) ? "blocks" : "components");
+      }
+    }
+  }, [selectedId, items]);
+
+  const switchTab = (tab: "components" | "blocks") => {
+    setActiveTab(tab);
+    setSearch("");
+    if (tab === "blocks") {
+      if (!blocksList.some((b) => b.id === selectedId)) {
+        if (blocksList.length > 0) {
+          onSelect(blocksList[0].id);
+        }
+      }
+    } else {
+      if (!componentsList.some((c) => c.id === selectedId)) {
+        const defaultComp = componentsList.some((c) => c.id === "button")
+          ? "button"
+          : componentsList[0]?.id;
+        if (defaultComp) onSelect(defaultComp);
+      }
+    }
+  };
+
   // Keyboard shortcut '/' to focus search
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -55,17 +101,22 @@ export default function WorkbenchSidebar({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  // Items for the current active tab
+  const currentTabItems = useMemo(() => {
+    return activeTab === "blocks" ? blocksList : componentsList;
+  }, [activeTab, blocksList, componentsList]);
+
   // Filter items by search query
   const filteredItems = useMemo(() => {
     const q = search.toLowerCase().trim();
-    if (!q) return items;
-    return items.filter(
+    if (!q) return currentTabItems;
+    return currentTabItems.filter(
       (i) =>
         i.id.toLowerCase().includes(q) ||
         i.name.toLowerCase().includes(q) ||
-        i.categories?.some((c) => c.toLowerCase().includes(q)),
+        i.categories?.some((c) => c.toLowerCase().includes(q))
     );
-  }, [items, search]);
+  }, [currentTabItems, search]);
 
   // Group items by category
   const groupedItems = useMemo(() => {
@@ -104,8 +155,58 @@ export default function WorkbenchSidebar({
           : "w-64"
       }`}
     >
-      {/* Search Header */}
+      {/* Top Header: Components & Blocks Tabs Side by Side + Search Bar */}
       <div className="border-b border-border p-3 space-y-2.5">
+        {/* Tabs Side by Side */}
+        <div className="grid grid-cols-2 gap-1 p-1 bg-muted/60 rounded-lg text-xs font-medium border border-border/50">
+          <button
+            type="button"
+            id="tab-components"
+            className={`flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-md transition cursor-pointer ${
+              activeTab === "components"
+                ? "bg-background text-foreground shadow-xs font-semibold"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+            onClick={() => switchTab("components")}
+          >
+            <Layers className="size-3.5 shrink-0" />
+            <span>Components</span>
+            <span
+              className={`text-[10px] px-1.5 py-0.5 rounded-full font-mono shrink-0 ${
+                activeTab === "components"
+                  ? "bg-muted text-foreground"
+                  : "text-muted-foreground"
+              }`}
+            >
+              {componentsList.length}
+            </span>
+          </button>
+
+          <button
+            type="button"
+            id="tab-blocks"
+            className={`flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-md transition cursor-pointer ${
+              activeTab === "blocks"
+                ? "bg-background text-foreground shadow-xs font-semibold"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+            onClick={() => switchTab("blocks")}
+          >
+            <LayoutGrid className="size-3.5 shrink-0" />
+            <span>Blocks</span>
+            <span
+              className={`text-[10px] px-1.5 py-0.5 rounded-full font-mono shrink-0 ${
+                activeTab === "blocks"
+                  ? "bg-muted text-foreground"
+                  : "text-muted-foreground"
+              }`}
+            >
+              {blocksList.length}
+            </span>
+          </button>
+        </div>
+
+        {/* Search Input */}
         <div className="relative">
           <Search className="absolute left-2.5 top-2.5 size-3.5 text-muted-foreground pointer-events-none" />
           <input
@@ -113,13 +214,17 @@ export default function WorkbenchSidebar({
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search components... (/)"
-            className="w-full rounded-md border border-border bg-background pl-8 pr-7 py-1.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary font-sans"
+            placeholder={
+              activeTab === "blocks"
+                ? "Search blocks... (/)"
+                : "Search components... (/)"
+            }
+            className="w-full rounded-md border border-border bg-background pl-8 pr-7 py-1.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary font-sans shadow-xs"
           />
           {search && (
             <button
               type="button"
-              className="absolute right-2.5 top-2.5 text-muted-foreground hover:text-foreground"
+              className="absolute right-2.5 top-2.5 text-muted-foreground hover:text-foreground cursor-pointer"
               onClick={() => setSearch("")}
             >
               <X className="size-3.5" />
@@ -128,48 +233,46 @@ export default function WorkbenchSidebar({
         </div>
       </div>
 
-      {/* Component Navigation List */}
+      {/* Navigation List */}
       <div className="flex-1 overflow-y-auto p-2 space-y-3">
         {sortedCategories.map((cat) => (
           <div key={cat} className="space-y-1">
-            {/* Category Header Accordion */}
             <button
               type="button"
-              className="flex w-full items-center justify-between px-2 py-1 text-xs font-semibold text-muted-foreground hover:text-foreground tracking-tight transition"
+              className="flex w-full items-center justify-between px-2 py-1 text-xs font-semibold text-muted-foreground hover:text-foreground tracking-tight transition cursor-pointer"
               onClick={() => toggleCategory(cat)}
             >
               <div className="flex items-center gap-1.5">
                 {collapsedCategories[cat] ? (
-                  <ChevronRight className="size-3 text-muted-foreground/60" />
+                  <ChevronRight className="size-3 text-muted-foreground/70 shrink-0" />
                 ) : (
-                  <ChevronDown className="size-3 text-muted-foreground/60" />
+                  <ChevronDown className="size-3 text-muted-foreground/70 shrink-0" />
                 )}
                 <span>{cat}</span>
               </div>
-              <span className="font-mono text-xs text-muted-foreground/60 font-normal">
-                {groupedItems[cat].length}
+              <span className="font-mono text-[10px] text-muted-foreground">
+                {groupedItems[cat]?.length || 0}
               </span>
             </button>
 
-            {/* Category Items */}
             {!collapsedCategories[cat] && (
-              <div className="space-y-0.5 pl-2">
-                {groupedItems[cat].map((item) => (
+              <div className="space-y-0.5 pl-1">
+                {groupedItems[cat]?.map((item) => (
                   <button
                     key={item.id}
                     id={`sidebar-item-${item.id}`}
                     type="button"
-                    className={`group flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-xs text-left transition font-sans ${
+                    onClick={() => onSelect(item.id)}
+                    className={`flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-left text-xs transition group cursor-pointer ${
                       selectedId === item.id
                         ? "bg-primary text-primary-foreground font-medium shadow-xs"
-                        : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
+                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
                     }`}
-                    onClick={() => onSelect(item.id)}
                   >
-                    <span className="truncate">{item.name}</span>
+                    <span className="truncate pr-2">{item.name}</span>
                     {(item.id.includes("chart") ||
                       item.category === "Charts") && (
-                      <span className="text-[11px] opacity-70 shrink-0">
+                      <span className="text-[10px] opacity-70 shrink-0 font-mono">
                         chart
                       </span>
                     )}
@@ -182,14 +285,21 @@ export default function WorkbenchSidebar({
 
         {filteredItems.length === 0 && (
           <div className="py-8 text-center text-xs text-muted-foreground">
-            No components match "{search}"
+            No {activeTab === "blocks" ? "blocks" : "components"} match &quot;{search}&quot;
           </div>
         )}
       </div>
 
-      {/* Footer info */}
-      <div className="border-t border-border p-3 text-xs font-mono text-muted-foreground flex items-center justify-between">
-        <span>{filteredItems.length} components</span>
+      {/* Footer Counter */}
+      <div className="border-t border-border p-3 bg-muted/20 flex items-center justify-between text-xs text-muted-foreground font-mono">
+        <span>
+          {filteredItems.length}{" "}
+          {activeTab === "blocks"
+            ? filteredItems.length === 1
+              ? "block"
+              : "blocks"
+            : "components"}
+        </span>
         <span>UIPKGE v1.0</span>
       </div>
     </aside>

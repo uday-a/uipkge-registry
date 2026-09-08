@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, nextTick } from "vue";
+import { ref, computed, watch, onMounted, onUnmounted } from "vue";
 import {
   Search,
   X,
@@ -38,11 +38,59 @@ const search = ref("");
 const searchInputRef = ref<HTMLInputElement | null>(null);
 const collapsedCategories = ref<Record<string, boolean>>({});
 
+const isBlockItem = (item: SidebarItem) =>
+  item.type === "registry:block" ||
+  item.category === "Blocks" ||
+  item.id === "cloud-backup-schedule";
+
+const componentsList = computed(() => props.items.filter((i) => !isBlockItem(i)));
+const blocksList = computed(() => props.items.filter((i) => isBlockItem(i)));
+
+const activeTab = ref<"components" | "blocks">("components");
+
+// Sync active tab with selected component
+watch(
+  () => props.selectedId,
+  (newId) => {
+    if (newId) {
+      const match = props.items.find((i) => i.id === newId);
+      if (match) {
+        activeTab.value = isBlockItem(match) ? "blocks" : "components";
+      }
+    }
+  },
+  { immediate: true },
+);
+
+function switchTab(tab: "components" | "blocks") {
+  activeTab.value = tab;
+  search.value = "";
+  if (tab === "blocks") {
+    if (!blocksList.value.some((b) => b.id === props.selectedId)) {
+      if (blocksList.value.length > 0) {
+        emit("select", blocksList.value[0].id);
+      }
+    }
+  } else {
+    if (!componentsList.value.some((c) => c.id === props.selectedId)) {
+      const defaultComp = componentsList.value.some((c) => c.id === "button")
+        ? "button"
+        : componentsList.value[0]?.id;
+      if (defaultComp) emit("select", defaultComp);
+    }
+  }
+}
+
+// Items for the current active tab
+const currentTabItems = computed(() => {
+  return activeTab.value === "blocks" ? blocksList.value : componentsList.value;
+});
+
 // Filter items by search query
 const filteredItems = computed(() => {
   const q = search.value.toLowerCase().trim();
-  if (!q) return props.items;
-  return props.items.filter(
+  if (!q) return currentTabItems.value;
+  return currentTabItems.value.filter(
     (i) =>
       i.id.toLowerCase().includes(q) ||
       i.name.toLowerCase().includes(q) ||
@@ -102,17 +150,77 @@ onUnmounted(() => {
         : 'w-64',
     ]"
   >
-    <!-- Search Bar -->
-    <div class="p-3 border-b border-border">
+    <!-- Top Section: Components & Blocks Tabs Side by Side + Search Bar -->
+    <div class="p-3 border-b border-border space-y-2.5">
+      <!-- Tabs Side by Side -->
+      <div
+        class="grid grid-cols-2 gap-1 p-1 bg-muted/60 rounded-lg text-xs font-medium border border-border/50"
+      >
+        <button
+          type="button"
+          id="tab-components"
+          class="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-md transition cursor-pointer"
+          :class="
+            activeTab === 'components'
+              ? 'bg-background text-foreground shadow-xs font-semibold'
+              : 'text-muted-foreground hover:text-foreground'
+          "
+          @click="switchTab('components')"
+        >
+          <Layers class="size-3.5 shrink-0" />
+          <span>Components</span>
+          <span
+            class="text-[10px] px-1.5 py-0.5 rounded-full font-mono shrink-0"
+            :class="
+              activeTab === 'components'
+                ? 'bg-muted text-foreground'
+                : 'text-muted-foreground'
+            "
+          >
+            {{ componentsList.length }}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          id="tab-blocks"
+          class="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-md transition cursor-pointer"
+          :class="
+            activeTab === 'blocks'
+              ? 'bg-background text-foreground shadow-xs font-semibold'
+              : 'text-muted-foreground hover:text-foreground'
+          "
+          @click="switchTab('blocks')"
+        >
+          <LayoutGrid class="size-3.5 shrink-0" />
+          <span>Blocks</span>
+          <span
+            class="text-[10px] px-1.5 py-0.5 rounded-full font-mono shrink-0"
+            :class="
+              activeTab === 'blocks'
+                ? 'bg-muted text-foreground'
+                : 'text-muted-foreground'
+            "
+          >
+            {{ blocksList.length }}
+          </span>
+        </button>
+      </div>
+
+      <!-- Search Bar -->
       <div class="relative">
         <Search
-          class="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground"
+          class="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground pointer-events-none"
         />
         <input
           ref="searchInputRef"
           v-model="search"
           type="text"
-          placeholder="Search components... (/)"
+          :placeholder="
+            activeTab === 'blocks'
+              ? 'Search blocks... (/)'
+              : 'Search components... (/)'
+          "
           class="w-full rounded-lg border border-border bg-background pl-8 pr-7 py-1.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary shadow-xs"
         />
         <button
@@ -126,7 +234,7 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <!-- Grouped Component List -->
+    <!-- Grouped Component / Block List -->
     <div class="flex-1 overflow-y-auto p-2 space-y-3">
       <div
         v-for="[category, groupItems] in groupedItems"
@@ -158,7 +266,7 @@ onUnmounted(() => {
             :key="item.id"
             :id="`sidebar-item-${item.id}`"
             type="button"
-            class="flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-left text-xs transition group"
+            class="flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-left text-xs transition group cursor-pointer"
             :class="
               selectedId === item.id
                 ? 'bg-primary text-primary-foreground font-medium shadow-xs'
@@ -182,7 +290,7 @@ onUnmounted(() => {
         v-if="filteredItems.length === 0"
         class="py-12 text-center text-xs text-muted-foreground"
       >
-        No components match "{{ search }}"
+        No {{ activeTab === 'blocks' ? 'blocks' : 'components' }} match "{{ search }}"
       </div>
     </div>
 
@@ -190,7 +298,16 @@ onUnmounted(() => {
     <div
       class="border-t border-border p-3 bg-muted/20 flex items-center justify-between text-xs text-muted-foreground font-mono"
     >
-      <span>{{ filteredItems.length }} components</span>
+      <span>
+        {{ filteredItems.length }}
+        {{
+          activeTab === 'blocks'
+            ? filteredItems.length === 1
+              ? 'block'
+              : 'blocks'
+            : 'components'
+        }}
+      </span>
       <span>UIPKGE v1.0</span>
     </div>
   </aside>
