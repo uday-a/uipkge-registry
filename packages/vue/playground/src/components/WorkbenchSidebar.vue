@@ -147,7 +147,7 @@ onUnmounted(() => {
     :class="[
       collapsed
         ? 'w-0 overflow-hidden border-r-0 p-0 opacity-0 pointer-events-none'
-        : 'w-64',
+        : 'w-72',
     ]"
   >
     <!-- Top Section: Components & Blocks Tabs Side by Side + Search Bar -->

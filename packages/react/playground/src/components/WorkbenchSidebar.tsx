@@ -152,7 +152,7 @@ export default function WorkbenchSidebar({
       className={`flex shrink-0 flex-col border-r border-border bg-card select-none transition-all duration-200 ${
         collapsed
           ? "w-0 overflow-hidden border-r-0 p-0 opacity-0 pointer-events-none"
-          : "w-64"
+          : "w-72"
       }`}
     >
       {/* Top Header: Components & Blocks Tabs Side by Side + Search Bar */}
