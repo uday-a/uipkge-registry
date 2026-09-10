@@ -449,7 +449,9 @@ const activeItemName = computed(() => {
           :class="[
             activeViewport === 'fluid'
               ? 'w-full max-w-7xl'
-              : 'rounded-xl border border-border bg-card p-6 sm:p-8 shadow-2xl ring-1 ring-border/50',
+              : activeViewport === 'mobile'
+                ? 'rounded-xl border border-border bg-card p-3 shadow-2xl ring-1 ring-border/50'
+                : 'rounded-xl border border-border bg-card p-6 sm:p-8 shadow-2xl ring-1 ring-border/50',
           ]"
           :style="
             activeViewport !== 'fluid'

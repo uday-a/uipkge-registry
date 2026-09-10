@@ -147,7 +147,7 @@ onUnmounted(() => {
     :class="[
       collapsed
         ? 'w-0 overflow-hidden border-r-0 p-0 opacity-0 pointer-events-none'
-        : 'w-72',
+        : 'w-80',
     ]"
   >
     <!-- Top Section: Components & Blocks Tabs Side by Side + Search Bar -->
@@ -159,18 +159,19 @@ onUnmounted(() => {
         <button
           type="button"
           id="tab-components"
-          class="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-md transition cursor-pointer"
+          class="flex items-center justify-center gap-1.5 py-1.5 px-1.5 rounded-md transition cursor-pointer whitespace-nowrap min-w-0 select-none"
           :class="
             activeTab === 'components'
               ? 'bg-background text-foreground shadow-xs font-semibold'
               : 'text-muted-foreground hover:text-foreground'
           "
           @click="switchTab('components')"
+          title="Components (UI Primitives)"
         >
           <Layers class="size-3.5 shrink-0" />
-          <span>Components</span>
+          <span class="truncate text-xs font-medium">Components</span>
           <span
-            class="text-[10px] px-1.5 py-0.5 rounded-full font-mono shrink-0"
+            class="text-[10px] px-1.5 py-0.5 rounded-full font-mono shrink-0 leading-none tabular-nums"
             :class="
               activeTab === 'components'
                 ? 'bg-muted text-foreground'
@@ -184,18 +185,19 @@ onUnmounted(() => {
         <button
           type="button"
           id="tab-blocks"
-          class="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-md transition cursor-pointer"
+          class="flex items-center justify-center gap-1.5 py-1.5 px-1.5 rounded-md transition cursor-pointer whitespace-nowrap min-w-0 select-none"
           :class="
             activeTab === 'blocks'
               ? 'bg-background text-foreground shadow-xs font-semibold'
               : 'text-muted-foreground hover:text-foreground'
           "
           @click="switchTab('blocks')"
+          title="Blocks (Composed Layouts)"
         >
           <LayoutGrid class="size-3.5 shrink-0" />
-          <span>Blocks</span>
+          <span class="truncate text-xs font-medium">Blocks</span>
           <span
-            class="text-[10px] px-1.5 py-0.5 rounded-full font-mono shrink-0"
+            class="text-[10px] px-1.5 py-0.5 rounded-full font-mono shrink-0 leading-none tabular-nums"
             :class="
               activeTab === 'blocks'
                 ? 'bg-muted text-foreground'

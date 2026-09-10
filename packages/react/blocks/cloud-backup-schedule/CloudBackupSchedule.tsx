@@ -110,38 +110,38 @@ export function CloudBackupSchedule({
   }
 
   return (
-    <div className={cn('w-full max-w-4xl space-y-6', className)}>
+    <div className={cn('@container w-full max-w-4xl space-y-6', className)}>
       {/* Main Backup Management Card */}
       <Card className="border-border shadow-xs">
-        <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <div className="flex size-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <Cloud className="size-4" />
+        <CardHeader className="flex flex-col @md:flex-row @md:items-center justify-between gap-4 pb-4">
+          <div className="space-y-1 min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <Cloud className="size-4 shrink-0" />
               </div>
-              <CardTitle className="text-lg font-semibold tracking-tight">Cloud Backup & Recovery</CardTitle>
-              <Badge variant="outline" className="gap-1 border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
-                <ShieldCheck className="size-3" />
+              <CardTitle className="text-base sm:text-lg font-semibold tracking-tight">Cloud Backup & Recovery</CardTitle>
+              <Badge variant="outline" className="shrink-0 gap-1 border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                <ShieldCheck className="size-3 shrink-0" />
                 AES-256
               </Badge>
             </div>
-            <CardDescription>
+            <CardDescription className="text-xs sm:text-sm">
               Automated cluster snapshot schedules, retention policies, and disaster recovery replication.
             </CardDescription>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             <Button
               size="sm"
               variant="default"
-              className="gap-1.5 shadow-xs cursor-pointer"
+              className="gap-1.5 shadow-xs cursor-pointer w-full @md:w-auto"
               disabled={isBackingUp}
               onClick={handleTriggerBackup}
             >
               {isBackingUp ? (
-                <RotateCw className="size-3.5 animate-spin" />
+                <RotateCw className="size-3.5 animate-spin shrink-0" />
               ) : (
-                <Play className="size-3.5 fill-current" />
+                <Play className="size-3.5 fill-current shrink-0" />
               )}
               {isBackingUp ? 'Snapshotting...' : 'Backup Now'}
             </Button>
@@ -150,52 +150,53 @@ export function CloudBackupSchedule({
 
         <Separator />
 
-        <CardContent className="grid gap-6 pt-6 sm:grid-cols-2">
+        <CardContent className="p-4 sm:p-6 grid grid-cols-1 @md:grid-cols-2 gap-4 sm:gap-6 pt-4 sm:pt-6">
           {/* Automation Schedule Tile */}
-          <div className="space-y-4 rounded-lg border border-border bg-card p-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <Clock className="size-4 text-muted-foreground" />
+          <div className="space-y-4 rounded-lg border border-border bg-card p-3.5 sm:p-4 min-w-0">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <Clock className="size-4 text-muted-foreground shrink-0" />
                 <span className="text-sm font-medium">Daily Automation</span>
               </div>
               <Switch
                 checked={autoBackupEnabled}
                 onCheckedChange={setAutoBackupEnabled}
                 aria-label="Toggle daily automated backup"
+                className="shrink-0"
               />
             </div>
 
             <div className="space-y-2 text-xs text-muted-foreground">
-              <div className="flex items-center justify-between">
-                <span>Window:</span>
-                <span className="font-medium text-foreground">{frequency}</span>
+              <div className="flex items-center justify-between gap-2">
+                <span className="shrink-0">Window:</span>
+                <span className="font-medium text-foreground text-right truncate">{frequency}</span>
               </div>
-              <div className="flex items-center justify-between">
-                <span>Retention:</span>
-                <span className="font-medium text-foreground">{retentionDays} days (rolling)</span>
+              <div className="flex items-center justify-between gap-2">
+                <span className="shrink-0">Retention:</span>
+                <span className="font-medium text-foreground text-right truncate">{retentionDays} days (rolling)</span>
               </div>
-              <div className="flex items-center justify-between">
-                <span>Target Region:</span>
-                <span className="font-medium text-foreground">AWS S3 (us-east-1)</span>
+              <div className="flex items-center justify-between gap-2">
+                <span className="shrink-0">Target:</span>
+                <span className="font-medium text-foreground text-right truncate">AWS S3 (us-east-1)</span>
               </div>
             </div>
           </div>
 
           {/* Storage Quota Gauge Tile */}
-          <div className="space-y-4 rounded-lg border border-border bg-card p-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <HardDrive className="size-4 text-muted-foreground" />
-                <span className="text-sm font-medium">Vault Allocation</span>
+          <div className="space-y-4 rounded-lg border border-border bg-card p-3.5 sm:p-4 min-w-0">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2 min-w-0">
+                <HardDrive className="size-4 text-muted-foreground shrink-0" />
+                <span className="text-sm font-medium truncate">Vault Storage</span>
               </div>
-              <span className="text-xs font-semibold text-muted-foreground">{usagePercentage}% utilized</span>
+              <span className="text-xs font-semibold text-muted-foreground shrink-0 tabular-nums">{usagePercentage}% used</span>
             </div>
 
             <Progress value={usagePercentage} className="h-2" />
 
-            <div className="flex items-center justify-between text-xs text-muted-foreground">
-              <span>{storageUsedGb} GB consumed</span>
-              <span>{storageTotalGb} GB allocated</span>
+            <div className="flex items-center justify-between text-xs text-muted-foreground gap-2 tabular-nums">
+              <span>{storageUsedGb} GB used</span>
+              <span className="text-right">{storageTotalGb} GB total</span>
             </div>
           </div>
         </CardContent>
@@ -203,10 +204,10 @@ export function CloudBackupSchedule({
         <Separator />
 
         {/* Recent Snapshot Ledger */}
-        <CardContent className="pt-6 space-y-4">
-          <div className="flex items-center justify-between">
+        <CardContent className="p-4 sm:p-6 pt-4 sm:pt-6 space-y-4">
+          <div className="flex items-center justify-between gap-2 flex-wrap">
             <div className="flex items-center gap-2">
-              <Database className="size-4 text-muted-foreground" />
+              <Database className="size-4 text-muted-foreground shrink-0" />
               <h4 className="text-sm font-semibold tracking-tight">Recent Snapshots</h4>
             </div>
             <span className="text-xs text-muted-foreground">Last verified: {lastBackupSuccess}</span>
@@ -216,9 +217,9 @@ export function CloudBackupSchedule({
             {snapshots.map((snap) => (
               <div
                 key={snap.id}
-                className="flex flex-col sm:flex-row sm:items-center justify-between p-3.5 gap-2 text-sm transition-colors hover:bg-muted/40"
+                className="flex flex-col @md:flex-row @md:items-center justify-between p-3.5 gap-2 text-sm transition-colors hover:bg-muted/40"
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 min-w-0">
                   {snap.status === 'completed' ? (
                     <CheckCircle2 className="size-4 text-emerald-500 shrink-0" />
                   ) : snap.status === 'failed' ? (
@@ -226,24 +227,24 @@ export function CloudBackupSchedule({
                   ) : (
                     <RotateCw className="size-4 text-primary animate-spin shrink-0" />
                   )}
-                  <div className="space-y-0.5">
-                    <div className="font-medium text-foreground flex items-center gap-2">
-                      <span>{snap.label}</span>
-                      <span className="font-mono text-xs text-muted-foreground">({snap.id})</span>
+                  <div className="space-y-0.5 min-w-0 flex-1">
+                    <div className="font-medium text-foreground flex flex-wrap items-center gap-1.5">
+                      <span className="truncate">{snap.label}</span>
+                      <span className="font-mono text-xs text-muted-foreground shrink-0">({snap.id})</span>
                     </div>
                     <div className="font-mono text-xs text-muted-foreground flex items-center gap-2">
-                      <span>{snap.checksum}</span>
-                      <span>•</span>
-                      <span>{snap.size}</span>
+                      <span className="truncate font-mono">{snap.checksum}</span>
+                      <span className="shrink-0">•</span>
+                      <span className="shrink-0">{snap.size}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between sm:justify-end gap-3 pl-7 sm:pl-0">
-                  <span className="text-xs text-muted-foreground">{snap.timestamp}</span>
+                <div className="flex items-center justify-between @md:justify-end gap-3 pl-7 @md:pl-0 shrink-0">
+                  <span className="text-xs text-muted-foreground whitespace-nowrap">{snap.timestamp}</span>
                   <Badge
                     variant={snap.status === 'completed' ? 'secondary' : snap.status === 'failed' ? 'destructive' : 'outline'}
-                    className="capitalize text-xs"
+                    className="capitalize text-xs shrink-0 whitespace-nowrap"
                   >
                     {snap.status.replace('_', ' ')}
                   </Badge>
@@ -253,18 +254,18 @@ export function CloudBackupSchedule({
           </div>
         </CardContent>
 
-        <CardFooter className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-border pt-4 text-xs text-muted-foreground">
+        <CardFooter className="flex flex-col @md:flex-row items-start @md:items-center justify-between gap-3 border-t border-border pt-4 text-xs text-muted-foreground">
           <div className="flex items-center gap-2">
-            <Calendar className="size-3.5" />
+            <Calendar className="size-3.5 shrink-0" />
             <span>Next scheduled backup: Tonight at 02:00 UTC</span>
           </div>
           <a
             href="#docs"
-            className="inline-flex items-center gap-1 font-medium text-primary hover:underline"
+            className="inline-flex items-center gap-1 font-medium text-primary hover:underline shrink-0"
             onClick={(e) => e.preventDefault()}
           >
             Disaster recovery runbook
-            <ArrowUpRight className="size-3" />
+            <ArrowUpRight className="size-3 shrink-0" />
           </a>
         </CardFooter>
       </Card>

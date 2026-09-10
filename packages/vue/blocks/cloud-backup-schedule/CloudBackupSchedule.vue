@@ -113,36 +113,36 @@ const handleTriggerBackup = async () => {
 </script>
 
 <template>
-  <div :class="cn('w-full max-w-4xl space-y-6', props.class)">
+  <div :class="cn('@container w-full max-w-4xl space-y-6', props.class)">
     <!-- Main Backup Management Card -->
     <Card class="border-border shadow-xs">
-      <CardHeader class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4">
-        <div class="space-y-1">
-          <div class="flex items-center gap-2">
-            <div class="flex size-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <Cloud class="size-4" />
+      <CardHeader class="flex flex-col @md:flex-row @md:items-center justify-between gap-4 pb-4">
+        <div class="space-y-1 min-w-0">
+          <div class="flex flex-wrap items-center gap-2">
+            <div class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <Cloud class="size-4 shrink-0" />
             </div>
-            <CardTitle class="text-lg font-semibold tracking-tight">Cloud Backup & Recovery</CardTitle>
-            <Badge variant="outline" class="gap-1 border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
-              <ShieldCheck class="size-3" />
+            <CardTitle class="text-base sm:text-lg font-semibold tracking-tight">Cloud Backup & Recovery</CardTitle>
+            <Badge variant="outline" class="shrink-0 gap-1 border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+              <ShieldCheck class="size-3 shrink-0" />
               AES-256
             </Badge>
           </div>
-          <CardDescription>
+          <CardDescription class="text-xs sm:text-sm">
             Automated cluster snapshot schedules, retention policies, and disaster recovery replication.
           </CardDescription>
         </div>
 
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 shrink-0">
           <Button
             size="sm"
             variant="default"
-            class="gap-1.5 shadow-xs cursor-pointer"
+            class="gap-1.5 shadow-xs cursor-pointer w-full @md:w-auto"
             :disabled="isBackingUp"
             @click="handleTriggerBackup"
           >
-            <RotateCw v-if="isBackingUp" class="size-3.5 animate-spin" />
-            <Play v-else class="size-3.5 fill-current" />
+            <RotateCw v-if="isBackingUp" class="size-3.5 animate-spin shrink-0" />
+            <Play v-else class="size-3.5 fill-current shrink-0" />
             {{ isBackingUp ? 'Snapshotting...' : 'Backup Now' }}
           </Button>
         </div>
@@ -150,51 +150,52 @@ const handleTriggerBackup = async () => {
 
       <Separator />
 
-      <CardContent class="grid gap-6 pt-6 sm:grid-cols-2">
+      <CardContent class="p-4 sm:p-6 grid grid-cols-1 @md:grid-cols-2 gap-4 sm:gap-6 pt-4 sm:pt-6">
         <!-- Automation Schedule Tile -->
-        <div class="space-y-4 rounded-lg border border-border bg-card p-4">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2.5">
-              <Clock class="size-4 text-muted-foreground" />
+        <div class="space-y-4 rounded-lg border border-border bg-card p-3.5 sm:p-4 min-w-0">
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <Clock class="size-4 text-muted-foreground shrink-0" />
               <span class="text-sm font-medium">Daily Automation</span>
             </div>
             <Switch
               v-model="autoBackupEnabled"
               aria-label="Toggle daily automated backup"
+              class="shrink-0"
             />
           </div>
 
           <div class="space-y-2 text-xs text-muted-foreground">
-            <div class="flex items-center justify-between">
-              <span>Window:</span>
-              <span class="font-medium text-foreground">{{ frequency }}</span>
+            <div class="flex items-center justify-between gap-2">
+              <span class="shrink-0">Window:</span>
+              <span class="font-medium text-foreground text-right truncate">{{ frequency }}</span>
             </div>
-            <div class="flex items-center justify-between">
-              <span>Retention:</span>
-              <span class="font-medium text-foreground">{{ retentionDays }} days (rolling)</span>
+            <div class="flex items-center justify-between gap-2">
+              <span class="shrink-0">Retention:</span>
+              <span class="font-medium text-foreground text-right truncate">{{ retentionDays }} days (rolling)</span>
             </div>
-            <div class="flex items-center justify-between">
-              <span>Target Region:</span>
-              <span class="font-medium text-foreground">AWS S3 (us-east-1)</span>
+            <div class="flex items-center justify-between gap-2">
+              <span class="shrink-0">Target:</span>
+              <span class="font-medium text-foreground text-right truncate">AWS S3 (us-east-1)</span>
             </div>
           </div>
         </div>
 
         <!-- Storage Quota Gauge Tile -->
-        <div class="space-y-4 rounded-lg border border-border bg-card p-4">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2.5">
-              <HardDrive class="size-4 text-muted-foreground" />
-              <span class="text-sm font-medium">Vault Allocation</span>
+        <div class="space-y-4 rounded-lg border border-border bg-card p-3.5 sm:p-4 min-w-0">
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 min-w-0">
+              <HardDrive class="size-4 text-muted-foreground shrink-0" />
+              <span class="text-sm font-medium truncate">Vault Storage</span>
             </div>
-            <span class="text-xs font-semibold text-muted-foreground">{{ usagePercentage }}% utilized</span>
+            <span class="text-xs font-semibold text-muted-foreground shrink-0 tabular-nums">{{ usagePercentage }}% used</span>
           </div>
 
           <Progress :model-value="usagePercentage" class="h-2" />
 
-          <div class="flex items-center justify-between text-xs text-muted-foreground">
-            <span>{{ storageUsedGb }} GB consumed</span>
-            <span>{{ storageTotalGb }} GB allocated</span>
+          <div class="flex items-center justify-between text-xs text-muted-foreground gap-2 tabular-nums">
+            <span>{{ storageUsedGb }} GB used</span>
+            <span class="text-right">{{ storageTotalGb }} GB total</span>
           </div>
         </div>
       </CardContent>
@@ -202,10 +203,10 @@ const handleTriggerBackup = async () => {
       <Separator />
 
       <!-- Recent Snapshot Ledger -->
-      <CardContent class="pt-6 space-y-4">
-        <div class="flex items-center justify-between">
+      <CardContent class="p-4 sm:p-6 pt-4 sm:pt-6 space-y-4">
+        <div class="flex items-center justify-between gap-2 flex-wrap">
           <div class="flex items-center gap-2">
-            <Database class="size-4 text-muted-foreground" />
+            <Database class="size-4 text-muted-foreground shrink-0" />
             <h4 class="text-sm font-semibold tracking-tight">Recent Snapshots</h4>
           </div>
           <span class="text-xs text-muted-foreground">Last verified: {{ lastBackupSuccess }}</span>
@@ -215,9 +216,9 @@ const handleTriggerBackup = async () => {
           <div
             v-for="snap in snapshots"
             :key="snap.id"
-            class="flex flex-col sm:flex-row sm:items-center justify-between p-3.5 gap-2 text-sm transition-colors hover:bg-muted/40"
+            class="flex flex-col @md:flex-row @md:items-center justify-between p-3.5 gap-2 text-sm transition-colors hover:bg-muted/40"
           >
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-3 min-w-0">
               <CheckCircle2
                 v-if="snap.status === 'completed'"
                 class="size-4 text-emerald-500 shrink-0"
@@ -230,24 +231,24 @@ const handleTriggerBackup = async () => {
                 v-else
                 class="size-4 text-primary animate-spin shrink-0"
               />
-              <div class="space-y-0.5">
-                <div class="font-medium text-foreground flex items-center gap-2">
-                  <span>{{ snap.label }}</span>
-                  <span class="font-mono text-xs text-muted-foreground">({{ snap.id }})</span>
+              <div class="space-y-0.5 min-w-0 flex-1">
+                <div class="font-medium text-foreground flex flex-wrap items-center gap-1.5">
+                  <span class="truncate">{{ snap.label }}</span>
+                  <span class="font-mono text-xs text-muted-foreground shrink-0">({{ snap.id }})</span>
                 </div>
                 <div class="font-mono text-xs text-muted-foreground flex items-center gap-2">
-                  <span>{{ snap.checksum }}</span>
-                  <span>•</span>
-                  <span>{{ snap.size }}</span>
+                  <span class="truncate font-mono">{{ snap.checksum }}</span>
+                  <span class="shrink-0">•</span>
+                  <span class="shrink-0">{{ snap.size }}</span>
                 </div>
               </div>
             </div>
 
-            <div class="flex items-center justify-between sm:justify-end gap-3 pl-7 sm:pl-0">
-              <span class="text-xs text-muted-foreground">{{ snap.timestamp }}</span>
+            <div class="flex items-center justify-between @md:justify-end gap-3 pl-7 @md:pl-0 shrink-0">
+              <span class="text-xs text-muted-foreground whitespace-nowrap">{{ snap.timestamp }}</span>
               <Badge
                 :variant="snap.status === 'completed' ? 'secondary' : snap.status === 'failed' ? 'destructive' : 'outline'"
-                class="capitalize text-xs"
+                class="capitalize text-xs shrink-0 whitespace-nowrap"
               >
                 {{ snap.status.replace('_', ' ') }}
               </Badge>
@@ -256,18 +257,18 @@ const handleTriggerBackup = async () => {
         </div>
       </CardContent>
 
-      <CardFooter class="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-border pt-4 text-xs text-muted-foreground">
+      <CardFooter class="flex flex-col @md:flex-row items-start @md:items-center justify-between gap-3 border-t border-border pt-4 text-xs text-muted-foreground">
         <div class="flex items-center gap-2">
-          <Calendar class="size-3.5" />
+          <Calendar class="size-3.5 shrink-0" />
           <span>Next scheduled backup: Tonight at 02:00 UTC</span>
         </div>
         <a
           href="#docs"
-          class="inline-flex items-center gap-1 font-medium text-primary hover:underline"
+          class="inline-flex items-center gap-1 font-medium text-primary hover:underline shrink-0"
           @click.prevent
         >
           Disaster recovery runbook
-          <ArrowUpRight class="size-3" />
+          <ArrowUpRight class="size-3 shrink-0" />
         </a>
       </CardFooter>
     </Card>

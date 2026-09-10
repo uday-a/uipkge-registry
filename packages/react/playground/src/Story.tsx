@@ -73,26 +73,26 @@ export default function Story({
         }
       >
         {/* Header bar */}
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border bg-muted/20 px-4 py-3 sm:px-5 shrink-0">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border bg-muted/20 px-4 py-3 sm:px-5 shrink-0">
           <div className="flex flex-col gap-0.5 min-w-0 flex-1">
             <div className="flex items-center gap-2">
               <h3 className="text-sm font-semibold tracking-tight text-foreground">
                 {title}
               </h3>
               {isFullscreen && (
-                <span className="rounded bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+                <span className="rounded bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary shrink-0">
                   Focused View
                 </span>
               )}
             </div>
             {description && (
-              <p className="text-xs text-muted-foreground line-clamp-2">
+              <p className="text-xs text-muted-foreground">
                 {description}
               </p>
             )}
           </div>
 
-          <div className="flex items-center gap-1.5 shrink-0 text-xs">
+          <div className="flex items-center justify-between sm:justify-end gap-1.5 shrink-0 text-xs">
             {/* Preview / Code tabs */}
             <div className="flex items-center rounded-lg border border-border bg-background/80 p-0.5 shadow-xs">
               <button
@@ -156,7 +156,7 @@ export default function Story({
 
         {/* Story Canvas / Preview Content */}
         <div
-          className={`relative overflow-x-auto p-6 sm:p-8 ${
+          className={`relative overflow-x-auto p-4 sm:p-8 ${
             isFullscreen ? "flex-1 overflow-y-auto" : ""
           } ${activeTab === "preview" ? "block" : "hidden"}`}
         >

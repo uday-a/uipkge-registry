@@ -124,7 +124,7 @@ const copyCommand = async () => {
     class="flex h-14 shrink-0 items-center justify-between border-b border-border bg-card px-3 sm:px-4 z-20 gap-2 sm:gap-4 select-none"
   >
     <!-- Left Section: Monogram & Component Info -->
-    <div class="flex items-center gap-2 sm:gap-2.5 shrink-0 min-w-0">
+    <div class="flex items-center gap-2 sm:gap-2.5 min-w-0 flex-1">
       <!-- Toggle sidebar button -->
       <button
         type="button"
@@ -167,32 +167,32 @@ const copyCommand = async () => {
       <!-- Breadcrumbs & metadata -->
       <div class="flex items-center gap-1.5 min-w-0 shrink">
         <h2
-          class="text-xs sm:text-sm font-semibold tracking-tight text-foreground truncate whitespace-nowrap shrink min-w-0 max-w-[110px] md:max-w-[160px] 2xl:max-w-xs"
+          class="text-xs sm:text-sm font-semibold tracking-tight text-foreground truncate whitespace-nowrap shrink min-w-0 max-w-[140px] md:max-w-[200px]"
         >
           {{ componentName }}
         </h2>
         <span
           v-if="categories && categories[0]"
-          class="hidden 2xl:inline-block rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground whitespace-nowrap shrink-0"
+          class="hidden xl:inline-block rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground whitespace-nowrap shrink-0"
         >
           {{ categories[0] }}
         </span>
       </div>
 
-      <!-- Quick copy install command: Full command on 2xl+, compact icon on smaller -->
+      <!-- Quick copy install command: Full command on wide screens, compact icon on smaller -->
       <button
         type="button"
-        class="hidden 2xl:flex items-center gap-1.5 rounded-lg border border-border bg-background px-2.5 h-8 text-xs font-mono text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs whitespace-nowrap shrink-0 cursor-pointer"
+        class="hidden min-[1400px]:flex items-center gap-1.5 rounded-lg border border-border bg-background px-2.5 h-8 text-xs font-mono text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs whitespace-nowrap shrink-0 cursor-pointer"
         @click="copyCommand"
         title="Copy install command"
       >
         <Check v-if="copied" class="size-3 text-emerald-500 shrink-0" />
         <Copy v-else class="size-3 shrink-0" />
-        <span class="whitespace-nowrap">add @uipkge/{{ componentId }}</span>
+        <span class="whitespace-nowrap max-w-[180px] truncate">add @uipkge/{{ componentId }}</span>
       </button>
       <button
         type="button"
-        class="flex 2xl:hidden size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs cursor-pointer"
+        class="flex min-[1400px]:hidden size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs cursor-pointer"
         @click="copyCommand"
         :title="'Copy install command: add @uipkge/' + componentId"
       >
@@ -201,9 +201,9 @@ const copyCommand = async () => {
       </button>
     </div>
 
-    <!-- Center Section: Viewport Switcher Toolbar (Visible on xl+) -->
+    <!-- Center Section: Viewport Switcher Toolbar (Visible on lg+) -->
     <div
-      class="hidden xl:flex items-center rounded-lg border border-border bg-muted/40 p-0.5 shadow-xs shrink-0"
+      class="hidden lg:flex items-center rounded-lg border border-border bg-muted/40 p-0.5 shadow-xs shrink-0"
     >
       <button
         type="button"
@@ -217,7 +217,7 @@ const copyCommand = async () => {
         title="Fluid (100%)"
       >
         <Maximize2 class="size-3.5 shrink-0" />
-        <span class="hidden 2xl:inline">Full</span>
+        <span class="hidden min-[1600px]:inline">Full</span>
       </button>
 
       <button
@@ -232,7 +232,7 @@ const copyCommand = async () => {
         title="Desktop (1280px)"
       >
         <Monitor class="size-3.5 shrink-0" />
-        <span class="hidden 2xl:inline">1280</span>
+        <span class="hidden min-[1600px]:inline">1280</span>
       </button>
 
       <button
@@ -247,7 +247,7 @@ const copyCommand = async () => {
         title="Laptop (1024px)"
       >
         <Laptop class="size-3.5 shrink-0" />
-        <span class="hidden 2xl:inline">1024</span>
+        <span class="hidden min-[1600px]:inline">1024</span>
       </button>
 
       <button
@@ -262,7 +262,7 @@ const copyCommand = async () => {
         title="Tablet (768px)"
       >
         <Tablet class="size-3.5 shrink-0" />
-        <span class="hidden 2xl:inline">768</span>
+        <span class="hidden min-[1600px]:inline">768</span>
       </button>
 
       <button
@@ -277,7 +277,7 @@ const copyCommand = async () => {
         title="Mobile (375px)"
       >
         <Smartphone class="size-3.5 shrink-0" />
-        <span class="hidden 2xl:inline">375</span>
+        <span class="hidden min-[1600px]:inline">375</span>
       </button>
     </div>
 

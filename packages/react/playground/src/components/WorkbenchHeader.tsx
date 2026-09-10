@@ -94,7 +94,7 @@ export default function WorkbenchHeader({
   return (
     <header className="flex h-14 shrink-0 items-center justify-between border-b border-border bg-card px-3 sm:px-4 select-none z-20 gap-2 sm:gap-4">
       {/* Left: Brand & Component Info */}
-      <div className="flex items-center gap-2 sm:gap-2.5 shrink-0 min-w-0">
+      <div className="flex items-center gap-2 sm:gap-2.5 min-w-0 flex-1">
         {/* Toggle sidebar button */}
         <button
           type="button"
@@ -133,21 +133,21 @@ export default function WorkbenchHeader({
         <div className="hidden sm:block h-4 w-px bg-border shrink-0" />
 
         <div className="flex items-center gap-1.5 min-w-0 shrink">
-          <span className="text-xs sm:text-sm font-semibold text-foreground tracking-tight truncate whitespace-nowrap shrink min-w-0 max-w-[110px] md:max-w-[160px] 2xl:max-w-xs">
+          <span className="text-xs sm:text-sm font-semibold text-foreground tracking-tight truncate whitespace-nowrap shrink min-w-0 max-w-[140px] md:max-w-[200px]">
             {componentName}
           </span>
           {category && (
-            <span className="hidden 2xl:inline-block rounded-md border border-border px-2 py-0.5 text-xs font-mono text-muted-foreground whitespace-nowrap shrink-0">
+            <span className="hidden xl:inline-block rounded-md border border-border px-2 py-0.5 text-xs font-mono text-muted-foreground whitespace-nowrap shrink-0">
               {category}
             </span>
           )}
         </div>
 
-        {/* Install Command: Full on 2xl+, compact icon on smaller */}
+        {/* Install Command: Full on wide screens, compact icon on smaller */}
         <button
           type="button"
           title="Copy install command"
-          className="hidden 2xl:flex items-center gap-1.5 rounded-lg border border-border bg-background px-2.5 h-8 text-xs font-mono text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs whitespace-nowrap shrink-0 cursor-pointer"
+          className="hidden min-[1400px]:flex items-center gap-1.5 rounded-lg border border-border bg-background px-2.5 h-8 text-xs font-mono text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs whitespace-nowrap shrink-0 cursor-pointer"
           onClick={copyInstallCommand}
         >
           {copiedCmd ? (
@@ -155,12 +155,12 @@ export default function WorkbenchHeader({
           ) : (
             <Copy className="size-3 shrink-0" />
           )}
-          <span className="whitespace-nowrap">add @uipkge/{componentId}</span>
+          <span className="whitespace-nowrap max-w-[180px] truncate">add @uipkge/{componentId}</span>
         </button>
         <button
           type="button"
           title={`Copy install command: add @uipkge/${componentId}`}
-          className="flex 2xl:hidden size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs cursor-pointer"
+          className="flex min-[1400px]:hidden size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs cursor-pointer"
           onClick={copyInstallCommand}
         >
           {copiedCmd ? (
@@ -173,8 +173,8 @@ export default function WorkbenchHeader({
 
       {/* Right Controls */}
       <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-        {/* Viewport switcher (Visible on xl+) */}
-        <div className="hidden xl:flex items-center rounded-lg border border-border bg-muted/40 p-0.5 shadow-xs shrink-0">
+        {/* Viewport switcher (Visible on lg+) */}
+        <div className="hidden lg:flex items-center rounded-lg border border-border bg-muted/40 p-0.5 shadow-xs shrink-0">
           {VIEWPORT_PRESETS.map((vp) => (
             <button
               key={vp.id}
@@ -192,7 +192,7 @@ export default function WorkbenchHeader({
               {vp.id === "laptop" && <Laptop className="size-3.5 shrink-0" />}
               {vp.id === "tablet" && <Tablet className="size-3.5 shrink-0" />}
               {vp.id === "mobile" && <Smartphone className="size-3.5 shrink-0" />}
-              <span className="hidden 2xl:inline">{VIEWPORT_LABELS[vp.id]?.short || vp.name}</span>
+              <span className="hidden min-[1600px]:inline">{VIEWPORT_LABELS[vp.id]?.short || vp.name}</span>
             </button>
           ))}
         </div>

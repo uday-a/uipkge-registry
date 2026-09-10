@@ -424,9 +424,11 @@ export default function App() {
             ref={previewContainerRef}
             style={viewportStyle}
             className={`transition-all duration-200 ${
-              activeViewport !== "fluid"
-                ? "rounded-2xl border border-border/80 bg-background/95 p-4 sm:p-6 shadow-2xl backdrop-blur-xs ring-1 ring-black/5 dark:ring-white/10 my-4"
-                : "max-w-7xl mx-auto"
+              activeViewport === "mobile"
+                ? "rounded-2xl border border-border/80 bg-background/95 p-3 shadow-2xl backdrop-blur-xs ring-1 ring-black/5 dark:ring-white/10 my-4"
+                : activeViewport !== "fluid"
+                  ? "rounded-2xl border border-border/80 bg-background/95 p-4 sm:p-6 shadow-2xl backdrop-blur-xs ring-1 ring-black/5 dark:ring-white/10 my-4"
+                  : "max-w-7xl mx-auto"
             }`}
           >
             {/* Viewport Frame Header badge if simulated */}

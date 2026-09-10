@@ -82,7 +82,7 @@ onUnmounted(() => {
     >
       <!-- Story Header Bar -->
       <div
-        class="flex flex-wrap items-center justify-between gap-3 border-b border-border bg-muted/20 px-4 py-3 sm:px-5 shrink-0"
+        class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border bg-muted/20 px-4 py-3 sm:px-5 shrink-0"
       >
         <div class="flex flex-col gap-0.5 min-w-0 flex-1">
           <div class="flex items-center gap-2">
@@ -91,21 +91,21 @@ onUnmounted(() => {
             </h3>
             <span
               v-if="isFullscreen"
-              class="rounded bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary"
+              class="rounded bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary shrink-0"
             >
               Focused View
             </span>
           </div>
           <p
             v-if="description"
-            class="text-xs text-muted-foreground line-clamp-2"
+            class="text-xs text-muted-foreground"
           >
             {{ description }}
           </p>
         </div>
 
         <!-- Action Controls -->
-        <div class="flex items-center gap-1.5 shrink-0">
+        <div class="flex items-center justify-between sm:justify-end gap-1.5 shrink-0">
           <!-- Preview / Code Tab Switcher -->
           <div
             class="flex items-center rounded-lg border border-border bg-background/80 p-0.5 text-xs shadow-xs"
@@ -166,7 +166,7 @@ onUnmounted(() => {
       <!-- Story Canvas / Preview Content -->
       <div
         v-show="activeTab === 'preview'"
-        class="relative overflow-x-auto p-6 sm:p-8"
+        class="relative overflow-x-auto p-4 sm:p-8"
         :class="[isFullscreen ? 'flex-1 overflow-y-auto' : '']"
       >
         <slot />
