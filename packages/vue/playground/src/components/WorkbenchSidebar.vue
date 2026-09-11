@@ -9,6 +9,7 @@ import {
   Sparkles,
   ChevronRight,
   ChevronDown,
+  PanelLeftClose,
 } from "lucide-vue-next";
 
 export interface SidebarItem {
@@ -32,6 +33,7 @@ const props = withDefaults(
 
 const emit = defineEmits<{
   (e: "select", id: string): void;
+  (e: "toggle-collapse"): void;
 }>();
 
 const search = ref("");
@@ -147,9 +149,40 @@ onUnmounted(() => {
     :class="[
       collapsed
         ? 'w-0 overflow-hidden border-r-0 p-0 opacity-0 pointer-events-none'
-        : 'w-80',
+        : 'w-[350px]',
     ]"
   >
+    <!-- Brand Header: UIPKGE Registry Logo, Title & Collapse Action -->
+    <div class="flex h-14 shrink-0 items-center justify-between px-4 border-b border-border bg-card/80">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <!-- UIPKGE Official Brand Icon -->
+        <svg width="24" height="24" viewBox="0 0 32 32" class="shrink-0" aria-hidden="true">
+          <rect x="0.5" y="0.5" width="31" height="31" rx="7" class="fill-card stroke-border" stroke-width="1" />
+          <rect x="6" y="6" width="8" height="8" rx="1.6" class="fill-foreground" />
+          <rect x="18" y="6" width="8" height="8" rx="1.6" class="fill-primary" />
+          <rect x="6" y="18" width="8" height="8" rx="1.6" class="fill-muted" />
+          <rect x="18" y="18" width="8" height="8" rx="1.6" class="fill-foreground" />
+        </svg>
+        <div class="flex items-baseline gap-1.5 min-w-0">
+          <span class="text-sm font-bold tracking-tight text-foreground font-display">UIPKGE</span>
+          <span class="text-xs font-semibold text-muted-foreground">Registry</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-1.5 shrink-0">
+        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-medium border border-border bg-muted/60 text-muted-foreground">
+          v1.0
+        </span>
+        <button
+          type="button"
+          class="flex size-7 shrink-0 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition cursor-pointer shadow-2xs"
+          @click="emit('toggle-collapse')"
+          title="Close sidebar (⌘B)"
+        >
+          <PanelLeftClose class="size-3.5 shrink-0" />
+        </button>
+      </div>
+    </div>
+
     <!-- Top Section: Components & Blocks Tabs Side by Side + Search Bar -->
     <div class="p-3 border-b border-border space-y-2.5">
       <!-- Tabs Side by Side -->

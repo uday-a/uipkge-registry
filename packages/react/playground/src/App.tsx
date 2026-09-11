@@ -383,6 +383,7 @@ export default function App() {
         selectedId={selectedId}
         collapsed={!isSidebarOpen}
         onSelect={(id) => setSelectedId(id)}
+        onToggleCollapse={() => setIsSidebarOpen(!isSidebarOpen)}
       />
 
       {/* Main Workbench Area */}

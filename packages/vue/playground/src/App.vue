@@ -404,6 +404,7 @@ const activeItemName = computed(() => {
       :selected-id="selectedId"
       :collapsed="!isSidebarOpen"
       @select="selectComponent"
+      @toggle-collapse="isSidebarOpen = !isSidebarOpen"
     />
 
     <!-- Main Workspace -->

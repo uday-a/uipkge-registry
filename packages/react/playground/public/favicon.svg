@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="UI Package">
+  <style>
+    :root {
+      color-scheme: light dark;
+    }
+
+    .frame {
+      fill: #f7faf4;
+      stroke: #d9dfd4;
+    }
+
+    .ink {
+      fill: #172016;
+    }
+
+    .accent {
+      fill: #3b6f40;
+    }
+
+    .soft {
+      fill: #dcefd5;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .frame {
+        fill: #121812;
+        stroke: #33402f;
+      }
+
+      .ink {
+        fill: #f3f7ef;
+      }
+
+      .accent {
+        fill: #7fb77d;
+      }
+
+      .soft {
+        fill: #d8efd0;
+      }
+    }
+  </style>
+  <rect class="frame" x="3" y="3" width="58" height="58" rx="14" stroke-width="2" />
+  <rect class="ink" x="15" y="15" width="14" height="14" rx="3" />
+  <rect class="accent" x="35" y="15" width="14" height="14" rx="3" />
+  <rect class="soft" x="15" y="35" width="14" height="14" rx="3" />
+  <rect class="ink" x="35" y="35" width="14" height="14" rx="3" />
+</svg>

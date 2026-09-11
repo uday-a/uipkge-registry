@@ -6,6 +6,7 @@ import {
   LayoutGrid,
   ChevronRight,
   ChevronDown,
+  PanelLeftClose,
 } from "lucide-react";
 
 export interface SidebarItem {
@@ -21,6 +22,7 @@ export interface WorkbenchSidebarProps {
   selectedId: string;
   onSelect: (id: string) => void;
   collapsed?: boolean;
+  onToggleCollapse?: () => void;
 }
 
 export default function WorkbenchSidebar({
@@ -28,6 +30,7 @@ export default function WorkbenchSidebar({
   selectedId,
   onSelect,
   collapsed = false,
+  onToggleCollapse,
 }: WorkbenchSidebarProps) {
   const [search, setSearch] = useState("");
   const [collapsedCategories, setCollapsedCategories] = useState<
@@ -152,9 +155,42 @@ export default function WorkbenchSidebar({
       className={`flex shrink-0 flex-col border-r border-border bg-card select-none transition-all duration-200 ${
         collapsed
           ? "w-0 overflow-hidden border-r-0 p-0 opacity-0 pointer-events-none"
-          : "w-80"
+          : "w-[350px]"
       }`}
     >
+      {/* Brand Header: UIPKGE Registry Logo, Title & Collapse Action */}
+      <div className="flex h-14 shrink-0 items-center justify-between px-4 border-b border-border bg-card/80">
+        <div className="flex items-center gap-2.5 min-w-0">
+          {/* UIPKGE Official Brand Icon */}
+          <svg width="24" height="24" viewBox="0 0 32 32" className="shrink-0" aria-hidden="true">
+            <rect x="0.5" y="0.5" width="31" height="31" rx="7" className="fill-card stroke-border" strokeWidth="1" />
+            <rect x="6" y="6" width="8" height="8" rx="1.6" className="fill-foreground" />
+            <rect x="18" y="6" width="8" height="8" rx="1.6" className="fill-primary" />
+            <rect x="6" y="18" width="8" height="8" rx="1.6" className="fill-muted" />
+            <rect x="18" y="18" width="8" height="8" rx="1.6" className="fill-foreground" />
+          </svg>
+          <div className="flex items-baseline gap-1.5 min-w-0">
+            <span className="text-sm font-bold tracking-tight text-foreground font-display">UIPKGE</span>
+            <span className="text-xs font-semibold text-muted-foreground">Registry</span>
+          </div>
+        </div>
+        <div className="flex items-center gap-1.5 shrink-0">
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-medium border border-border bg-muted/60 text-muted-foreground">
+            v1.0
+          </span>
+          {onToggleCollapse && (
+            <button
+              type="button"
+              className="flex size-7 shrink-0 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition cursor-pointer shadow-2xs"
+              onClick={onToggleCollapse}
+              title="Close sidebar (⌘B)"
+            >
+              <PanelLeftClose className="size-3.5 shrink-0" />
+            </button>
+          )}
+        </div>
+      </div>
+
       {/* Top Header: Components & Blocks Tabs Side by Side + Search Bar */}
       <div className="border-b border-border p-3 space-y-2.5">
         {/* Tabs Side by Side */}

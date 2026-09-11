@@ -110,8 +110,17 @@ export default function WorkbenchHeader({
         </button>
 
         <div className="flex items-center gap-1.5 shrink-0">
-          <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-foreground text-background font-mono font-bold text-xs shadow-xs select-none">
-            UI
+          <div
+            className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-card shadow-xs select-none"
+            title="UIPKGE Dev Workbench"
+          >
+            <svg width="22" height="22" viewBox="0 0 32 32" className="shrink-0" aria-hidden="true">
+              <rect x="0.5" y="0.5" width="31" height="31" rx="7" className="fill-card stroke-border" strokeWidth="1" />
+              <rect x="6" y="6" width="8" height="8" rx="1.6" className="fill-foreground" />
+              <rect x="18" y="6" width="8" height="8" rx="1.6" className="fill-primary" />
+              <rect x="6" y="18" width="8" height="8" rx="1.6" className="fill-muted" />
+              <rect x="18" y="18" width="8" height="8" rx="1.6" className="fill-foreground" />
+            </svg>
           </div>
           <div className="flex items-center gap-1 shrink-0">
             <span className="inline-flex items-center h-7 px-2 rounded-md border border-border bg-muted/40 text-xs font-mono font-medium text-foreground whitespace-nowrap shrink-0">

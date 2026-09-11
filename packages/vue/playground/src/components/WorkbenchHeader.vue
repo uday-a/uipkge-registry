@@ -139,10 +139,16 @@ const copyCommand = async () => {
       <!-- UIPKGE brand & framework switch -->
       <div class="flex items-center gap-1.5 shrink-0">
         <div
-          class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-foreground text-background font-mono text-xs font-bold shadow-xs select-none"
+          class="flex size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-card shadow-xs select-none"
           title="UIPKGE Dev Workbench"
         >
-          UI
+          <svg width="22" height="22" viewBox="0 0 32 32" class="shrink-0" aria-hidden="true">
+            <rect x="0.5" y="0.5" width="31" height="31" rx="7" class="fill-card stroke-border" stroke-width="1" />
+            <rect x="6" y="6" width="8" height="8" rx="1.6" class="fill-foreground" />
+            <rect x="18" y="6" width="8" height="8" rx="1.6" class="fill-primary" />
+            <rect x="6" y="18" width="8" height="8" rx="1.6" class="fill-muted" />
+            <rect x="18" y="18" width="8" height="8" rx="1.6" class="fill-foreground" />
+          </svg>
         </div>
         <div class="flex items-center gap-1 shrink-0">
           <span
