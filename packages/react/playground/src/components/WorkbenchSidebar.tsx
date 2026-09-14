@@ -155,11 +155,11 @@ export default function WorkbenchSidebar({
       className={`flex shrink-0 flex-col border-r border-border bg-card select-none transition-all duration-200 ${
         collapsed
           ? "w-0 overflow-hidden border-r-0 p-0 opacity-0 pointer-events-none"
-          : "w-[350px]"
+          : "w-80"
       }`}
     >
       {/* Brand Header: UIPKGE Registry Logo, Title & Collapse Action */}
-      <div className="flex h-14 shrink-0 items-center justify-between px-4 border-b border-border bg-card/80">
+      <div className="flex h-14 shrink-0 items-center justify-between px-3.5 border-b border-border bg-card/80">
         <div className="flex items-center gap-2.5 min-w-0">
           {/* UIPKGE Official Brand Icon */}
           <svg width="24" height="24" viewBox="0 0 32 32" className="shrink-0" aria-hidden="true">
@@ -194,12 +194,12 @@ export default function WorkbenchSidebar({
       {/* Top Header: Components & Blocks Tabs Side by Side + Search Bar */}
       <div className="border-b border-border p-3 space-y-2.5">
         {/* Tabs Side by Side */}
-        <div className="grid grid-cols-2 gap-1 p-1 bg-muted/60 rounded-lg text-xs font-medium border border-border/50">
+        <div className="grid grid-cols-2 gap-1 p-0.5 bg-muted/60 rounded-lg text-xs font-medium border border-border/50">
           <button
             type="button"
             id="tab-components"
             title="Components (UI Primitives)"
-            className={`flex items-center justify-center gap-1.5 py-1.5 px-1.5 rounded-md transition cursor-pointer whitespace-nowrap min-w-0 select-none ${
+            className={`flex items-center justify-center gap-1 py-1.5 px-1.5 rounded-md transition cursor-pointer whitespace-nowrap min-w-0 select-none ${
               activeTab === "components"
                 ? "bg-background text-foreground shadow-xs font-semibold"
                 : "text-muted-foreground hover:text-foreground"
@@ -223,7 +223,7 @@ export default function WorkbenchSidebar({
             type="button"
             id="tab-blocks"
             title="Blocks (Composed Layouts)"
-            className={`flex items-center justify-center gap-1.5 py-1.5 px-1.5 rounded-md transition cursor-pointer whitespace-nowrap min-w-0 select-none ${
+            className={`flex items-center justify-center gap-1 py-1.5 px-1.5 rounded-md transition cursor-pointer whitespace-nowrap min-w-0 select-none ${
               activeTab === "blocks"
                 ? "bg-background text-foreground shadow-xs font-semibold"
                 : "text-muted-foreground hover:text-foreground"

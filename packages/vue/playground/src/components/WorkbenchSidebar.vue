@@ -149,11 +149,11 @@ onUnmounted(() => {
     :class="[
       collapsed
         ? 'w-0 overflow-hidden border-r-0 p-0 opacity-0 pointer-events-none'
-        : 'w-[350px]',
+        : 'w-80',
     ]"
   >
     <!-- Brand Header: UIPKGE Registry Logo, Title & Collapse Action -->
-    <div class="flex h-14 shrink-0 items-center justify-between px-4 border-b border-border bg-card/80">
+    <div class="flex h-14 shrink-0 items-center justify-between px-3.5 border-b border-border bg-card/80">
       <div class="flex items-center gap-2.5 min-w-0">
         <!-- UIPKGE Official Brand Icon -->
         <svg width="24" height="24" viewBox="0 0 32 32" class="shrink-0" aria-hidden="true">
@@ -187,12 +187,12 @@ onUnmounted(() => {
     <div class="p-3 border-b border-border space-y-2.5">
       <!-- Tabs Side by Side -->
       <div
-        class="grid grid-cols-2 gap-1 p-1 bg-muted/60 rounded-lg text-xs font-medium border border-border/50"
+        class="grid grid-cols-2 gap-1 p-0.5 bg-muted/60 rounded-lg text-xs font-medium border border-border/50"
       >
         <button
           type="button"
           id="tab-components"
-          class="flex items-center justify-center gap-1.5 py-1.5 px-1.5 rounded-md transition cursor-pointer whitespace-nowrap min-w-0 select-none"
+          class="flex items-center justify-center gap-1 py-1.5 px-1.5 rounded-md transition cursor-pointer whitespace-nowrap min-w-0 select-none"
           :class="
             activeTab === 'components'
               ? 'bg-background text-foreground shadow-xs font-semibold'
@@ -218,7 +218,7 @@ onUnmounted(() => {
         <button
           type="button"
           id="tab-blocks"
-          class="flex items-center justify-center gap-1.5 py-1.5 px-1.5 rounded-md transition cursor-pointer whitespace-nowrap min-w-0 select-none"
+          class="flex items-center justify-center gap-1 py-1.5 px-1.5 rounded-md transition cursor-pointer whitespace-nowrap min-w-0 select-none"
           :class="
             activeTab === 'blocks'
               ? 'bg-background text-foreground shadow-xs font-semibold'
