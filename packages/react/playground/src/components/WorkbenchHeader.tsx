@@ -95,21 +95,20 @@ export default function WorkbenchHeader({
     <header className="flex h-14 shrink-0 items-center justify-between border-b border-border bg-card px-3 sm:px-4 select-none z-20 gap-2 sm:gap-4">
       {/* Left: Brand & Component Info */}
       <div className="flex items-center gap-2 sm:gap-2.5 min-w-0 flex-1">
-        {/* Toggle sidebar button */}
-        <button
-          type="button"
-          className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-2xs cursor-pointer"
-          onClick={onToggleSidebar}
-          title={isSidebarOpen ? "Hide sidebar (⌘B)" : "Show sidebar (⌘B)"}
-        >
-          {isSidebarOpen ? (
-            <PanelLeftClose className="size-4 shrink-0" />
-          ) : (
+        {/* Toggle sidebar button (only when sidebar is closed) */}
+        {!isSidebarOpen && (
+          <button
+            type="button"
+            className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-2xs cursor-pointer"
+            onClick={onToggleSidebar}
+            title="Show sidebar (⌘B)"
+          >
             <PanelLeft className="size-4 shrink-0" />
-          )}
-        </button>
+          </button>
+        )}
 
-        <div className="flex items-center gap-1.5 shrink-0">
+        {/* UIPKGE brand icon (only when sidebar is closed) */}
+        {!isSidebarOpen && (
           <div
             className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-card shadow-xs select-none"
             title="UIPKGE Dev Workbench"
@@ -122,6 +121,9 @@ export default function WorkbenchHeader({
               <rect x="18" y="18" width="8" height="8" rx="1.6" className="fill-foreground" />
             </svg>
           </div>
+        )}
+
+        <div className="flex items-center gap-1.5 shrink-0">
           <div className="flex items-center gap-1 shrink-0">
             <span className="inline-flex items-center h-7 px-2 rounded-md border border-border bg-muted/40 text-xs font-mono font-medium text-foreground whitespace-nowrap shrink-0">
               React 19

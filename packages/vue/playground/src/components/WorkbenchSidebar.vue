@@ -185,14 +185,14 @@ onUnmounted(() => {
 
     <!-- Top Section: Components & Blocks Tabs Side by Side + Search Bar -->
     <div class="p-3 border-b border-border space-y-2.5">
-      <!-- Tabs Side by Side -->
+      <!-- Tabs Side by Side: Flexible Components tab + snug Blocks tab -->
       <div
-        class="grid grid-cols-2 gap-1 p-0.5 bg-muted/60 rounded-lg text-xs font-medium border border-border/50"
+        class="flex items-center gap-1 p-0.5 bg-muted/60 rounded-lg text-xs font-medium border border-border/50"
       >
         <button
           type="button"
           id="tab-components"
-          class="flex items-center justify-center gap-1 py-1.5 px-1.5 rounded-md transition cursor-pointer whitespace-nowrap min-w-0 select-none"
+          class="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-md transition cursor-pointer whitespace-nowrap min-w-0 select-none"
           :class="
             activeTab === 'components'
               ? 'bg-background text-foreground shadow-xs font-semibold'
@@ -202,7 +202,7 @@ onUnmounted(() => {
           title="Components (UI Primitives)"
         >
           <Layers class="size-3.5 shrink-0" />
-          <span class="truncate text-xs font-medium">Components</span>
+          <span class="text-xs font-medium">Components</span>
           <span
             class="text-[10px] px-1.5 py-0.5 rounded-full font-mono shrink-0 leading-none tabular-nums"
             :class="
@@ -218,7 +218,7 @@ onUnmounted(() => {
         <button
           type="button"
           id="tab-blocks"
-          class="flex items-center justify-center gap-1 py-1.5 px-1.5 rounded-md transition cursor-pointer whitespace-nowrap min-w-0 select-none"
+          class="shrink-0 flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded-md transition cursor-pointer whitespace-nowrap select-none"
           :class="
             activeTab === 'blocks'
               ? 'bg-background text-foreground shadow-xs font-semibold'
@@ -228,7 +228,7 @@ onUnmounted(() => {
           title="Blocks (Composed Layouts)"
         >
           <LayoutGrid class="size-3.5 shrink-0" />
-          <span class="truncate text-xs font-medium">Blocks</span>
+          <span class="text-xs font-medium">Blocks</span>
           <span
             class="text-[10px] px-1.5 py-0.5 rounded-full font-mono shrink-0 leading-none tabular-nums"
             :class="

@@ -193,13 +193,13 @@ export default function WorkbenchSidebar({
 
       {/* Top Header: Components & Blocks Tabs Side by Side + Search Bar */}
       <div className="border-b border-border p-3 space-y-2.5">
-        {/* Tabs Side by Side */}
-        <div className="grid grid-cols-2 gap-1 p-0.5 bg-muted/60 rounded-lg text-xs font-medium border border-border/50">
+        {/* Tabs Side by Side: Flexible Components tab + snug Blocks tab */}
+        <div className="flex items-center gap-1 p-0.5 bg-muted/60 rounded-lg text-xs font-medium border border-border/50">
           <button
             type="button"
             id="tab-components"
             title="Components (UI Primitives)"
-            className={`flex items-center justify-center gap-1 py-1.5 px-1.5 rounded-md transition cursor-pointer whitespace-nowrap min-w-0 select-none ${
+            className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-md transition cursor-pointer whitespace-nowrap min-w-0 select-none ${
               activeTab === "components"
                 ? "bg-background text-foreground shadow-xs font-semibold"
                 : "text-muted-foreground hover:text-foreground"
@@ -207,7 +207,7 @@ export default function WorkbenchSidebar({
             onClick={() => switchTab("components")}
           >
             <Layers className="size-3.5 shrink-0" />
-            <span className="truncate text-xs font-medium">Components</span>
+            <span className="text-xs font-medium">Components</span>
             <span
               className={`text-[10px] px-1.5 py-0.5 rounded-full font-mono shrink-0 leading-none tabular-nums ${
                 activeTab === "components"
@@ -223,7 +223,7 @@ export default function WorkbenchSidebar({
             type="button"
             id="tab-blocks"
             title="Blocks (Composed Layouts)"
-            className={`flex items-center justify-center gap-1 py-1.5 px-1.5 rounded-md transition cursor-pointer whitespace-nowrap min-w-0 select-none ${
+            className={`shrink-0 flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded-md transition cursor-pointer whitespace-nowrap select-none ${
               activeTab === "blocks"
                 ? "bg-background text-foreground shadow-xs font-semibold"
                 : "text-muted-foreground hover:text-foreground"
@@ -231,7 +231,7 @@ export default function WorkbenchSidebar({
             onClick={() => switchTab("blocks")}
           >
             <LayoutGrid className="size-3.5 shrink-0" />
-            <span className="truncate text-xs font-medium">Blocks</span>
+            <span className="text-xs font-medium">Blocks</span>
             <span
               className={`text-[10px] px-1.5 py-0.5 rounded-full font-mono shrink-0 leading-none tabular-nums ${
                 activeTab === "blocks"

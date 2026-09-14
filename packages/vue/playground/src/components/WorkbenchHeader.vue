@@ -125,31 +125,34 @@ const copyCommand = async () => {
   >
     <!-- Left Section: Monogram & Component Info -->
     <div class="flex items-center gap-2 sm:gap-2.5 min-w-0 flex-1">
-      <!-- Toggle sidebar button -->
+      <!-- Toggle sidebar button (only when sidebar is closed) -->
       <button
+        v-if="!isSidebarOpen"
         type="button"
         class="flex size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-2xs cursor-pointer"
         @click="toggleSidebarAction"
-        :title="isSidebarOpen ? 'Hide sidebar (⌘B)' : 'Show sidebar (⌘B)'"
+        title="Show sidebar (⌘B)"
       >
-        <PanelLeftClose v-if="isSidebarOpen" class="size-4 shrink-0" />
-        <PanelLeft v-else class="size-4 shrink-0" />
+        <PanelLeft class="size-4 shrink-0" />
       </button>
 
-      <!-- UIPKGE brand & framework switch -->
+      <!-- UIPKGE brand icon (only when sidebar is closed) -->
+      <div
+        v-if="!isSidebarOpen"
+        class="flex size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-card shadow-xs select-none"
+        title="UIPKGE Dev Workbench"
+      >
+        <svg width="22" height="22" viewBox="0 0 32 32" class="shrink-0" aria-hidden="true">
+          <rect x="0.5" y="0.5" width="31" height="31" rx="7" class="fill-card stroke-border" stroke-width="1" />
+          <rect x="6" y="6" width="8" height="8" rx="1.6" class="fill-foreground" />
+          <rect x="18" y="6" width="8" height="8" rx="1.6" class="fill-primary" />
+          <rect x="6" y="18" width="8" height="8" rx="1.6" class="fill-muted" />
+          <rect x="18" y="18" width="8" height="8" rx="1.6" class="fill-foreground" />
+        </svg>
+      </div>
+
+      <!-- Framework switch & links -->
       <div class="flex items-center gap-1.5 shrink-0">
-        <div
-          class="flex size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-card shadow-xs select-none"
-          title="UIPKGE Dev Workbench"
-        >
-          <svg width="22" height="22" viewBox="0 0 32 32" class="shrink-0" aria-hidden="true">
-            <rect x="0.5" y="0.5" width="31" height="31" rx="7" class="fill-card stroke-border" stroke-width="1" />
-            <rect x="6" y="6" width="8" height="8" rx="1.6" class="fill-foreground" />
-            <rect x="18" y="6" width="8" height="8" rx="1.6" class="fill-primary" />
-            <rect x="6" y="18" width="8" height="8" rx="1.6" class="fill-muted" />
-            <rect x="18" y="18" width="8" height="8" rx="1.6" class="fill-foreground" />
-          </svg>
-        </div>
         <div class="flex items-center gap-1 shrink-0">
           <span
             class="inline-flex items-center h-7 px-2 rounded-md bg-emerald-500/10 border border-emerald-500/20 font-mono text-xs font-semibold text-emerald-600 dark:text-emerald-400 whitespace-nowrap shrink-0"
