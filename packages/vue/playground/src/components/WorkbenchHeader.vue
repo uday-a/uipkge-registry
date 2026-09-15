@@ -20,6 +20,7 @@ import {
   Layers,
   PanelLeftClose,
   PanelLeft,
+  ExternalLink,
 } from "lucide-vue-next";
 import {
   COLOR_THEMES,
@@ -155,7 +156,7 @@ const copyCommand = async () => {
       <div class="flex items-center gap-1.5 shrink-0">
         <div class="flex items-center gap-1 shrink-0">
           <span
-            class="inline-flex items-center h-7 px-2 rounded-md bg-emerald-500/10 border border-emerald-500/20 font-mono text-xs font-semibold text-emerald-600 dark:text-emerald-400 whitespace-nowrap shrink-0"
+            class="inline-flex items-center h-7 px-2 rounded-md border border-border bg-muted/40 font-mono text-xs font-semibold text-foreground whitespace-nowrap shrink-0 shadow-2xs"
           >
             Vue 3.5
           </span>
@@ -166,7 +167,8 @@ const copyCommand = async () => {
             class="hidden sm:inline-flex items-center h-7 px-2 rounded-md border border-border bg-muted/40 font-mono text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition whitespace-nowrap shrink-0"
             title="Open React 19 Playground on :5174"
           >
-            React 19 ↗
+            <span>React 19</span>
+            <ExternalLink class="size-2.5 ml-1" />
           </a>
         </div>
       </div>
@@ -371,38 +373,38 @@ const copyCommand = async () => {
           class="absolute right-0 top-11 w-72 rounded-xl border border-border bg-card p-4 shadow-xl z-50 animate-in fade-in zoom-in-95 duration-150"
         >
           <div
-            class="flex items-center justify-between pb-2 border-b border-border"
+            class="flex items-center justify-between pb-2 mb-3 border-b border-border"
           >
             <span class="text-xs font-semibold text-foreground"
               >Theme Customizer</span
             >
-            <span class="text-xs font-mono text-muted-foreground">OKLCH</span>
+            <span class="text-xs font-mono text-muted-foreground uppercase">OKLCH</span>
           </div>
 
           <!-- Color Presets -->
-          <div class="py-3">
-            <div class="text-xs font-medium text-muted-foreground mb-2">
+          <div class="space-y-2 mb-4">
+            <label class="text-xs text-muted-foreground font-medium">
               Accent Color
-            </div>
-            <div class="grid grid-cols-5 gap-1.5">
+            </label>
+            <div class="grid grid-cols-5 gap-2">
               <button
                 v-for="color in COLOR_THEMES"
                 :key="color.id"
                 type="button"
-                class="flex flex-col items-center gap-1 rounded-md p-1.5 border transition cursor-pointer"
+                class="group flex flex-col items-center gap-1 rounded-lg border p-1.5 transition cursor-pointer"
                 :class="
                   activeColorTheme === color.id
-                    ? 'border-primary bg-primary/10 shadow-xs font-medium'
-                    : 'border-transparent hover:bg-muted/50'
+                    ? 'border-primary bg-primary/10 shadow-xs'
+                    : 'border-border/60 hover:border-border hover:bg-muted/40'
                 "
                 @click="setColorTheme(color.id)"
                 :title="color.name"
               >
                 <span
                   class="size-4 rounded-full border border-black/10 dark:border-white/10"
-                  :style="{ backgroundColor: color.swatch }"
+                  :style="{ backgroundColor: color.id === 'default' ? (isDark ? '#fafafa' : '#18181b') : color.swatch }"
                 />
-                <span class="text-xs font-medium text-muted-foreground">{{
+                <span class="text-xs text-muted-foreground group-hover:text-foreground">{{
                   color.name
                 }}</span>
               </button>
@@ -410,24 +412,25 @@ const copyCommand = async () => {
           </div>
 
           <!-- Radius Presets -->
-          <div class="pt-2 border-t border-border">
-            <div class="text-xs font-medium text-muted-foreground mb-2">
+          <div class="space-y-2">
+            <label class="text-xs text-muted-foreground font-medium">
               Border Radius
-            </div>
-            <div class="grid grid-cols-5 gap-1">
+            </label>
+            <div class="grid grid-cols-5 gap-1.5">
               <button
                 v-for="rad in RADIUS_PRESETS"
                 :key="rad.id"
                 type="button"
-                class="rounded-md px-1.5 py-1 text-xs font-mono font-medium border text-center transition cursor-pointer"
+                class="rounded-md border py-1 text-xs font-mono transition cursor-pointer text-center"
                 :class="
                   activeRadius === rad.value
-                    ? 'border-primary bg-primary text-primary-foreground shadow-xs font-semibold'
+                    ? 'border-primary bg-primary text-primary-foreground font-semibold shadow-xs'
                     : 'border-border text-muted-foreground hover:bg-muted hover:text-foreground'
                 "
+                :title="rad.name"
                 @click="setRadius(rad.value)"
               >
-                {{ rad.id }}
+                {{ rad.name.split(' ')[0] }}
               </button>
             </div>
           </div>

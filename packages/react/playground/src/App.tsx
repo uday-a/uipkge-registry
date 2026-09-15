@@ -71,6 +71,23 @@ const items: SidebarItem[] = demoKeys
   )
   .sort((a, b) => a.name.localeCompare(b.name));
 
+const getInitialDark = () => {
+  if (typeof window === "undefined") return false;
+  const saved = localStorage.getItem("uipkge-theme") || localStorage.getItem("uipkge_dark");
+  if (saved !== null) return saved === "dark" || saved === "true";
+  return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+};
+
+const getInitialColorTheme = () => {
+  if (typeof window === "undefined") return "default";
+  return localStorage.getItem("uipkge-color-theme") || "default";
+};
+
+const getInitialRadius = () => {
+  if (typeof window === "undefined") return "0.5rem";
+  return localStorage.getItem("uipkge-radius") || "0.5rem";
+};
+
 export default function App() {
   const [selectedId, setSelectedId] = useState(() => {
     if (typeof window !== "undefined") {
@@ -89,9 +106,9 @@ export default function App() {
   const previewContainerRef = useRef<HTMLDivElement | null>(null);
 
   // Theme & Canvas state
-  const [isDark, setIsDark] = useState(false);
-  const [activeColorTheme, setActiveColorTheme] = useState("default");
-  const [activeRadius, setActiveRadius] = useState("0.5rem");
+  const [isDark, setIsDark] = useState(getInitialDark);
+  const [activeColorTheme, setActiveColorTheme] = useState(getInitialColorTheme);
+  const [activeRadius, setActiveRadius] = useState(getInitialRadius);
   const [activeViewport, setActiveViewport] = useState("fluid");
   const [canvasBg, setCanvasBg] = useState<CanvasBackground>("dots");
   const [isInspectorOpen, setIsInspectorOpen] = useState(false);
@@ -316,6 +333,17 @@ export default function App() {
     };
   }, [selectedId, remountKey]);
 
+  const handleToggleDark = () => {
+    setIsDark((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem("uipkge_dark", String(next));
+        localStorage.setItem("uipkge-theme", next ? "dark" : "light");
+      } catch {}
+      return next;
+    });
+  };
+
   // Sync dark class on document element
   useEffect(() => {
     if (isDark) {
@@ -332,11 +360,17 @@ export default function App() {
     } else {
       document.documentElement.setAttribute("data-color-theme", activeColorTheme);
     }
+    try {
+      localStorage.setItem("uipkge-color-theme", activeColorTheme);
+    } catch {}
   }, [activeColorTheme]);
 
   // Sync radius on document element
   useEffect(() => {
     document.documentElement.style.setProperty("--radius", activeRadius);
+    try {
+      localStorage.setItem("uipkge-radius", activeRadius);
+    } catch {}
   }, [activeRadius]);
 
   // Global hotkeys: ⌘B / Ctrl+B for sidebar, ⌘J / Ctrl+J for inspector
@@ -395,7 +429,7 @@ export default function App() {
           componentType={currentMeta.type}
           category={currentMeta.categories[0]}
           isDark={isDark}
-          onToggleDark={() => setIsDark(!isDark)}
+          onToggleDark={handleToggleDark}
           activeColorTheme={activeColorTheme}
           onChangeColorTheme={(theme) => setActiveColorTheme(theme)}
           activeRadius={activeRadius}

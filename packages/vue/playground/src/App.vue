@@ -93,9 +93,26 @@ const remountKey = ref(0);
 const previewContainerRef = ref<HTMLElement | null>(null);
 
 // Theme & Canvas state
-const isDark = ref(false);
-const activeColorTheme = ref("default");
-const activeRadius = ref("0.5rem");
+const getInitialDark = () => {
+  if (typeof window === "undefined") return false;
+  const saved = localStorage.getItem("uipkge-theme") || localStorage.getItem("uipkge_dark");
+  if (saved !== null) return saved === "dark" || saved === "true";
+  return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+};
+
+const getInitialColorTheme = () => {
+  if (typeof window === "undefined") return "default";
+  return localStorage.getItem("uipkge-color-theme") || "default";
+};
+
+const getInitialRadius = () => {
+  if (typeof window === "undefined") return "0.5rem";
+  return localStorage.getItem("uipkge-radius") || "0.5rem";
+};
+
+const isDark = ref(getInitialDark());
+const activeColorTheme = ref(getInitialColorTheme());
+const activeRadius = ref(getInitialRadius());
 const activeViewport = ref("fluid");
 const canvasBg = ref<CanvasBackground>("dots");
 const isInspectorOpen = ref(false);
@@ -284,7 +301,10 @@ const handlePopState = () => {
 const toggleTheme = () => {
   isDark.value = !isDark.value;
   applyTheme();
-  localStorage.setItem('uipkge_dark', String(isDark.value));
+  try {
+    localStorage.setItem("uipkge_dark", String(isDark.value));
+    localStorage.setItem("uipkge-theme", isDark.value ? "dark" : "light");
+  } catch {}
 };
 
 const applyTheme = () => {
@@ -295,17 +315,31 @@ const applyTheme = () => {
   }
 };
 
-watch(activeColorTheme, (theme) => {
-  if (theme === "default") {
-    document.documentElement.removeAttribute("data-color-theme");
-  } else {
-    document.documentElement.setAttribute("data-color-theme", theme);
-  }
-});
+watch(
+  activeColorTheme,
+  (theme) => {
+    if (theme === "default") {
+      document.documentElement.removeAttribute("data-color-theme");
+    } else {
+      document.documentElement.setAttribute("data-color-theme", theme);
+    }
+    try {
+      localStorage.setItem("uipkge-color-theme", theme);
+    } catch {}
+  },
+  { immediate: true },
+);
 
-watch(activeRadius, (rad) => {
-  document.documentElement.style.setProperty("--radius", rad);
-});
+watch(
+  activeRadius,
+  (rad) => {
+    document.documentElement.style.setProperty("--radius", rad);
+    try {
+      localStorage.setItem("uipkge-radius", rad);
+    } catch {}
+  },
+  { immediate: true },
+);
 
 const remount = () => {
   remountKey.value++;
@@ -344,9 +378,6 @@ onMounted(() => {
     }
   }
 
-  if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-    isDark.value = true;
-  }
   applyTheme();
   loadComponent(selectedId.value);
   window.addEventListener("keydown", handleKeydown);

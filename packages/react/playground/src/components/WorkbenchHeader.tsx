@@ -125,7 +125,7 @@ export default function WorkbenchHeader({
 
         <div className="flex items-center gap-1.5 shrink-0">
           <div className="flex items-center gap-1 shrink-0">
-            <span className="inline-flex items-center h-7 px-2 rounded-md border border-border bg-muted/40 text-xs font-mono font-medium text-foreground whitespace-nowrap shrink-0">
+            <span className="inline-flex items-center h-7 px-2 rounded-md border border-border bg-muted/40 font-mono text-xs font-semibold text-foreground whitespace-nowrap shrink-0 shadow-2xs">
               React 19
             </span>
             <a
@@ -304,11 +304,19 @@ export default function WorkbenchHeader({
                           ? "border-primary bg-primary/10 shadow-xs"
                           : "border-border/60 hover:border-border hover:bg-muted/40"
                       }`}
+                      title={theme.name}
                       onClick={() => onChangeColorTheme(theme.id)}
                     >
                       <div
                         className="size-4 rounded-full border border-black/10 dark:border-white/10"
-                        style={{ backgroundColor: theme.swatch }}
+                        style={{
+                          backgroundColor:
+                            theme.id === "default"
+                              ? isDark
+                                ? "#fafafa"
+                                : "#18181b"
+                              : theme.swatch,
+                        }}
                       />
                       <span className="text-xs text-muted-foreground group-hover:text-foreground">
                         {theme.name}
@@ -333,6 +341,7 @@ export default function WorkbenchHeader({
                           ? "border-primary bg-primary text-primary-foreground font-semibold shadow-xs"
                           : "border-border text-muted-foreground hover:bg-muted hover:text-foreground"
                       }`}
+                      title={r.name}
                       onClick={() => onChangeRadius(r.value)}
                     >
                       {r.name.split(" ")[0]}
