@@ -91,6 +91,11 @@ const setRadius = (rad: string) => {
   emit("update:active-radius", rad);
 };
 
+const resetTheme = () => {
+  setColorTheme("default");
+  setRadius("0.5rem");
+};
+
 const toggleSidebarAction = () => {
   emit("toggleSidebar");
   emit("update:isSidebarOpen", !props.isSidebarOpen);
@@ -98,6 +103,12 @@ const toggleSidebarAction = () => {
 
 const toggleThemeAction = () => {
   emit("toggleTheme");
+};
+
+const setDark = (dark: boolean) => {
+  if (props.isDark !== dark) {
+    toggleThemeAction();
+  }
 };
 
 const toggleInspectorAction = () => {
@@ -370,67 +381,152 @@ const copyCommand = async () => {
         <!-- Dropdown Popover -->
         <div
           v-if="showThemeMenu"
-          class="absolute right-0 top-11 w-72 rounded-xl border border-border bg-card p-4 shadow-xl z-50 animate-in fade-in zoom-in-95 duration-150"
+          class="absolute right-0 top-11 w-80 rounded-[14px] border border-border bg-popover/95 text-popover-foreground p-4 shadow-2xl backdrop-blur-md z-50 animate-in fade-in zoom-in-95 duration-150"
         >
-          <div
-            class="flex items-center justify-between pb-2 mb-3 border-b border-border"
-          >
-            <span class="text-xs font-semibold text-foreground"
-              >Theme Customizer</span
+          <!-- Header -->
+          <div class="flex items-center justify-between border-b border-border pb-3 mb-3.5">
+            <div class="flex items-center gap-2">
+              <div class="flex size-7 items-center justify-center rounded-[8px] border border-border bg-muted/50 text-foreground shadow-2xs">
+                <Palette class="size-3.5" />
+              </div>
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <h4 class="text-xs font-semibold text-foreground tracking-tight">
+                    Theme Customizer
+                  </h4>
+                  <span class="rounded-[4px] bg-muted px-1.5 py-0.5 font-mono text-[10px] font-medium text-muted-foreground uppercase">
+                    OKLCH
+                  </span>
+                </div>
+                <p class="text-[11px] text-muted-foreground">Tokens & preview settings</p>
+              </div>
+            </div>
+            <button
+              type="button"
+              @click="resetTheme"
+              title="Reset to default theme & radius"
+              class="flex shrink-0 items-center gap-1 rounded-[6px] px-2 py-1 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition cursor-pointer border border-transparent hover:border-border/60"
             >
-            <span class="text-xs font-mono text-muted-foreground uppercase">OKLCH</span>
+              <RotateCcw class="size-3" />
+              <span>Reset</span>
+            </button>
           </div>
 
-          <!-- Color Presets -->
-          <div class="space-y-2 mb-4">
-            <label class="text-xs text-muted-foreground font-medium">
-              Accent Color
-            </label>
-            <div class="grid grid-cols-5 gap-2">
+          <!-- Appearance / Color Mode -->
+          <div class="space-y-1.5 mb-3.5">
+            <label class="text-xs font-medium text-muted-foreground">Appearance</label>
+            <div class="grid grid-cols-2 gap-1 rounded-[8px] border border-border/60 bg-muted/40 p-1">
               <button
-                v-for="color in COLOR_THEMES"
-                :key="color.id"
                 type="button"
-                class="group flex flex-col items-center gap-1 rounded-lg border p-1.5 transition cursor-pointer"
+                @click="setDark(false)"
+                class="flex items-center justify-center gap-2 rounded-[6px] py-1.5 text-xs font-medium transition cursor-pointer"
                 :class="
-                  activeColorTheme === color.id
-                    ? 'border-primary bg-primary/10 shadow-xs'
-                    : 'border-border/60 hover:border-border hover:bg-muted/40'
+                  !isDark
+                    ? 'bg-background text-foreground shadow-xs border border-border/80 font-semibold'
+                    : 'text-muted-foreground hover:text-foreground'
                 "
-                @click="setColorTheme(color.id)"
-                :title="color.name"
               >
-                <span
-                  class="size-4 rounded-full border border-black/10 dark:border-white/10"
-                  :style="{ backgroundColor: color.id === 'default' ? (isDark ? '#fafafa' : '#18181b') : color.swatch }"
-                />
-                <span class="text-xs text-muted-foreground group-hover:text-foreground">{{
-                  color.name
-                }}</span>
+                <Sun class="size-3.5" />
+                <span>Light</span>
+              </button>
+              <button
+                type="button"
+                @click="setDark(true)"
+                class="flex items-center justify-center gap-2 rounded-[6px] py-1.5 text-xs font-medium transition cursor-pointer"
+                :class="
+                  isDark
+                    ? 'bg-background text-foreground shadow-xs border border-border/80 font-semibold'
+                    : 'text-muted-foreground hover:text-foreground'
+                "
+              >
+                <Moon class="size-3.5" />
+                <span>Dark</span>
               </button>
             </div>
           </div>
 
-          <!-- Radius Presets -->
-          <div class="space-y-2">
-            <label class="text-xs text-muted-foreground font-medium">
-              Border Radius
-            </label>
-            <div class="grid grid-cols-5 gap-1.5">
+          <!-- Accent Color -->
+          <div class="space-y-1.5 mb-3.5">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-medium text-muted-foreground">Accent Color</label>
+              <span class="text-[11px] font-mono text-muted-foreground capitalize flex items-center gap-1.5">
+                <span
+                  class="size-2 rounded-full border border-black/10 dark:border-white/20"
+                  :style="{
+                    backgroundColor:
+                      activeColorTheme === 'default'
+                        ? isDark
+                          ? '#fafafa'
+                          : '#18181b'
+                        : COLOR_THEMES.find((t) => t.id === activeColorTheme)?.swatch || '#18181b',
+                  }"
+                />
+                {{ COLOR_THEMES.find((t) => t.id === activeColorTheme)?.name || 'Neutral' }}
+              </span>
+            </div>
+            <div class="grid grid-cols-3 gap-1.5">
+              <button
+                v-for="color in COLOR_THEMES"
+                :key="color.id"
+                type="button"
+                @click="setColorTheme(color.id)"
+                :title="color.name"
+                class="group flex items-center gap-2 rounded-[6px] border px-2 py-1.5 text-xs font-medium transition cursor-pointer"
+                :class="
+                  activeColorTheme === color.id
+                    ? 'border-primary bg-primary/10 text-foreground font-semibold shadow-2xs'
+                    : 'border-border/50 bg-background/60 text-muted-foreground hover:border-border hover:bg-muted/60 hover:text-foreground'
+                "
+              >
+                <span
+                  class="relative size-3.5 shrink-0 rounded-full border border-black/10 dark:border-white/20 shadow-2xs transition-transform group-hover:scale-110 flex items-center justify-center"
+                  :style="{
+                    backgroundColor:
+                      color.id === 'default' ? (isDark ? '#fafafa' : '#18181b') : color.swatch,
+                  }"
+                >
+                  <Check
+                    v-if="activeColorTheme === color.id"
+                    class="size-2 stroke-[3]"
+                    :class="
+                      color.id === 'default'
+                        ? isDark
+                          ? 'text-black'
+                          : 'text-white'
+                        : color.id === 'amber' || color.id === 'cyan'
+                        ? 'text-black'
+                        : 'text-white'
+                    "
+                  />
+                </span>
+                <span class="truncate">{{ color.name }}</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Border Radius -->
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-medium text-muted-foreground">Border Radius</label>
+              <span class="text-[11px] font-mono text-muted-foreground">
+                {{ RADIUS_PRESETS.find((r) => r.value === activeRadius)?.name || activeRadius }}
+              </span>
+            </div>
+            <div class="grid grid-cols-5 gap-1 rounded-[8px] border border-border/60 bg-muted/40 p-1">
               <button
                 v-for="rad in RADIUS_PRESETS"
                 :key="rad.id"
                 type="button"
-                class="rounded-md border py-1 text-xs font-mono transition cursor-pointer text-center"
+                @click="setRadius(rad.value)"
+                :title="rad.name"
+                class="flex items-center justify-center rounded-[6px] py-1.5 text-xs font-mono transition cursor-pointer"
                 :class="
                   activeRadius === rad.value
-                    ? 'border-primary bg-primary text-primary-foreground font-semibold shadow-xs'
-                    : 'border-border text-muted-foreground hover:bg-muted hover:text-foreground'
+                    ? 'bg-background text-foreground font-semibold shadow-xs border border-border/80'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-background/40'
                 "
-                :title="rad.name"
-                @click="setRadius(rad.value)"
               >
-                {{ rad.name.split(' ')[0] }}
+                {{ rad.label }}
               </button>
             </div>
           </div>

@@ -279,74 +279,166 @@ export default function WorkbenchHeader({
 
           {/* Theme Customizer Popover */}
           {showThemePopover && (
-            <div className="absolute right-0 top-11 w-72 rounded-xl border border-border bg-card p-4 shadow-xl z-50 animate-in fade-in zoom-in-95 duration-100">
-              <div className="flex items-center justify-between border-b border-border pb-2 mb-3">
-                <span className="text-xs font-semibold text-foreground">
-                  Theme Customizer
-                </span>
-                <span className="text-xs font-mono text-muted-foreground uppercase">
-                  OKLCH
-                </span>
+            <div className="absolute right-0 top-11 w-80 rounded-[14px] border border-border bg-popover/95 text-popover-foreground p-4 shadow-2xl backdrop-blur-md z-50 animate-in fade-in-0 zoom-in-95 duration-150">
+              {/* Header */}
+              <div className="flex items-center justify-between border-b border-border pb-3 mb-3.5">
+                <div className="flex items-center gap-2">
+                  <div className="flex size-7 items-center justify-center rounded-[8px] border border-border bg-muted/50 text-foreground shadow-2xs">
+                    <Palette className="size-3.5" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-1.5">
+                      <h4 className="text-xs font-semibold text-foreground tracking-tight">
+                        Theme Customizer
+                      </h4>
+                      <span className="rounded-[4px] bg-muted px-1.5 py-0.5 font-mono text-[10px] font-medium text-muted-foreground uppercase">
+                        OKLCH
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-muted-foreground">Tokens & preview settings</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    onChangeColorTheme("default");
+                    onChangeRadius("0.5rem");
+                  }}
+                  title="Reset to default theme & radius"
+                  className="flex shrink-0 items-center gap-1 rounded-[6px] px-2 py-1 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition cursor-pointer border border-transparent hover:border-border/60"
+                >
+                  <RotateCcw className="size-3" />
+                  <span>Reset</span>
+                </button>
               </div>
 
-              {/* Color Themes */}
-              <div className="space-y-2 mb-4">
-                <label className="text-xs text-muted-foreground font-medium">
-                  Accent Color
-                </label>
-                <div className="grid grid-cols-5 gap-2">
-                  {COLOR_THEMES.map((theme) => (
-                    <button
-                      key={theme.id}
-                      type="button"
-                      className={`group flex flex-col items-center gap-1 rounded-lg border p-1.5 transition cursor-pointer ${
-                        activeColorTheme === theme.id
-                          ? "border-primary bg-primary/10 shadow-xs"
-                          : "border-border/60 hover:border-border hover:bg-muted/40"
-                      }`}
-                      title={theme.name}
-                      onClick={() => onChangeColorTheme(theme.id)}
-                    >
-                      <div
-                        className="size-4 rounded-full border border-black/10 dark:border-white/10"
-                        style={{
-                          backgroundColor:
-                            theme.id === "default"
-                              ? isDark
-                                ? "#fafafa"
-                                : "#18181b"
-                              : theme.swatch,
-                        }}
-                      />
-                      <span className="text-xs text-muted-foreground group-hover:text-foreground">
-                        {theme.name}
-                      </span>
-                    </button>
-                  ))}
+              {/* Appearance / Color Mode */}
+              <div className="space-y-1.5 mb-3.5">
+                <label className="text-xs font-medium text-muted-foreground">Appearance</label>
+                <div className="grid grid-cols-2 gap-1 rounded-[8px] border border-border/60 bg-muted/40 p-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (isDark) onToggleDark();
+                    }}
+                    className={`flex items-center justify-center gap-2 rounded-[6px] py-1.5 text-xs font-medium transition cursor-pointer ${
+                      !isDark
+                        ? "bg-background text-foreground shadow-xs border border-border/80 font-semibold"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    <Sun className="size-3.5" />
+                    <span>Light</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (!isDark) onToggleDark();
+                    }}
+                    className={`flex items-center justify-center gap-2 rounded-[6px] py-1.5 text-xs font-medium transition cursor-pointer ${
+                      isDark
+                        ? "bg-background text-foreground shadow-xs border border-border/80 font-semibold"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    <Moon className="size-3.5" />
+                    <span>Dark</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Accent Color */}
+              <div className="space-y-1.5 mb-3.5">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-medium text-muted-foreground">Accent Color</label>
+                  <span className="text-[11px] font-mono text-muted-foreground capitalize flex items-center gap-1.5">
+                    <span
+                      className="size-2 rounded-full border border-black/10 dark:border-white/20"
+                      style={{
+                        backgroundColor:
+                          activeColorTheme === "default"
+                            ? isDark
+                              ? "#fafafa"
+                              : "#18181b"
+                            : COLOR_THEMES.find((t) => t.id === activeColorTheme)?.swatch || "#18181b",
+                      }}
+                    />
+                    {COLOR_THEMES.find((t) => t.id === activeColorTheme)?.name || "Neutral"}
+                  </span>
+                </div>
+                <div className="grid grid-cols-3 gap-1.5">
+                  {COLOR_THEMES.map((theme) => {
+                    const isSelected = activeColorTheme === theme.id;
+                    const swatchBg =
+                      theme.id === "default"
+                        ? isDark
+                          ? "#fafafa"
+                          : "#18181b"
+                        : theme.swatch;
+                    return (
+                      <button
+                        key={theme.id}
+                        type="button"
+                        onClick={() => onChangeColorTheme(theme.id)}
+                        title={theme.name}
+                        className={`group flex items-center gap-2 rounded-[6px] border px-2 py-1.5 text-xs font-medium transition cursor-pointer ${
+                          isSelected
+                            ? "border-primary bg-primary/10 text-foreground font-semibold shadow-2xs"
+                            : "border-border/50 bg-background/60 text-muted-foreground hover:border-border hover:bg-muted/60 hover:text-foreground"
+                        }`}
+                      >
+                        <span
+                          className="relative size-3.5 shrink-0 rounded-full border border-black/10 dark:border-white/20 shadow-2xs transition-transform group-hover:scale-110 flex items-center justify-center"
+                          style={{ backgroundColor: swatchBg }}
+                        >
+                          {isSelected && (
+                            <Check
+                              className={`size-2 stroke-[3] ${
+                                theme.id === "default"
+                                  ? isDark
+                                    ? "text-black"
+                                    : "text-white"
+                                  : theme.id === "amber" || theme.id === "cyan"
+                                  ? "text-black"
+                                  : "text-white"
+                              }`}
+                            />
+                          )}
+                        </span>
+                        <span className="truncate">{theme.name}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
               {/* Border Radius */}
-              <div className="space-y-2">
-                <label className="text-xs text-muted-foreground font-medium">
-                  Border Radius
-                </label>
-                <div className="grid grid-cols-5 gap-1.5">
-                  {RADIUS_PRESETS.map((r) => (
-                    <button
-                      key={r.id}
-                      type="button"
-                      className={`rounded-md border py-1 text-xs font-mono transition cursor-pointer ${
-                        activeRadius === r.value
-                          ? "border-primary bg-primary text-primary-foreground font-semibold shadow-xs"
-                          : "border-border text-muted-foreground hover:bg-muted hover:text-foreground"
-                      }`}
-                      title={r.name}
-                      onClick={() => onChangeRadius(r.value)}
-                    >
-                      {r.name.split(" ")[0]}
-                    </button>
-                  ))}
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-medium text-muted-foreground">Border Radius</label>
+                  <span className="text-[11px] font-mono text-muted-foreground">
+                    {RADIUS_PRESETS.find((r) => r.value === activeRadius)?.name || activeRadius}
+                  </span>
+                </div>
+                <div className="grid grid-cols-5 gap-1 rounded-[8px] border border-border/60 bg-muted/40 p-1">
+                  {RADIUS_PRESETS.map((r) => {
+                    const isSelected = activeRadius === r.value;
+                    return (
+                      <button
+                        key={r.id}
+                        type="button"
+                        onClick={() => onChangeRadius(r.value)}
+                        title={r.name}
+                        className={`flex items-center justify-center rounded-[6px] py-1.5 text-xs font-mono transition cursor-pointer ${
+                          isSelected
+                            ? "bg-background text-foreground font-semibold shadow-xs border border-border/80"
+                            : "text-muted-foreground hover:text-foreground hover:bg-background/40"
+                        }`}
+                      >
+                        {r.label}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </div>
