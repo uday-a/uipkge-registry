@@ -1,16 +1,6 @@
-import Story from "../../components/story/Story";
-import { Button, ButtonGroup } from "@react-registry/button";
-import {
-  ChevronDown,
-  ChevronRight,
-  Copy,
-  Download,
-  Loader2,
-  Mail,
-  Plus,
-  Share2,
-  Trash2,
-} from "lucide-react";
+import Story from '../../components/story/Story'
+import { Button, ButtonGroup } from '@react-registry/button'
+import { ChevronDown, ChevronRight, Copy, Download, Loader2, Mail, Plus, Share2, Trash2 } from 'lucide-react'
 
 export default function ButtonDemo() {
   return (
@@ -38,10 +28,7 @@ export default function ButtonDemo() {
         </div>
       </Story>
 
-      <Story
-        title="Icon-only"
-        description="Square icon buttons in three sizes. Use aria-label for accessibility."
-      >
+      <Story title="Icon-only" description="Square icon buttons in three sizes. Use aria-label for accessibility.">
         <div className="flex flex-wrap items-center gap-2">
           <Button size="icon-sm" aria-label="icon">
             <Mail />
@@ -55,10 +42,7 @@ export default function ButtonDemo() {
         </div>
       </Story>
 
-      <Story
-        title="With icon"
-        description="Place icons before or after the label. Auto-spaced."
-      >
+      <Story title="With icon" description="Place icons before or after the label. Auto-spaced.">
         <div className="flex flex-wrap gap-2">
           <Button>
             <Mail /> Email me
@@ -75,10 +59,7 @@ export default function ButtonDemo() {
         </div>
       </Story>
 
-      <Story
-        title="States"
-        description="Disabled keeps the variant style. Add a spinner for loading."
-      >
+      <Story title="States" description="Disabled keeps the variant style. Add a spinner for loading.">
         <div className="flex flex-wrap gap-2">
           <Button disabled>Disabled</Button>
           <Button variant="outline" disabled>
@@ -130,5 +111,5 @@ export default function ButtonDemo() {
         </div>
       </Story>
     </>
-  );
+  )
 }
