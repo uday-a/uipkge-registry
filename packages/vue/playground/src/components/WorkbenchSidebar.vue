@@ -149,7 +149,7 @@ onUnmounted(() => {
     :class="[
       collapsed
         ? 'w-0 overflow-hidden border-r-0 p-0 opacity-0 pointer-events-none'
-        : 'w-80',
+        : 'w-[300px]',
     ]"
   >
     <!-- Brand Header: UIPKGE Registry Logo, Title & Collapse Action -->

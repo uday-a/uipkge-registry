@@ -512,7 +512,7 @@ const copyCommand = async () => {
                 {{ RADIUS_PRESETS.find((r) => r.value === activeRadius)?.name || activeRadius }}
               </span>
             </div>
-            <div class="grid grid-cols-5 gap-1 rounded-[8px] border border-border/60 bg-muted/40 p-1">
+            <div class="grid grid-cols-4 gap-1 rounded-[8px] border border-border/60 bg-muted/40 p-1">
               <button
                 v-for="rad in RADIUS_PRESETS"
                 :key="rad.id"

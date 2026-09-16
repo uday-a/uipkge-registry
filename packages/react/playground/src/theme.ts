@@ -31,7 +31,6 @@ export const RADIUS_PRESETS: RadiusPreset[] = [
   { id: 'sm', name: 'Subtle (0.25rem)', label: '0.25', value: '0.25rem' },
   { id: 'md', name: 'Default (0.5rem)', label: '0.5', value: '0.5rem' },
   { id: 'lg', name: 'Round (0.75rem)', label: '0.75', value: '0.75rem' },
-  { id: 'full', name: 'Pill (Full)', label: 'Full', value: '9999px' },
 ]
 
 export interface ViewportPreset {

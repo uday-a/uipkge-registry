@@ -155,7 +155,7 @@ export default function WorkbenchSidebar({
       className={`flex shrink-0 flex-col border-r border-border bg-card select-none transition-all duration-200 ${
         collapsed
           ? "w-0 overflow-hidden border-r-0 p-0 opacity-0 pointer-events-none"
-          : "w-80"
+          : "w-[300px]"
       }`}
     >
       {/* Brand Header: UIPKGE Registry Logo, Title & Collapse Action */}

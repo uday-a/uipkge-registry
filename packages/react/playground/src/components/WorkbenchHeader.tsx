@@ -420,7 +420,7 @@ export default function WorkbenchHeader({
                     {RADIUS_PRESETS.find((r) => r.value === activeRadius)?.name || activeRadius}
                   </span>
                 </div>
-                <div className="grid grid-cols-5 gap-1 rounded-[8px] border border-border/60 bg-muted/40 p-1">
+                <div className="grid grid-cols-4 gap-1 rounded-[8px] border border-border/60 bg-muted/40 p-1">
                   {RADIUS_PRESETS.map((r) => {
                     const isSelected = activeRadius === r.value;
                     return (
