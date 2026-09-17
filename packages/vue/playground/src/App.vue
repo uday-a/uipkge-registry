@@ -252,14 +252,18 @@ const loadComponent = async (id: string) => {
 };
 
 // Watch selected component & sync to URL query parameter
-watch(selectedId, (newId) => {
+watch(selectedId, (newId, oldId) => {
   loadComponent(newId);
   if (typeof window !== "undefined") {
     const url = new URL(window.location.href);
     if (url.searchParams.get("c") !== newId) {
       url.searchParams.set("c", newId);
       url.searchParams.delete("component");
-      window.history.replaceState({ component: newId }, "", url.toString());
+      if (oldId) {
+        window.history.pushState({ component: newId }, "", url.toString());
+      } else {
+        window.history.replaceState({ component: newId }, "", url.toString());
+      }
     }
   }
 });
@@ -344,12 +348,28 @@ onMounted(() => {
   window.addEventListener("keydown", handleKeydown);
   window.addEventListener("popstate", handlePopState);
 
+  const handleCanvasClick = (e: MouseEvent) => {
+    const a = (e.target as HTMLElement)?.closest("a");
+    if (a) {
+      const href = a.getAttribute("href");
+      if (!href || href === "#" || href.startsWith("#") || href === "javascript:void(0)") {
+        e.preventDefault();
+      }
+    }
+    logEvent(e);
+  };
+
+  const handleCanvasSubmit = (e: SubmitEvent) => {
+    e.preventDefault();
+    logEvent(e);
+  };
+
   const el = previewContainerRef.value;
   if (el) {
-    el.addEventListener("click", logEvent, { capture: true });
+    el.addEventListener("click", handleCanvasClick as any, { capture: true });
     el.addEventListener("input", logEvent, { capture: true });
     el.addEventListener("change", logEvent, { capture: true });
-    el.addEventListener("submit", logEvent, { capture: true });
+    el.addEventListener("submit", handleCanvasSubmit as any, { capture: true });
   }
 });
 
@@ -358,10 +378,10 @@ onUnmounted(() => {
   window.removeEventListener("popstate", handlePopState);
   const el = previewContainerRef.value;
   if (el) {
-    el.removeEventListener("click", logEvent, { capture: true });
+    el.removeEventListener("click", logEvent as any, { capture: true });
     el.removeEventListener("input", logEvent, { capture: true });
     el.removeEventListener("change", logEvent, { capture: true });
-    el.removeEventListener("submit", logEvent, { capture: true });
+    el.removeEventListener("submit", logEvent as any, { capture: true });
   }
 });
 

@@ -155,17 +155,31 @@ export default function App() {
   useEffect(() => {
     const el = previewContainerRef.current;
     if (!el) return;
-    const opts = { capture: true, passive: true };
-    el.addEventListener("click", logEvent, opts);
-    el.addEventListener("input", logEvent, opts);
-    el.addEventListener("change", logEvent, opts);
-    el.addEventListener("submit", logEvent, opts);
+    const clickHandler = (e: MouseEvent) => {
+      const a = (e.target as HTMLElement)?.closest("a");
+      if (a) {
+        const href = a.getAttribute("href");
+        if (!href || href === "#" || href.startsWith("#") || href === "javascript:void(0)") {
+          e.preventDefault();
+        }
+      }
+      logEvent(e);
+    };
+    const submitHandler = (e: SubmitEvent) => {
+      e.preventDefault();
+      logEvent(e);
+    };
+
+    el.addEventListener("click", clickHandler as any, { capture: true });
+    el.addEventListener("submit", submitHandler as any, { capture: true });
+    el.addEventListener("input", logEvent as any, { capture: true, passive: true });
+    el.addEventListener("change", logEvent as any, { capture: true, passive: true });
 
     return () => {
-      el.removeEventListener("click", logEvent, opts);
-      el.removeEventListener("input", logEvent, opts);
-      el.removeEventListener("change", logEvent, opts);
-      el.removeEventListener("submit", logEvent, opts);
+      el.removeEventListener("click", clickHandler as any, { capture: true });
+      el.removeEventListener("submit", submitHandler as any, { capture: true });
+      el.removeEventListener("input", logEvent as any, { capture: true });
+      el.removeEventListener("change", logEvent as any, { capture: true });
     };
   }, [remountKey, ActiveComponent]);
 
@@ -176,7 +190,7 @@ export default function App() {
       if (url.searchParams.get("c") !== selectedId) {
         url.searchParams.set("c", selectedId);
         url.searchParams.delete("component");
-        window.history.replaceState({ component: selectedId }, "", url.toString());
+        window.history.pushState({ component: selectedId }, "", url.toString());
       }
     }
   }, [selectedId]);

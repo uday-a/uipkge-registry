@@ -95,13 +95,13 @@ const copyCommand = async () => {
 
       <!-- UIPKGE brand & framework switch -->
       <div class="flex items-center gap-2">
-        <a
-          href="/"
-          class="flex size-8 items-center justify-center rounded-lg bg-foreground text-background font-mono text-xs font-bold shadow-xs hover:opacity-90 transition"
+        <button
+          type="button"
+          class="flex size-8 items-center justify-center rounded-lg bg-foreground text-background font-mono text-xs font-bold shadow-xs hover:opacity-90 transition cursor-pointer"
           title="UIPKGE Dev Workbench"
         >
           UI
-        </a>
+        </button>
         <div class="flex items-center gap-1.5">
           <span
             class="rounded-md bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 font-mono text-xs font-semibold text-emerald-600 dark:text-emerald-400"
