@@ -25,8 +25,6 @@ export interface WorkbenchSidebarProps {
   collapsed?: boolean;
 }
 
-type FilterTab = "all" | "ui" | "charts";
-
 export default function WorkbenchSidebar({
   items,
   selectedId,
@@ -34,7 +32,6 @@ export default function WorkbenchSidebar({
   collapsed = false,
 }: WorkbenchSidebarProps) {
   const [search, setSearch] = useState("");
-  const [activeTab, setActiveTab] = useState<FilterTab>("all");
   const [collapsedCategories, setCollapsedCategories] = useState<
     Record<string, boolean>
   >({});
@@ -58,37 +55,17 @@ export default function WorkbenchSidebar({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  // Filter items by search query and type tab
+  // Filter items by search query
   const filteredItems = useMemo(() => {
-    let list = items;
-
-    if (activeTab === "ui") {
-      list = list.filter(
-        (i) =>
-          i.type === "registry:ui" &&
-          !i.id.includes("chart") &&
-          !i.categories?.includes("chart"),
-      );
-    } else if (activeTab === "charts") {
-      list = list.filter(
-        (i) =>
-          i.id.includes("chart") ||
-          i.category === "Charts" ||
-          i.categories?.some(
-            (c) => c.includes("chart") || c.includes("visualization"),
-          ),
-      );
-    }
-
     const q = search.toLowerCase().trim();
-    if (!q) return list;
-    return list.filter(
+    if (!q) return items;
+    return items.filter(
       (i) =>
         i.id.toLowerCase().includes(q) ||
         i.name.toLowerCase().includes(q) ||
         i.categories?.some((c) => c.toLowerCase().includes(q)),
     );
-  }, [items, activeTab, search]);
+  }, [items, search]);
 
   // Group items by category
   const groupedItems = useMemo(() => {
@@ -148,43 +125,6 @@ export default function WorkbenchSidebar({
               <X className="size-3.5" />
             </button>
           )}
-        </div>
-
-        {/* Filter Segmented Control */}
-        <div className="grid grid-cols-3 rounded-lg border border-border bg-muted/40 p-0.5 text-xs">
-          <button
-            type="button"
-            className={`rounded-md py-1 font-medium transition ${
-              activeTab === "all"
-                ? "bg-background text-foreground shadow-xs"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-            onClick={() => setActiveTab("all")}
-          >
-            All
-          </button>
-          <button
-            type="button"
-            className={`rounded-md py-1 font-medium transition ${
-              activeTab === "ui"
-                ? "bg-background text-foreground shadow-xs"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-            onClick={() => setActiveTab("ui")}
-          >
-            UI
-          </button>
-          <button
-            type="button"
-            className={`rounded-md py-1 font-medium transition ${
-              activeTab === "charts"
-                ? "bg-background text-foreground shadow-xs"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-            onClick={() => setActiveTab("charts")}
-          >
-            Charts
-          </button>
         </div>
       </div>
 
@@ -248,7 +188,7 @@ export default function WorkbenchSidebar({
 
       {/* Footer info */}
       <div className="border-t border-border p-3 text-xs font-mono text-muted-foreground flex items-center justify-between">
-        <span>{filteredItems.length} items</span>
+        <span>{filteredItems.length} components</span>
         <span>UIPKGE v1.0</span>
       </div>
     </aside>
