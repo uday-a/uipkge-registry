@@ -146,7 +146,7 @@ export default function WorkbenchHeader({
         {/* Install Command: Full on 2xl+, compact icon on smaller */}
         <button
           type="button"
-          title="Click to copy install command"
+          title="Copy install command"
           className="hidden 2xl:flex items-center gap-1.5 rounded-lg border border-border bg-background px-2.5 h-8 text-xs font-mono text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs whitespace-nowrap shrink-0 cursor-pointer"
           onClick={copyInstallCommand}
         >
@@ -159,7 +159,7 @@ export default function WorkbenchHeader({
         </button>
         <button
           type="button"
-          title={`Copy add @uipkge/${componentId}`}
+          title={`Copy install command: add @uipkge/${componentId}`}
           className="flex 2xl:hidden size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs cursor-pointer"
           onClick={copyInstallCommand}
         >

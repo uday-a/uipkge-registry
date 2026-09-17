@@ -157,10 +157,11 @@ export default function WorkbenchSidebar({
                 {groupedItems[cat].map((item) => (
                   <button
                     key={item.id}
+                    id={`sidebar-item-${item.id}`}
                     type="button"
                     className={`group flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-xs text-left transition font-sans ${
                       selectedId === item.id
-                        ? "bg-foreground text-background font-medium shadow-xs"
+                        ? "bg-primary text-primary-foreground font-medium shadow-xs"
                         : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
                     }`}
                     onClick={() => onSelect(item.id)}

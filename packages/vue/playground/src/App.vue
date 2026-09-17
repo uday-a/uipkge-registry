@@ -281,6 +281,7 @@ const handlePopState = () => {
 const toggleTheme = () => {
   isDark.value = !isDark.value;
   applyTheme();
+  localStorage.setItem('uipkge_dark', String(isDark.value));
 };
 
 const applyTheme = () => {
@@ -416,27 +417,22 @@ const activeItemName = computed(() => {
         :active-viewport="activeViewport"
         :canvas-bg="canvasBg"
         :is-inspector-open="isInspectorOpen"
+        :is-sidebar-open="isSidebarOpen"
         @toggle-sidebar="isSidebarOpen = !isSidebarOpen"
         @toggle-theme="toggleTheme"
         @update:active-color-theme="activeColorTheme = $event"
-        @update:activeColorTheme="activeColorTheme = $event"
         @update:active-radius="activeRadius = $event"
-        @update:activeRadius="activeRadius = $event"
         @update:active-viewport="activeViewport = $event"
-        @update:activeViewport="activeViewport = $event"
         @update:canvas-bg="canvasBg = $event"
-        @update:canvasBg="canvasBg = $event"
         @update:is-inspector-open="isInspectorOpen = $event"
-        @update:isInspectorOpen="isInspectorOpen = $event"
         @update:is-sidebar-open="isSidebarOpen = $event"
-        @update:isSidebarOpen="isSidebarOpen = $event"
         @remount="remount"
       />
 
       <!-- Middle: Canvas Preview Stage -->
-      <div
+      <main
         ref="previewContainerRef"
-        class="flex-1 overflow-y-auto overflow-x-hidden p-6 sm:p-8 lg:p-10 transition-colors duration-200"
+        class="flex-1 overflow-y-auto overflow-x-auto p-6 sm:p-8 lg:p-10 transition-colors duration-200"
         :class="[
           canvasBg === 'dots' ? 'canvas-dots' : '',
           canvasBg === 'grid' ? 'canvas-grid' : '',
@@ -463,7 +459,7 @@ const activeItemName = computed(() => {
                         : activeViewport === 'tablet'
                           ? '768px'
                           : '375px',
-                  maxWidth: '100%',
+                  flexShrink: 0,
                 }
               : {}
           "
@@ -515,7 +511,7 @@ const activeItemName = computed(() => {
             </div>
           </div>
         </div>
-      </div>
+      </main>
 
       <!-- Bottom: Test Bench & Inspector Drawer -->
       <TestBenchDrawer
