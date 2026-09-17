@@ -1,15 +1,15 @@
-import { defineRegistryItem } from '../../lib/define-registry'
+import { defineRegistryItem } from "../../lib/define-registry";
 
 export default defineRegistryItem({
-  name: 'marquee',
-  type: 'registry:ui',
-  categories: ['display'],
+  name: "marquee",
+  type: "registry:ui",
+  categories: ["display"],
   description:
-    'Continuously auto-scrolling content. Scrolls horizontally or vertically in any direction, with configurable speed, gap, repeat count for a seamless loop, pause-on-hover, and a hard pause prop. Respects prefers-reduced-motion.',
+    "Continuously auto-scrolling content. Scrolls horizontally or vertically in any direction, with configurable speed, gap, repeat count for a seamless loop, pause-on-hover, and a hard pause prop. Respects prefers-reduced-motion.",
   files: [
-    { path: 'Marquee.tsx', target: 'components/ui/marquee/Marquee.tsx' },
-    { path: 'index.ts', target: 'components/ui/marquee/index.ts' },
+    { path: "Marquee.tsx", target: "components/ui/marquee/Marquee.tsx" },
+    { path: "index.ts", target: "components/ui/marquee/index.ts" },
   ],
   dependencies: [],
   registryDependencies: [],
-})
+});

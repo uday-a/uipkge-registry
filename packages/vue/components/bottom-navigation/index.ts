@@ -1,2 +1,2 @@
-export { default as BottomNavigation } from './BottomNavigation.vue'
-export type { BottomNavItem } from './BottomNavigation.vue'
+export { default as BottomNavigation } from "./BottomNavigation.vue";
+export type { BottomNavItem } from "./BottomNavigation.vue";

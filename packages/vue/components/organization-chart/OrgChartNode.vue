@@ -1,68 +1,70 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, type Component } from 'vue'
-import { ChevronDown, ChevronRight } from 'lucide-vue-next'
-import { cn } from '@/lib/utils'
-import type { OrgNode } from './types'
+import { computed, defineAsyncComponent, type Component } from "vue";
+import { ChevronDown, ChevronRight } from "lucide-vue-next";
+import { cn } from "@/lib/utils";
+import type { OrgNode } from "./types";
 
 // Self-reference for recursive rendering
 // Self-referencing recursion. Typing the lazy self-import as a loose
 // Component breaks the circular slot-prop inference (otherwise vue-tsc
 // cannot resolve slotProps for the recursive <OrgChartNode> usage).
-const OrgChartNode = defineAsyncComponent(() => import('./OrgChartNode.vue')) as unknown as Component
+const OrgChartNode = defineAsyncComponent(
+  () => import("./OrgChartNode.vue"),
+) as unknown as Component;
 
 interface Props {
-  node: OrgNode
-  depth: number
-  isRoot?: boolean
-  direction?: 'top-down' | 'left-right'
-  showConnectors?: boolean
-  isExpanded: (node: OrgNode) => boolean
-  toggle: (node: OrgNode) => void
+  node: OrgNode;
+  depth: number;
+  isRoot?: boolean;
+  direction?: "top-down" | "left-right";
+  showConnectors?: boolean;
+  isExpanded: (node: OrgNode) => boolean;
+  toggle: (node: OrgNode) => void;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   isRoot: false,
-  direction: 'top-down',
+  direction: "top-down",
   showConnectors: true,
-})
+});
 
 const emit = defineEmits<{
-  nodeClick: [node: OrgNode]
-}>()
+  nodeClick: [node: OrgNode];
+}>();
 
 function onChildNodeClick(n: OrgNode) {
-  emit('nodeClick', n)
+  emit("nodeClick", n);
 }
 
-const open = computed(() => props.isExpanded(props.node))
-const hasChildren = computed(() => !!props.node.children?.length)
-const isHorizontal = computed(() => props.direction === 'left-right')
-const childCount = computed(() => props.node.children?.length ?? 0)
-const isOnlyChild = computed(() => childCount.value <= 1)
+const open = computed(() => props.isExpanded(props.node));
+const hasChildren = computed(() => !!props.node.children?.length);
+const isHorizontal = computed(() => props.direction === "left-right");
+const childCount = computed(() => props.node.children?.length ?? 0);
+const isOnlyChild = computed(() => childCount.value <= 1);
 
 function onClick() {
-  emit('nodeClick', props.node)
+  emit("nodeClick", props.node);
 }
 
 function onToggle(e: Event) {
-  e.stopPropagation()
-  if (hasChildren.value) props.toggle(props.node)
+  e.stopPropagation();
+  if (hasChildren.value) props.toggle(props.node);
 }
 
 function onCardKeydown(e: KeyboardEvent) {
-  if (e.key === 'Enter' || e.key === ' ') {
-    e.preventDefault()
-    onClick()
+  if (e.key === "Enter" || e.key === " ") {
+    e.preventDefault();
+    onClick();
   }
 }
 
 function initials(name: string): string {
   return name
-    .split(' ')
+    .split(" ")
     .map((p) => p[0])
     .slice(0, 2)
-    .join('')
-    .toUpperCase()
+    .join("")
+    .toUpperCase();
 }
 </script>
 
@@ -96,7 +98,9 @@ function initials(name: string): string {
           </div>
           <div class="min-w-0 flex-1">
             <p class="truncate text-sm font-semibold">{{ node.name }}</p>
-            <p v-if="node.title" class="text-muted-foreground truncate text-xs">{{ node.title }}</p>
+            <p v-if="node.title" class="text-muted-foreground truncate text-xs">
+              {{ node.title }}
+            </p>
           </div>
           <button
             v-if="hasChildren"
@@ -118,7 +122,10 @@ function initials(name: string): string {
     <div v-if="hasChildren && open" class="org-v-children">
       <!-- Vertical line from parent to horizontal sibling bar -->
       <div v-if="showConnectors" class="org-v-line-down" />
-      <div class="org-v-children-row" :data-single="isOnlyChild ? '' : undefined">
+      <div
+        class="org-v-children-row"
+        :data-single="isOnlyChild ? '' : undefined"
+      >
         <!-- Horizontal bar connecting siblings (only for 2+ children) -->
         <div v-if="showConnectors && !isOnlyChild" class="org-v-line-across" />
         <OrgChartNode
@@ -171,7 +178,12 @@ function initials(name: string): string {
             </div>
             <div class="min-w-0 flex-1">
               <p class="truncate text-sm font-semibold">{{ node.name }}</p>
-              <p v-if="node.title" class="text-muted-foreground truncate text-xs">{{ node.title }}</p>
+              <p
+                v-if="node.title"
+                class="text-muted-foreground truncate text-xs"
+              >
+                {{ node.title }}
+              </p>
             </div>
             <button
               v-if="hasChildren"
@@ -229,7 +241,7 @@ function initials(name: string): string {
   padding-top: 20px;
 }
 .org-v:not([data-root]) .org-v-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 50%;
@@ -302,7 +314,7 @@ function initials(name: string): string {
 
 /* Vertical line connecting siblings in horizontal mode */
 .org-h-children::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: 40px;
@@ -317,7 +329,7 @@ function initials(name: string): string {
   padding-left: 20px;
 }
 .org-h:not([data-root]) .org-h-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 40px;
   left: 0;

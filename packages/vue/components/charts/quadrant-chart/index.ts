@@ -1,1 +1,1 @@
-export { default as QuadrantChart } from './QuadrantChart.vue'
+export { default as QuadrantChart } from "./QuadrantChart.vue";

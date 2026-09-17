@@ -1,1 +1,1 @@
-export { default as HistogramChart } from './HistogramChart.vue'
+export { default as HistogramChart } from "./HistogramChart.vue";

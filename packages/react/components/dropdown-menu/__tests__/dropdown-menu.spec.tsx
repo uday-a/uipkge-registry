@@ -1,5 +1,5 @@
-import { describe, it, expect, afterEach } from 'vitest'
-import { render, cleanup } from '@testing-library/react'
+import { describe, it, expect, afterEach } from "vitest";
+import { render, cleanup } from "@testing-library/react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -7,11 +7,11 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-} from '../dropdown-menu'
+} from "../dropdown-menu";
 
-afterEach(cleanup)
+afterEach(cleanup);
 
-describe('DropdownMenu', () => {
+describe("DropdownMenu", () => {
   it('DropdownMenuTrigger renders with data-slot="dropdown-menu-trigger"', () => {
     const { container } = render(
       <DropdownMenu>
@@ -20,11 +20,13 @@ describe('DropdownMenu', () => {
           <DropdownMenuItem>Item 1</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>,
-    )
-    expect(container.querySelector('[data-slot="dropdown-menu-trigger"]')).toBeTruthy()
-  })
+    );
+    expect(
+      container.querySelector('[data-slot="dropdown-menu-trigger"]'),
+    ).toBeTruthy();
+  });
 
-  it('DropdownMenuTrigger renders as a button', () => {
+  it("DropdownMenuTrigger renders as a button", () => {
     const { container } = render(
       <DropdownMenu>
         <DropdownMenuTrigger>Open</DropdownMenuTrigger>
@@ -32,9 +34,13 @@ describe('DropdownMenu', () => {
           <DropdownMenuItem>Item 1</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>,
-    )
-    expect(container.querySelector('[data-slot="dropdown-menu-trigger"]')?.tagName.toLowerCase()).toBe('button')
-  })
+    );
+    expect(
+      container
+        .querySelector('[data-slot="dropdown-menu-trigger"]')
+        ?.tagName.toLowerCase(),
+    ).toBe("button");
+  });
 
   it('DropdownMenuItem has data-slot="dropdown-menu-item" when open', () => {
     render(
@@ -44,11 +50,13 @@ describe('DropdownMenu', () => {
           <DropdownMenuItem>Item 1</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>,
-    )
-    expect(document.body.querySelector('[data-slot="dropdown-menu-item"]')).toBeTruthy()
-  })
+    );
+    expect(
+      document.body.querySelector('[data-slot="dropdown-menu-item"]'),
+    ).toBeTruthy();
+  });
 
-  it('DropdownMenuItem has data-uipkge', () => {
+  it("DropdownMenuItem has data-uipkge", () => {
     render(
       <DropdownMenu defaultOpen>
         <DropdownMenuTrigger>Open</DropdownMenuTrigger>
@@ -56,11 +64,15 @@ describe('DropdownMenu', () => {
           <DropdownMenuItem>Item 1</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>,
-    )
-    expect(document.body.querySelector('[data-slot="dropdown-menu-item"]')?.hasAttribute('data-uipkge')).toBe(true)
-  })
+    );
+    expect(
+      document.body
+        .querySelector('[data-slot="dropdown-menu-item"]')
+        ?.hasAttribute("data-uipkge"),
+    ).toBe(true);
+  });
 
-  it('DropdownMenuItem applies data-inset when inset prop is true', () => {
+  it("DropdownMenuItem applies data-inset when inset prop is true", () => {
     render(
       <DropdownMenu defaultOpen>
         <DropdownMenuTrigger>Open</DropdownMenuTrigger>
@@ -68,11 +80,15 @@ describe('DropdownMenu', () => {
           <DropdownMenuItem inset>Item 1</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>,
-    )
-    expect(document.body.querySelector('[data-slot="dropdown-menu-item"]')?.hasAttribute('data-inset')).toBe(true)
-  })
+    );
+    expect(
+      document.body
+        .querySelector('[data-slot="dropdown-menu-item"]')
+        ?.hasAttribute("data-inset"),
+    ).toBe(true);
+  });
 
-  it('DropdownMenuItem applies data-variant when variant is destructive', () => {
+  it("DropdownMenuItem applies data-variant when variant is destructive", () => {
     render(
       <DropdownMenu defaultOpen>
         <DropdownMenuTrigger>Open</DropdownMenuTrigger>
@@ -80,11 +96,13 @@ describe('DropdownMenu', () => {
           <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>,
-    )
-    expect(document.body.querySelector('[data-slot="dropdown-menu-item"]')?.getAttribute('data-variant')).toBe(
-      'destructive',
-    )
-  })
+    );
+    expect(
+      document.body
+        .querySelector('[data-slot="dropdown-menu-item"]')
+        ?.getAttribute("data-variant"),
+    ).toBe("destructive");
+  });
 
   it('DropdownMenuContent has data-slot="dropdown-menu-content" when open', () => {
     render(
@@ -94,9 +112,11 @@ describe('DropdownMenu', () => {
           <DropdownMenuItem>Item 1</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>,
-    )
-    expect(document.body.querySelector('[data-slot="dropdown-menu-content"]')).toBeTruthy()
-  })
+    );
+    expect(
+      document.body.querySelector('[data-slot="dropdown-menu-content"]'),
+    ).toBeTruthy();
+  });
 
   it('DropdownMenuLabel renders with data-slot="dropdown-menu-label"', () => {
     render(
@@ -107,9 +127,11 @@ describe('DropdownMenu', () => {
           <DropdownMenuItem>Item 1</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>,
-    )
-    expect(document.body.querySelector('[data-slot="dropdown-menu-label"]')).toBeTruthy()
-  })
+    );
+    expect(
+      document.body.querySelector('[data-slot="dropdown-menu-label"]'),
+    ).toBeTruthy();
+  });
 
   it('DropdownMenuSeparator renders with data-slot="dropdown-menu-separator"', () => {
     render(
@@ -121,11 +143,13 @@ describe('DropdownMenu', () => {
           <DropdownMenuItem>Item 2</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>,
-    )
-    expect(document.body.querySelector('[data-slot="dropdown-menu-separator"]')).toBeTruthy()
-  })
+    );
+    expect(
+      document.body.querySelector('[data-slot="dropdown-menu-separator"]'),
+    ).toBeTruthy();
+  });
 
-  it('DropdownMenuItem renders children', () => {
+  it("DropdownMenuItem renders children", () => {
     render(
       <DropdownMenu defaultOpen>
         <DropdownMenuTrigger>Open</DropdownMenuTrigger>
@@ -133,11 +157,14 @@ describe('DropdownMenu', () => {
           <DropdownMenuItem>My Item Text</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>,
-    )
-    expect(document.body.querySelector('[data-slot="dropdown-menu-item"]')?.textContent).toContain('My Item Text')
-  })
+    );
+    expect(
+      document.body.querySelector('[data-slot="dropdown-menu-item"]')
+        ?.textContent,
+    ).toContain("My Item Text");
+  });
 
-  it('DropdownMenuContent has data-uipkge', () => {
+  it("DropdownMenuContent has data-uipkge", () => {
     render(
       <DropdownMenu defaultOpen>
         <DropdownMenuTrigger>Open</DropdownMenuTrigger>
@@ -145,7 +172,11 @@ describe('DropdownMenu', () => {
           <DropdownMenuItem>Item 1</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>,
-    )
-    expect(document.body.querySelector('[data-slot="dropdown-menu-content"]')?.hasAttribute('data-uipkge')).toBe(true)
-  })
-})
+    );
+    expect(
+      document.body
+        .querySelector('[data-slot="dropdown-menu-content"]')
+        ?.hasAttribute("data-uipkge"),
+    ).toBe(true);
+  });
+});

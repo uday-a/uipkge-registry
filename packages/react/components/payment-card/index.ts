@@ -1,1 +1,1 @@
-export { PaymentCard, type PaymentCardProps } from './payment-card'
+export { PaymentCard, type PaymentCardProps } from "./payment-card";

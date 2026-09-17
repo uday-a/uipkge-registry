@@ -1,1 +1,4 @@
-export { PopulationPyramidChart, type PopulationPyramidChartProps } from './PopulationPyramidChart'
+export {
+  PopulationPyramidChart,
+  type PopulationPyramidChartProps,
+} from "./PopulationPyramidChart";

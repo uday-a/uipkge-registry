@@ -19,7 +19,9 @@
       "@/lib/utils": ["lib/utils.ts"],
       "@/lib/*": ["lib/*"],
       "@/composables/useKanban": ["bootstrap/use-kanban/useKanban.ts"],
-      "@/composables/useMonthGrid": ["bootstrap/use-month-grid/useMonthGrid.ts"],
+      "@/composables/useMonthGrid": [
+        "bootstrap/use-month-grid/useMonthGrid.ts"
+      ],
       "@/composables/useTheme": ["bootstrap/use-theme/useTheme.ts"],
       "~/composables/useTheme": ["bootstrap/use-theme/useTheme.ts"],
       "@/composables/*": ["bootstrap/*"],

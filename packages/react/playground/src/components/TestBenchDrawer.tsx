@@ -12,6 +12,8 @@ import {
   Trash2,
   Sliders,
   Code2,
+  Maximize2,
+  Minimize2,
 } from "lucide-react";
 import type { PropMeta } from "../lib/extract-props";
 import type { TypeDecl } from "../lib/extract-meta";
@@ -62,6 +64,7 @@ export default function TestBenchDrawer({
   const [copiedFile, setCopiedFile] = useState(false);
   const [copiedSnippet, setCopiedSnippet] = useState(false);
   const [copiedManifest, setCopiedManifest] = useState(false);
+  const [isMaximized, setIsMaximized] = useState(false);
 
   // Interactive controls state
   const [interactiveValues, setInteractiveValues] = useState<
@@ -154,7 +157,7 @@ export default function TestBenchDrawer({
   return (
     <div
       className={`flex flex-col border-t border-border bg-card transition-all duration-200 shadow-lg z-30 ${
-        isOpen ? "h-80 sm:h-96" : "h-11"
+        !isOpen ? "h-11" : isMaximized ? "h-[75vh]" : "h-80 sm:h-88"
       }`}
     >
       {/* Header Bar */}
@@ -171,6 +174,27 @@ export default function TestBenchDrawer({
           </div>
 
           <div className="h-3 w-px bg-border" />
+
+          {/* Collapsed Summary Badges */}
+          {!isOpen && (
+            <div className="flex items-center gap-2">
+              {propsList.length > 0 && (
+                <span className="rounded-md bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground">
+                  {propsList.length} props
+                </span>
+              )}
+              {files.length > 0 && (
+                <span className="rounded-md bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground">
+                  {files.length} files
+                </span>
+              )}
+              {dependencies.length + registryDependencies.length > 0 && (
+                <span className="rounded-md bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground">
+                  {dependencies.length + registryDependencies.length} deps
+                </span>
+              )}
+            </div>
+          )}
 
           {/* Tab buttons */}
           {isOpen && (
@@ -190,7 +214,7 @@ export default function TestBenchDrawer({
                 <Layers className="size-3.5" />
                 <span>Props & Workbench</span>
                 {propsList.length > 0 && (
-                  <span className="ml-1 rounded-full bg-muted px-1.5 py-0.2 font-mono text-[10px]">
+                  <span className="ml-1 rounded-full bg-muted px-1.5 py-0.5 font-mono text-xs">
                     {propsList.length}
                   </span>
                 )}
@@ -207,7 +231,7 @@ export default function TestBenchDrawer({
               >
                 <FileCode className="size-3.5" />
                 <span>Source Files</span>
-                <span className="ml-1 rounded-full bg-muted px-1.5 py-0.2 font-mono text-[10px]">
+                <span className="ml-1 rounded-full bg-muted px-1.5 py-0.5 font-mono text-xs">
                   {files.length}
                 </span>
               </button>
@@ -224,7 +248,7 @@ export default function TestBenchDrawer({
                 <Package className="size-3.5" />
                 <span>Dependencies</span>
                 {dependencies.length + registryDependencies.length > 0 && (
-                  <span className="ml-1 rounded-full bg-muted px-1.5 py-0.2 font-mono text-[10px]">
+                  <span className="ml-1 rounded-full bg-muted px-1.5 py-0.5 font-mono text-xs">
                     {dependencies.length + registryDependencies.length}
                   </span>
                 )}
@@ -242,7 +266,7 @@ export default function TestBenchDrawer({
                 <Activity className="size-3.5" />
                 <span>Action Log</span>
                 {events.length > 0 && (
-                  <span className="ml-1 rounded-full bg-primary/10 text-primary px-1.5 py-0.2 font-mono text-[10px]">
+                  <span className="ml-1 rounded-full bg-primary/10 text-primary px-1.5 py-0.5 font-mono text-xs">
                     {events.length}
                   </span>
                 )}
@@ -256,14 +280,27 @@ export default function TestBenchDrawer({
           className="flex items-center gap-2"
           onClick={(e) => e.stopPropagation()}
         >
+          {isOpen && (
+            <button
+              type="button"
+              className="flex size-7 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-2xs"
+              onClick={() => setIsMaximized(!isMaximized)}
+              title={isMaximized ? "Restore height" : "Maximize test bench"}
+            >
+              {isMaximized ? (
+                <Minimize2 className="size-3.5" />
+              ) : (
+                <Maximize2 className="size-3.5" />
+              )}
+            </button>
+          )}
+
           <button
             type="button"
-            className="flex items-center gap-1 rounded-md px-2 py-1 text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition"
+            className="flex items-center gap-1 rounded-md px-2.5 py-1 text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition"
             onClick={onToggleOpen}
           >
-            <span className="text-[11px]">
-              {isOpen ? "Collapse" : "Expand Inspector"}
-            </span>
+            <span>{isOpen ? "Collapse" : "Expand Inspector"}</span>
             {isOpen ? (
               <ChevronDown className="size-3.5" />
             ) : (
@@ -312,9 +349,9 @@ export default function TestBenchDrawer({
                       )
                       .map((prop) => (
                         <div key={prop.name} className="space-y-1.5">
-                          <label className="text-[11px] font-mono font-medium text-foreground flex items-center justify-between">
+                          <label className="text-xs font-mono font-medium text-foreground flex items-center justify-between">
                             <span>{prop.name}</span>
-                            <span className="text-[10px] text-muted-foreground">
+                            <span className="text-xs text-muted-foreground">
                               {prop.required ? "required" : "optional"}
                             </span>
                           </label>
@@ -366,7 +403,7 @@ export default function TestBenchDrawer({
 
                     {/* Custom Slot Text */}
                     <div className="space-y-1.5">
-                      <label className="text-[11px] font-mono font-medium text-foreground">
+                      <label className="text-xs font-mono font-medium text-foreground">
                         Slot Children / Text
                       </label>
                       <input
@@ -380,7 +417,7 @@ export default function TestBenchDrawer({
                   </div>
 
                   {/* Generated Code Preview */}
-                  <pre className="code-block rounded-lg border border-border bg-muted/30 p-3 text-[11px] font-mono text-foreground overflow-x-auto leading-relaxed">
+                  <pre className="code-block rounded-lg border border-border bg-muted/30 p-3 text-xs font-mono text-foreground overflow-x-auto leading-relaxed">
                     <code>{generatedSnippet}</code>
                   </pre>
                 </div>
@@ -393,7 +430,7 @@ export default function TestBenchDrawer({
                     <h4 className="text-xs font-semibold text-foreground tracking-tight">
                       Component Props & Slots Specification
                     </h4>
-                    <span className="text-[11px] text-muted-foreground font-mono">
+                    <span className="text-xs text-muted-foreground font-mono">
                       {propsList.length} declared properties
                     </span>
                   </div>

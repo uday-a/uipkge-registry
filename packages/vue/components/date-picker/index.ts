@@ -1,4 +1,4 @@
-export { default as DatePicker } from './DatePicker.vue'
+export { default as DatePicker } from "./DatePicker.vue";
 export type {
   DatePickerType,
   DatePickerPicker,
@@ -8,4 +8,4 @@ export type {
   DatePickerPlacement,
   DatePickerPreset,
   DisabledTimeResult,
-} from './DatePicker.vue'
+} from "./DatePicker.vue";

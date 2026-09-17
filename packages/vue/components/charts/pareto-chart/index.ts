@@ -1,1 +1,1 @@
-export { default as ParetoChart } from './ParetoChart.vue'
+export { default as ParetoChart } from "./ParetoChart.vue";

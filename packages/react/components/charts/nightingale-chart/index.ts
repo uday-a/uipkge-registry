@@ -1,1 +1,4 @@
-export { NightingaleChart, type NightingaleChartProps } from './NightingaleChart'
+export {
+  NightingaleChart,
+  type NightingaleChartProps,
+} from "./NightingaleChart";

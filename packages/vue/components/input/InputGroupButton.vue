@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
+import type { HTMLAttributes } from "vue";
+import { cn } from "@/lib/utils";
 
 interface Props {
-  class?: HTMLAttributes['class']
-  variant?: 'default' | 'secondary' | 'ghost' | 'outline'
-  disabled?: boolean
+  class?: HTMLAttributes["class"];
+  variant?: "default" | "secondary" | "ghost" | "outline";
+  disabled?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  variant: 'ghost',
-})
+  variant: "ghost",
+});
 
 const variantClasses: Record<string, string> = {
-  default: 'bg-primary text-primary-foreground hover:bg-primary/90',
-  secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-  ghost: 'hover:bg-accent hover:text-accent-foreground',
-  outline: 'border-l border-input hover:bg-accent hover:text-accent-foreground',
-}
+  default: "bg-primary text-primary-foreground hover:bg-primary/90",
+  secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+  ghost: "hover:bg-accent hover:text-accent-foreground",
+  outline: "border-l border-input hover:bg-accent hover:text-accent-foreground",
+};
 </script>
 
 <template>

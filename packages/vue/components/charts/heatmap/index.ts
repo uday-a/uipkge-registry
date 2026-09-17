@@ -1,1 +1,1 @@
-export { default as Heatmap } from './Heatmap.vue'
+export { default as Heatmap } from "./Heatmap.vue";

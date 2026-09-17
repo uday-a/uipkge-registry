@@ -14,6 +14,8 @@ import {
   Sliders,
   Terminal,
   Code2,
+  Maximize2,
+  Minimize2,
 } from "lucide-vue-next";
 import type { PropMeta } from "../lib/extract-props";
 import type { TypeDecl } from "../lib/extract-meta";
@@ -50,6 +52,7 @@ const activeTab = ref<TabKey>("props");
 const selectedFileIdx = ref(0);
 const copied = ref(false);
 const copiedSnippet = ref(false);
+const isMaximized = ref(false);
 
 // Interactive controls state
 const interactiveValues = ref<Record<string, any>>({});
@@ -147,7 +150,7 @@ const parseDepName = (depUrl: string) => {
 <template>
   <div
     class="flex flex-col border-t border-border bg-card transition-all duration-200 shadow-lg z-30"
-    :class="[isOpen ? 'h-80 sm:h-96' : 'h-11']"
+    :class="[!isOpen ? 'h-11' : isMaximized ? 'h-[75vh]' : 'h-80 sm:h-88']"
   >
     <!-- Drawer Header Bar -->
     <div
@@ -163,6 +166,28 @@ const parseDepName = (depUrl: string) => {
         </div>
 
         <div class="h-3 w-px bg-border" />
+
+        <!-- Collapsed Summary Badges -->
+        <div v-if="!isOpen" class="flex items-center gap-2">
+          <span
+            v-if="propsList.length"
+            class="rounded-md bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground"
+          >
+            {{ propsList.length }} props
+          </span>
+          <span
+            v-if="files.length"
+            class="rounded-md bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground"
+          >
+            {{ files.length }} files
+          </span>
+          <span
+            v-if="dependencies.length || registryDependencies.length"
+            class="rounded-md bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground"
+          >
+            {{ dependencies.length + registryDependencies.length }} deps
+          </span>
+        </div>
 
         <!-- Tab Controls (Only shown when expanded) -->
         <div v-if="isOpen" class="flex items-center gap-1" @click.stop>
@@ -180,7 +205,7 @@ const parseDepName = (depUrl: string) => {
             <span>Props & Workbench</span>
             <span
               v-if="propsList.length"
-              class="ml-1 rounded-full bg-muted px-1.5 py-0.2 font-mono text-[10px]"
+              class="ml-1 rounded-full bg-muted px-1.5 py-0.5 font-mono text-xs"
             >
               {{ propsList.length }}
             </span>
@@ -199,7 +224,7 @@ const parseDepName = (depUrl: string) => {
             <FileCode class="size-3.5" />
             <span>Source Files</span>
             <span
-              class="ml-1 rounded-full bg-muted px-1.5 py-0.2 font-mono text-[10px]"
+              class="ml-1 rounded-full bg-muted px-1.5 py-0.5 font-mono text-xs"
             >
               {{ files.length }}
             </span>
@@ -219,7 +244,7 @@ const parseDepName = (depUrl: string) => {
             <span>Dependencies</span>
             <span
               v-if="dependencies.length || registryDependencies.length"
-              class="ml-1 rounded-full bg-muted px-1.5 py-0.2 font-mono text-[10px]"
+              class="ml-1 rounded-full bg-muted px-1.5 py-0.5 font-mono text-xs"
             >
               {{ dependencies.length + registryDependencies.length }}
             </span>
@@ -239,7 +264,7 @@ const parseDepName = (depUrl: string) => {
             <span>Action Log</span>
             <span
               v-if="events.length"
-              class="ml-1 rounded-full bg-primary/10 text-primary px-1.5 py-0.2 font-mono text-[10px]"
+              class="ml-1 rounded-full bg-primary/10 text-primary px-1.5 py-0.5 font-mono text-xs"
             >
               {{ events.length }}
             </span>
@@ -250,13 +275,22 @@ const parseDepName = (depUrl: string) => {
       <!-- Right controls -->
       <div class="flex items-center gap-2" @click.stop>
         <button
+          v-if="isOpen"
           type="button"
-          class="flex items-center gap-1 rounded-md px-2 py-1 text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition"
+          class="flex size-7 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-2xs"
+          @click="isMaximized = !isMaximized"
+          :title="isMaximized ? 'Restore height' : 'Maximize test bench'"
+        >
+          <Minimize2 v-if="isMaximized" class="size-3.5" />
+          <Maximize2 v-else class="size-3.5" />
+        </button>
+
+        <button
+          type="button"
+          class="flex items-center gap-1 rounded-md px-2.5 py-1 text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition"
           @click="emit('update:isOpen', !isOpen)"
         >
-          <span class="text-[11px]">{{
-            isOpen ? "Collapse" : "Expand Inspector"
-          }}</span>
+          <span>{{ isOpen ? "Collapse" : "Expand Inspector" }}</span>
           <ChevronDown v-if="isOpen" class="size-3.5" />
           <ChevronUp v-else class="size-3.5" />
         </button>
@@ -311,10 +345,10 @@ const parseDepName = (depUrl: string) => {
               class="space-y-1.5"
             >
               <label
-                class="text-[11px] font-mono font-medium text-foreground flex items-center justify-between"
+                class="text-xs font-mono font-medium text-foreground flex items-center justify-between"
               >
                 <span>{{ prop.name }}</span>
-                <span class="text-[10px] text-muted-foreground">{{
+                <span class="text-xs text-muted-foreground">{{
                   prop.required ? "required" : "optional"
                 }}</span>
               </label>
@@ -352,7 +386,7 @@ const parseDepName = (depUrl: string) => {
 
             <!-- Custom Slot Text input -->
             <div class="space-y-1.5">
-              <label class="text-[11px] font-mono font-medium text-foreground">
+              <label class="text-xs font-mono font-medium text-foreground">
                 Slot Children / Text
               </label>
               <input
@@ -366,7 +400,7 @@ const parseDepName = (depUrl: string) => {
 
           <!-- Generated Code Preview -->
           <pre
-            class="code-block rounded-lg border border-border bg-muted/30 p-3 text-[11px] font-mono text-foreground overflow-x-auto leading-relaxed"
+            class="code-block rounded-lg border border-border bg-muted/30 p-3 text-xs font-mono text-foreground overflow-x-auto leading-relaxed"
           ><code>{{ generatedSnippet }}</code></pre>
         </div>
 
@@ -376,7 +410,7 @@ const parseDepName = (depUrl: string) => {
             <h4 class="text-xs font-semibold text-foreground tracking-tight">
               Component Props & Slots Specification
             </h4>
-            <span class="text-[11px] text-muted-foreground font-mono"
+            <span class="text-xs text-muted-foreground font-mono"
               >{{ propsList.length }} declared properties</span
             >
           </div>
@@ -401,7 +435,7 @@ const parseDepName = (depUrl: string) => {
                   {{ prop.name }}
                 </td>
                 <td class="py-2.5 pr-3 font-mono text-muted-foreground">
-                  <span class="rounded bg-muted px-1.5 py-0.5 text-[11px]">
+                  <span class="rounded bg-muted px-1.5 py-0.5 text-xs">
                     {{ prop.type }}
                   </span>
                 </td>
@@ -430,7 +464,7 @@ const parseDepName = (depUrl: string) => {
 
         <div v-else class="py-12 text-center text-xs text-muted-foreground">
           <p>No declared props extracted for this component.</p>
-          <p class="mt-1 text-[11px]">
+          <p class="mt-1 text-xs">
             This component may forward props directly to headless slots or
             children.
           </p>

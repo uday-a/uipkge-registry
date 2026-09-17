@@ -1,1 +1,5 @@
-export { BottomNavigation, type BottomNavigationProps, type BottomNavItem } from './BottomNavigation'
+export {
+  BottomNavigation,
+  type BottomNavigationProps,
+  type BottomNavItem,
+} from "./BottomNavigation";

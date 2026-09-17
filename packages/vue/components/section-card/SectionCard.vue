@@ -1,14 +1,20 @@
 <script setup lang="ts">
-import { cn } from '@/lib/utils'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import type { HTMLAttributes } from 'vue'
+import { cn } from "@/lib/utils";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import type { HTMLAttributes } from "vue";
 
 const props = defineProps<{
-  title: string
-  description?: string
-  class?: HTMLAttributes['class']
-  contentClass?: string
-}>()
+  title: string;
+  description?: string;
+  class?: HTMLAttributes["class"];
+  contentClass?: string;
+}>();
 </script>
 
 <template>
@@ -17,7 +23,9 @@ const props = defineProps<{
       <div class="flex flex-wrap items-center justify-between gap-2">
         <div class="min-w-0">
           <CardTitle class="text-base font-semibold">{{ title }}</CardTitle>
-          <CardDescription v-if="description" class="mt-0.5">{{ description }}</CardDescription>
+          <CardDescription v-if="description" class="mt-0.5">{{
+            description
+          }}</CardDescription>
         </div>
         <slot name="header-action" />
       </div>

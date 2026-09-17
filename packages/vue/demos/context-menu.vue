@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from "vue";
 import {
   ContextMenu,
   ContextMenuCheckboxItem,
@@ -14,14 +14,17 @@ import {
   ContextMenuSubContent,
   ContextMenuSubTrigger,
   ContextMenuTrigger,
-} from '@/components/ui/context-menu'
-const showBookmarks = ref(true)
-const showFullUrls = ref(false)
-const person = ref('pedro')
+} from "@/components/ui/context-menu";
+const showBookmarks = ref(true);
+const showFullUrls = ref(false);
+const person = ref("pedro");
 </script>
 
 <template>
-  <Story title="Default" description="Right-click the target to open a menu with items and a separator.">
+  <Story
+    title="Default"
+    description="Right-click the target to open a menu with items and a separator."
+  >
     <ContextMenu>
       <ContextMenuTrigger
         class="border-border bg-muted/30 grid h-32 w-72 place-items-center rounded-md border border-dashed text-sm"
@@ -51,14 +54,23 @@ const person = ref('pedro')
       <ContextMenuContent class="w-56">
         <ContextMenuLabel>View</ContextMenuLabel>
         <ContextMenuSeparator />
-        <ContextMenuCheckboxItem v-model:checked="showBookmarks"> Show Bookmarks Bar </ContextMenuCheckboxItem>
-        <ContextMenuCheckboxItem v-model:checked="showFullUrls"> Show Full URLs </ContextMenuCheckboxItem>
+        <ContextMenuCheckboxItem v-model:checked="showBookmarks">
+          Show Bookmarks Bar
+        </ContextMenuCheckboxItem>
+        <ContextMenuCheckboxItem v-model:checked="showFullUrls">
+          Show Full URLs
+        </ContextMenuCheckboxItem>
       </ContextMenuContent>
     </ContextMenu>
-    <p class="text-muted-foreground mt-2 text-xs">Bookmarks: {{ showBookmarks }} · Full URLs: {{ showFullUrls }}</p>
+    <p class="text-muted-foreground mt-2 text-xs">
+      Bookmarks: {{ showBookmarks }} · Full URLs: {{ showFullUrls }}
+    </p>
   </Story>
 
-  <Story title="Radio group" description="ContextMenuRadioGroup + ContextMenuRadioItem for single-select state.">
+  <Story
+    title="Radio group"
+    description="ContextMenuRadioGroup + ContextMenuRadioItem for single-select state."
+  >
     <ContextMenu>
       <ContextMenuTrigger
         class="border-border bg-muted/30 grid h-32 w-72 place-items-center rounded-md border border-dashed text-sm"
@@ -69,16 +81,23 @@ const person = ref('pedro')
         <ContextMenuLabel>People</ContextMenuLabel>
         <ContextMenuSeparator />
         <ContextMenuRadioGroup v-model="person">
-          <ContextMenuRadioItem value="pedro">Pedro Duarte</ContextMenuRadioItem>
+          <ContextMenuRadioItem value="pedro"
+            >Pedro Duarte</ContextMenuRadioItem
+          >
           <ContextMenuRadioItem value="colm">Colm Tuite</ContextMenuRadioItem>
-          <ContextMenuRadioItem value="benoit">Benoît Grélard</ContextMenuRadioItem>
+          <ContextMenuRadioItem value="benoit"
+            >Benoît Grélard</ContextMenuRadioItem
+          >
         </ContextMenuRadioGroup>
       </ContextMenuContent>
     </ContextMenu>
     <p class="text-muted-foreground mt-2 text-xs">Selected: {{ person }}</p>
   </Story>
 
-  <Story title="Submenu" description="Nest a ContextMenuSub inside the content for a hover-revealed submenu.">
+  <Story
+    title="Submenu"
+    description="Nest a ContextMenuSub inside the content for a hover-revealed submenu."
+  >
     <ContextMenu>
       <ContextMenuTrigger
         class="border-border bg-muted/30 grid h-32 w-72 place-items-center rounded-md border border-dashed text-sm"

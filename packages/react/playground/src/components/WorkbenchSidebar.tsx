@@ -22,6 +22,7 @@ export interface WorkbenchSidebarProps {
   items: SidebarItem[];
   selectedId: string;
   onSelect: (id: string) => void;
+  collapsed?: boolean;
 }
 
 type FilterTab = "all" | "ui" | "charts";
@@ -30,6 +31,7 @@ export default function WorkbenchSidebar({
   items,
   selectedId,
   onSelect,
+  collapsed = false,
 }: WorkbenchSidebarProps) {
   const [search, setSearch] = useState("");
   const [activeTab, setActiveTab] = useState<FilterTab>("all");
@@ -118,7 +120,13 @@ export default function WorkbenchSidebar({
   };
 
   return (
-    <aside className="flex w-64 flex-col border-r border-border bg-card shrink-0 select-none">
+    <aside
+      className={`flex shrink-0 flex-col border-r border-border bg-card select-none transition-all duration-200 ${
+        collapsed
+          ? "w-0 overflow-hidden border-r-0 p-0 opacity-0 pointer-events-none"
+          : "w-64"
+      }`}
+    >
       {/* Search Header */}
       <div className="border-b border-border p-3 space-y-2.5">
         <div className="relative">
@@ -198,7 +206,7 @@ export default function WorkbenchSidebar({
                 )}
                 <span>{cat}</span>
               </div>
-              <span className="font-mono text-[10px] text-muted-foreground/60 font-normal">
+              <span className="font-mono text-xs text-muted-foreground/60 font-normal">
                 {groupedItems[cat].length}
               </span>
             </button>
@@ -218,17 +226,12 @@ export default function WorkbenchSidebar({
                     onClick={() => onSelect(item.id)}
                   >
                     <span className="truncate">{item.name}</span>
-                    <span
-                      className={`text-[9px] font-mono uppercase px-1 py-0.2 rounded transition ${
-                        selectedId === item.id
-                          ? "bg-background/20 text-background"
-                          : item.type === "registry:block"
-                            ? "bg-purple-500/10 text-purple-600 dark:text-purple-400"
-                            : "text-muted-foreground/50 group-hover:text-muted-foreground"
-                      }`}
-                    >
-                      {item.type === "registry:block" ? "block" : "ui"}
-                    </span>
+                    {(item.id.includes("chart") ||
+                      item.category === "Charts") && (
+                      <span className="text-[11px] opacity-70 shrink-0">
+                        chart
+                      </span>
+                    )}
                   </button>
                 ))}
               </div>
@@ -244,8 +247,8 @@ export default function WorkbenchSidebar({
       </div>
 
       {/* Footer info */}
-      <div className="border-t border-border p-3 text-[11px] font-mono text-muted-foreground flex items-center justify-between">
-        <span>{filteredItems.length} items shown</span>
+      <div className="border-t border-border p-3 text-xs font-mono text-muted-foreground flex items-center justify-between">
+        <span>{filteredItems.length} items</span>
         <span>UIPKGE v1.0</span>
       </div>
     </aside>

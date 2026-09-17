@@ -1,22 +1,32 @@
-import { useState } from 'react'
-import Story from '../../components/story/Story'
-import { Countdown } from '@react-registry/countdown'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@react-registry/card'
-import { Button } from '@react-registry/button'
+import { useState } from "react";
+import Story from "../../components/story/Story";
+import { Countdown } from "@react-registry/countdown";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@react-registry/card";
+import { Button } from "@react-registry/button";
 
 export default function CountdownDemo() {
-  const [flashSaleEnd] = useState(() => Date.now() + 3_600_000 * 5 + 42_000)
-  const [auctionEnd, setAuctionEnd] = useState(() => Date.now() + 10_000)
-  const [eventStart] = useState(() => Date.now() + 86_400_000 * 2 + 3_600_000 * 4 + 60_000 * 30)
-  const [newYear] = useState(() => new Date(new Date().getFullYear() + 1, 0, 1).getTime())
-  const [pausedTarget] = useState(() => Date.now() + 120_000)
-  const [isPaused, setIsPaused] = useState(false)
-  const [auctionFinished, setAuctionFinished] = useState(false)
-  const [auctionTick, setAuctionTick] = useState(0)
+  const [flashSaleEnd] = useState(() => Date.now() + 3_600_000 * 5 + 42_000);
+  const [auctionEnd, setAuctionEnd] = useState(() => Date.now() + 10_000);
+  const [eventStart] = useState(
+    () => Date.now() + 86_400_000 * 2 + 3_600_000 * 4 + 60_000 * 30,
+  );
+  const [newYear] = useState(() =>
+    new Date(new Date().getFullYear() + 1, 0, 1).getTime(),
+  );
+  const [pausedTarget] = useState(() => Date.now() + 120_000);
+  const [isPaused, setIsPaused] = useState(false);
+  const [auctionFinished, setAuctionFinished] = useState(false);
+  const [auctionTick, setAuctionTick] = useState(0);
 
   function resetAuction() {
-    setAuctionEnd(Date.now() + 10_000)
-    setAuctionFinished(false)
+    setAuctionEnd(Date.now() + 10_000);
+    setAuctionFinished(false);
   }
 
   return (
@@ -26,7 +36,9 @@ export default function CountdownDemo() {
         description="A 5-hour countdown on a promotional banner — the classic e-commerce urgency pattern."
       >
         <div className="bg-primary text-primary-foreground max-w-md rounded-lg px-5 py-4">
-          <p className="text-sm font-medium opacity-90">Flash sale — 40% off all plans</p>
+          <p className="text-sm font-medium opacity-90">
+            Flash sale — 40% off all plans
+          </p>
           <Countdown
             target={flashSaleEnd}
             label="Ends in"
@@ -42,7 +54,9 @@ export default function CountdownDemo() {
         <Card className="max-w-md">
           <CardHeader>
             <CardTitle>Vintage camera lot</CardTitle>
-            <CardDescription>Highest bid: $1,240 · 3 bidders active</CardDescription>
+            <CardDescription>
+              Highest bid: $1,240 · 3 bidders active
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
             <Countdown
@@ -57,7 +71,9 @@ export default function CountdownDemo() {
                 Reset timer
               </Button>
               <span className="text-muted-foreground text-xs">
-                {auctionFinished ? 'Auction ended!' : `Ticking… ${Math.ceil(auctionTick / 1000)}s left`}
+                {auctionFinished
+                  ? "Auction ended!"
+                  : `Ticking… ${Math.ceil(auctionTick / 1000)}s left`}
               </span>
             </div>
           </CardContent>
@@ -71,7 +87,9 @@ export default function CountdownDemo() {
         <Card className="max-w-md">
           <CardHeader>
             <CardTitle>UIPKGE Summit 2025</CardTitle>
-            <CardDescription>Doors open in 2 days, 4 hours, 30 minutes.</CardDescription>
+            <CardDescription>
+              Doors open in 2 days, 4 hours, 30 minutes.
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <Countdown target={eventStart} label="Starts in" />
@@ -113,33 +131,41 @@ export default function CountdownDemo() {
           renderDays={(days) => (
             <div className="flex flex-col items-center">
               <span className="bg-muted text-foreground inline-flex size-14 items-center justify-center rounded-lg text-xl font-bold tabular-nums">
-                {String(days).padStart(2, '0')}
+                {String(days).padStart(2, "0")}
               </span>
-              <span className="text-muted-foreground text-xs tracking-wide uppercase">days</span>
+              <span className="text-muted-foreground text-xs tracking-wide uppercase">
+                days
+              </span>
             </div>
           )}
           renderHours={(hours) => (
             <div className="flex flex-col items-center">
               <span className="bg-muted text-foreground inline-flex size-14 items-center justify-center rounded-lg text-xl font-bold tabular-nums">
-                {String(hours).padStart(2, '0')}
+                {String(hours).padStart(2, "0")}
               </span>
-              <span className="text-muted-foreground text-xs tracking-wide uppercase">hrs</span>
+              <span className="text-muted-foreground text-xs tracking-wide uppercase">
+                hrs
+              </span>
             </div>
           )}
           renderMinutes={(minutes) => (
             <div className="flex flex-col items-center">
               <span className="bg-muted text-foreground inline-flex size-14 items-center justify-center rounded-lg text-xl font-bold tabular-nums">
-                {String(minutes).padStart(2, '0')}
+                {String(minutes).padStart(2, "0")}
               </span>
-              <span className="text-muted-foreground text-xs tracking-wide uppercase">min</span>
+              <span className="text-muted-foreground text-xs tracking-wide uppercase">
+                min
+              </span>
             </div>
           )}
           renderSeconds={(seconds) => (
             <div className="flex flex-col items-center">
               <span className="bg-muted text-foreground inline-flex size-14 items-center justify-center rounded-lg text-xl font-bold tabular-nums">
-                {String(seconds).padStart(2, '0')}
+                {String(seconds).padStart(2, "0")}
               </span>
-              <span className="text-muted-foreground text-xs tracking-wide uppercase">sec</span>
+              <span className="text-muted-foreground text-xs tracking-wide uppercase">
+                sec
+              </span>
             </div>
           )}
         />
@@ -150,19 +176,35 @@ export default function CountdownDemo() {
         description="paused freezes the countdown; a custom separator and no-pad give it a distinct look."
       >
         <div className="max-w-md space-y-3">
-          <Countdown target={pausedTarget} paused={isPaused} label="Paused demo" separator="—" />
+          <Countdown
+            target={pausedTarget}
+            paused={isPaused}
+            label="Paused demo"
+            separator="—"
+          />
           <div className="flex items-center gap-3">
-            <Button size="sm" variant="outline" onClick={() => setIsPaused((p) => !p)}>
-              {isPaused ? 'Resume' : 'Pause'}
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => setIsPaused((p) => !p)}
+            >
+              {isPaused ? "Resume" : "Pause"}
             </Button>
-            <Countdown target={eventStart} pad={false} label="No leading zeros" />
+            <Countdown
+              target={eventStart}
+              pad={false}
+              label="No leading zeros"
+            />
           </div>
         </div>
       </Story>
 
-      <Story title="New year" description="Countdown to January 1st of next year — a perennial landing-page fixture.">
+      <Story
+        title="New year"
+        description="Countdown to January 1st of next year — a perennial landing-page fixture."
+      >
         <Countdown target={newYear} label="New Year" />
       </Story>
     </>
-  )
+  );
 }

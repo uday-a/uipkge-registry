@@ -1,57 +1,57 @@
-import Story from '../../components/story/Story'
-import { SankeyChart } from '@react-registry/charts'
+import Story from "../../components/story/Story";
+import { SankeyChart } from "@react-registry/charts";
 
 // Air cargo weekly tonnage: origin gateways to destination ramps.
 const laneFlows = [
-  { source: 'PVG', target: 'LAX', value: 520 },
-  { source: 'ICN', target: 'ORD', value: 410 },
-  { source: 'NRT', target: 'DFW', value: 350 },
-  { source: 'FRA', target: 'JFK', value: 360 },
-  { source: 'SIN', target: 'HKG', value: 380 },
-  { source: 'HKG', target: 'ANC', value: 290 },
-  { source: 'DXB', target: 'SIN', value: 280 },
-  { source: 'SIN', target: 'ICN', value: 190 },
-]
+  { source: "PVG", target: "LAX", value: 520 },
+  { source: "ICN", target: "ORD", value: 410 },
+  { source: "NRT", target: "DFW", value: 350 },
+  { source: "FRA", target: "JFK", value: 360 },
+  { source: "SIN", target: "HKG", value: 380 },
+  { source: "HKG", target: "ANC", value: 290 },
+  { source: "DXB", target: "SIN", value: 280 },
+  { source: "SIN", target: "ICN", value: 190 },
+];
 const acquisition = [
-  { source: 'Organic', target: 'Landing', value: 480 },
-  { source: 'Organic', target: 'Blog', value: 220 },
-  { source: 'Paid', target: 'Landing', value: 360 },
-  { source: 'Paid', target: 'Pricing', value: 140 },
-  { source: 'Referral', target: 'Pricing', value: 180 },
-  { source: 'Referral', target: 'Landing', value: 60 },
-  { source: 'Landing', target: 'Sign-up', value: 420 },
-  { source: 'Landing', target: 'Bounce', value: 480 },
-  { source: 'Pricing', target: 'Sign-up', value: 240 },
-  { source: 'Pricing', target: 'Bounce', value: 80 },
-  { source: 'Blog', target: 'Sign-up', value: 90 },
-  { source: 'Blog', target: 'Bounce', value: 130 },
-]
+  { source: "Organic", target: "Landing", value: 480 },
+  { source: "Organic", target: "Blog", value: 220 },
+  { source: "Paid", target: "Landing", value: 360 },
+  { source: "Paid", target: "Pricing", value: 140 },
+  { source: "Referral", target: "Pricing", value: 180 },
+  { source: "Referral", target: "Landing", value: 60 },
+  { source: "Landing", target: "Sign-up", value: 420 },
+  { source: "Landing", target: "Bounce", value: 480 },
+  { source: "Pricing", target: "Sign-up", value: 240 },
+  { source: "Pricing", target: "Bounce", value: 80 },
+  { source: "Blog", target: "Sign-up", value: 90 },
+  { source: "Blog", target: "Bounce", value: 130 },
+];
 
 const energy = [
-  { source: 'Coal', target: 'Electricity', value: 380 },
-  { source: 'Gas', target: 'Electricity', value: 220 },
-  { source: 'Solar', target: 'Electricity', value: 60 },
-  { source: 'Wind', target: 'Electricity', value: 80 },
-  { source: 'Electricity', target: 'Residential', value: 280 },
-  { source: 'Electricity', target: 'Industrial', value: 320 },
-  { source: 'Electricity', target: 'Commercial', value: 140 },
-]
+  { source: "Coal", target: "Electricity", value: 380 },
+  { source: "Gas", target: "Electricity", value: 220 },
+  { source: "Solar", target: "Electricity", value: 60 },
+  { source: "Wind", target: "Electricity", value: 80 },
+  { source: "Electricity", target: "Residential", value: 280 },
+  { source: "Electricity", target: "Industrial", value: 320 },
+  { source: "Electricity", target: "Commercial", value: 140 },
+];
 
 const budget = [
-  { source: 'Revenue', target: 'Engineering', value: 4200 },
-  { source: 'Revenue', target: 'Sales', value: 2800 },
-  { source: 'Revenue', target: 'Marketing', value: 1800 },
-  { source: 'Revenue', target: 'Ops', value: 1200 },
-  { source: 'Engineering', target: 'Salaries', value: 3000 },
-  { source: 'Engineering', target: 'Infra', value: 900 },
-  { source: 'Engineering', target: 'Tools', value: 300 },
-  { source: 'Sales', target: 'Salaries', value: 2200 },
-  { source: 'Sales', target: 'Commission', value: 600 },
-]
+  { source: "Revenue", target: "Engineering", value: 4200 },
+  { source: "Revenue", target: "Sales", value: 2800 },
+  { source: "Revenue", target: "Marketing", value: 1800 },
+  { source: "Revenue", target: "Ops", value: 1200 },
+  { source: "Engineering", target: "Salaries", value: 3000 },
+  { source: "Engineering", target: "Infra", value: 900 },
+  { source: "Engineering", target: "Tools", value: 300 },
+  { source: "Sales", target: "Salaries", value: 2200 },
+  { source: "Sales", target: "Commission", value: 600 },
+];
 
 const straightOption = {
-  series: [{ lineStyle: { color: 'gradient', curveness: 0 } }],
-}
+  series: [{ lineStyle: { color: "gradient", curveness: 0 } }],
+};
 
 export default function SankeyChartDemo() {
   return (
@@ -91,9 +91,12 @@ export default function SankeyChartDemo() {
         <SankeyChart links={energy} height={200} />
       </Story>
 
-      <Story title="Lane flows" description="Air cargo tonnage from origin gateways to destination ramps.">
+      <Story
+        title="Lane flows"
+        description="Air cargo tonnage from origin gateways to destination ramps."
+      >
         <SankeyChart links={laneFlows} height={380} />
       </Story>
     </>
-  )
+  );
 }

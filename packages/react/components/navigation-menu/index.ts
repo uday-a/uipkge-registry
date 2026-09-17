@@ -7,6 +7,6 @@ export {
   NavigationMenuLink,
   NavigationMenuIndicator,
   NavigationMenuViewport,
-} from './navigation-menu'
+} from "./navigation-menu";
 
-export { navigationMenuTriggerStyle } from './navigation-menu.variants'
+export { navigationMenuTriggerStyle } from "./navigation-menu.variants";

@@ -1,1 +1,1 @@
-export { default as WaffleChart } from './WaffleChart.vue'
+export { default as WaffleChart } from "./WaffleChart.vue";

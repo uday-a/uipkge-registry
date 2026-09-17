@@ -1,28 +1,28 @@
-import Story from '../../components/story/Story'
-import { SmoothFunnel } from '@react-registry/charts'
+import Story from "../../components/story/Story";
+import { SmoothFunnel } from "@react-registry/charts";
 
 const acquisition = [
-  { name: 'Visits', value: 8420 },
-  { name: 'Sign-ups', value: 2442 },
-  { name: 'Purchases', value: 185 },
-]
+  { name: "Visits", value: 8420 },
+  { name: "Sign-ups", value: 2442 },
+  { name: "Purchases", value: 185 },
+];
 
 const checkout = [
-  { name: 'Cart', value: 5200 },
-  { name: 'Checkout', value: 3100 },
-  { name: 'Payment', value: 2400 },
-  { name: 'Confirmed', value: 2050 },
-]
+  { name: "Cart", value: 5200 },
+  { name: "Checkout", value: 3100 },
+  { name: "Payment", value: 2400 },
+  { name: "Confirmed", value: 2050 },
+];
 
 const fiveStage = [
-  { name: 'Visitors', value: 24850 },
-  { name: 'Sign-ups', value: 14910 },
-  { name: 'Activated', value: 5964 },
-  { name: 'Paid', value: 1789 },
-  { name: 'Retained', value: 447 },
-]
+  { name: "Visitors", value: 24850 },
+  { name: "Sign-ups", value: 14910 },
+  { name: "Activated", value: 5964 },
+  { name: "Paid", value: 1789 },
+  { name: "Retained", value: 447 },
+];
 
-const brandPalette = ['#2e6642', '#4c9160', '#7ab98c', '#a9dcb8', '#d9a441']
+const brandPalette = ["#2e6642", "#4c9160", "#7ab98c", "#a9dcb8", "#d9a441"];
 
 export default function SmoothFunnelDemo() {
   return (
@@ -72,5 +72,5 @@ export default function SmoothFunnelDemo() {
         </div>
       </Story>
     </>
-  )
+  );
 }

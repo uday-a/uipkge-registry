@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Sheet,
   SheetClose,
@@ -11,7 +11,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/components/ui/sheet'
+} from "@/components/ui/sheet";
 </script>
 
 <template>
@@ -26,7 +26,10 @@ import {
       <SheetContent side="left">
         <SheetHeader>
           <SheetTitle>Edit profile</SheetTitle>
-          <SheetDescription>Make changes to your profile here. Click save when you're done.</SheetDescription>
+          <SheetDescription
+            >Make changes to your profile here. Click save when you're
+            done.</SheetDescription
+          >
         </SheetHeader>
         <div class="grid gap-4 px-4 py-2">
           <div class="grid gap-2">
@@ -82,7 +85,10 @@ import {
     </Sheet>
   </Story>
 
-  <Story title="Top" description="Slides down from the top edge — good for site-wide notifications or banners.">
+  <Story
+    title="Top"
+    description="Slides down from the top edge — good for site-wide notifications or banners."
+  >
     <Sheet>
       <SheetTrigger as-child>
         <Button variant="outline">Open top sheet</Button>
@@ -91,8 +97,8 @@ import {
         <SheetHeader>
           <SheetTitle>System maintenance scheduled</SheetTitle>
           <SheetDescription>
-            We'll be performing routine maintenance on Sunday at 02:00 UTC. Expect brief intermittent downtime over a 30
-            minute window.
+            We'll be performing routine maintenance on Sunday at 02:00 UTC.
+            Expect brief intermittent downtime over a 30 minute window.
           </SheetDescription>
         </SheetHeader>
         <SheetFooter>
@@ -115,7 +121,9 @@ import {
       <SheetContent side="bottom">
         <SheetHeader>
           <SheetTitle>Filters</SheetTitle>
-          <SheetDescription>Refine the list with the controls below.</SheetDescription>
+          <SheetDescription
+            >Refine the list with the controls below.</SheetDescription
+          >
         </SheetHeader>
         <div class="grid gap-3 px-4 py-2 sm:grid-cols-3">
           <div class="grid gap-2">
@@ -152,18 +160,22 @@ import {
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Release notes</SheetTitle>
-          <SheetDescription>Highlights from the last several versions.</SheetDescription>
+          <SheetDescription
+            >Highlights from the last several versions.</SheetDescription
+          >
         </SheetHeader>
         <div class="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 py-2 text-sm">
           <section v-for="i in 12" :key="i" class="space-y-1">
             <h4 class="font-medium">v1.{{ 12 - i + 1 }}.0</h4>
             <p class="text-muted-foreground">
-              Notes for release v1.{{ 12 - i + 1 }}.0 — fixes, features, and assorted improvements across the registry.
-              Multiple paragraphs of placeholder copy keep the body tall enough that scrolling becomes necessary on most
-              viewport heights.
+              Notes for release v1.{{ 12 - i + 1 }}.0 — fixes, features, and
+              assorted improvements across the registry. Multiple paragraphs of
+              placeholder copy keep the body tall enough that scrolling becomes
+              necessary on most viewport heights.
             </p>
             <p class="text-muted-foreground">
-              Additional context for v1.{{ 12 - i + 1 }}.0 with deprecation notes and migration steps where relevant.
+              Additional context for v1.{{ 12 - i + 1 }}.0 with deprecation
+              notes and migration steps where relevant.
             </p>
           </section>
         </div>

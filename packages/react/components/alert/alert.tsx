@@ -1,12 +1,13 @@
-import * as React from 'react'
-import { AlertCircle, CheckCircle, Info, TriangleAlert } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { alertVariants, type AlertVariants } from './alert.variants'
+import * as React from "react";
+import { AlertCircle, CheckCircle, Info, TriangleAlert } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { alertVariants, type AlertVariants } from "./alert.variants";
 
-export interface AlertProps extends React.HTMLAttributes<HTMLDivElement>, AlertVariants {
-  icon?: 'info' | 'warning' | 'error' | 'success'
-  title?: string
-  text?: string
+export interface AlertProps
+  extends React.HTMLAttributes<HTMLDivElement>, AlertVariants {
+  icon?: "info" | "warning" | "error" | "success";
+  title?: string;
+  text?: string;
 }
 
 const builtInIcons = {
@@ -14,11 +15,11 @@ const builtInIcons = {
   success: CheckCircle,
   warning: TriangleAlert,
   info: Info,
-} as const
+} as const;
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
   ({ className, variant, icon, title, text, children, ...props }, ref) => {
-    const IconComp = icon ? builtInIcons[icon] : null
+    const IconComp = icon ? builtInIcons[icon] : null;
 
     return (
       <div
@@ -35,7 +36,11 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
         */}
         {IconComp ? <IconComp className="size-4" aria-hidden="true" /> : null}
         {title ? (
-          <p data-uipkge="" data-slot="alert-title" className="mb-1 text-sm leading-none font-medium tracking-tight">
+          <p
+            data-uipkge=""
+            data-slot="alert-title"
+            className="mb-1 text-sm leading-none font-medium tracking-tight"
+          >
             {title}
           </p>
         ) : null}
@@ -50,39 +55,46 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
         ) : null}
         {children}
       </div>
-    )
+    );
   },
-)
-Alert.displayName = 'Alert'
+);
+Alert.displayName = "Alert";
 
 export interface AlertTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
-  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'div'
+  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "div";
 }
 
 const AlertTitle = React.forwardRef<HTMLHeadingElement, AlertTitleProps>(
-  ({ className, as: Comp = 'h5', ...props }, ref) => (
+  ({ className, as: Comp = "h5", ...props }, ref) => (
     <Comp
       ref={ref}
       data-uipkge=""
       data-slot="alert-title"
-      className={cn('mb-1 text-sm leading-none font-medium tracking-tight', className)}
+      className={cn(
+        "mb-1 text-sm leading-none font-medium tracking-tight",
+        className,
+      )}
       {...props}
     />
   ),
-)
-AlertTitle.displayName = 'AlertTitle'
+);
+AlertTitle.displayName = "AlertTitle";
 
-const AlertDescription = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      data-uipkge=""
-      data-slot="alert-description"
-      className={cn('text-muted-foreground text-sm leading-relaxed [&_p]:leading-relaxed', className)}
-      {...props}
-    />
-  ),
-)
-AlertDescription.displayName = 'AlertDescription'
+const AlertDescription = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    data-uipkge=""
+    data-slot="alert-description"
+    className={cn(
+      "text-muted-foreground text-sm leading-relaxed [&_p]:leading-relaxed",
+      className,
+    )}
+    {...props}
+  />
+));
+AlertDescription.displayName = "AlertDescription";
 
-export { Alert, AlertTitle, AlertDescription }
+export { Alert, AlertTitle, AlertDescription };

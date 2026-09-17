@@ -1,65 +1,78 @@
-import Story from '../../components/story/Story'
-import { TreeChart } from '@react-registry/charts'
+import Story from "../../components/story/Story";
+import { TreeChart } from "@react-registry/charts";
 
 const fileTree = {
-  name: 'src',
+  name: "src",
   children: [
     {
-      name: 'components',
-      children: [{ name: 'Button.vue' }, { name: 'Card.vue' }, { name: 'Input.vue' }],
+      name: "components",
+      children: [
+        { name: "Button.vue" },
+        { name: "Card.vue" },
+        { name: "Input.vue" },
+      ],
     },
     {
-      name: 'composables',
-      children: [{ name: 'useTheme.ts' }, { name: 'useRegistry.ts' }],
+      name: "composables",
+      children: [{ name: "useTheme.ts" }, { name: "useRegistry.ts" }],
     },
     {
-      name: 'pages',
-      children: [{ name: 'index.vue' }, { name: 'about.vue' }],
+      name: "pages",
+      children: [{ name: "index.vue" }, { name: "about.vue" }],
     },
-    { name: 'main.ts' },
+    { name: "main.ts" },
   ],
-}
+};
 
 const orgTree = {
-  name: 'CEO',
+  name: "CEO",
   children: [
     {
-      name: 'CTO',
-      children: [{ name: 'VP Eng', children: [{ name: 'EM Backend' }, { name: 'EM Frontend' }] }, { name: 'VP Data' }],
+      name: "CTO",
+      children: [
+        {
+          name: "VP Eng",
+          children: [{ name: "EM Backend" }, { name: "EM Frontend" }],
+        },
+        { name: "VP Data" },
+      ],
     },
-    { name: 'CFO', children: [{ name: 'Controller' }, { name: 'FP&A' }] },
-    { name: 'CMO', children: [{ name: 'VP Brand' }, { name: 'VP Growth' }] },
+    { name: "CFO", children: [{ name: "Controller" }, { name: "FP&A" }] },
+    { name: "CMO", children: [{ name: "VP Brand" }, { name: "VP Growth" }] },
   ],
-}
+};
 
 // Larger tree with one branch pre-collapsed via the `collapsed` flag.
 const decisionTree = {
-  name: 'Should we ship?',
+  name: "Should we ship?",
   children: [
     {
-      name: 'CI green?',
+      name: "CI green?",
       children: [
         {
-          name: 'Yes',
+          name: "Yes",
           children: [
             {
-              name: 'Risk score < 5?',
+              name: "Risk score < 5?",
               children: [
-                { name: 'Ship' },
+                { name: "Ship" },
                 {
-                  name: 'Review needed',
+                  name: "Review needed",
                   collapsed: true,
-                  children: [{ name: 'Tech lead approves' }, { name: 'Eng manager approves' }],
+                  children: [
+                    { name: "Tech lead approves" },
+                    { name: "Eng manager approves" },
+                  ],
                 },
               ],
             },
           ],
         },
-        { name: 'No', children: [{ name: 'Block + retry' }] },
+        { name: "No", children: [{ name: "Block + retry" }] },
       ],
     },
   ],
-}
+};
 
 export default function TreeChartDemo() {
   return (
@@ -99,5 +112,5 @@ export default function TreeChartDemo() {
         <TreeChart data={fileTree} orient="RL" height="300" />
       </Story>
     </>
-  )
+  );
 }

@@ -11,7 +11,7 @@ export {
   type BoardLaneBodyProps,
   type BoardLaneEmptyProps,
   type BoardCardProps,
-} from './board'
+} from "./board";
 
 export {
   BoardContext,
@@ -26,11 +26,11 @@ export {
   type BoardDropEvent,
   type BoardLaneContextValue,
   type BoardOrientation,
-} from './context'
+} from "./context";
 
 export {
   boardCardVariants,
   boardLaneVariants,
   type BoardCardVariantsProps,
   type BoardLaneVariantsProps,
-} from './board.variants'
+} from "./board.variants";

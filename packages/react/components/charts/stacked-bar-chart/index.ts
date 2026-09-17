@@ -1,1 +1,1 @@
-export { StackedBarChart, type StackedBarChartProps } from './StackedBarChart'
+export { StackedBarChart, type StackedBarChartProps } from "./StackedBarChart";

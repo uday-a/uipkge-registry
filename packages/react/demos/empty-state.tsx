@@ -1,13 +1,20 @@
-import Story from '../../components/story/Story'
-import { Button } from '@react-registry/button'
-import { EmptyState } from '@react-registry/empty-state'
-import { Inbox, Plus, Search, ServerCrash, FileX2, Upload } from 'lucide-react'
+import Story from "../../components/story/Story";
+import { Button } from "@react-registry/button";
+import { EmptyState } from "@react-registry/empty-state";
+import { Inbox, Plus, Search, ServerCrash, FileX2, Upload } from "lucide-react";
 
 export default function EmptyStateDemo() {
   return (
     <>
-      <Story title="Default" description="Centered icon, title, description, and a single primary action.">
-        <EmptyState title="No messages" description="When you receive new messages, they'll appear here." icon={Inbox}>
+      <Story
+        title="Default"
+        description="Centered icon, title, description, and a single primary action."
+      >
+        <EmptyState
+          title="No messages"
+          description="When you receive new messages, they'll appear here."
+          icon={Inbox}
+        >
           <Button className="mt-4">
             <Plus />
             New message
@@ -15,7 +22,10 @@ export default function EmptyStateDemo() {
         </EmptyState>
       </Story>
 
-      <Story title="Without action" description="Icon, title, and description only — no slot content.">
+      <Story
+        title="Without action"
+        description="Icon, title, and description only — no slot content."
+      >
         <EmptyState
           title="Nothing scheduled"
           description="You have no upcoming events on your calendar."
@@ -79,5 +89,5 @@ export default function EmptyStateDemo() {
         </div>
       </Story>
     </>
-  )
+  );
 }

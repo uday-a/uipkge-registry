@@ -1,5 +1,5 @@
-import { describe, it, expect, afterEach } from 'vitest'
-import { render, cleanup } from '@testing-library/react'
+import { describe, it, expect, afterEach } from "vitest";
+import { render, cleanup } from "@testing-library/react";
 import {
   Menubar,
   MenubarMenu,
@@ -10,9 +10,9 @@ import {
   MenubarSeparator,
   MenubarLabel,
   MenubarShortcut,
-} from '../menubar'
+} from "../menubar";
 
-afterEach(cleanup)
+afterEach(cleanup);
 
 function renderOpenMenubar() {
   return render(
@@ -39,7 +39,7 @@ function renderOpenMenubar() {
         </MenubarContent>
       </MenubarMenu>
     </Menubar>,
-  )
+  );
 }
 
 function renderClosedMenubar() {
@@ -52,51 +52,65 @@ function renderClosedMenubar() {
         <MenubarTrigger>Edit</MenubarTrigger>
       </MenubarMenu>
     </Menubar>,
-  )
+  );
 }
 
-describe('Menubar', () => {
+describe("Menubar", () => {
   it('renders root with data-slot="menubar"', () => {
-    const { container } = renderClosedMenubar()
-    expect(container.querySelector('[data-slot="menubar"]')).toBeTruthy()
-  })
+    const { container } = renderClosedMenubar();
+    expect(container.querySelector('[data-slot="menubar"]')).toBeTruthy();
+  });
 
-  it('has data-uipkge on root', () => {
-    const { container } = renderClosedMenubar()
-    expect(container.querySelector('[data-slot="menubar"]')?.hasAttribute('data-uipkge')).toBe(true)
-  })
+  it("has data-uipkge on root", () => {
+    const { container } = renderClosedMenubar();
+    expect(
+      container
+        .querySelector('[data-slot="menubar"]')
+        ?.hasAttribute("data-uipkge"),
+    ).toBe(true);
+  });
 
   it('renders triggers with data-slot="menubar-trigger"', () => {
-    const { container } = renderClosedMenubar()
-    const triggers = container.querySelectorAll('[data-slot="menubar-trigger"]')
-    expect(triggers.length).toBe(2)
-    expect(triggers[0].textContent).toContain('File')
-  })
+    const { container } = renderClosedMenubar();
+    const triggers = container.querySelectorAll(
+      '[data-slot="menubar-trigger"]',
+    );
+    expect(triggers.length).toBe(2);
+    expect(triggers[0].textContent).toContain("File");
+  });
 
-  it('applies data-orientation on root', () => {
-    const { container } = renderClosedMenubar()
-    expect(container.querySelector('[data-slot="menubar"]')?.getAttribute('data-orientation')).toBe('horizontal')
-  })
+  it("applies data-orientation on root", () => {
+    const { container } = renderClosedMenubar();
+    expect(
+      container
+        .querySelector('[data-slot="menubar"]')
+        ?.getAttribute("data-orientation"),
+    ).toBe("horizontal");
+  });
 
   it('renders menu items with data-slot="menubar-item" when open', () => {
-    renderOpenMenubar()
-    const items = document.body.querySelectorAll('[data-slot="menubar-item"]')
-    expect(items.length).toBeGreaterThanOrEqual(2)
-  })
+    renderOpenMenubar();
+    const items = document.body.querySelectorAll('[data-slot="menubar-item"]');
+    expect(items.length).toBeGreaterThanOrEqual(2);
+  });
 
-  it('items have data-uipkge', () => {
-    renderOpenMenubar()
-    const item = document.body.querySelector('[data-slot="menubar-item"]')
-    expect(item?.hasAttribute('data-uipkge')).toBe(true)
-  })
+  it("items have data-uipkge", () => {
+    renderOpenMenubar();
+    const item = document.body.querySelector('[data-slot="menubar-item"]');
+    expect(item?.hasAttribute("data-uipkge")).toBe(true);
+  });
 
   it('renders MenubarGroup with data-slot="menubar-group" when open', () => {
-    renderOpenMenubar()
-    expect(document.body.querySelector('[data-slot="menubar-group"]')).toBeTruthy()
-  })
+    renderOpenMenubar();
+    expect(
+      document.body.querySelector('[data-slot="menubar-group"]'),
+    ).toBeTruthy();
+  });
 
   it('renders MenubarSeparator with data-slot="menubar-separator" when open', () => {
-    renderOpenMenubar()
-    expect(document.body.querySelector('[data-slot="menubar-separator"]')).toBeTruthy()
-  })
-})
+    renderOpenMenubar();
+    expect(
+      document.body.querySelector('[data-slot="menubar-separator"]'),
+    ).toBeTruthy();
+  });
+});

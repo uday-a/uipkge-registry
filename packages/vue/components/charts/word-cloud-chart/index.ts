@@ -1,1 +1,1 @@
-export { default as WordCloudChart } from './WordCloudChart.vue'
+export { default as WordCloudChart } from "./WordCloudChart.vue";

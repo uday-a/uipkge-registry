@@ -1,27 +1,27 @@
 <script setup lang="ts">
-import { inject, onMounted, ref } from 'vue'
-import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
-import { BOARD_CONTEXT } from './context'
+import { inject, onMounted, ref } from "vue";
+import type { HTMLAttributes } from "vue";
+import { cn } from "@/lib/utils";
+import { BOARD_CONTEXT } from "./context";
 
 interface Props {
-  class?: HTMLAttributes['class']
+  class?: HTMLAttributes["class"];
   /** Override the TransitionGroup name. Defaults to the board-level motion preset. */
-  motion?: string
+  motion?: string;
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
-const board = inject(BOARD_CONTEXT, null)
-const motionName = () => props.motion ?? board?.motion.value ?? 'motion-list'
+const board = inject(BOARD_CONTEXT, null);
+const motionName = () => props.motion ?? board?.motion.value ?? "motion-list";
 
 // Framework-agnostic mount gate (replaces Nuxt-only <ClientOnly>). Vue 3
 // TransitionGroup can emit Fragment vnodes during SSR and real elements on the
 // client, which trips hydration mismatches. Render a plain div until mounted.
-const mounted = ref(false)
+const mounted = ref(false);
 onMounted(() => {
-  mounted.value = true
-})
+  mounted.value = true;
+});
 </script>
 
 <template>
@@ -35,10 +35,18 @@ onMounted(() => {
     data-uipkge
     data-slot="board-lane-body"
     :class="
-      cn('flex min-h-0 flex-1 [scrollbar-width:thin] flex-col gap-2 overflow-y-auto px-0.5 py-1 pr-1', props.class)
+      cn(
+        'flex min-h-0 flex-1 [scrollbar-width:thin] flex-col gap-2 overflow-y-auto px-0.5 py-1 pr-1',
+        props.class,
+      )
     "
   >
-    <TransitionGroup v-if="mounted" :name="motionName()" tag="div" class="relative flex flex-col gap-2">
+    <TransitionGroup
+      v-if="mounted"
+      :name="motionName()"
+      tag="div"
+      class="relative flex flex-col gap-2"
+    >
       <slot />
     </TransitionGroup>
     <div v-else class="relative flex flex-col gap-2">

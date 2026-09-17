@@ -1,1 +1,1 @@
-export { SankeyChart, type SankeyChartProps } from './SankeyChart'
+export { SankeyChart, type SankeyChartProps } from "./SankeyChart";

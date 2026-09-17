@@ -75,7 +75,8 @@ export default function App() {
   const [activeRadius, setActiveRadius] = useState("0.5rem");
   const [activeViewport, setActiveViewport] = useState("fluid");
   const [canvasBg, setCanvasBg] = useState<CanvasBackground>("dots");
-  const [isInspectorOpen, setIsInspectorOpen] = useState(true);
+  const [isInspectorOpen, setIsInspectorOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   // Component Metadata
   const [currentMeta, setCurrentMeta] = useState<{
@@ -275,6 +276,26 @@ export default function App() {
     document.documentElement.style.setProperty("--radius", activeRadius);
   }, [activeRadius]);
 
+  // Global hotkeys: ⌘B / Ctrl+B for sidebar, ⌘J / Ctrl+J for inspector
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
+      const modKey = isMac ? e.metaKey : e.ctrlKey;
+
+      if (modKey && e.key.toLowerCase() === "b") {
+        e.preventDefault();
+        setIsSidebarOpen((prev) => !prev);
+      }
+      if (modKey && e.key.toLowerCase() === "j") {
+        e.preventDefault();
+        setIsInspectorOpen((prev) => !prev);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   const selectedItemName = useMemo(() => {
     const item = items.find((i) => i.id === selectedId);
     return item ? item.name : selectedId;
@@ -297,6 +318,7 @@ export default function App() {
       <WorkbenchSidebar
         items={items}
         selectedId={selectedId}
+        collapsed={!isSidebarOpen}
         onSelect={(id) => setSelectedId(id)}
       />
 
@@ -321,11 +343,13 @@ export default function App() {
           onRemount={() => setRemountKey((k) => k + 1)}
           isInspectorOpen={isInspectorOpen}
           onToggleInspector={() => setIsInspectorOpen(!isInspectorOpen)}
+          isSidebarOpen={isSidebarOpen}
+          onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         />
 
         {/* Canvas Preview Area */}
         <main
-          className={`relative flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 ${
+          className={`relative flex-1 overflow-y-auto p-6 sm:p-8 lg:p-10 ${
             canvasBg === "dots"
               ? "canvas-dots"
               : canvasBg === "grid"
@@ -339,12 +363,12 @@ export default function App() {
             className={`transition-all duration-200 ${
               activeViewport !== "fluid"
                 ? "rounded-2xl border border-border/80 bg-background/95 p-4 sm:p-6 shadow-2xl backdrop-blur-xs ring-1 ring-black/5 dark:ring-white/10 my-4"
-                : ""
+                : "max-w-7xl mx-auto"
             }`}
           >
             {/* Viewport Frame Header badge if simulated */}
             {activeViewport !== "fluid" && (
-              <div className="mb-4 flex items-center justify-between border-b border-border/60 pb-2.5 text-[11px] font-mono text-muted-foreground">
+              <div className="mb-4 flex items-center justify-between border-b border-border/60 pb-2.5 text-xs font-mono text-muted-foreground">
                 <div className="flex items-center gap-1.5 font-medium text-foreground">
                   <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
                   <span className="uppercase tracking-wider">

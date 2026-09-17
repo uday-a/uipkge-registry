@@ -1,1 +1,1 @@
-export { default as RawChart } from './RawChart.vue'
+export { default as RawChart } from "./RawChart.vue";

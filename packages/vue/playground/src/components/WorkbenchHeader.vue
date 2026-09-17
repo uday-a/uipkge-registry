@@ -18,6 +18,8 @@ import {
   Sliders,
   Palette,
   Layers,
+  PanelLeftClose,
+  PanelLeft,
 } from "lucide-vue-next";
 import {
   COLOR_THEMES,
@@ -26,21 +28,28 @@ import {
   type CanvasBackground,
 } from "../theme";
 
-const props = defineProps<{
-  componentId: string;
-  componentName: string;
-  componentType: string;
-  categories: string[];
-  isDark: boolean;
-  activeColorTheme: string;
-  activeRadius: string;
-  activeViewport: string;
-  canvasBg: CanvasBackground;
-  isInspectorOpen: boolean;
-}>();
+const props = withDefaults(
+  defineProps<{
+    componentId: string;
+    componentName: string;
+    componentType: string;
+    categories: string[];
+    isDark: boolean;
+    activeColorTheme: string;
+    activeRadius: string;
+    activeViewport: string;
+    canvasBg: CanvasBackground;
+    isInspectorOpen: boolean;
+    isSidebarOpen?: boolean;
+  }>(),
+  {
+    isSidebarOpen: true,
+  },
+);
 
 const emit = defineEmits<{
   (e: "toggleTheme"): void;
+  (e: "toggleSidebar"): void;
   (e: "update:activeColorTheme", theme: string): void;
   (e: "update:activeRadius", radius: string): void;
   (e: "update:activeViewport", viewport: string): void;
@@ -72,26 +81,37 @@ const copyCommand = async () => {
     class="flex h-14 shrink-0 items-center justify-between border-b border-border bg-card px-4 z-20"
   >
     <!-- Left Section: Monogram & Component Info -->
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-2.5 sm:gap-3">
+      <!-- Toggle sidebar button -->
+      <button
+        type="button"
+        class="flex size-8 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-2xs"
+        @click="emit('toggleSidebar')"
+        :title="isSidebarOpen ? 'Hide sidebar (⌘B)' : 'Show sidebar (⌘B)'"
+      >
+        <PanelLeftClose v-if="isSidebarOpen" class="size-4" />
+        <PanelLeft v-else class="size-4" />
+      </button>
+
       <!-- UIPKGE brand & framework switch -->
       <div class="flex items-center gap-2">
         <a
           href="/"
-          class="flex size-7 items-center justify-center rounded-lg bg-foreground text-background font-mono text-xs font-bold shadow-xs hover:opacity-90 transition"
+          class="flex size-8 items-center justify-center rounded-lg bg-foreground text-background font-mono text-xs font-bold shadow-xs hover:opacity-90 transition"
           title="UIPKGE Dev Workbench"
         >
           UI
         </a>
         <div class="flex items-center gap-1.5">
           <span
-            class="rounded bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 font-mono text-[10px] font-semibold text-emerald-600 dark:text-emerald-400"
+            class="rounded-md bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 font-mono text-xs font-semibold text-emerald-600 dark:text-emerald-400"
           >
             Vue 3.5
           </span>
           <a
             href="http://localhost:5174"
             target="_blank"
-            class="hidden sm:inline-flex items-center rounded border border-border bg-muted/40 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground hover:text-foreground hover:bg-muted transition"
+            class="hidden sm:inline-flex items-center rounded-md border border-border bg-muted/40 px-2 py-0.5 font-mono text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition"
             title="Open React 19 Playground on :5174"
           >
             React 19 ↗
@@ -99,28 +119,18 @@ const copyCommand = async () => {
         </div>
       </div>
 
-      <div class="h-4 w-px bg-border" />
+      <div class="hidden sm:block h-4 w-px bg-border" />
 
       <!-- Breadcrumbs & metadata -->
       <div class="flex items-center gap-2">
         <h2
-          class="text-xs sm:text-sm font-semibold tracking-tight text-foreground truncate max-w-[180px] sm:max-w-xs"
+          class="text-xs sm:text-sm font-semibold tracking-tight text-foreground truncate max-w-[140px] sm:max-w-xs"
         >
           {{ componentName }}
         </h2>
         <span
-          class="rounded px-1.5 py-0.2 font-mono text-[10px] uppercase font-bold tracking-wider"
-          :class="
-            componentType === 'registry:block'
-              ? 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20'
-              : 'bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20'
-          "
-        >
-          {{ componentType === "registry:block" ? "block" : "ui" }}
-        </span>
-        <span
           v-if="categories && categories[0]"
-          class="hidden md:inline-block rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground"
+          class="hidden md:inline-block rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground"
         >
           {{ categories[0] }}
         </span>
@@ -129,13 +139,13 @@ const copyCommand = async () => {
       <!-- Quick copy install command -->
       <button
         type="button"
-        class="hidden lg:flex items-center gap-1.5 rounded-md border border-border bg-background px-2.5 py-1 text-xs font-mono text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs"
+        class="hidden xl:flex items-center gap-1.5 rounded-lg border border-border bg-background px-2.5 py-1 text-xs font-mono text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs"
         @click="copyCommand"
         title="Copy install command"
       >
         <Check v-if="copied" class="size-3 text-emerald-500" />
         <Copy v-else class="size-3" />
-        <span>npx shadcn-vue add @uipkge/{{ componentId }}</span>
+        <span>add @uipkge/{{ componentId }}</span>
       </button>
     </div>
 
@@ -298,14 +308,12 @@ const copyCommand = async () => {
             <span class="text-xs font-semibold text-foreground"
               >Theme Customizer</span
             >
-            <span class="text-[10px] font-mono text-muted-foreground"
-              >OKLCH</span
-            >
+            <span class="text-xs font-mono text-muted-foreground">OKLCH</span>
           </div>
 
           <!-- Color Presets -->
           <div class="py-3">
-            <div class="text-[11px] font-medium text-muted-foreground mb-2">
+            <div class="text-xs font-medium text-muted-foreground mb-2">
               Accent Color
             </div>
             <div class="grid grid-cols-5 gap-1.5">
@@ -326,7 +334,7 @@ const copyCommand = async () => {
                   class="size-4 rounded-full border border-black/10"
                   :style="{ backgroundColor: color.swatch }"
                 />
-                <span class="text-[9px] font-medium text-muted-foreground">{{
+                <span class="text-xs font-medium text-muted-foreground">{{
                   color.name
                 }}</span>
               </button>
@@ -335,7 +343,7 @@ const copyCommand = async () => {
 
           <!-- Radius Presets -->
           <div class="pt-2 border-t border-border">
-            <div class="text-[11px] font-medium text-muted-foreground mb-2">
+            <div class="text-xs font-medium text-muted-foreground mb-2">
               Border Radius
             </div>
             <div class="grid grid-cols-3 gap-1">
@@ -343,7 +351,7 @@ const copyCommand = async () => {
                 v-for="rad in RADIUS_PRESETS"
                 :key="rad.id"
                 type="button"
-                class="rounded px-2 py-1 text-[10px] font-medium border text-center transition"
+                class="rounded-md px-2 py-1 text-xs font-medium border text-center transition"
                 :class="
                   activeRadius === rad.value
                     ? 'border-foreground bg-foreground text-background shadow-xs font-semibold'

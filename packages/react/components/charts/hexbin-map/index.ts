@@ -5,5 +5,5 @@ export {
   type HexbinMapProps,
   type HexbinDatum,
   type HexState,
-} from './HexbinMap'
-export { default } from './HexbinMap'
+} from "./HexbinMap";
+export { default } from "./HexbinMap";

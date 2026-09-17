@@ -1,63 +1,63 @@
 <script setup lang="ts">
-import { TreemapChart } from '@/components/ui/charts'
+import { TreemapChart } from "@/components/ui/charts";
 const teams = [
-  { name: 'Backend', value: 22 },
-  { name: 'Frontend', value: 18 },
-  { name: 'Inside sales', value: 14 },
-  { name: 'Field sales', value: 12 },
-  { name: 'Customer success', value: 10 },
-  { name: 'Marketing', value: 8 },
-  { name: 'Support', value: 8 },
-  { name: 'Mobile', value: 8 },
-  { name: 'Infra', value: 8 },
-  { name: 'Sales ops', value: 6 },
-]
+  { name: "Backend", value: 22 },
+  { name: "Frontend", value: 18 },
+  { name: "Inside sales", value: 14 },
+  { name: "Field sales", value: 12 },
+  { name: "Customer success", value: 10 },
+  { name: "Marketing", value: 8 },
+  { name: "Support", value: 8 },
+  { name: "Mobile", value: 8 },
+  { name: "Infra", value: 8 },
+  { name: "Sales ops", value: 6 },
+];
 
 // Air cargo: weekly tonnage by lane.
 const laneTonnage = [
-  { name: 'PVG–LAX', value: 520 },
-  { name: 'ICN–ORD', value: 410 },
-  { name: 'SIN–HKG', value: 380 },
-  { name: 'FRA–JFK', value: 360 },
-  { name: 'NRT–DFW', value: 350 },
-  { name: 'HKG–ANC', value: 290 },
-  { name: 'DXB–SIN', value: 280 },
-  { name: 'SIN–ICN', value: 190 },
-]
+  { name: "PVG–LAX", value: 520 },
+  { name: "ICN–ORD", value: 410 },
+  { name: "SIN–HKG", value: 380 },
+  { name: "FRA–JFK", value: 360 },
+  { name: "NRT–DFW", value: 350 },
+  { name: "HKG–ANC", value: 290 },
+  { name: "DXB–SIN", value: 280 },
+  { name: "SIN–ICN", value: 190 },
+];
 
 const nested = [
   {
-    name: 'Engineering',
+    name: "Engineering",
     children: [
-      { name: 'Backend', value: 22 },
-      { name: 'Frontend', value: 18 },
-      { name: 'Mobile', value: 8 },
-      { name: 'Infra', value: 8 },
+      { name: "Backend", value: 22 },
+      { name: "Frontend", value: 18 },
+      { name: "Mobile", value: 8 },
+      { name: "Infra", value: 8 },
     ],
   },
   {
-    name: 'Sales',
+    name: "Sales",
     children: [
-      { name: 'Inside', value: 14 },
-      { name: 'Field', value: 12 },
-      { name: 'Ops', value: 6 },
+      { name: "Inside", value: 14 },
+      { name: "Field", value: 12 },
+      { name: "Ops", value: 6 },
     ],
   },
   {
-    name: 'Customer',
+    name: "Customer",
     children: [
-      { name: 'Success', value: 10 },
-      { name: 'Support', value: 8 },
+      { name: "Success", value: 10 },
+      { name: "Support", value: 8 },
     ],
   },
   {
-    name: 'Marketing',
+    name: "Marketing",
     children: [
-      { name: 'Demand gen', value: 5 },
-      { name: 'Content', value: 3 },
+      { name: "Demand gen", value: 5 },
+      { name: "Content", value: 3 },
     ],
   },
-]
+];
 
 // Colour-by-value: paint tiles by absolute value (warmer = higher) using
 // visualMap. The option override layers a visualMap and tells the series
@@ -65,13 +65,15 @@ const nested = [
 const colorByValueOption = {
   visualMap: {
     show: false,
-    type: 'continuous' as const,
+    type: "continuous" as const,
     min: 0,
     max: 25,
-    inRange: { color: ['#fef3c7', '#f59e0b', '#9a3412'] },
+    inRange: { color: ["#fef3c7", "#f59e0b", "#9a3412"] },
   },
-  series: [{ colorMappingBy: 'value' as const, colorSaturation: undefined as any }],
-}
+  series: [
+    { colorMappingBy: "value" as const, colorSaturation: undefined as any },
+  ],
+};
 </script>
 
 <template>
@@ -115,7 +117,10 @@ const colorByValueOption = {
     <TreemapChart :data="teams" height="200" />
   </Story>
 
-  <Story title="Lane tonnage" description="Air cargo weekly uplift — tile area is tonnage, PVG–LAX dominates.">
+  <Story
+    title="Lane tonnage"
+    description="Air cargo weekly uplift — tile area is tonnage, PVG–LAX dominates."
+  >
     <TreemapChart :data="laneTonnage" height="320" />
   </Story>
 </template>

@@ -1,19 +1,19 @@
-import Story from '../../components/story/Story'
-import { Anchor, AnchorLink, type AnchorItem } from '@react-registry/anchor'
+import Story from "../../components/story/Story";
+import { Anchor, AnchorLink, type AnchorItem } from "@react-registry/anchor";
 
 const items: AnchorItem[] = [
-  { href: '#section-1', title: 'Introduction' },
+  { href: "#section-1", title: "Introduction" },
   {
-    href: '#section-2',
-    title: 'Architecture',
+    href: "#section-2",
+    title: "Architecture",
     children: [
-      { href: '#section-2-1', title: 'Modules' },
-      { href: '#section-2-2', title: 'Boundaries' },
+      { href: "#section-2-1", title: "Modules" },
+      { href: "#section-2-2", title: "Boundaries" },
     ],
   },
-  { href: '#section-3', title: 'API' },
-  { href: '#section-4', title: 'Examples' },
-]
+  { href: "#section-3", title: "API" },
+  { href: "#section-4", title: "Examples" },
+];
 
 export default function AnchorDemo() {
   return (
@@ -27,17 +27,23 @@ export default function AnchorDemo() {
           <div className="space-y-12">
             <section id="section-1" className="min-h-[60vh]">
               <h2 className="text-lg font-semibold">Introduction</h2>
-              <p className="text-muted-foreground text-sm">Lorem ipsum dolor sit amet.</p>
+              <p className="text-muted-foreground text-sm">
+                Lorem ipsum dolor sit amet.
+              </p>
             </section>
             <section id="section-2" className="min-h-[40vh]">
               <h2 className="text-lg font-semibold">Architecture</h2>
               <div id="section-2-1" className="min-h-[30vh]">
                 <h3 className="font-medium">Modules</h3>
-                <p className="text-muted-foreground text-sm">Sub-section content.</p>
+                <p className="text-muted-foreground text-sm">
+                  Sub-section content.
+                </p>
               </div>
               <div id="section-2-2" className="min-h-[30vh]">
                 <h3 className="font-medium">Boundaries</h3>
-                <p className="text-muted-foreground text-sm">Sub-section content.</p>
+                <p className="text-muted-foreground text-sm">
+                  Sub-section content.
+                </p>
               </div>
             </section>
             <section id="section-3" className="min-h-[60vh]">
@@ -50,7 +56,10 @@ export default function AnchorDemo() {
         </div>
       </Story>
 
-      <Story title="Composed with AnchorLink" description="Use child components for full control over each link.">
+      <Story
+        title="Composed with AnchorLink"
+        description="Use child components for full control over each link."
+      >
         <div className="grid grid-cols-[160px_1fr] gap-6">
           <Anchor offsetTop={80} affix>
             <AnchorLink href="#a-1" title="Apples" />
@@ -80,5 +89,5 @@ export default function AnchorDemo() {
         </div>
       </Story>
     </>
-  )
+  );
 }

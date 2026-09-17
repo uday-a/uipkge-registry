@@ -1,5 +1,5 @@
-import Story from '../../components/story/Story'
-import { Typewriter } from '@react-registry/typewriter'
+import Story from "../../components/story/Story";
+import { Typewriter } from "@react-registry/typewriter";
 
 export default function TypewriterDemo() {
   return (
@@ -18,7 +18,9 @@ export default function TypewriterDemo() {
         description="Pass an array to cycle phrases — type, hold, delete, next. Loops forever by default."
       >
         <p className="text-lg font-medium">
-          <Typewriter phrases={['Ship faster.', 'Own your code.', 'Compose freely.']} />
+          <Typewriter
+            phrases={["Ship faster.", "Own your code.", "Compose freely."]}
+          />
         </p>
       </Story>
 
@@ -28,7 +30,11 @@ export default function TypewriterDemo() {
       >
         <p className="text-lg">
           <Typewriter
-            phrases={['First, pull the source.', 'Then edit it freely.', 'Finally, ship it your way.']}
+            phrases={[
+              "First, pull the source.",
+              "Then edit it freely.",
+              "Finally, ship it your way.",
+            ]}
             loop={false}
           />
         </p>
@@ -43,9 +49,15 @@ export default function TypewriterDemo() {
         </p>
       </Story>
 
-      <Story title="Fast typing" description="18ms per character reads like a live feed or terminal stream.">
+      <Story
+        title="Fast typing"
+        description="18ms per character reads like a live feed or terminal stream."
+      >
         <p className="text-lg">
-          <Typewriter phrases="Streaming updates at roughly 55 characters per second." typingSpeed={18} />
+          <Typewriter
+            phrases="Streaming updates at roughly 55 characters per second."
+            typingSpeed={18}
+          />
         </p>
       </Story>
 
@@ -54,7 +66,10 @@ export default function TypewriterDemo() {
         description="pause holds each completed phrase before deleting — 3500ms gives readers time to actually read it."
       >
         <p className="text-lg">
-          <Typewriter phrases={['Read this twice.', 'It is worth your while.']} pause={3500} />
+          <Typewriter
+            phrases={["Read this twice.", "It is worth your while."]}
+            pause={3500}
+          />
         </p>
       </Story>
 
@@ -76,7 +91,10 @@ export default function TypewriterDemo() {
       >
         <div className="max-w-md rounded-lg bg-zinc-950 p-4 font-mono text-sm text-emerald-400 shadow-inner dark:bg-black/60">
           <span className="select-none">$ </span>
-          <Typewriter phrases="npx shadcn add https://uipkge.dev/r/react/button.json" typingSpeed={28} />
+          <Typewriter
+            phrases="npx shadcn add https://uipkge.dev/r/react/button.json"
+            typingSpeed={28}
+          />
         </div>
       </Story>
 
@@ -85,9 +103,9 @@ export default function TypewriterDemo() {
         description="Drop into a heading — the caret scales with the font because its height is 1em."
       >
         <h2 className="text-4xl font-bold tracking-tight">
-          Build interfaces that{' '}
+          Build interfaces that{" "}
           <span className="text-primary">
-            <Typewriter phrases={['ship.', 'scale.', 'delight.']} />
+            <Typewriter phrases={["ship.", "scale.", "delight."]} />
           </span>
         </h2>
       </Story>
@@ -106,11 +124,14 @@ export default function TypewriterDemo() {
         </div>
       </Story>
 
-      <Story title="No caret" description="showCaret=false hides the cursor entirely — useful for one-shot reveals.">
+      <Story
+        title="No caret"
+        description="showCaret=false hides the cursor entirely — useful for one-shot reveals."
+      >
         <p className="text-lg">
           <Typewriter phrases="Quietly, without a cursor." showCaret={false} />
         </p>
       </Story>
     </>
-  )
+  );
 }

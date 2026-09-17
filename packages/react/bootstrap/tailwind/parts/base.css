@@ -5,39 +5,39 @@
 body {
   @apply bg-background text-foreground font-sans antialiased;
   font-feature-settings:
-    'rlig' 1,
-    'calt' 1;
+    "rlig" 1,
+    "calt" 1;
 }
 
 /* Tailwind v4 dropped cursor: pointer for buttons. Restore it for all
    interactive elements (native + Reka role-based controls). Disabled
    elements stay default. */
-a[href]:not([aria-disabled='true']),
+a[href]:not([aria-disabled="true"]),
 button:not(:disabled),
-[role='button']:not([aria-disabled='true']),
-[role='link']:not([aria-disabled='true']),
-[role='checkbox']:not([aria-disabled='true']),
-[role='radio']:not([aria-disabled='true']),
-[role='switch']:not([aria-disabled='true']),
-[role='combobox']:not([aria-disabled='true']),
-[role='slider']:not([aria-disabled='true']),
-[role='spinbutton']:not([aria-disabled='true']),
-[role='menuitem']:not([aria-disabled='true']),
-[role='menuitemcheckbox']:not([aria-disabled='true']),
-[role='menuitemradio']:not([aria-disabled='true']),
-[role='option']:not([aria-disabled='true']),
-[role='tab']:not([aria-disabled='true']),
+[role="button"]:not([aria-disabled="true"]),
+[role="link"]:not([aria-disabled="true"]),
+[role="checkbox"]:not([aria-disabled="true"]),
+[role="radio"]:not([aria-disabled="true"]),
+[role="switch"]:not([aria-disabled="true"]),
+[role="combobox"]:not([aria-disabled="true"]),
+[role="slider"]:not([aria-disabled="true"]),
+[role="spinbutton"]:not([aria-disabled="true"]),
+[role="menuitem"]:not([aria-disabled="true"]),
+[role="menuitemcheckbox"]:not([aria-disabled="true"]),
+[role="menuitemradio"]:not([aria-disabled="true"]),
+[role="option"]:not([aria-disabled="true"]),
+[role="tab"]:not([aria-disabled="true"]),
 summary,
 label[for],
 select:not(:disabled),
-input[type='checkbox']:not(:disabled),
-input[type='radio']:not(:disabled),
-input[type='range']:not(:disabled),
-input[type='file']:not(:disabled),
-input[type='submit']:not(:disabled),
-input[type='reset']:not(:disabled),
-input[type='button']:not(:disabled),
-input[type='color']:not(:disabled) {
+input[type="checkbox"]:not(:disabled),
+input[type="radio"]:not(:disabled),
+input[type="range"]:not(:disabled),
+input[type="file"]:not(:disabled),
+input[type="submit"]:not(:disabled),
+input[type="reset"]:not(:disabled),
+input[type="button"]:not(:disabled),
+input[type="color"]:not(:disabled) {
   cursor: pointer;
 }
 
@@ -103,14 +103,22 @@ input[type='color']:not(:disabled) {
 
 /* Subtle background texture */
 body::before {
-  content: '';
+  content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: -1;
   background-image:
-    radial-gradient(circle at 20% 80%, oklch(0.46 0.08 145 / 0.03) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, oklch(0.46 0.08 145 / 0.02) 0%, transparent 50%);
+    radial-gradient(
+      circle at 20% 80%,
+      oklch(0.46 0.08 145 / 0.03) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      oklch(0.46 0.08 145 / 0.02) 0%,
+      transparent 50%
+    );
 }
 
 /* Scrollbar styling */

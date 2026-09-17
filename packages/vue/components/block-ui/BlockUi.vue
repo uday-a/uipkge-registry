@@ -1,43 +1,43 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from 'vue'
-import { computed, useSlots } from 'vue'
-import { cn } from '@/lib/utils'
-import { blockUiVariants } from './block-ui.variants'
-import { Spinner } from '@/components/ui/spinner'
+import type { HTMLAttributes } from "vue";
+import { computed, useSlots } from "vue";
+import { cn } from "@/lib/utils";
+import { blockUiVariants } from "./block-ui.variants";
+import { Spinner } from "@/components/ui/spinner";
 
 interface Props {
-  modelValue?: boolean
-  message?: string
-  opacity?: number
-  overlayColor?: string
-  blur?: boolean
-  showSpinner?: boolean
-  class?: HTMLAttributes['class']
+  modelValue?: boolean;
+  message?: string;
+  opacity?: number;
+  overlayColor?: string;
+  blur?: boolean;
+  showSpinner?: boolean;
+  class?: HTMLAttributes["class"];
 }
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: false,
-  message: 'Loading...',
+  message: "Loading...",
   opacity: 0.6,
-  overlayColor: '',
+  overlayColor: "",
   blur: false,
   showSpinner: true,
-})
+});
 
 const emit = defineEmits<{
-  'update:modelValue': [value: boolean]
-}>()
+  "update:modelValue": [value: boolean];
+}>();
 
-const slots = useSlots()
+const slots = useSlots();
 
 const overlayStyle = computed(() => {
   const style: Record<string, string> = {
-    '--block-ui-opacity': String(props.opacity),
-    opacity: 'var(--block-ui-opacity)',
-  }
-  if (props.overlayColor) style.backgroundColor = props.overlayColor
-  return style
-})
+    "--block-ui-opacity": String(props.opacity),
+    opacity: "var(--block-ui-opacity)",
+  };
+  if (props.overlayColor) style.backgroundColor = props.overlayColor;
+  return style;
+});
 </script>
 
 <template>
@@ -50,7 +50,11 @@ const overlayStyle = computed(() => {
     <!-- Wrapped content — always non-interactive while blocked (not only when blur is on). -->
     <div
       :class="
-        cn('block-ui-content', modelValue && 'pointer-events-none', blur && modelValue && 'blur-sm transition-[filter]')
+        cn(
+          'block-ui-content',
+          modelValue && 'pointer-events-none',
+          blur && modelValue && 'blur-sm transition-[filter]',
+        )
       "
       :inert="modelValue || undefined"
       :aria-hidden="modelValue || undefined"
@@ -68,7 +72,11 @@ const overlayStyle = computed(() => {
         aria-busy="true"
       >
         <!-- Background layer (opacity only affects this layer) -->
-        <div class="absolute inset-0" :style="overlayStyle" :class="!overlayColor && 'bg-background'" />
+        <div
+          class="absolute inset-0"
+          :style="overlayStyle"
+          :class="!overlayColor && 'bg-background'"
+        />
         <!-- Content layer (spinner + message stay fully opaque) -->
         <slot name="icon">
           <Spinner v-if="showSpinner" size="lg" />
@@ -77,7 +85,9 @@ const overlayStyle = computed(() => {
         <div v-if="slots.message" class="text-foreground text-sm font-medium">
           <slot name="message" />
         </div>
-        <p v-else-if="message" class="text-foreground text-sm font-medium">{{ message }}</p>
+        <p v-else-if="message" class="text-foreground text-sm font-medium">
+          {{ message }}
+        </p>
       </div>
     </Transition>
   </div>

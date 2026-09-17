@@ -1,1 +1,1 @@
-export { AreaChart, type AreaChartProps } from './AreaChart'
+export { AreaChart, type AreaChartProps } from "./AreaChart";

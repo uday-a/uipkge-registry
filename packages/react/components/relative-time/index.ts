@@ -1,4 +1,4 @@
-export { RelativeTime, type RelativeTimeProps } from './relative-time'
+export { RelativeTime, type RelativeTimeProps } from "./relative-time";
 export {
   formatAbsoluteTime,
   formatRelativeTime,
@@ -8,4 +8,4 @@ export {
   type RelativeTimeNumeric,
   type RelativeTimeParseAs,
   type RelativeTimeStyle,
-} from './format-relative-time'
+} from "./format-relative-time";

@@ -4,4 +4,4 @@ export {
   type RouteFlowMapProps,
   type RouteHub,
   type FlightRoute,
-} from './RouteFlowMap.vue'
+} from "./RouteFlowMap.vue";

@@ -1,146 +1,155 @@
 <script setup lang="ts">
-import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import type { HTMLAttributes } from 'vue'
-import { reactiveOmit } from '@vueuse/core'
-import { TabsList, useForwardProps } from 'reka-ui'
-import { cn } from '@/lib/utils'
+import { nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import type { HTMLAttributes } from "vue";
+import { reactiveOmit } from "@vueuse/core";
+import { TabsList, useForwardProps } from "reka-ui";
+import { cn } from "@/lib/utils";
 
 // Inlined unions: SFC compiler can't extract runtime props from reka-ui types cleanly.
 const props = withDefaults(
   defineProps<{
-    class?: HTMLAttributes['class']
-    asChild?: boolean
-    as?: string | object
-    loop?: boolean
+    class?: HTMLAttributes["class"];
+    asChild?: boolean;
+    as?: string | object;
+    loop?: boolean;
     /** Enable sliding active indicator (default true). When false, active chrome paints on the trigger. */
-    animated?: boolean
+    animated?: boolean;
   }>(),
   {
     animated: true,
   },
-)
+);
 
-const delegated = reactiveOmit(props, 'class', 'animated')
-const forwarded = useForwardProps(delegated)
+const delegated = reactiveOmit(props, "class", "animated");
+const forwarded = useForwardProps(delegated);
 
-const listEl = ref<HTMLElement | null>(null)
+const listEl = ref<HTMLElement | null>(null);
 const indicatorStyle = ref<Record<string, string>>({
-  opacity: '0',
-})
-let ro: ResizeObserver | null = null
-let mo: MutationObserver | null = null
-let firstPosition = true
+  opacity: "0",
+});
+let ro: ResizeObserver | null = null;
+let mo: MutationObserver | null = null;
+let firstPosition = true;
 
 function resolveListEl(node: unknown): HTMLElement | null {
-  if (!node) return null
-  if (node instanceof HTMLElement) return node
+  if (!node) return null;
+  if (node instanceof HTMLElement) return node;
   // reka-ui may expose a component instance with $el
-  const el = (node as { $el?: unknown }).$el
-  return el instanceof HTMLElement ? el : null
+  const el = (node as { $el?: unknown }).$el;
+  return el instanceof HTMLElement ? el : null;
 }
 
 function setListRef(node: unknown) {
-  listEl.value = resolveListEl(node)
+  listEl.value = resolveListEl(node);
 }
 
 function motionSafeTransition() {
-  if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    return 'none'
+  if (
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  ) {
+    return "none";
   }
   return firstPosition
-    ? 'none'
-    : 'transform 220ms cubic-bezier(0.22, 1, 0.36, 1), width 220ms cubic-bezier(0.22, 1, 0.36, 1), height 220ms cubic-bezier(0.22, 1, 0.36, 1)'
+    ? "none"
+    : "transform 220ms cubic-bezier(0.22, 1, 0.36, 1), width 220ms cubic-bezier(0.22, 1, 0.36, 1), height 220ms cubic-bezier(0.22, 1, 0.36, 1)";
 }
 
 function updateIndicator() {
-  if (!props.animated) return
-  const root = listEl.value
-  if (!root) return
-  const active = root.querySelector<HTMLElement>('[data-slot="vertical-tabs-trigger"][data-state="active"]')
+  if (!props.animated) return;
+  const root = listEl.value;
+  if (!root) return;
+  const active = root.querySelector<HTMLElement>(
+    '[data-slot="vertical-tabs-trigger"][data-state="active"]',
+  );
   if (!active) {
-    indicatorStyle.value = { opacity: '0' }
-    return
+    indicatorStyle.value = { opacity: "0" };
+    return;
   }
 
-  const listRect = root.getBoundingClientRect()
-  const activeRect = active.getBoundingClientRect()
-  const left = activeRect.left - listRect.left + root.scrollLeft
-  const top = activeRect.top - listRect.top + root.scrollTop
-  const transition = motionSafeTransition()
+  const listRect = root.getBoundingClientRect();
+  const activeRect = active.getBoundingClientRect();
+  const left = activeRect.left - listRect.left + root.scrollLeft;
+  const top = activeRect.top - listRect.top + root.scrollTop;
+  const transition = motionSafeTransition();
 
   // Full active surface slides (muted pill); primary rail is nested absolute so it stays inset-y-1.
   indicatorStyle.value = {
     width: `${activeRect.width}px`,
     height: `${activeRect.height}px`,
     transform: `translate3d(${left}px, ${top}px, 0)`,
-    opacity: '1',
+    opacity: "1",
     transition,
-  }
-  firstPosition = false
+  };
+  firstPosition = false;
 }
 
 function unbindObservers() {
-  ro?.disconnect()
-  mo?.disconnect()
-  ro = null
-  mo = null
+  ro?.disconnect();
+  mo?.disconnect();
+  ro = null;
+  mo = null;
 }
 
 function bindObservers() {
-  const root = listEl.value
-  if (!root || !props.animated) return
+  const root = listEl.value;
+  if (!root || !props.animated) return;
 
-  unbindObservers()
+  unbindObservers();
 
-  ro = new ResizeObserver(() => updateIndicator())
-  ro.observe(root)
-  root.querySelectorAll('[data-slot="vertical-tabs-trigger"]').forEach((el) => ro!.observe(el))
+  ro = new ResizeObserver(() => updateIndicator());
+  ro.observe(root);
+  root
+    .querySelectorAll('[data-slot="vertical-tabs-trigger"]')
+    .forEach((el) => ro!.observe(el));
 
   mo = new MutationObserver((mutations) => {
     // Re-observe new triggers without treating parent re-renders as first paint.
     for (const m of mutations) {
-      if (m.type === 'childList') {
-        root.querySelectorAll('[data-slot="vertical-tabs-trigger"]').forEach((el) => ro?.observe(el))
+      if (m.type === "childList") {
+        root
+          .querySelectorAll('[data-slot="vertical-tabs-trigger"]')
+          .forEach((el) => ro?.observe(el));
       }
     }
-    nextTick(updateIndicator)
-  })
+    nextTick(updateIndicator);
+  });
   mo.observe(root, {
     attributes: true,
-    attributeFilter: ['data-state'],
+    attributeFilter: ["data-state"],
     subtree: true,
     childList: true,
-  })
+  });
 
-  updateIndicator()
+  updateIndicator();
 }
 
 onMounted(() => {
   nextTick(() => {
     // reka-ui component ref may resolve a tick later
     if (!listEl.value) {
-      requestAnimationFrame(() => bindObservers())
+      requestAnimationFrame(() => bindObservers());
     } else {
-      bindObservers()
+      bindObservers();
     }
-  })
-})
+  });
+});
 
 onBeforeUnmount(() => {
-  unbindObservers()
-})
+  unbindObservers();
+});
 
 watch(
   () => props.animated,
   (on) => {
-    firstPosition = true
-    if (on) nextTick(() => bindObservers())
+    firstPosition = true;
+    if (on) nextTick(() => bindObservers());
     else {
-      unbindObservers()
-      indicatorStyle.value = { opacity: '0' }
+      unbindObservers();
+      indicatorStyle.value = { opacity: "0" };
     }
   },
-)
+);
 </script>
 
 <template>
@@ -150,7 +159,12 @@ watch(
     data-slot="vertical-tabs-list"
     :data-animated="animated ? 'true' : 'false'"
     v-bind="forwarded"
-    :class="cn('group/list border-border relative flex w-56 shrink-0 flex-col gap-0.5 border-r pr-3', props.class)"
+    :class="
+      cn(
+        'group/list border-border relative flex w-56 shrink-0 flex-col gap-0.5 border-r pr-3',
+        props.class,
+      )
+    "
   >
     <span
       v-if="animated"

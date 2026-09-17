@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from 'vue'
-import { Primitive } from 'reka-ui'
-import { cn } from '@/lib/utils'
-import { buttonVariants } from './button.variants'
+import type { HTMLAttributes } from "vue";
+import { Primitive } from "reka-ui";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "./button.variants";
 
 // Why inline these unions instead of `ButtonVariants['variant']` /
 // `ButtonVariants['size']`:
@@ -18,23 +18,33 @@ import { buttonVariants } from './button.variants'
 // Inline the unions and Vue extracts them cleanly. The cva runtime
 // still validates against the same option set at runtime; we just
 // give the SFC compiler a type it can handle.
-type Variant = 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
-type Size = 'default' | 'sm' | 'lg' | 'xs' | 'icon' | 'icon-sm' | 'icon-lg' | 'icon-xs' | 'icon-2xs'
+type Variant =
+  "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
+type Size =
+  | "default"
+  | "sm"
+  | "lg"
+  | "xs"
+  | "icon"
+  | "icon-sm"
+  | "icon-lg"
+  | "icon-xs"
+  | "icon-2xs";
 
 interface Props {
-  as?: string
-  asChild?: boolean
-  variant?: Variant
-  size?: Size
+  as?: string;
+  asChild?: boolean;
+  variant?: Variant;
+  size?: Size;
   /** Native button type. Defaults to `button` so forms are not submitted accidentally. */
-  type?: 'button' | 'submit' | 'reset'
-  class?: HTMLAttributes['class']
+  type?: "button" | "submit" | "reset";
+  class?: HTMLAttributes["class"];
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  as: 'button',
-  type: 'button',
-})
+  as: "button",
+  type: "button",
+});
 </script>
 
 <template>

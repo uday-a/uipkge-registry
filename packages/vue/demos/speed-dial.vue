@@ -1,7 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { SpeedDial, type SpeedDialAction } from '@/components/ui/speed-dial'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { ref } from "vue";
+import { SpeedDial, type SpeedDialAction } from "@/components/ui/speed-dial";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Camera,
   FileText,
@@ -16,38 +22,51 @@ import {
   Send,
   Share2,
   Video,
-} from 'lucide-vue-next'
+} from "lucide-vue-next";
 
-const log = ref<string[]>([])
+const log = ref<string[]>([]);
 
 function push(label: string) {
-  log.value.unshift(`${label} triggered`)
-  if (log.value.length > 4) log.value.pop()
+  log.value.unshift(`${label} triggered`);
+  if (log.value.length > 4) log.value.pop();
 }
 
 const composeActions: SpeedDialAction[] = [
-  { icon: FileText, label: 'New document', handler: () => push('New document') },
-  { icon: Image, label: 'New image', handler: () => push('New image') },
-  { icon: Notebook, label: 'New notebook', handler: () => push('New notebook') },
-]
+  {
+    icon: FileText,
+    label: "New document",
+    handler: () => push("New document"),
+  },
+  { icon: Image, label: "New image", handler: () => push("New image") },
+  {
+    icon: Notebook,
+    label: "New notebook",
+    handler: () => push("New notebook"),
+  },
+];
 
 const shareActions: SpeedDialAction[] = [
-  { icon: Mail, label: 'Email', handler: () => push('Email') },
-  { icon: MessageSquare, label: 'Message', handler: () => push('Message') },
-  { icon: Share2, label: 'Copy link', handler: () => push('Copy link') },
-]
+  { icon: Mail, label: "Email", handler: () => push("Email") },
+  { icon: MessageSquare, label: "Message", handler: () => push("Message") },
+  { icon: Share2, label: "Copy link", handler: () => push("Copy link") },
+];
 
 const mediaActions: SpeedDialAction[] = [
-  { icon: Camera, label: 'Camera', handler: () => push('Camera') },
-  { icon: Video, label: 'Video', handler: () => push('Video') },
-  { icon: Mic, label: 'Audio', handler: () => push('Audio') },
-  { icon: MapPin, label: 'Location', handler: () => push('Location') },
-]
+  { icon: Camera, label: "Camera", handler: () => push("Camera") },
+  { icon: Video, label: "Video", handler: () => push("Video") },
+  { icon: Mic, label: "Audio", handler: () => push("Audio") },
+  { icon: MapPin, label: "Location", handler: () => push("Location") },
+];
 
 const attachActions: SpeedDialAction[] = [
-  { icon: Paperclip, label: 'Attach file', handler: () => push('Attach file') },
-  { icon: Send, label: 'Send now', handler: () => push('Send now'), disabled: true },
-]
+  { icon: Paperclip, label: "Attach file", handler: () => push("Attach file") },
+  {
+    icon: Send,
+    label: "Send now",
+    handler: () => push("Send now"),
+    disabled: true,
+  },
+];
 </script>
 
 <template>
@@ -70,7 +89,12 @@ const attachActions: SpeedDialAction[] = [
     description="trigger='hover' opens the dial on mouse enter — ideal for a share affordance that should feel weightless."
   >
     <div class="flex h-56 items-end">
-      <SpeedDial :actions="shareActions" trigger="hover" position="inline" label="Share" />
+      <SpeedDial
+        :actions="shareActions"
+        trigger="hover"
+        position="inline"
+        label="Share"
+      />
     </div>
   </Story>
 
@@ -81,14 +105,23 @@ const attachActions: SpeedDialAction[] = [
     <Card class="relative max-w-md overflow-hidden">
       <CardHeader>
         <CardTitle>New capture</CardTitle>
-        <CardDescription>Choose how you'd like to start recording.</CardDescription>
+        <CardDescription
+          >Choose how you'd like to start recording.</CardDescription
+        >
       </CardHeader>
       <CardContent>
-        <div class="bg-muted/30 text-muted-foreground flex h-32 items-center justify-center rounded-md text-sm">
+        <div
+          class="bg-muted/30 text-muted-foreground flex h-32 items-center justify-center rounded-md text-sm"
+        >
           Preview area
         </div>
       </CardContent>
-      <SpeedDial :actions="mediaActions" absolute position="bottom-right" label="Capture" />
+      <SpeedDial
+        :actions="mediaActions"
+        absolute
+        position="bottom-right"
+        label="Capture"
+      />
     </Card>
   </Story>
 
@@ -97,10 +130,30 @@ const attachActions: SpeedDialAction[] = [
     description="Expand up, down, left, or right from the trigger. Pick the direction that points into open space in your layout."
   >
     <div class="flex h-64 items-center justify-around gap-8">
-      <SpeedDial :actions="mediaActions" direction="up" position="inline" label="Up" />
-      <SpeedDial :actions="mediaActions" direction="down" position="inline" label="Down" />
-      <SpeedDial :actions="mediaActions" direction="left" position="inline" label="Left" />
-      <SpeedDial :actions="mediaActions" direction="right" position="inline" label="Right" />
+      <SpeedDial
+        :actions="mediaActions"
+        direction="up"
+        position="inline"
+        label="Up"
+      />
+      <SpeedDial
+        :actions="mediaActions"
+        direction="down"
+        position="inline"
+        label="Down"
+      />
+      <SpeedDial
+        :actions="mediaActions"
+        direction="left"
+        position="inline"
+        label="Left"
+      />
+      <SpeedDial
+        :actions="mediaActions"
+        direction="right"
+        position="inline"
+        label="Right"
+      />
     </div>
   </Story>
 
@@ -109,9 +162,25 @@ const attachActions: SpeedDialAction[] = [
     description="The FAB variant controls the trigger color; pass an icon component to replace the default plus."
   >
     <div class="flex h-56 items-end gap-6">
-      <SpeedDial :actions="composeActions" variant="default" position="inline" label="Default" />
-      <SpeedDial :actions="composeActions" variant="secondary" position="inline" label="Secondary" />
-      <SpeedDial :actions="composeActions" variant="outline" :icon="Plus" position="inline" label="Outline" />
+      <SpeedDial
+        :actions="composeActions"
+        variant="default"
+        position="inline"
+        label="Default"
+      />
+      <SpeedDial
+        :actions="composeActions"
+        variant="secondary"
+        position="inline"
+        label="Secondary"
+      />
+      <SpeedDial
+        :actions="composeActions"
+        variant="outline"
+        :icon="Plus"
+        position="inline"
+        label="Outline"
+      />
     </div>
   </Story>
 
@@ -121,7 +190,12 @@ const attachActions: SpeedDialAction[] = [
   >
     <div class="flex h-56 items-end gap-8">
       <SpeedDial :actions="attachActions" position="inline" label="Attach" />
-      <SpeedDial :actions="composeActions" :close-on-action="false" position="inline" label="Keep open" />
+      <SpeedDial
+        :actions="composeActions"
+        :close-on-action="false"
+        position="inline"
+        label="Keep open"
+      />
     </div>
   </Story>
 

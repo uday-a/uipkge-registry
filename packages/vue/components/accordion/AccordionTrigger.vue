@@ -1,21 +1,22 @@
 <script setup lang="ts">
-import { computed, inject } from 'vue'
-import type { AccordionTriggerProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
-import { reactiveOmit } from '@vueuse/core'
-import { AccordionTrigger as RkAccordionTrigger } from 'reka-ui'
-import { ChevronDown } from 'lucide-vue-next'
-import { cn } from '@/lib/utils'
-import { accordionTriggerVariants } from './accordion.variants'
+import { computed, inject } from "vue";
+import type { AccordionTriggerProps } from "reka-ui";
+import type { HTMLAttributes } from "vue";
+import { reactiveOmit } from "@vueuse/core";
+import { AccordionTrigger as RkAccordionTrigger } from "reka-ui";
+import { ChevronDown } from "lucide-vue-next";
+import { cn } from "@/lib/utils";
+import { accordionTriggerVariants } from "./accordion.variants";
 
-const props = defineProps<AccordionTriggerProps & { class?: HTMLAttributes['class'] }>()
-const delegated = reactiveOmit(props, 'class')
+const props = defineProps<
+  AccordionTriggerProps & { class?: HTMLAttributes["class"] }
+>();
+const delegated = reactiveOmit(props, "class");
 
-const variantRef = inject<{ value: 'default' | 'separated' | 'ghost' } | undefined>(
-  Symbol.for('accordionVariant'),
-  undefined,
-)
-const variant = computed(() => variantRef?.value ?? 'default')
+const variantRef = inject<
+  { value: "default" | "separated" | "ghost" } | undefined
+>(Symbol.for("accordionVariant"), undefined);
+const variant = computed(() => variantRef?.value ?? "default");
 </script>
 
 <template>

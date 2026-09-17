@@ -4,19 +4,23 @@
  * `label-key` are provided.
  */
 export interface SelectOption<V = string> {
-  label: string
-  value: V
-  disabled?: boolean
+  label: string;
+  value: V;
+  disabled?: boolean;
   /** Items sharing this key render under one heading. */
-  group?: string
+  group?: string;
 }
 
 /**
  * Resolve `option[key]` with a default fallback. Used by AdvanceSelect so every
  * accessor obeys `value-key` / `label-key`.
  */
-export function readKey<T>(option: T, key: string, fallback?: unknown): unknown {
-  if (option == null || typeof option !== 'object') return fallback
-  const v = (option as Record<string, unknown>)[key]
-  return v === undefined ? fallback : v
+export function readKey<T>(
+  option: T,
+  key: string,
+  fallback?: unknown,
+): unknown {
+  if (option == null || typeof option !== "object") return fallback;
+  const v = (option as Record<string, unknown>)[key];
+  return v === undefined ? fallback : v;
 }

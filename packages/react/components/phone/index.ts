@@ -7,4 +7,4 @@ export {
   type PhoneColor,
   type IPhone17ProColor,
   type GalaxyS26UltraColor,
-} from './Phone'
+} from "./Phone";

@@ -1,9 +1,9 @@
-export { default as Board } from './Board.vue'
-export { default as BoardLane } from './BoardLane.vue'
-export { default as BoardLaneHeader } from './BoardLaneHeader.vue'
-export { default as BoardLaneBody } from './BoardLaneBody.vue'
-export { default as BoardLaneEmpty } from './BoardLaneEmpty.vue'
-export { default as BoardCard } from './BoardCard.vue'
+export { default as Board } from "./Board.vue";
+export { default as BoardLane } from "./BoardLane.vue";
+export { default as BoardLaneHeader } from "./BoardLaneHeader.vue";
+export { default as BoardLaneBody } from "./BoardLaneBody.vue";
+export { default as BoardLaneEmpty } from "./BoardLaneEmpty.vue";
+export { default as BoardCard } from "./BoardCard.vue";
 
 export {
   BOARD_CONTEXT,
@@ -16,11 +16,11 @@ export {
   type BoardDropEvent,
   type BoardLaneContext,
   type BoardOrientation,
-} from './context'
+} from "./context";
 
 export {
   boardCardVariants,
   boardLaneVariants,
   type BoardCardVariantsProps,
   type BoardLaneVariantsProps,
-} from './board.variants'
+} from "./board.variants";

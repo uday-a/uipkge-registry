@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { Label } from '@/components/ui/label'
+import { ref } from "vue";
+import { Label } from "@/components/ui/label";
 import {
   NumberField,
   NumberFieldContent,
   NumberFieldDecrement,
   NumberFieldIncrement,
   NumberFieldInput,
-} from '@/components/ui/number-field'
-const basic = ref(5)
-const sized = ref(10)
-const statused = ref(20)
-const formatted = ref(1000)
-const precisioned = ref(3.14159)
-const rightControls = ref(50)
-const keyboardOff = ref(25)
-const prefixed = ref(100)
-const bounded = ref(5)
+} from "@/components/ui/number-field";
+const basic = ref(5);
+const sized = ref(10);
+const statused = ref(20);
+const formatted = ref(1000);
+const precisioned = ref(3.14159);
+const rightControls = ref(50);
+const keyboardOff = ref(25);
+const prefixed = ref(100);
+const bounded = ref(5);
 </script>
 
 <template>
@@ -81,7 +81,10 @@ const bounded = ref(5)
     </div>
   </Story>
 
-  <Story title="Formatter / Parser" description="Display formatting with custom formatter and parser functions.">
+  <Story
+    title="Formatter / Parser"
+    description="Display formatting with custom formatter and parser functions."
+  >
     <div class="max-w-xs space-y-2">
       <Label>Price</Label>
       <NumberField
@@ -99,7 +102,10 @@ const bounded = ref(5)
     </div>
   </Story>
 
-  <Story title="Precision" description="Fixed decimal places using the precision prop.">
+  <Story
+    title="Precision"
+    description="Fixed decimal places using the precision prop."
+  >
     <div class="max-w-xs space-y-2">
       <Label>Pi (3 decimals)</Label>
       <NumberField v-model="precisioned" :precision="3" :step="0.001">
@@ -112,7 +118,10 @@ const bounded = ref(5)
     </div>
   </Story>
 
-  <Story title="Controls position right" description="Stacked increment and decrement buttons on the right.">
+  <Story
+    title="Controls position right"
+    description="Stacked increment and decrement buttons on the right."
+  >
     <div class="max-w-xs space-y-2">
       <Label>Amount</Label>
       <NumberField v-model="rightControls" controls-position="right" :min="0">
@@ -125,7 +134,10 @@ const bounded = ref(5)
     </div>
   </Story>
 
-  <Story title="Keyboard disabled" description="Arrow keys do not change the value when keyboard is false.">
+  <Story
+    title="Keyboard disabled"
+    description="Arrow keys do not change the value when keyboard is false."
+  >
     <div class="max-w-xs space-y-2">
       <Label>Manual only</Label>
       <NumberField v-model="keyboardOff" :keyboard="false" :min="0">
@@ -138,7 +150,10 @@ const bounded = ref(5)
     </div>
   </Story>
 
-  <Story title="Prefix &amp; Suffix" description="Add text or icons before and after the input value.">
+  <Story
+    title="Prefix &amp; Suffix"
+    description="Add text or icons before and after the input value."
+  >
     <div class="flex items-center gap-4">
       <NumberField v-model="prefixed" prefix="$">
         <NumberFieldContent>
@@ -157,7 +172,10 @@ const bounded = ref(5)
     </div>
   </Story>
 
-  <Story title="Min / Max bounds" description="Buttons visually disable when reaching boundaries.">
+  <Story
+    title="Min / Max bounds"
+    description="Buttons visually disable when reaching boundaries."
+  >
     <div class="max-w-xs space-y-2">
       <Label>Bounded (0 – 10)</Label>
       <NumberField v-model="bounded" :min="0" :max="10">

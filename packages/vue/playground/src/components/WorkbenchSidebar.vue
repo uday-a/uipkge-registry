@@ -19,10 +19,16 @@ export interface SidebarItem {
   categories?: string[];
 }
 
-const props = defineProps<{
-  items: SidebarItem[];
-  selectedId: string;
-}>();
+const props = withDefaults(
+  defineProps<{
+    items: SidebarItem[];
+    selectedId: string;
+    collapsed?: boolean;
+  }>(),
+  {
+    collapsed: false,
+  },
+);
 
 const emit = defineEmits<{
   (e: "select", id: string): void;
@@ -111,7 +117,12 @@ onUnmounted(() => {
 
 <template>
   <aside
-    class="flex w-72 sm:w-80 shrink-0 flex-col border-r border-border bg-card/60 backdrop-blur select-none"
+    class="flex shrink-0 flex-col border-r border-border bg-card/60 backdrop-blur select-none transition-all duration-200"
+    :class="[
+      collapsed
+        ? 'w-0 overflow-hidden border-r-0 p-0 opacity-0 pointer-events-none'
+        : 'w-64',
+    ]"
   >
     <!-- Search Bar -->
     <div class="p-3 border-b border-border">
@@ -138,7 +149,7 @@ onUnmounted(() => {
 
       <!-- Segmented Type Filter Tabs -->
       <div
-        class="mt-2.5 grid grid-cols-3 gap-1 rounded-lg border border-border bg-muted/40 p-0.5 text-[11px] font-medium"
+        class="mt-2.5 grid grid-cols-3 gap-1 rounded-lg border border-border bg-muted/40 p-0.5 text-xs font-medium"
       >
         <button
           type="button"
@@ -189,7 +200,7 @@ onUnmounted(() => {
         <!-- Category Header -->
         <button
           type="button"
-          class="flex w-full items-center justify-between px-2 py-1 text-[11px] font-semibold text-muted-foreground hover:text-foreground transition rounded"
+          class="flex w-full items-center justify-between px-2 py-1 text-xs font-semibold text-muted-foreground hover:text-foreground transition rounded"
           @click="toggleCategory(category)"
         >
           <div class="flex items-center gap-1.5">
@@ -199,7 +210,7 @@ onUnmounted(() => {
             />
             <span>{{ category }}</span>
           </div>
-          <span class="font-mono text-[10px] text-muted-foreground/80">
+          <span class="font-mono text-xs text-muted-foreground/80">
             {{ groupItems.length }}
           </span>
         </button>
@@ -221,16 +232,10 @@ onUnmounted(() => {
           >
             <span class="truncate pr-2">{{ item.name }}</span>
             <span
-              class="font-mono text-[9px] uppercase px-1 py-0.2 rounded shrink-0"
-              :class="
-                selectedId === item.id
-                  ? 'bg-primary-foreground/20 text-primary-foreground'
-                  : item.type === 'registry:block'
-                    ? 'bg-purple-500/10 text-purple-600 dark:text-purple-400'
-                    : 'bg-muted text-muted-foreground'
-              "
+              v-if="item.id.includes('chart') || item.category === 'Charts'"
+              class="text-[11px] opacity-70 shrink-0"
             >
-              {{ item.type === "registry:block" ? "block" : "ui" }}
+              chart
             </span>
           </button>
         </div>
@@ -247,9 +252,9 @@ onUnmounted(() => {
 
     <!-- Sidebar Footer -->
     <div
-      class="border-t border-border p-3 bg-muted/20 flex items-center justify-between text-[11px] text-muted-foreground font-mono"
+      class="border-t border-border p-3 bg-muted/20 flex items-center justify-between text-xs text-muted-foreground font-mono"
     >
-      <span>{{ filteredItems.length }} items shown</span>
+      <span>{{ filteredItems.length }} items</span>
       <span>UIPKGE v1.0</span>
     </div>
   </aside>

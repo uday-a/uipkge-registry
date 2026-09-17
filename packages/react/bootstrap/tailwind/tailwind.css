@@ -1,16 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Anybody:wght@600;700;800&display=swap');
-@import 'tailwindcss';
-@import 'tw-animate-css';
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Anybody:wght@600;700;800&display=swap");
+@import "tailwindcss";
+@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --font-sans:
-    'DM Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-    'Noto Color Emoji';
-  --font-display: 'Anybody', 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+    "DM Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-display: "Anybody", "DM Sans", ui-sans-serif, system-ui, sans-serif;
   --font-mono:
-    'DM Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    "DM Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
   --radius-sm: var(--radius);
   --radius-md: var(--radius);
   --radius-lg: var(--radius);
@@ -163,34 +164,34 @@
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-feature-settings:
-      'rlig' 1,
-      'calt' 1;
+      "rlig" 1,
+      "calt" 1;
   }
 
   /* Tailwind v4 dropped `cursor: pointer` for buttons. Restore it for all
      interactive elements (native + Reka role-based controls). Disabled
      elements stay default. */
   button:not(:disabled),
-  [role='button']:not([aria-disabled='true']),
-  [role='checkbox']:not([aria-disabled='true']),
-  [role='radio']:not([aria-disabled='true']),
-  [role='switch']:not([aria-disabled='true']),
-  [role='menuitem']:not([aria-disabled='true']),
-  [role='menuitemcheckbox']:not([aria-disabled='true']),
-  [role='menuitemradio']:not([aria-disabled='true']),
-  [role='option']:not([aria-disabled='true']),
-  [role='tab']:not([aria-disabled='true']),
+  [role="button"]:not([aria-disabled="true"]),
+  [role="checkbox"]:not([aria-disabled="true"]),
+  [role="radio"]:not([aria-disabled="true"]),
+  [role="switch"]:not([aria-disabled="true"]),
+  [role="menuitem"]:not([aria-disabled="true"]),
+  [role="menuitemcheckbox"]:not([aria-disabled="true"]),
+  [role="menuitemradio"]:not([aria-disabled="true"]),
+  [role="option"]:not([aria-disabled="true"]),
+  [role="tab"]:not([aria-disabled="true"]),
   summary,
   label[for],
   select:not(:disabled),
-  input[type='checkbox']:not(:disabled),
-  input[type='radio']:not(:disabled),
-  input[type='range']:not(:disabled),
-  input[type='file']:not(:disabled),
-  input[type='submit']:not(:disabled),
-  input[type='reset']:not(:disabled),
-  input[type='button']:not(:disabled),
-  input[type='color']:not(:disabled) {
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled),
+  input[type="range"]:not(:disabled),
+  input[type="file"]:not(:disabled),
+  input[type="submit"]:not(:disabled),
+  input[type="reset"]:not(:disabled),
+  input[type="button"]:not(:disabled),
+  input[type="color"]:not(:disabled) {
     cursor: pointer;
   }
 
@@ -241,25 +242,33 @@
 }
 
 /* Card hover lift */
-[data-slot='card']:hover {
+[data-slot="card"]:hover {
   box-shadow: var(--shadow-md);
   transform: translateY(-1px);
 }
 
-.dark [data-slot='card']:hover {
+.dark [data-slot="card"]:hover {
   box-shadow: var(--shadow-md);
 }
 
 /* Subtle background texture */
 body::before {
-  content: '';
+  content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: -1;
   background-image:
-    radial-gradient(circle at 20% 80%, oklch(0.46 0.08 145 / 0.03) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, oklch(0.46 0.08 145 / 0.02) 0%, transparent 50%);
+    radial-gradient(
+      circle at 20% 80%,
+      oklch(0.46 0.08 145 / 0.03) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      oklch(0.46 0.08 145 / 0.02) 0%,
+      transparent 50%
+    );
 }
 
 /* Scrollbar styling */

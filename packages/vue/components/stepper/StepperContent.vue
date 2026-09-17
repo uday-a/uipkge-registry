@@ -11,22 +11,22 @@
   </StepperContent>
 -->
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
+import { computed } from "vue";
+import type { HTMLAttributes } from "vue";
+import { cn } from "@/lib/utils";
 
 interface Props {
-  step?: number
-  activeStep?: number
-  class?: HTMLAttributes['class']
+  step?: number;
+  activeStep?: number;
+  class?: HTMLAttributes["class"];
 }
 
 const props = withDefaults(defineProps<Props>(), {
   step: 1,
   activeStep: 1,
-})
+});
 
-const isActive = computed(() => props.step === props.activeStep)
+const isActive = computed(() => props.step === props.activeStep);
 </script>
 
 <template>

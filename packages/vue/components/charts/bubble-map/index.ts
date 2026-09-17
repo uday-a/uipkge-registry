@@ -5,4 +5,4 @@ export {
   type BubbleMapProps,
   projectPoint,
   CONTINENT_LANDMASSES,
-} from './BubbleMap.vue'
+} from "./BubbleMap.vue";

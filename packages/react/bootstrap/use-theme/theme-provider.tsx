@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import * as React from 'react'
-import { ThemeProvider as NextThemesProvider } from 'next-themes'
+import * as React from "react";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 /**
  * Wrap your root layout's <body> with this. next-themes injects a
@@ -17,6 +17,9 @@ import { ThemeProvider as NextThemesProvider } from 'next-themes'
  *     {children}
  *   </ThemeProvider>
  */
-export function ThemeProvider({ children, ...props }: React.ComponentProps<typeof NextThemesProvider>) {
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>
+export function ThemeProvider({
+  children,
+  ...props
+}: React.ComponentProps<typeof NextThemesProvider>) {
+  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
 }

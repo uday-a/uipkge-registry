@@ -1,12 +1,26 @@
 <script setup lang="ts">
-import { Button } from '@/components/ui/button'
-import { EmptyState } from '@/components/ui/empty-state'
-import { Inbox, Plus, Search, ServerCrash, FileX2, Upload } from 'lucide-vue-next'
+import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
+import {
+  Inbox,
+  Plus,
+  Search,
+  ServerCrash,
+  FileX2,
+  Upload,
+} from "lucide-vue-next";
 </script>
 
 <template>
-  <Story title="Default" description="Centered icon, title, description, and a single primary action.">
-    <EmptyState title="No messages" description="When you receive new messages, they'll appear here." :icon="Inbox">
+  <Story
+    title="Default"
+    description="Centered icon, title, description, and a single primary action."
+  >
+    <EmptyState
+      title="No messages"
+      description="When you receive new messages, they'll appear here."
+      :icon="Inbox"
+    >
       <Button class="mt-4">
         <Plus />
         New message
@@ -14,8 +28,15 @@ import { Inbox, Plus, Search, ServerCrash, FileX2, Upload } from 'lucide-vue-nex
     </EmptyState>
   </Story>
 
-  <Story title="Without action" description="Icon, title, and description only — no slot content.">
-    <EmptyState title="Nothing scheduled" description="You have no upcoming events on your calendar." :icon="Inbox" />
+  <Story
+    title="Without action"
+    description="Icon, title, and description only — no slot content."
+  >
+    <EmptyState
+      title="Nothing scheduled"
+      description="You have no upcoming events on your calendar."
+      :icon="Inbox"
+    />
   </Story>
 
   <Story

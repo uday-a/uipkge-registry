@@ -1,26 +1,26 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
+import { computed } from "vue";
+import type { HTMLAttributes } from "vue";
+import { cn } from "@/lib/utils";
 
 export interface WaffleSlice {
-  name: string
-  value: number
-  color?: string
+  name: string;
+  value: number;
+  color?: string;
 }
 
 interface Props {
-  data: WaffleSlice[]
-  height?: number | string
+  data: WaffleSlice[];
+  height?: number | string;
   /** Cells per side (total = size²). Default 10. */
-  size?: number
+  size?: number;
   /** Cell corner radius. Default 2. */
-  radius?: number
-  showLegend?: boolean
-  colors?: string[]
-  class?: HTMLAttributes['class']
+  radius?: number;
+  showLegend?: boolean;
+  colors?: string[];
+  class?: HTMLAttributes["class"];
   /** Accessible name announced for the chart image. Defaults to "Chart". */
-  ariaLabel?: string
+  ariaLabel?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -28,31 +28,44 @@ const props = withDefaults(defineProps<Props>(), {
   size: 10,
   radius: 2,
   showLegend: true,
-  colors: () => ['var(--chart-1)', 'var(--chart-2)', 'var(--chart-3)', 'var(--chart-4)', 'var(--chart-5)'],
-})
+  colors: () => [
+    "var(--chart-1)",
+    "var(--chart-2)",
+    "var(--chart-3)",
+    "var(--chart-4)",
+    "var(--chart-5)",
+  ],
+});
 
-const heightStyle = computed(() => (/^\d+$/.test(String(props.height)) ? `${props.height}px` : String(props.height)))
-const total = computed(() => props.data.reduce((s, d) => s + d.value, 0) || 1)
+const heightStyle = computed(() =>
+  /^\d+$/.test(String(props.height))
+    ? `${props.height}px`
+    : String(props.height),
+);
+const total = computed(() => props.data.reduce((s, d) => s + d.value, 0) || 1);
 
 const cells = computed(() => {
-  const n = props.size * props.size
-  const counts = props.data.map((d) => Math.floor((d.value / total.value) * n))
-  let rest = n - counts.reduce((s, c) => s + c, 0)
+  const n = props.size * props.size;
+  const counts = props.data.map((d) => Math.floor((d.value / total.value) * n));
+  let rest = n - counts.reduce((s, c) => s + c, 0);
   const remainders = props.data
     .map((d, i) => ({ i, r: (d.value / total.value) * n - counts[i]! }))
-    .sort((a, b) => b.r - a.r)
+    .sort((a, b) => b.r - a.r);
   for (const { i } of remainders) {
-    if (rest <= 0) break
-    counts[i]!++
-    rest--
+    if (rest <= 0) break;
+    counts[i]!++;
+    rest--;
   }
-  const out: { color: string; name: string }[] = []
+  const out: { color: string; name: string }[] = [];
   props.data.forEach((d, i) => {
     for (let k = 0; k < counts[i]!; k++)
-      out.push({ color: d.color ?? props.colors[i % props.colors.length]!, name: d.name })
-  })
-  return out.reverse()
-})
+      out.push({
+        color: d.color ?? props.colors[i % props.colors.length]!,
+        name: d.name,
+      });
+  });
+  return out.reverse();
+});
 </script>
 
 <template>
@@ -61,7 +74,8 @@ const cells = computed(() => {
     role="img"
     tabindex="0"
     :aria-label="
-      ariaLabel || `Waffle chart: ${data.map((d) => `${d.name} ${Math.round((d.value / total) * 100)}%`).join(', ')}`
+      ariaLabel ||
+      `Waffle chart: ${data.map((d) => `${d.name} ${Math.round((d.value / total) * 100)}%`).join(', ')}`
     "
     :style="{ height: heightStyle }"
     :class="
@@ -71,7 +85,11 @@ const cells = computed(() => {
       )
     "
   >
-    <svg :viewBox="`0 0 ${size * 12} ${size * 12}`" class="aspect-square h-full max-h-full" role="presentation">
+    <svg
+      :viewBox="`0 0 ${size * 12} ${size * 12}`"
+      class="aspect-square h-full max-h-full"
+      role="presentation"
+    >
       <rect
         v-for="(c, i) in cells"
         :key="i"
@@ -87,9 +105,14 @@ const cells = computed(() => {
     </svg>
     <ul v-if="showLegend" class="space-y-1.5 text-xs">
       <li v-for="(d, i) in data" :key="d.name" class="flex items-center gap-2">
-        <span class="size-2.5 rounded-[3px]" :style="{ background: d.color ?? colors[i % colors.length] }" />
+        <span
+          class="size-2.5 rounded-[3px]"
+          :style="{ background: d.color ?? colors[i % colors.length] }"
+        />
         <span class="text-foreground font-medium">{{ d.name }}</span>
-        <span class="text-muted-foreground tabular-nums">{{ Math.round((d.value / total) * 100) }}%</span>
+        <span class="text-muted-foreground tabular-nums"
+          >{{ Math.round((d.value / total) * 100) }}%</span
+        >
       </li>
     </ul>
   </div>

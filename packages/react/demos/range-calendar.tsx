@@ -1,33 +1,37 @@
-import Story from '../../components/story/Story'
-import { useState } from 'react'
-import { RangeCalendar } from '@react-registry/range-calendar'
-import type { DateRange } from 'react-day-picker'
+import Story from "../../components/story/Story";
+import { useState } from "react";
+import { RangeCalendar } from "@react-registry/range-calendar";
+import type { DateRange } from "react-day-picker";
 
 // react-day-picker uses native JS Date and a {from, to} DateRange shape
 // (the React mirror of reka-ui's {start, end}). Min/max selectable window is
 // expressed via the `disabled` matcher rather than separate minValue/maxValue.
-const today = new Date()
+const today = new Date();
 const addDays = (d: Date, n: number) => {
-  const next = new Date(d)
-  next.setDate(next.getDate() + n)
-  return next
-}
+  const next = new Date(d);
+  next.setDate(next.getDate() + n);
+  return next;
+};
 
-const minValue = addDays(today, -14)
-const maxValue = addDays(today, 60)
+const minValue = addDays(today, -14);
+const maxValue = addDays(today, 60);
 
 export default function RangeCalendarDemo() {
   const [range, setRange] = useState<DateRange | undefined>({
     from: new Date(2026, 4, 10),
     to: new Date(2026, 4, 17),
-  })
-  const [constrainedRange, setConstrainedRange] = useState<DateRange | undefined>()
-  const [fixedWeeksRange, setFixedWeeksRange] = useState<DateRange | undefined>()
-  const [mondayRange, setMondayRange] = useState<DateRange | undefined>()
+  });
+  const [constrainedRange, setConstrainedRange] = useState<
+    DateRange | undefined
+  >();
+  const [fixedWeeksRange, setFixedWeeksRange] = useState<
+    DateRange | undefined
+  >();
+  const [mondayRange, setMondayRange] = useState<DateRange | undefined>();
   const [presetRange, setPresetRange] = useState<DateRange | undefined>({
     from: today,
     to: addDays(today, 6),
-  })
+  });
 
   return (
     <>
@@ -85,8 +89,12 @@ export default function RangeCalendarDemo() {
         title="Pre-selected range"
         description="Initialize v-model with a {start, end} pair to highlight a default range on mount."
       >
-        <RangeCalendar selected={presetRange} onSelect={setPresetRange} className="rounded-md border" />
+        <RangeCalendar
+          selected={presetRange}
+          onSelect={setPresetRange}
+          className="rounded-md border"
+        />
       </Story>
     </>
-  )
+  );
 }

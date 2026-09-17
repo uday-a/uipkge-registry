@@ -57,7 +57,7 @@ const toggleFullscreen = () => {
           </h3>
           <span
             v-if="isFullscreen"
-            class="rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary"
+            class="rounded bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary"
           >
             Focused View
           </span>
@@ -132,7 +132,7 @@ const toggleFullscreen = () => {
     <!-- Story Canvas / Preview Content -->
     <div
       v-show="activeTab === 'preview'"
-      class="relative overflow-x-auto p-5 sm:p-7"
+      class="relative overflow-x-auto p-6 sm:p-8"
       :class="[isFullscreen ? 'flex-1 overflow-y-auto' : '']"
     >
       <slot />

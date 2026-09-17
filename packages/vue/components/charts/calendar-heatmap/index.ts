@@ -1,1 +1,1 @@
-export { default as CalendarHeatmap } from './CalendarHeatmap.vue'
+export { default as CalendarHeatmap } from "./CalendarHeatmap.vue";

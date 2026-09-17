@@ -1,36 +1,39 @@
-'use client'
+"use client";
 
-import * as React from 'react'
-import { ChartFrame, EChart } from '../shared'
-import { useChartTheme, mergeOptionBlock } from '../useChartTheme'
+import * as React from "react";
+import { ChartFrame, EChart } from "../shared";
+import { useChartTheme, mergeOptionBlock } from "../useChartTheme";
 
 // StackedBarChart
 // ─────────────────────────────────────────────────────────────────────────
 
 export interface StackedBarChartProps {
-  data: Record<string, any>[]
-  xField?: string
-  yFields: string[]
+  data: Record<string, any>[];
+  xField?: string;
+  yFields: string[];
   /** Render as 100% shares instead of absolute values. Default false. */
-  percent?: boolean
+  percent?: boolean;
   /** Corner rounding in px. Default 6. */
-  radius?: number
+  radius?: number;
   /** Gap in px between stacked bar segments. Default 1. Set to 0 to disable. */
-  stackGap?: number
+  stackGap?: number;
   /** Color of the gap between stacked bar segments. Defaults to card background. */
-  stackGapColor?: string
-  height?: number | string
-  option?: any
-  className?: string
+  stackGapColor?: string;
+  height?: number | string;
+  option?: any;
+  className?: string;
   /** Accessible name announced for the chart image. Defaults to "Chart". */
-  ariaLabel?: string
+  ariaLabel?: string;
 }
 
-export const StackedBarChart = React.forwardRef<HTMLDivElement, StackedBarChartProps>(
+export const StackedBarChart = React.forwardRef<
+  HTMLDivElement,
+  StackedBarChartProps
+>(
   (
     {
       data,
-      xField = 'x',
+      xField = "x",
       yFields,
       percent = false,
       radius = 6,
@@ -43,14 +46,16 @@ export const StackedBarChart = React.forwardRef<HTMLDivElement, StackedBarChartP
     },
     ref,
   ) => {
-    const theme = useChartTheme()
+    const theme = useChartTheme();
 
     const mergedOption = React.useMemo(() => {
-      const totals = data.map((d) => yFields.reduce((s, f) => s + Math.abs(d[f] ?? 0), 0) || 1)
+      const totals = data.map(
+        (d) => yFields.reduce((s, f) => s + Math.abs(d[f] ?? 0), 0) || 1,
+      );
       const series = yFields.map((f, i) => ({
         name: f,
-        type: 'bar',
-        stack: 'total',
+        type: "bar",
+        stack: "total",
         barMaxWidth: 34,
         itemStyle: {
           color: theme.colors[i % theme.colors.length],
@@ -63,11 +68,18 @@ export const StackedBarChart = React.forwardRef<HTMLDivElement, StackedBarChartP
             : {}),
         },
         label: percent
-          ? { show: true, color: '#fff', fontSize: 10, formatter: (p: any) => `${Math.round(p.value)}%` }
+          ? {
+              show: true,
+              color: "#fff",
+              fontSize: 10,
+              formatter: (p: any) => `${Math.round(p.value)}%`,
+            }
           : undefined,
-        data: data.map((d, r) => (percent ? (Math.abs(d[f] ?? 0) / totals[r]!) * 100 : d[f])),
-      }))
-      const userOption: any = option ?? {}
+        data: data.map((d, r) =>
+          percent ? (Math.abs(d[f] ?? 0) / totals[r]!) * 100 : d[f],
+        ),
+      }));
+      const userOption: any = option ?? {};
       const {
         series: userSeries,
         xAxis: userXAxis,
@@ -76,23 +88,26 @@ export const StackedBarChart = React.forwardRef<HTMLDivElement, StackedBarChartP
         tooltip: userTooltip,
         legend: userLegend,
         ...userRest
-      } = userOption
+      } = userOption;
 
-      const count = Math.max(yFields.length, Array.isArray(userSeries) ? userSeries.length : 0)
-      const gapColor = stackGapColor ?? theme.bgColor
+      const count = Math.max(
+        yFields.length,
+        Array.isArray(userSeries) ? userSeries.length : 0,
+      );
+      const gapColor = stackGapColor ?? theme.bgColor;
 
       const mergedSeries = Array.isArray(userSeries)
         ? Array.from({ length: count }, (_, i) => {
             const s = series[i] ?? {
               name: `series-${i}`,
-              type: 'bar',
-              stack: 'total',
+              type: "bar",
+              stack: "total",
               barMaxWidth: 34,
               itemStyle: {
                 color: theme.colors[i % theme.colors.length],
               },
-            }
-            const u = userSeries[i] ?? {}
+            };
+            const u = userSeries[i] ?? {};
             return {
               ...s,
               ...u,
@@ -107,16 +122,19 @@ export const StackedBarChart = React.forwardRef<HTMLDivElement, StackedBarChartP
                   : {}),
                 ...(u.itemStyle ?? {}),
               },
-            }
+            };
           })
-        : series
+        : series;
       return {
         color: theme.colors,
-        grid: mergeOptionBlock({ left: 16, right: 16, top: 24, bottom: 32, containLabel: true }, userGrid),
+        grid: mergeOptionBlock(
+          { left: 16, right: 16, top: 24, bottom: 32, containLabel: true },
+          userGrid,
+        ),
         tooltip: mergeOptionBlock(
           {
-            trigger: 'axis',
-            axisPointer: { type: 'shadow' },
+            trigger: "axis",
+            axisPointer: { type: "shadow" },
             backgroundColor: theme.tooltipBg,
             borderColor: theme.tooltipBorder,
             textStyle: { color: theme.tooltipText, fontSize: 12 },
@@ -127,7 +145,7 @@ export const StackedBarChart = React.forwardRef<HTMLDivElement, StackedBarChartP
         legend: mergeOptionBlock(
           {
             bottom: 0,
-            icon: 'circle',
+            icon: "circle",
             itemWidth: 8,
             itemHeight: 8,
             textStyle: { fontSize: 11, color: theme.textColor },
@@ -136,7 +154,7 @@ export const StackedBarChart = React.forwardRef<HTMLDivElement, StackedBarChartP
         ),
         xAxis: mergeOptionBlock(
           {
-            type: 'category',
+            type: "category",
             data: data.map((d) => d[xField]),
             axisLine: { lineStyle: { color: theme.axisColor } },
             axisLabel: { color: theme.textColor, fontSize: 11 },
@@ -147,13 +165,17 @@ export const StackedBarChart = React.forwardRef<HTMLDivElement, StackedBarChartP
         yAxis: mergeOptionBlock(
           percent
             ? {
-                type: 'value',
+                type: "value",
                 max: 100,
                 splitLine: { lineStyle: { color: theme.splitLineColor } },
-                axisLabel: { color: theme.textColor, fontSize: 11, formatter: '{value}%' },
+                axisLabel: {
+                  color: theme.textColor,
+                  fontSize: 11,
+                  formatter: "{value}%",
+                },
               }
             : {
-                type: 'value',
+                type: "value",
                 splitLine: { lineStyle: { color: theme.splitLineColor } },
                 axisLabel: { color: theme.textColor, fontSize: 11 },
               },
@@ -161,14 +183,19 @@ export const StackedBarChart = React.forwardRef<HTMLDivElement, StackedBarChartP
         ),
         series: mergedSeries,
         ...userRest,
-      }
-    }, [data, xField, yFields, percent, option, theme])
+      };
+    }, [data, xField, yFields, percent, option, theme]);
 
     return (
-      <ChartFrame ref={ref} height={height} className={className} ariaLabel={ariaLabel}>
+      <ChartFrame
+        ref={ref}
+        height={height}
+        className={className}
+        ariaLabel={ariaLabel}
+      >
         <EChart option={mergedOption} />
       </ChartFrame>
-    )
+    );
   },
-)
-StackedBarChart.displayName = 'StackedBarChart'
+);
+StackedBarChart.displayName = "StackedBarChart";

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { PaginationNext as RkPaginationNext } from 'reka-ui'
-import { ChevronRight } from 'lucide-vue-next'
+import { PaginationNext as RkPaginationNext } from "reka-ui";
+import { ChevronRight } from "lucide-vue-next";
 </script>
 <template>
   <RkPaginationNext aria-label="Go to next page"

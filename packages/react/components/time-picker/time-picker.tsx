@@ -1,35 +1,39 @@
-'use client'
+"use client";
 
-import * as React from 'react'
-import { Clock, X } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { cn } from '@/lib/utils'
+import * as React from "react";
+import { Clock, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
 
-export type TimeFormat = 'HH:mm' | 'HH:mm:ss' | 'hh:mm A'
+export type TimeFormat = "HH:mm" | "HH:mm:ss" | "hh:mm A";
 
 export interface TimeParts {
-  hour24: number
-  minute: number
-  second: number
+  hour24: number;
+  minute: number;
+  second: number;
 }
 
 export interface TimePreset {
-  label: string
-  value: string
+  label: string;
+  value: string;
 }
 
-export type TimePickerSize = 'small' | 'middle' | 'large'
-export type TimePickerStatus = 'error' | 'warning'
+export type TimePickerSize = "small" | "middle" | "large";
+export type TimePickerStatus = "error" | "warning";
 
 function parse(v: string): TimeParts | null {
-  if (!v) return null
-  const m = /^(\d{1,2}):(\d{2})(?::(\d{2}))?$/.exec(v.trim())
-  if (!m) return null
-  const h = Number(m[1])
-  const min = Number(m[2])
-  const s = m[3] ? Number(m[3]) : 0
+  if (!v) return null;
+  const m = /^(\d{1,2}):(\d{2})(?::(\d{2}))?$/.exec(v.trim());
+  if (!m) return null;
+  const h = Number(m[1]);
+  const min = Number(m[2]);
+  const s = m[3] ? Number(m[3]) : 0;
   if (
     Number.isNaN(h) ||
     Number.isNaN(min) ||
@@ -41,40 +45,40 @@ function parse(v: string): TimeParts | null {
     s < 0 ||
     s > 59
   )
-    return null
-  return { hour24: h, minute: min, second: s }
+    return null;
+  return { hour24: h, minute: min, second: s };
 }
 
 function toMinutes(p: TimeParts) {
-  return p.hour24 * 60 + p.minute + p.second / 60
+  return p.hour24 * 60 + p.minute + p.second / 60;
 }
 
 // ---- TimeColumns ----
 
 export interface TimeColumnsProps {
   /** Time value. HH:mm or HH:mm:ss depending on format. Empty = no selection. */
-  value?: string
-  onValueChange?: (value: string) => void
-  use24Hour?: boolean
-  use12Hours?: boolean
-  minuteStep?: number
-  hourStep?: number
-  secondStep?: number
+  value?: string;
+  onValueChange?: (value: string) => void;
+  use24Hour?: boolean;
+  use12Hours?: boolean;
+  minuteStep?: number;
+  hourStep?: number;
+  secondStep?: number;
   /** 24h HH:mm or HH:mm:ss. */
-  minTime?: string
+  minTime?: string;
   /** 24h HH:mm or HH:mm:ss. */
-  maxTime?: string
-  format?: TimeFormat
-  disabledHours?: () => number[]
-  disabledMinutes?: (selectedHour: number) => number[]
-  disabledSeconds?: (selectedHour: number, selectedMinute: number) => number[]
-  hideDisabledOptions?: boolean
+  maxTime?: string;
+  format?: TimeFormat;
+  disabledHours?: () => number[];
+  disabledMinutes?: (selectedHour: number) => number[];
+  disabledSeconds?: (selectedHour: number, selectedMinute: number) => number[];
+  hideDisabledOptions?: boolean;
   /** Auto-scroll active rows into view when this becomes true. */
-  visible?: boolean
+  visible?: boolean;
 }
 
 function TimeColumns({
-  value = '',
+  value = "",
   onValueChange,
   use24Hour = false,
   use12Hours = false,
@@ -83,150 +87,181 @@ function TimeColumns({
   secondStep = 1,
   minTime,
   maxTime,
-  format = 'HH:mm',
+  format = "HH:mm",
   disabledHours,
   disabledMinutes,
   disabledSeconds,
   hideDisabledOptions = false,
   visible = true,
 }: TimeColumnsProps) {
-  const parts = parse(value)
+  const parts = parse(value);
 
   function format24(p: TimeParts) {
-    if (format === 'HH:mm:ss') {
-      return `${String(p.hour24).padStart(2, '0')}:${String(p.minute).padStart(2, '0')}:${String(p.second).padStart(2, '0')}`
+    if (format === "HH:mm:ss") {
+      return `${String(p.hour24).padStart(2, "0")}:${String(p.minute).padStart(2, "0")}:${String(p.second).padStart(2, "0")}`;
     }
-    return `${String(p.hour24).padStart(2, '0')}:${String(p.minute).padStart(2, '0')}`
+    return `${String(p.hour24).padStart(2, "0")}:${String(p.minute).padStart(2, "0")}`;
   }
 
-  const showSeconds = format === 'HH:mm:ss'
+  const showSeconds = format === "HH:mm:ss";
 
   // Default to 24h columns. Opt into 12h via format="hh:mm A" or use12Hours.
   // use24Hour:false no longer inverts to 12h (that mismatched HH:mm demos).
-  const effective12Hour = format === 'hh:mm A' ? true : use12Hours ? true : use24Hour ? false : false
+  const effective12Hour =
+    format === "hh:mm A" ? true : use12Hours ? true : use24Hour ? false : false;
 
-  const hour12 = parts ? (parts.hour24 % 12 === 0 ? 12 : parts.hour24 % 12) : null
-  const period = parts && parts.hour24 >= 12 ? 'PM' : 'AM'
+  const hour12 = parts
+    ? parts.hour24 % 12 === 0
+      ? 12
+      : parts.hour24 % 12
+    : null;
+  const period = parts && parts.hour24 >= 12 ? "PM" : "AM";
 
-  const minBound = parse(minTime ?? '') ?? null
-  const maxBound = parse(maxTime ?? '') ?? null
+  const minBound = parse(minTime ?? "") ?? null;
+  const maxBound = parse(maxTime ?? "") ?? null;
 
   function withinBounds(p: TimeParts) {
-    const m = toMinutes(p)
-    if (minBound && m < toMinutes(minBound)) return false
-    if (maxBound && m > toMinutes(maxBound)) return false
-    return true
+    const m = toMinutes(p);
+    if (minBound && m < toMinutes(minBound)) return false;
+    if (maxBound && m > toMinutes(maxBound)) return false;
+    return true;
   }
 
-  const disabledHoursSet = new Set(disabledHours ? disabledHours() : [])
-  const disabledMinutesSet = new Set(disabledMinutes ? disabledMinutes(parts?.hour24 ?? 0) : [])
-  const disabledSecondsSet = new Set(disabledSeconds ? disabledSeconds(parts?.hour24 ?? 0, parts?.minute ?? 0) : [])
+  const disabledHoursSet = new Set(disabledHours ? disabledHours() : []);
+  const disabledMinutesSet = new Set(
+    disabledMinutes ? disabledMinutes(parts?.hour24 ?? 0) : [],
+  );
+  const disabledSecondsSet = new Set(
+    disabledSeconds
+      ? disabledSeconds(parts?.hour24 ?? 0, parts?.minute ?? 0)
+      : [],
+  );
 
   function isHourDisabledItem(h: number) {
-    if (disabledHoursSet.has(h)) return true
-    const cur = parts ?? { hour24: 0, minute: 0, second: 0 }
+    if (disabledHoursSet.has(h)) return true;
+    const cur = parts ?? { hour24: 0, minute: 0, second: 0 };
     if (effective12Hour) {
-      const isPM = period === 'PM'
-      return !withinBounds({ hour24: (h % 12) + (isPM ? 12 : 0), minute: cur.minute, second: cur.second })
+      const isPM = period === "PM";
+      return !withinBounds({
+        hour24: (h % 12) + (isPM ? 12 : 0),
+        minute: cur.minute,
+        second: cur.second,
+      });
     }
-    return !withinBounds({ hour24: h, minute: cur.minute, second: cur.second })
+    return !withinBounds({ hour24: h, minute: cur.minute, second: cur.second });
   }
 
   function isMinuteDisabledItem(m: number) {
-    if (disabledMinutesSet.has(m)) return true
-    const cur = parts ?? { hour24: 0, minute: 0, second: 0 }
-    return !withinBounds({ hour24: cur.hour24, minute: m, second: cur.second })
+    if (disabledMinutesSet.has(m)) return true;
+    const cur = parts ?? { hour24: 0, minute: 0, second: 0 };
+    return !withinBounds({ hour24: cur.hour24, minute: m, second: cur.second });
   }
 
   function isSecondDisabledItem(s: number) {
-    if (disabledSecondsSet.has(s)) return true
-    const cur = parts ?? { hour24: 0, minute: 0, second: 0 }
-    return !withinBounds({ hour24: cur.hour24, minute: cur.minute, second: s })
+    if (disabledSecondsSet.has(s)) return true;
+    const cur = parts ?? { hour24: 0, minute: 0, second: 0 };
+    return !withinBounds({ hour24: cur.hour24, minute: cur.minute, second: s });
   }
 
-  const hourStepN = Math.max(1, hourStep)
+  const hourStepN = Math.max(1, hourStep);
   const hours12List = Array.from({ length: 12 }, (_, i) => i + 1)
     .filter((h) => (h - 1) % hourStepN === 0)
-    .filter((h) => !hideDisabledOptions || !isHourDisabledItem(h))
+    .filter((h) => !hideDisabledOptions || !isHourDisabledItem(h));
 
   const hours24List = Array.from({ length: 24 }, (_, i) => i)
     .filter((h) => h % hourStepN === 0)
-    .filter((h) => !hideDisabledOptions || !isHourDisabledItem(h))
+    .filter((h) => !hideDisabledOptions || !isHourDisabledItem(h));
 
-  const minStepN = Math.max(1, Math.min(60, minuteStep))
-  const minutesList = Array.from({ length: Math.ceil(60 / minStepN) }, (_, i) => i * minStepN).filter(
-    (m) => !hideDisabledOptions || !isMinuteDisabledItem(m),
-  )
+  const minStepN = Math.max(1, Math.min(60, minuteStep));
+  const minutesList = Array.from(
+    { length: Math.ceil(60 / minStepN) },
+    (_, i) => i * minStepN,
+  ).filter((m) => !hideDisabledOptions || !isMinuteDisabledItem(m));
 
-  const secStepN = Math.max(1, Math.min(60, secondStep))
-  const secondsList = Array.from({ length: Math.ceil(60 / secStepN) }, (_, i) => i * secStepN).filter(
-    (s) => !hideDisabledOptions || !isSecondDisabledItem(s),
-  )
+  const secStepN = Math.max(1, Math.min(60, secondStep));
+  const secondsList = Array.from(
+    { length: Math.ceil(60 / secStepN) },
+    (_, i) => i * secStepN,
+  ).filter((s) => !hideDisabledOptions || !isSecondDisabledItem(s));
 
   function commit(p: TimeParts) {
-    if (!withinBounds(p)) return
-    onValueChange?.(format24(p))
+    if (!withinBounds(p)) return;
+    onValueChange?.(format24(p));
   }
 
   function pickHour12(h: number) {
-    const cur = parts ?? { hour24: 0, minute: 0, second: 0 }
-    const isPM = period === 'PM'
-    commit({ hour24: (h % 12) + (isPM ? 12 : 0), minute: cur.minute, second: cur.second })
+    const cur = parts ?? { hour24: 0, minute: 0, second: 0 };
+    const isPM = period === "PM";
+    commit({
+      hour24: (h % 12) + (isPM ? 12 : 0),
+      minute: cur.minute,
+      second: cur.second,
+    });
   }
 
   function pickHour24(h: number) {
-    const cur = parts ?? { hour24: 0, minute: 0, second: 0 }
-    commit({ hour24: h, minute: cur.minute, second: cur.second })
+    const cur = parts ?? { hour24: 0, minute: 0, second: 0 };
+    commit({ hour24: h, minute: cur.minute, second: cur.second });
   }
 
   function pickMinute(m: number) {
-    const cur = parts ?? { hour24: 0, minute: 0, second: 0 }
-    commit({ hour24: cur.hour24, minute: m, second: cur.second })
+    const cur = parts ?? { hour24: 0, minute: 0, second: 0 };
+    commit({ hour24: cur.hour24, minute: m, second: cur.second });
   }
 
   function pickSecond(s: number) {
-    const cur = parts ?? { hour24: 0, minute: 0, second: 0 }
-    commit({ hour24: cur.hour24, minute: cur.minute, second: s })
+    const cur = parts ?? { hour24: 0, minute: 0, second: 0 };
+    commit({ hour24: cur.hour24, minute: cur.minute, second: s });
   }
 
-  function pickPeriod(p: 'AM' | 'PM') {
-    const cur = parts ?? { hour24: 0, minute: 0, second: 0 }
-    const h12 = cur.hour24 % 12
-    commit({ hour24: h12 + (p === 'PM' ? 12 : 0), minute: cur.minute, second: cur.second })
+  function pickPeriod(p: "AM" | "PM") {
+    const cur = parts ?? { hour24: 0, minute: 0, second: 0 };
+    const h12 = cur.hour24 % 12;
+    commit({
+      hour24: h12 + (p === "PM" ? 12 : 0),
+      minute: cur.minute,
+      second: cur.second,
+    });
   }
 
-  const hourCol = React.useRef<HTMLDivElement | null>(null)
-  const minCol = React.useRef<HTMLDivElement | null>(null)
-  const secCol = React.useRef<HTMLDivElement | null>(null)
+  const hourCol = React.useRef<HTMLDivElement | null>(null);
+  const minCol = React.useRef<HTMLDivElement | null>(null);
+  const secCol = React.useRef<HTMLDivElement | null>(null);
 
   React.useEffect(() => {
-    if (!visible) return
+    if (!visible) return;
     const raf = requestAnimationFrame(() => {
-      hourCol.current?.querySelector('[data-active="true"]')?.scrollIntoView({ block: 'center' })
-      minCol.current?.querySelector('[data-active="true"]')?.scrollIntoView({ block: 'center' })
-      secCol.current?.querySelector('[data-active="true"]')?.scrollIntoView({ block: 'center' })
-    })
-    return () => cancelAnimationFrame(raf)
-  }, [visible, value])
+      hourCol.current
+        ?.querySelector('[data-active="true"]')
+        ?.scrollIntoView({ block: "center" });
+      minCol.current
+        ?.querySelector('[data-active="true"]')
+        ?.scrollIntoView({ block: "center" });
+      secCol.current
+        ?.querySelector('[data-active="true"]')
+        ?.scrollIntoView({ block: "center" });
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [visible, value]);
 
   function isHourActive(h: number) {
-    if (!parts) return false
-    return effective12Hour ? hour12 === h : parts.hour24 === h
+    if (!parts) return false;
+    return effective12Hour ? hour12 === h : parts.hour24 === h;
   }
 
   function isHourDisabled(h: number) {
-    if (!hideDisabledOptions) return isHourDisabledItem(h)
-    return false
+    if (!hideDisabledOptions) return isHourDisabledItem(h);
+    return false;
   }
 
   function isMinuteDisabled(m: number) {
-    if (!hideDisabledOptions) return isMinuteDisabledItem(m)
-    return false
+    if (!hideDisabledOptions) return isMinuteDisabledItem(m);
+    return false;
   }
 
   function isSecondDisabled(s: number) {
-    if (!hideDisabledOptions) return isSecondDisabledItem(s)
-    return false
+    if (!hideDisabledOptions) return isSecondDisabledItem(s);
+    return false;
   }
 
   return (
@@ -240,12 +275,14 @@ function TimeColumns({
               data-active={isHourActive(h)}
               disabled={isHourDisabled(h)}
               className={cn(
-                'hover:bg-accent focus-visible:ring-ring rounded px-2 py-1 text-center text-sm tabular-nums transition-colors focus-visible:ring-2 focus-visible:outline-none disabled:opacity-30 disabled:hover:bg-transparent',
-                isHourActive(h) ? 'bg-primary text-primary-foreground hover:bg-primary' : '',
+                "hover:bg-accent focus-visible:ring-ring rounded px-2 py-1 text-center text-sm tabular-nums transition-colors focus-visible:ring-2 focus-visible:outline-none disabled:opacity-30 disabled:hover:bg-transparent",
+                isHourActive(h)
+                  ? "bg-primary text-primary-foreground hover:bg-primary"
+                  : "",
               )}
               onClick={() => (effective12Hour ? pickHour12(h) : pickHour24(h))}
             >
-              {String(h).padStart(2, '0')}
+              {String(h).padStart(2, "0")}
             </button>
           ))}
         </div>
@@ -260,12 +297,14 @@ function TimeColumns({
               data-active={parts?.minute === m}
               disabled={isMinuteDisabled(m)}
               className={cn(
-                'hover:bg-accent focus-visible:ring-ring rounded px-2 py-1 text-center text-sm tabular-nums transition-colors focus-visible:ring-2 focus-visible:outline-none disabled:opacity-30 disabled:hover:bg-transparent',
-                parts?.minute === m ? 'bg-primary text-primary-foreground hover:bg-primary' : '',
+                "hover:bg-accent focus-visible:ring-ring rounded px-2 py-1 text-center text-sm tabular-nums transition-colors focus-visible:ring-2 focus-visible:outline-none disabled:opacity-30 disabled:hover:bg-transparent",
+                parts?.minute === m
+                  ? "bg-primary text-primary-foreground hover:bg-primary"
+                  : "",
               )}
               onClick={() => pickMinute(m)}
             >
-              {String(m).padStart(2, '0')}
+              {String(m).padStart(2, "0")}
             </button>
           ))}
         </div>
@@ -281,12 +320,14 @@ function TimeColumns({
                 data-active={parts?.second === s}
                 disabled={isSecondDisabled(s)}
                 className={cn(
-                  'hover:bg-accent focus-visible:ring-ring rounded px-2 py-1 text-center text-sm tabular-nums transition-colors focus-visible:ring-2 focus-visible:outline-none disabled:opacity-30 disabled:hover:bg-transparent',
-                  parts?.second === s ? 'bg-primary text-primary-foreground hover:bg-primary' : '',
+                  "hover:bg-accent focus-visible:ring-ring rounded px-2 py-1 text-center text-sm tabular-nums transition-colors focus-visible:ring-2 focus-visible:outline-none disabled:opacity-30 disabled:hover:bg-transparent",
+                  parts?.second === s
+                    ? "bg-primary text-primary-foreground hover:bg-primary"
+                    : "",
                 )}
                 onClick={() => pickSecond(s)}
               >
-                {String(s).padStart(2, '0')}
+                {String(s).padStart(2, "0")}
               </button>
             ))}
           </div>
@@ -295,13 +336,15 @@ function TimeColumns({
 
       {effective12Hour && (
         <div className="flex w-12 flex-col p-1">
-          {(['AM', 'PM'] as const).map((p) => (
+          {(["AM", "PM"] as const).map((p) => (
             <button
               key={p}
               type="button"
               className={cn(
-                'hover:bg-accent focus-visible:ring-ring rounded px-2 py-1 text-center text-sm transition-colors focus-visible:ring-2 focus-visible:outline-none',
-                period === p ? 'bg-primary text-primary-foreground hover:bg-primary' : '',
+                "hover:bg-accent focus-visible:ring-ring rounded px-2 py-1 text-center text-sm transition-colors focus-visible:ring-2 focus-visible:outline-none",
+                period === p
+                  ? "bg-primary text-primary-foreground hover:bg-primary"
+                  : "",
               )}
               onClick={() => pickPeriod(p)}
             >
@@ -311,61 +354,61 @@ function TimeColumns({
         </div>
       )}
     </div>
-  )
+  );
 }
 
 // ---- TimePicker ----
 
 export interface TimePickerProps {
   /** Controlled value as 24h HH:mm or HH:mm:ss. Empty string = no selection. */
-  value?: string
+  value?: string;
   /** Uncontrolled initial value. */
-  defaultValue?: string
-  onValueChange?: (value: string) => void
-  placeholder?: string
-  disabled?: boolean
-  readOnly?: boolean
-  clearable?: boolean
-  allowClear?: boolean
-  minuteStep?: number
-  hourStep?: number
-  secondStep?: number
+  defaultValue?: string;
+  onValueChange?: (value: string) => void;
+  placeholder?: string;
+  disabled?: boolean;
+  readOnly?: boolean;
+  clearable?: boolean;
+  allowClear?: boolean;
+  minuteStep?: number;
+  hourStep?: number;
+  secondStep?: number;
   /** Backward-compat: when true, render 24-hour selector. */
-  use24Hour?: boolean
+  use24Hour?: boolean;
   /** When true, show AM/PM selector. */
-  use12Hours?: boolean
-  minTime?: string
-  maxTime?: string
-  format?: TimeFormat
-  disabledHours?: () => number[]
-  disabledMinutes?: (selectedHour: number) => number[]
-  disabledSeconds?: (selectedHour: number, selectedMinute: number) => number[]
-  hideDisabledOptions?: boolean
-  presets?: TimePreset[]
-  size?: TimePickerSize
-  status?: TimePickerStatus
-  triggerClassName?: string
-  className?: string
+  use12Hours?: boolean;
+  minTime?: string;
+  maxTime?: string;
+  format?: TimeFormat;
+  disabledHours?: () => number[];
+  disabledMinutes?: (selectedHour: number) => number[];
+  disabledSeconds?: (selectedHour: number, selectedMinute: number) => number[];
+  hideDisabledOptions?: boolean;
+  presets?: TimePreset[];
+  size?: TimePickerSize;
+  status?: TimePickerStatus;
+  triggerClassName?: string;
+  className?: string;
 }
 
 const sizeClasses: Record<TimePickerSize, string> = {
-  small: 'h-8 text-xs px-2.5 py-1',
-  middle: 'h-9 text-sm px-3 py-1.5',
-  large: 'h-11 text-base px-4 py-2',
-}
+  small: "h-8 text-xs px-2.5 py-1",
+  middle: "h-9 text-sm px-3 py-1.5",
+  large: "h-11 text-base px-4 py-2",
+};
 
 const statusClasses: Record<string, string> = {
-  error: 'border-destructive focus-visible:ring-destructive',
-  warning: 'border-warning focus-visible:ring-warning',
-}
+  error: "border-destructive focus-visible:ring-destructive",
+  warning: "border-warning focus-visible:ring-warning",
+};
 
 const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
   (
     {
       value,
-      defaultValue = '',
+      defaultValue = "",
       onValueChange,
-      placeholder = 'Pick a time',
+      placeholder = "Pick a time",
       disabled = false,
       readOnly = false,
       clearable = true,
@@ -377,90 +420,97 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
       use12Hours = false,
       minTime,
       maxTime,
-      format = 'HH:mm',
+      format = "HH:mm",
       disabledHours,
       disabledMinutes,
       disabledSeconds,
       hideDisabledOptions = false,
       presets = [],
-      size = 'middle',
+      size = "middle",
       status,
       triggerClassName,
       className,
     },
     ref,
   ) => {
-    const [open, setOpen] = React.useState(false)
+    const [open, setOpen] = React.useState(false);
 
-    const isControlled = value !== undefined
-    const [internal, setInternal] = React.useState<string>(defaultValue)
-    const currentValue = isControlled ? value : internal
+    const isControlled = value !== undefined;
+    const [internal, setInternal] = React.useState<string>(defaultValue);
+    const currentValue = isControlled ? value : internal;
 
-    const effectiveAllowClear = allowClear !== undefined ? allowClear : clearable
+    const effectiveAllowClear =
+      allowClear !== undefined ? allowClear : clearable;
 
-    const parsed = parse(currentValue)
+    const parsed = parse(currentValue);
 
     function formatDisplay(h: number, m: number, s: number) {
-      if (format === 'hh:mm A') {
-        const h12 = h % 12 === 0 ? 12 : h % 12
-        const p = h >= 12 ? 'PM' : 'AM'
-        return `${String(h12).padStart(2, '0')}:${String(m).padStart(2, '0')} ${p}`
+      if (format === "hh:mm A") {
+        const h12 = h % 12 === 0 ? 12 : h % 12;
+        const p = h >= 12 ? "PM" : "AM";
+        return `${String(h12).padStart(2, "0")}:${String(m).padStart(2, "0")} ${p}`;
       }
-      if (format === 'HH:mm:ss') {
-        return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+      if (format === "HH:mm:ss") {
+        return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
       }
-      return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`
+      return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
     }
 
-    const display = parsed ? formatDisplay(parsed.hour24, parsed.minute, parsed.second) : ''
+    const display = parsed
+      ? formatDisplay(parsed.hour24, parsed.minute, parsed.second)
+      : "";
 
     function emitTime(v: string) {
-      if (!isControlled) setInternal(v)
-      onValueChange?.(v)
+      if (!isControlled) setInternal(v);
+      onValueChange?.(v);
     }
 
     function pickNow() {
-      if (readOnly) return
-      const d = new Date()
-      const sStep = Math.max(1, secondStep)
-      const rawS = d.getSeconds()
-      const snappedS = Math.round(rawS / sStep) * sStep
-      const secCarry = Math.floor(snappedS / 60)
-      const s = snappedS % 60
+      if (readOnly) return;
+      const d = new Date();
+      const sStep = Math.max(1, secondStep);
+      const rawS = d.getSeconds();
+      const snappedS = Math.round(rawS / sStep) * sStep;
+      const secCarry = Math.floor(snappedS / 60);
+      const s = snappedS % 60;
 
-      const mStep = Math.max(1, minuteStep)
-      const rawM = d.getMinutes() + secCarry
-      const snappedM = Math.round(rawM / mStep) * mStep
-      const minCarry = Math.floor(snappedM / 60)
-      const min = snappedM % 60
+      const mStep = Math.max(1, minuteStep);
+      const rawM = d.getMinutes() + secCarry;
+      const snappedM = Math.round(rawM / mStep) * mStep;
+      const minCarry = Math.floor(snappedM / 60);
+      const min = snappedM % 60;
 
-      const h = (d.getHours() + minCarry) % 24
-      const hourStr = String(h).padStart(2, '0')
-      const minStr = String(min).padStart(2, '0')
-      const secStr = String(s).padStart(2, '0')
-      emitTime(format === 'HH:mm:ss' ? `${hourStr}:${minStr}:${secStr}` : `${hourStr}:${minStr}`)
+      const h = (d.getHours() + minCarry) % 24;
+      const hourStr = String(h).padStart(2, "0");
+      const minStr = String(min).padStart(2, "0");
+      const secStr = String(s).padStart(2, "0");
+      emitTime(
+        format === "HH:mm:ss"
+          ? `${hourStr}:${minStr}:${secStr}`
+          : `${hourStr}:${minStr}`,
+      );
     }
 
     function applyPreset(preset: TimePreset) {
-      if (readOnly) return
-      emitTime(preset.value)
-      setOpen(false)
+      if (readOnly) return;
+      emitTime(preset.value);
+      setOpen(false);
     }
 
     function clear(event: React.MouseEvent | React.KeyboardEvent) {
-      event.stopPropagation()
-      if (disabled || readOnly) return
-      emitTime('')
+      event.stopPropagation();
+      if (disabled || readOnly) return;
+      emitTime("");
     }
 
     const triggerClasses = cn(
-      'min-w-[160px] justify-start gap-2 text-left font-normal',
-      !parsed && 'text-muted-foreground',
+      "min-w-[160px] justify-start gap-2 text-left font-normal",
+      !parsed && "text-muted-foreground",
       sizeClasses[size],
       status && statusClasses[status],
       triggerClassName,
       className,
-    )
+    );
 
     return (
       <Popover open={open} onOpenChange={setOpen}>
@@ -507,7 +557,9 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
             </div>
           )}
           <div className="flex items-center justify-between border-b px-3 py-2">
-            <span className="text-muted-foreground text-xs tracking-widest uppercase">Time</span>
+            <span className="text-muted-foreground text-xs tracking-widest uppercase">
+              Time
+            </span>
             <button
               type="button"
               className="text-muted-foreground hover:text-foreground focus-visible:ring-ring text-xs focus-visible:ring-2 focus-visible:outline-none"
@@ -535,51 +587,54 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
           />
         </PopoverContent>
       </Popover>
-    )
+    );
   },
-)
-TimePicker.displayName = 'TimePicker'
+);
+TimePicker.displayName = "TimePicker";
 
 // ---- TimeRangePicker ----
 
 export interface TimeRangePreset {
-  label: string
-  value: [string, string]
+  label: string;
+  value: [string, string];
 }
 
 export interface TimeRangePickerProps {
-  value?: [string, string] | null
-  onValueChange?: (value: [string, string] | null) => void
-  placeholder?: string
-  disabled?: boolean
-  readOnly?: boolean
-  clearable?: boolean
-  allowClear?: boolean
-  minuteStep?: number
-  hourStep?: number
-  secondStep?: number
-  use24Hour?: boolean
-  use12Hours?: boolean
-  minTime?: string
-  maxTime?: string
-  format?: TimeFormat
-  disabledHours?: () => number[]
-  disabledMinutes?: (selectedHour: number) => number[]
-  disabledSeconds?: (selectedHour: number, selectedMinute: number) => number[]
-  hideDisabledOptions?: boolean
-  presets?: TimeRangePreset[]
-  size?: TimePickerSize
-  status?: TimePickerStatus
-  triggerClassName?: string
-  className?: string
+  value?: [string, string] | null;
+  onValueChange?: (value: [string, string] | null) => void;
+  placeholder?: string;
+  disabled?: boolean;
+  readOnly?: boolean;
+  clearable?: boolean;
+  allowClear?: boolean;
+  minuteStep?: number;
+  hourStep?: number;
+  secondStep?: number;
+  use24Hour?: boolean;
+  use12Hours?: boolean;
+  minTime?: string;
+  maxTime?: string;
+  format?: TimeFormat;
+  disabledHours?: () => number[];
+  disabledMinutes?: (selectedHour: number) => number[];
+  disabledSeconds?: (selectedHour: number, selectedMinute: number) => number[];
+  hideDisabledOptions?: boolean;
+  presets?: TimeRangePreset[];
+  size?: TimePickerSize;
+  status?: TimePickerStatus;
+  triggerClassName?: string;
+  className?: string;
 }
 
-const TimeRangePicker = React.forwardRef<HTMLButtonElement, TimeRangePickerProps>(
+const TimeRangePicker = React.forwardRef<
+  HTMLButtonElement,
+  TimeRangePickerProps
+>(
   (
     {
       value: valueProp,
       onValueChange,
-      placeholder = 'Pick a time range',
+      placeholder = "Pick a time range",
       disabled = false,
       readOnly = false,
       clearable = true,
@@ -591,113 +646,127 @@ const TimeRangePicker = React.forwardRef<HTMLButtonElement, TimeRangePickerProps
       use12Hours = false,
       minTime,
       maxTime,
-      format = 'HH:mm',
+      format = "HH:mm",
       disabledHours,
       disabledMinutes,
       disabledSeconds,
       hideDisabledOptions = false,
       presets = [],
-      size = 'middle',
+      size = "middle",
       status,
       triggerClassName,
       className,
     },
     ref,
   ) => {
-    const [open, setOpen] = React.useState(false)
-    const isControlled = valueProp !== undefined
-    const [internal, setInternal] = React.useState<[string, string] | null>(null)
-    const currentValue = isControlled ? valueProp : internal
+    const [open, setOpen] = React.useState(false);
+    const isControlled = valueProp !== undefined;
+    const [internal, setInternal] = React.useState<[string, string] | null>(
+      null,
+    );
+    const currentValue = isControlled ? valueProp : internal;
 
-    const effectiveAllowClear = allowClear !== undefined ? allowClear : clearable
+    const effectiveAllowClear =
+      allowClear !== undefined ? allowClear : clearable;
 
-    const startValue = currentValue?.[0] ?? ''
-    const endValue = currentValue?.[1] ?? ''
-    const startParsed = parse(startValue)
-    const endParsed = parse(endValue)
+    const startValue = currentValue?.[0] ?? "";
+    const endValue = currentValue?.[1] ?? "";
+    const startParsed = parse(startValue);
+    const endParsed = parse(endValue);
 
     function formatDisplay(h: number, m: number, s: number) {
-      if (format === 'hh:mm A') {
-        const h12 = h % 12 === 0 ? 12 : h % 12
-        const p = h >= 12 ? 'PM' : 'AM'
-        return `${String(h12).padStart(2, '0')}:${String(m).padStart(2, '0')} ${p}`
+      if (format === "hh:mm A") {
+        const h12 = h % 12 === 0 ? 12 : h % 12;
+        const p = h >= 12 ? "PM" : "AM";
+        return `${String(h12).padStart(2, "0")}:${String(m).padStart(2, "0")} ${p}`;
       }
-      if (format === 'HH:mm:ss') {
-        return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+      if (format === "HH:mm:ss") {
+        return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
       }
-      return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`
+      return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
     }
 
     const display = (() => {
-      const hasStart = startParsed !== null
-      const hasEnd = endParsed !== null
-      if (!hasStart && !hasEnd) return ''
-      const startStr = hasStart ? formatDisplay(startParsed.hour24, startParsed.minute, startParsed.second) : ''
-      const endStr = hasEnd ? formatDisplay(endParsed.hour24, endParsed.minute, endParsed.second) : ''
-      if (hasStart && hasEnd) return `${startStr} ~ ${endStr}`
-      return startStr || endStr
-    })()
+      const hasStart = startParsed !== null;
+      const hasEnd = endParsed !== null;
+      if (!hasStart && !hasEnd) return "";
+      const startStr = hasStart
+        ? formatDisplay(
+            startParsed.hour24,
+            startParsed.minute,
+            startParsed.second,
+          )
+        : "";
+      const endStr = hasEnd
+        ? formatDisplay(endParsed.hour24, endParsed.minute, endParsed.second)
+        : "";
+      if (hasStart && hasEnd) return `${startStr} ~ ${endStr}`;
+      return startStr || endStr;
+    })();
 
     function emitRange(start: string, end: string) {
-      const next: [string, string] = [start, end]
-      if (!isControlled) setInternal(next)
-      onValueChange?.(next)
+      const next: [string, string] = [start, end];
+      if (!isControlled) setInternal(next);
+      onValueChange?.(next);
     }
 
     function emitStart(v: string) {
-      emitRange(v, endValue || v)
+      emitRange(v, endValue || v);
     }
 
     function emitEnd(v: string) {
-      emitRange(startValue || v, v)
+      emitRange(startValue || v, v);
     }
 
-    function pickNow(which: 'start' | 'end') {
-      if (readOnly) return
-      const d = new Date()
-      const sStep = Math.max(1, secondStep)
-      const rawS = d.getSeconds()
-      const snappedS = Math.round(rawS / sStep) * sStep
-      const secCarry = Math.floor(snappedS / 60)
-      const s = snappedS % 60
+    function pickNow(which: "start" | "end") {
+      if (readOnly) return;
+      const d = new Date();
+      const sStep = Math.max(1, secondStep);
+      const rawS = d.getSeconds();
+      const snappedS = Math.round(rawS / sStep) * sStep;
+      const secCarry = Math.floor(snappedS / 60);
+      const s = snappedS % 60;
 
-      const mStep = Math.max(1, minuteStep)
-      const rawM = d.getMinutes() + secCarry
-      const snappedM = Math.round(rawM / mStep) * mStep
-      const minCarry = Math.floor(snappedM / 60)
-      const min = snappedM % 60
+      const mStep = Math.max(1, minuteStep);
+      const rawM = d.getMinutes() + secCarry;
+      const snappedM = Math.round(rawM / mStep) * mStep;
+      const minCarry = Math.floor(snappedM / 60);
+      const min = snappedM % 60;
 
-      const h = (d.getHours() + minCarry) % 24
-      const hourStr = String(h).padStart(2, '0')
-      const minStr = String(min).padStart(2, '0')
-      const secStr = String(s).padStart(2, '0')
-      const v = format === 'HH:mm:ss' ? `${hourStr}:${minStr}:${secStr}` : `${hourStr}:${minStr}`
-      if (which === 'start') emitStart(v)
-      else emitEnd(v)
+      const h = (d.getHours() + minCarry) % 24;
+      const hourStr = String(h).padStart(2, "0");
+      const minStr = String(min).padStart(2, "0");
+      const secStr = String(s).padStart(2, "0");
+      const v =
+        format === "HH:mm:ss"
+          ? `${hourStr}:${minStr}:${secStr}`
+          : `${hourStr}:${minStr}`;
+      if (which === "start") emitStart(v);
+      else emitEnd(v);
     }
 
     function applyPreset(preset: TimeRangePreset) {
-      if (readOnly) return
-      if (!isControlled) setInternal(preset.value)
-      onValueChange?.(preset.value)
-      setOpen(false)
+      if (readOnly) return;
+      if (!isControlled) setInternal(preset.value);
+      onValueChange?.(preset.value);
+      setOpen(false);
     }
 
     function clear(event: React.MouseEvent | React.KeyboardEvent) {
-      event.stopPropagation()
-      if (disabled || readOnly) return
-      if (!isControlled) setInternal(null)
-      onValueChange?.(null)
+      event.stopPropagation();
+      if (disabled || readOnly) return;
+      if (!isControlled) setInternal(null);
+      onValueChange?.(null);
     }
 
     const triggerClasses = cn(
-      'min-w-[200px] justify-start gap-2 text-left font-normal',
-      !display && 'text-muted-foreground',
+      "min-w-[200px] justify-start gap-2 text-left font-normal",
+      !display && "text-muted-foreground",
       sizeClasses[size],
       status && statusClasses[status],
       triggerClassName,
       className,
-    )
+    );
 
     return (
       <Popover open={open} onOpenChange={setOpen}>
@@ -744,19 +813,21 @@ const TimeRangePicker = React.forwardRef<HTMLButtonElement, TimeRangePickerProps
             </div>
           )}
           <div className="flex items-center justify-between border-b px-3 py-2">
-            <span className="text-muted-foreground text-xs tracking-widest uppercase">Time Range</span>
+            <span className="text-muted-foreground text-xs tracking-widest uppercase">
+              Time Range
+            </span>
             <div className="flex gap-2">
               <button
                 type="button"
                 className="text-muted-foreground hover:text-foreground focus-visible:ring-ring text-xs focus-visible:ring-2 focus-visible:outline-none"
-                onClick={() => pickNow('start')}
+                onClick={() => pickNow("start")}
               >
                 Now (Start)
               </button>
               <button
                 type="button"
                 className="text-muted-foreground hover:text-foreground focus-visible:ring-ring text-xs focus-visible:ring-2 focus-visible:outline-none"
-                onClick={() => pickNow('end')}
+                onClick={() => pickNow("end")}
               >
                 Now (End)
               </button>
@@ -764,7 +835,9 @@ const TimeRangePicker = React.forwardRef<HTMLButtonElement, TimeRangePickerProps
           </div>
           <div className="flex">
             <div className="flex flex-col">
-              <div className="text-muted-foreground border-b px-3 py-1.5 text-center text-xs font-medium">Start</div>
+              <div className="text-muted-foreground border-b px-3 py-1.5 text-center text-xs font-medium">
+                Start
+              </div>
               <TimeColumns
                 value={startValue}
                 use24Hour={use24Hour}
@@ -785,7 +858,9 @@ const TimeRangePicker = React.forwardRef<HTMLButtonElement, TimeRangePickerProps
             </div>
             <div className="bg-border w-px" />
             <div className="flex flex-col">
-              <div className="text-muted-foreground border-b px-3 py-1.5 text-center text-xs font-medium">End</div>
+              <div className="text-muted-foreground border-b px-3 py-1.5 text-center text-xs font-medium">
+                End
+              </div>
               <TimeColumns
                 value={endValue}
                 use24Hour={use24Hour}
@@ -807,9 +882,9 @@ const TimeRangePicker = React.forwardRef<HTMLButtonElement, TimeRangePickerProps
           </div>
         </PopoverContent>
       </Popover>
-    )
+    );
   },
-)
-TimeRangePicker.displayName = 'TimeRangePicker'
+);
+TimeRangePicker.displayName = "TimeRangePicker";
 
-export { TimePicker, TimeColumns, TimeRangePicker }
+export { TimePicker, TimeColumns, TimeRangePicker };

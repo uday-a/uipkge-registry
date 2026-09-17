@@ -1,1 +1,1 @@
-export { default as ScatterChart } from './ScatterChart.vue'
+export { default as ScatterChart } from "./ScatterChart.vue";

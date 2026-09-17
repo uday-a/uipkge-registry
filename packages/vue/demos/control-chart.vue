@@ -1,25 +1,38 @@
 <script setup lang="ts">
-import { ControlChart } from '@/components/ui/charts'
+import { ControlChart } from "@/components/ui/charts";
 
 const builds = [
-  { b: '#101', mins: 8.2 },
-  { b: '#102', mins: 7.8 },
-  { b: '#103', mins: 8.5 },
-  { b: '#104', mins: 8.1 },
-  { b: '#105', mins: 14.6 },
-  { b: '#106', mins: 8.3 },
-  { b: '#107', mins: 7.9 },
-  { b: '#108', mins: 8.4 },
-]
+  { b: "#101", mins: 8.2 },
+  { b: "#102", mins: 7.8 },
+  { b: "#103", mins: 8.5 },
+  { b: "#104", mins: 8.1 },
+  { b: "#105", mins: 14.6 },
+  { b: "#106", mins: 8.3 },
+  { b: "#107", mins: 7.9 },
+  { b: "#108", mins: 8.4 },
+];
 </script>
 
 <template>
-  <Story title="Build times" description="Mean ± 2σ limits auto-compute; the spike turns red.">
+  <Story
+    title="Build times"
+    description="Mean ± 2σ limits auto-compute; the spike turns red."
+  >
     <ControlChart :data="builds" x-field="b" y-field="mins" height="300" />
   </Story>
 
-  <Story title="Fixed spec limits" description="Override with contractual UCL/LCL.">
-    <ControlChart :data="builds" x-field="b" y-field="mins" :ucl="12" :lcl="6" height="300" />
+  <Story
+    title="Fixed spec limits"
+    description="Override with contractual UCL/LCL."
+  >
+    <ControlChart
+      :data="builds"
+      x-field="b"
+      y-field="mins"
+      :ucl="12"
+      :lcl="6"
+      height="300"
+    />
   </Story>
 
   <Story

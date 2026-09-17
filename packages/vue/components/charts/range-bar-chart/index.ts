@@ -1,1 +1,1 @@
-export { default as RangeBarChart, type RangeDatum } from './RangeBarChart.vue'
+export { default as RangeBarChart, type RangeDatum } from "./RangeBarChart.vue";

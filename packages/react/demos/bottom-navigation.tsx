@@ -1,34 +1,47 @@
-import { useState } from 'react'
-import { Bell, Heart, Home, Inbox, Menu, Search, Settings, ShoppingCart, User } from 'lucide-react'
-import Story from '../../components/story/Story'
-import { BottomNavigation, type BottomNavItem } from '@react-registry/bottom-navigation'
+import { useState } from "react";
+import {
+  Bell,
+  Heart,
+  Home,
+  Inbox,
+  Menu,
+  Search,
+  Settings,
+  ShoppingCart,
+  User,
+} from "lucide-react";
+import Story from "../../components/story/Story";
+import {
+  BottomNavigation,
+  type BottomNavItem,
+} from "@react-registry/bottom-navigation";
 
 export default function BottomNavigationDemo() {
-  const [active, setActive] = useState('home')
-  const [shopActive, setShopActive] = useState('shop')
-  const [fiveActive, setFiveActive] = useState('a')
-  const [narrowActive, setNarrowActive] = useState('a')
+  const [active, setActive] = useState("home");
+  const [shopActive, setShopActive] = useState("shop");
+  const [fiveActive, setFiveActive] = useState("a");
+  const [narrowActive, setNarrowActive] = useState("a");
 
   const items: BottomNavItem[] = [
-    { value: 'home', label: 'Home', icon: Home },
-    { value: 'search', label: 'Search', icon: Search },
-    { value: 'notifications', label: 'Alerts', icon: Bell, badge: 3 },
-    { value: 'profile', label: 'Profile', icon: User },
-  ]
+    { value: "home", label: "Home", icon: Home },
+    { value: "search", label: "Search", icon: Search },
+    { value: "notifications", label: "Alerts", icon: Bell, badge: 3 },
+    { value: "profile", label: "Profile", icon: User },
+  ];
 
   const shopItems: BottomNavItem[] = [
-    { value: 'shop', label: 'Shop', icon: ShoppingCart },
-    { value: 'saved', label: 'Saved', icon: Heart, badge: 12 },
-    { value: 'inbox', label: 'Inbox', icon: Inbox, badge: '!' },
-    { value: 'menu', label: 'More', icon: Menu },
-  ]
+    { value: "shop", label: "Shop", icon: ShoppingCart },
+    { value: "saved", label: "Saved", icon: Heart, badge: 12 },
+    { value: "inbox", label: "Inbox", icon: Inbox, badge: "!" },
+    { value: "menu", label: "More", icon: Menu },
+  ];
 
   const views: Record<string, string> = {
-    home: 'Welcome back — your feed is up to date.',
-    search: 'Search across products, orders, and stores.',
-    notifications: '3 new alerts waiting for you.',
-    profile: 'Manage your account and preferences.',
-  }
+    home: "Welcome back — your feed is up to date.",
+    search: "Search across products, orders, and stores.",
+    notifications: "3 new alerts waiting for you.",
+    profile: "Manage your account and preferences.",
+  };
 
   return (
     <>
@@ -38,10 +51,17 @@ export default function BottomNavigationDemo() {
       >
         <div className="border-border mx-auto w-full max-w-sm overflow-hidden rounded-2xl border shadow-sm">
           <div className="bg-background flex h-56 flex-col items-center justify-center gap-2 p-6 text-center">
-            <p className="text-sm font-medium">{items.find((i) => i.value === active)?.label}</p>
+            <p className="text-sm font-medium">
+              {items.find((i) => i.value === active)?.label}
+            </p>
             <p className="text-muted-foreground text-xs">{views[active]}</p>
           </div>
-          <BottomNavigation items={items} value={active} onValueChange={setActive} fixed={false} />
+          <BottomNavigation
+            items={items}
+            value={active}
+            onValueChange={setActive}
+            fixed={false}
+          />
         </div>
       </Story>
 
@@ -51,10 +71,17 @@ export default function BottomNavigationDemo() {
       >
         <div className="border-border mx-auto w-full max-w-sm overflow-hidden rounded-2xl border shadow-sm">
           <div className="bg-background flex h-48 flex-col items-center justify-center gap-1 p-6 text-center">
-            <p className="text-sm font-medium">{shopItems.find((i) => i.value === shopActive)?.label}</p>
+            <p className="text-sm font-medium">
+              {shopItems.find((i) => i.value === shopActive)?.label}
+            </p>
             <p className="text-muted-foreground text-xs">Your shopping hub</p>
           </div>
-          <BottomNavigation items={shopItems} value={shopActive} onValueChange={setShopActive} fixed={false} />
+          <BottomNavigation
+            items={shopItems}
+            value={shopActive}
+            onValueChange={setShopActive}
+            fixed={false}
+          />
         </div>
       </Story>
 
@@ -87,11 +114,11 @@ export default function BottomNavigationDemo() {
             </div>
             <BottomNavigation
               items={[
-                { value: 'a', label: 'Home', icon: Home },
-                { value: 'b', label: 'Search', icon: Search },
-                { value: 'c', label: 'Alerts', icon: Bell, badge: 5 },
-                { value: 'd', label: 'Settings', icon: Settings },
-                { value: 'e', label: 'Profile', icon: User },
+                { value: "a", label: "Home", icon: Home },
+                { value: "b", label: "Search", icon: Search },
+                { value: "c", label: "Alerts", icon: Bell, badge: 5 },
+                { value: "d", label: "Settings", icon: Settings },
+                { value: "e", label: "Profile", icon: User },
               ]}
               value={fiveActive}
               onValueChange={setFiveActive}
@@ -118,12 +145,14 @@ export default function BottomNavigationDemo() {
         description="Labels truncate gracefully when space is tight — the worst case for a 200px-wide device."
       >
         <div className="border-border mx-auto w-full max-w-[200px] overflow-hidden rounded-2xl border">
-          <div className="bg-muted/30 text-muted-foreground flex h-40 items-center justify-center text-xs">Narrow</div>
+          <div className="bg-muted/30 text-muted-foreground flex h-40 items-center justify-center text-xs">
+            Narrow
+          </div>
           <BottomNavigation
             items={[
-              { value: 'a', label: 'Dashboard', icon: Home },
-              { value: 'b', label: 'Notifications', icon: Bell, badge: 99 },
-              { value: 'c', label: 'Account Settings', icon: Settings },
+              { value: "a", label: "Dashboard", icon: Home },
+              { value: "b", label: "Notifications", icon: Bell, badge: 99 },
+              { value: "c", label: "Account Settings", icon: Settings },
             ]}
             value={narrowActive}
             onValueChange={setNarrowActive}
@@ -142,14 +171,19 @@ export default function BottomNavigationDemo() {
           </div>
           <BottomNavigation
             items={[
-              { value: 'home', label: 'Home', icon: Home, to: '/' },
-              { value: 'about', label: 'About', icon: Search, to: '/about' },
-              { value: 'settings', label: 'Settings', icon: Settings, to: '/settings' },
+              { value: "home", label: "Home", icon: Home, to: "/" },
+              { value: "about", label: "About", icon: Search, to: "/about" },
+              {
+                value: "settings",
+                label: "Settings",
+                icon: Settings,
+                to: "/settings",
+              },
             ]}
             fixed={false}
           />
         </div>
       </Story>
     </>
-  )
+  );
 }

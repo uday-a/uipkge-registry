@@ -1,8 +1,12 @@
-'use client'
+"use client";
 
-import * as React from 'react'
-import { Check, ChevronDown, Loader2, X } from 'lucide-react'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import * as React from "react";
+import { Check, ChevronDown, Loader2, X } from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import {
   Command,
   CommandEmpty,
@@ -11,127 +15,134 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from '@/components/ui/command'
-import { Badge } from '@/components/ui/badge'
-import { cn } from '@/lib/utils'
-import { readKey } from './types'
-import type { AdvanceSelectFieldNames } from './types'
+} from "@/components/ui/command";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+import { readKey } from "./types";
+import type { AdvanceSelectFieldNames } from "./types";
 
-export interface AdvanceSelectProps<T extends Record<string, unknown> | string | number> {
-  value?: unknown | unknown[]
-  onValueChange?: (value: unknown | unknown[], option: T | T[]) => void
-  options: T[]
+export interface AdvanceSelectProps<
+  T extends Record<string, unknown> | string | number,
+> {
+  value?: unknown | unknown[];
+  onValueChange?: (value: unknown | unknown[], option: T | T[]) => void;
+  options: T[];
 
   // Mode
-  mode?: 'single' | 'multiple' | 'tags'
+  mode?: "single" | "multiple" | "tags";
 
   // Field mapping
-  fieldNames?: AdvanceSelectFieldNames
+  fieldNames?: AdvanceSelectFieldNames;
 
   // Appearance
-  size?: 'sm' | 'default' | 'lg'
-  variant?: 'outlined' | 'filled' | 'borderless'
-  status?: 'default' | 'error' | 'warning'
-  placeholder?: string
+  size?: "sm" | "default" | "lg";
+  variant?: "outlined" | "filled" | "borderless";
+  status?: "default" | "error" | "warning";
+  placeholder?: string;
 
   // Search
-  showSearch?: boolean
-  searchValue?: string
-  onSearchChange?: (value: string) => void
-  autoClearSearchValue?: boolean
-  filterOption?: boolean | ((input: string, option: T) => boolean)
-  optionFilterProp?: string | string[]
-  filterSort?: (optionA: T, optionB: T, info: { searchValue: string }) => number
+  showSearch?: boolean;
+  searchValue?: string;
+  onSearchChange?: (value: string) => void;
+  autoClearSearchValue?: boolean;
+  filterOption?: boolean | ((input: string, option: T) => boolean);
+  optionFilterProp?: string | string[];
+  filterSort?: (
+    optionA: T,
+    optionB: T,
+    info: { searchValue: string },
+  ) => number;
 
   // Multiple/Tags
-  maxCount?: number
-  maxTagCount?: number
-  maxTagTextLength?: number
-  maxTagPlaceholder?: string | ((omittedValues: T[]) => string)
-  tokenSeparators?: string[]
-  hideSelected?: boolean
-  allowCreate?: boolean
+  maxCount?: number;
+  maxTagCount?: number;
+  maxTagTextLength?: number;
+  maxTagPlaceholder?: string | ((omittedValues: T[]) => string);
+  tokenSeparators?: string[];
+  hideSelected?: boolean;
+  allowCreate?: boolean;
 
   // State
-  disabled?: boolean
-  loading?: boolean
-  allowClear?: boolean
-  open?: boolean
-  onOpenChange?: (open: boolean) => void
-  defaultOpen?: boolean
-  defaultActiveFirstOption?: boolean
+  disabled?: boolean;
+  loading?: boolean;
+  allowClear?: boolean;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  defaultOpen?: boolean;
+  defaultActiveFirstOption?: boolean;
 
   // Customization
-  notFoundContent?: React.ReactNode
-  loadingText?: React.ReactNode
-  listHeight?: number
-  virtual?: boolean
+  notFoundContent?: React.ReactNode;
+  loadingText?: React.ReactNode;
+  listHeight?: number;
+  virtual?: boolean;
 
-  className?: string
+  className?: string;
 
   // Render slots
-  prefix?: React.ReactNode
-  suffix?: React.ReactNode
-  suffixIcon?: React.ReactNode
-  clearIcon?: React.ReactNode
-  renderLabel?: (info: { value: unknown; label: string }) => React.ReactNode
+  prefix?: React.ReactNode;
+  suffix?: React.ReactNode;
+  suffixIcon?: React.ReactNode;
+  clearIcon?: React.ReactNode;
+  renderLabel?: (info: { value: unknown; label: string }) => React.ReactNode;
   renderTag?: (info: {
-    value: unknown
-    label: string
-    closable: boolean
-    onClose: (e: React.MouseEvent | Event) => void
-  }) => React.ReactNode
-  renderOption?: (info: { option: T; index: number }) => React.ReactNode
-  emptyContent?: React.ReactNode
+    value: unknown;
+    label: string;
+    closable: boolean;
+    onClose: (e: React.MouseEvent | Event) => void;
+  }) => React.ReactNode;
+  renderOption?: (info: { option: T; index: number }) => React.ReactNode;
+  emptyContent?: React.ReactNode;
 
   // Events
-  onSelect?: (value: unknown, option: T) => void
-  onDeselect?: (value: unknown, option: T) => void
-  onClear?: () => void
-  onFocus?: (event: React.FocusEvent) => void
-  onBlur?: (event: React.FocusEvent) => void
-  onPopupScroll?: (event: React.UIEvent) => void
-  onInputKeyDown?: (event: React.KeyboardEvent) => void
+  onSelect?: (value: unknown, option: T) => void;
+  onDeselect?: (value: unknown, option: T) => void;
+  onClear?: () => void;
+  onFocus?: (event: React.FocusEvent) => void;
+  onBlur?: (event: React.FocusEvent) => void;
+  onPopupScroll?: (event: React.UIEvent) => void;
+  onInputKeyDown?: (event: React.KeyboardEvent) => void;
 }
 
 const sizeClasses = {
-  sm: 'h-8 text-xs px-2.5 py-1',
-  default: 'h-9 text-sm px-3 py-1.5',
-  lg: 'h-11 text-base px-4 py-2',
-}
+  sm: "h-8 text-xs px-2.5 py-1",
+  default: "h-9 text-sm px-3 py-1.5",
+  lg: "h-11 text-base px-4 py-2",
+};
 
 const variantClasses = {
   outlined:
-    'border-input bg-transparent shadow-xs focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
+    "border-input bg-transparent shadow-xs focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
   filled:
-    'border-transparent bg-muted/50 shadow-none focus-visible:bg-muted focus-visible:ring-ring/50 focus-visible:ring-[3px]',
+    "border-transparent bg-muted/50 shadow-none focus-visible:bg-muted focus-visible:ring-ring/50 focus-visible:ring-[3px]",
   borderless:
-    'border-transparent bg-transparent shadow-none focus-visible:bg-muted/30 focus-visible:ring-ring/50 focus-visible:ring-[3px]',
-}
+    "border-transparent bg-transparent shadow-none focus-visible:bg-muted/30 focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+};
 
 const statusClasses = {
-  default: '',
+  default: "",
   error:
-    'border-destructive focus-visible:border-destructive focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 aria-invalid:border-destructive',
-  warning: 'border-warning focus-visible:border-warning focus-visible:ring-warning/20',
-}
+    "border-destructive focus-visible:border-destructive focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 aria-invalid:border-destructive",
+  warning:
+    "border-warning focus-visible:border-warning focus-visible:ring-warning/20",
+};
 
 function AdvanceSelect<T extends Record<string, unknown> | string | number>({
   value: modelValue,
   onValueChange,
   options,
-  mode = 'single',
+  mode = "single",
   fieldNames = {},
-  size = 'default',
-  variant = 'outlined',
-  status = 'default',
-  placeholder = 'Select...',
+  size = "default",
+  variant = "outlined",
+  status = "default",
+  placeholder = "Select...",
   showSearch = false,
   searchValue,
   onSearchChange,
   autoClearSearchValue = true,
   filterOption = true,
-  optionFilterProp = 'label',
+  optionFilterProp = "label",
   filterSort,
   maxCount,
   maxTagCount,
@@ -147,8 +158,8 @@ function AdvanceSelect<T extends Record<string, unknown> | string | number>({
   onOpenChange,
   defaultOpen = false,
   defaultActiveFirstOption = true,
-  notFoundContent = 'No results.',
-  loadingText = 'Loading...',
+  notFoundContent = "No results.",
+  loadingText = "Loading...",
   listHeight = 300,
   virtual = true,
   className,
@@ -168,251 +179,281 @@ function AdvanceSelect<T extends Record<string, unknown> | string | number>({
   onPopupScroll,
   onInputKeyDown,
 }: AdvanceSelectProps<T>) {
-  const isOpenControlled = open !== undefined
-  const [internalOpen, setInternalOpen] = React.useState<boolean>(defaultOpen)
-  const isOpen = isOpenControlled ? open : internalOpen
+  const isOpenControlled = open !== undefined;
+  const [internalOpen, setInternalOpen] = React.useState<boolean>(defaultOpen);
+  const isOpen = isOpenControlled ? open : internalOpen;
 
   function setOpen(v: boolean) {
-    if (!isOpenControlled) setInternalOpen(v)
-    onOpenChange?.(v)
+    if (!isOpenControlled) setInternalOpen(v);
+    onOpenChange?.(v);
   }
 
-  const isQueryControlled = searchValue !== undefined
-  const [internalQuery, setInternalQuery] = React.useState('')
-  const query = isQueryControlled ? (searchValue as string) : internalQuery
+  const isQueryControlled = searchValue !== undefined;
+  const [internalQuery, setInternalQuery] = React.useState("");
+  const query = isQueryControlled ? (searchValue as string) : internalQuery;
 
   function setQuery(v: string) {
-    if (!isQueryControlled) setInternalQuery(v)
-    onSearchChange?.(v)
+    if (!isQueryControlled) setInternalQuery(v);
+    onSearchChange?.(v);
   }
 
-  const valueKey = fieldNames.value ?? 'value'
-  const labelKey = fieldNames.label ?? 'label'
-  const groupKey = fieldNames.group ?? 'group'
-  const disabledKey = fieldNames.disabled ?? 'disabled'
+  const valueKey = fieldNames.value ?? "value";
+  const labelKey = fieldNames.label ?? "label";
+  const groupKey = fieldNames.group ?? "group";
+  const disabledKey = fieldNames.disabled ?? "disabled";
 
-  const getValue = React.useCallback((o: T): unknown => readKey(o, valueKey, o), [valueKey])
-  const getLabel = React.useCallback((o: T): string => String(readKey(o, labelKey, '')), [labelKey])
+  const getValue = React.useCallback(
+    (o: T): unknown => readKey(o, valueKey, o),
+    [valueKey],
+  );
+  const getLabel = React.useCallback(
+    (o: T): string => String(readKey(o, labelKey, "")),
+    [labelKey],
+  );
   const getGroup = React.useCallback(
     (o: T): string | undefined => {
-      const g = readKey(o, groupKey)
-      return g == null ? undefined : String(g)
+      const g = readKey(o, groupKey);
+      return g == null ? undefined : String(g);
     },
     [groupKey],
-  )
-  const isDisabledOption = React.useCallback((o: T): boolean => Boolean(readKey(o, disabledKey, false)), [disabledKey])
+  );
+  const isDisabledOption = React.useCallback(
+    (o: T): boolean => Boolean(readKey(o, disabledKey, false)),
+    [disabledKey],
+  );
 
-  const isMultiple = mode === 'multiple' || mode === 'tags'
+  const isMultiple = mode === "multiple" || mode === "tags";
 
   const selectedValues = React.useMemo<unknown[]>(() => {
-    if (modelValue == null) return []
+    if (modelValue == null) return [];
     if (isMultiple) {
-      return Array.isArray(modelValue) ? modelValue : []
+      return Array.isArray(modelValue) ? modelValue : [];
     }
-    return [modelValue]
-  }, [modelValue, isMultiple])
+    return [modelValue];
+  }, [modelValue, isMultiple]);
 
-  const selectedSet = React.useMemo(() => new Set(selectedValues), [selectedValues])
+  const selectedSet = React.useMemo(
+    () => new Set(selectedValues),
+    [selectedValues],
+  );
 
   const selectedOptions = React.useMemo<T[]>(() => {
     return selectedValues.map((v) => {
-      const found = options.find((o) => getValue(o) === v)
-      if (found) return found
+      const found = options.find((o) => getValue(o) === v);
+      if (found) return found;
       // For created tags not in options, create a minimal option object
-      return { [labelKey]: String(v), [valueKey]: v } as T
-    })
-  }, [selectedValues, options, getValue, labelKey, valueKey])
+      return { [labelKey]: String(v), [valueKey]: v } as T;
+    });
+  }, [selectedValues, options, getValue, labelKey, valueKey]);
 
   function getOptionByValue(v: unknown): T | undefined {
-    return options.find((o) => getValue(o) === v)
+    return options.find((o) => getValue(o) === v);
   }
 
   function matchesFilter(o: T, q: string): boolean {
-    if (typeof filterOption === 'function') {
-      return filterOption(q, o)
+    if (typeof filterOption === "function") {
+      return filterOption(q, o);
     }
-    if (filterOption === false) return true
-    const label = getLabel(o).toLowerCase()
-    const search = q.toLowerCase()
-    const propsToSearch = Array.isArray(optionFilterProp) ? optionFilterProp : [optionFilterProp]
+    if (filterOption === false) return true;
+    const label = getLabel(o).toLowerCase();
+    const search = q.toLowerCase();
+    const propsToSearch = Array.isArray(optionFilterProp)
+      ? optionFilterProp
+      : [optionFilterProp];
     for (const prop of propsToSearch) {
-      if (prop === 'label' && label.includes(search)) return true
-      const val = String(readKey(o, prop, '')).toLowerCase()
-      if (val.includes(search)) return true
+      if (prop === "label" && label.includes(search)) return true;
+      const val = String(readKey(o, prop, "")).toLowerCase();
+      if (val.includes(search)) return true;
     }
-    return false
+    return false;
   }
 
   const filteredOptions = React.useMemo<T[]>(() => {
-    let result = options
-    const q = query.trim()
+    let result = options;
+    const q = query.trim();
 
     if (q) {
-      result = result.filter((o) => matchesFilter(o, q))
+      result = result.filter((o) => matchesFilter(o, q));
     }
 
     if (hideSelected && isMultiple) {
-      result = result.filter((o) => !selectedSet.has(getValue(o)))
+      result = result.filter((o) => !selectedSet.has(getValue(o)));
     }
 
     if (q && filterSort) {
-      result = [...result].sort((a, b) => filterSort(a, b, { searchValue: q }))
+      result = [...result].sort((a, b) => filterSort(a, b, { searchValue: q }));
     }
 
-    return result
+    return result;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [options, query, hideSelected, isMultiple, selectedSet, getValue, filterSort, filterOption, optionFilterProp])
+  }, [
+    options,
+    query,
+    hideSelected,
+    isMultiple,
+    selectedSet,
+    getValue,
+    filterSort,
+    filterOption,
+    optionFilterProp,
+  ]);
 
   const grouped = React.useMemo(() => {
-    const groups = new Map<string, T[]>()
+    const groups = new Map<string, T[]>();
     for (const opt of filteredOptions) {
-      const key = getGroup(opt) ?? ''
-      if (!groups.has(key)) groups.set(key, [])
-      groups.get(key)!.push(opt)
+      const key = getGroup(opt) ?? "";
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key)!.push(opt);
     }
-    return Array.from(groups, ([heading, items]) => ({ heading, items }))
-  }, [filteredOptions, getGroup])
+    return Array.from(groups, ([heading, items]) => ({ heading, items }));
+  }, [filteredOptions, getGroup]);
 
   const atMax = React.useMemo(() => {
-    if (typeof maxCount !== 'number') return false
-    const count = Array.isArray(modelValue) ? modelValue.length : modelValue ? 1 : 0
-    return count >= maxCount
-  }, [maxCount, modelValue])
+    if (typeof maxCount !== "number") return false;
+    const count = Array.isArray(modelValue)
+      ? modelValue.length
+      : modelValue
+        ? 1
+        : 0;
+    return count >= maxCount;
+  }, [maxCount, modelValue]);
 
   const visibleTags = React.useMemo<T[]>(() => {
-    if (!isMultiple) return []
-    const opts = selectedOptions
-    if (typeof maxTagCount === 'number') {
-      return opts.slice(0, maxTagCount)
+    if (!isMultiple) return [];
+    const opts = selectedOptions;
+    if (typeof maxTagCount === "number") {
+      return opts.slice(0, maxTagCount);
     }
-    return opts
-  }, [isMultiple, selectedOptions, maxTagCount])
+    return opts;
+  }, [isMultiple, selectedOptions, maxTagCount]);
 
   const hiddenTagCount = React.useMemo(() => {
-    if (!isMultiple) return 0
-    const opts = selectedOptions
-    if (typeof maxTagCount === 'number') {
-      return Math.max(0, opts.length - maxTagCount)
+    if (!isMultiple) return 0;
+    const opts = selectedOptions;
+    if (typeof maxTagCount === "number") {
+      return Math.max(0, opts.length - maxTagCount);
     }
-    return 0
-  }, [isMultiple, selectedOptions, maxTagCount])
+    return 0;
+  }, [isMultiple, selectedOptions, maxTagCount]);
 
   function displayLabel(o: T): string {
-    let label = getLabel(o)
+    let label = getLabel(o);
     if (maxTagTextLength && label.length > maxTagTextLength) {
-      label = label.slice(0, maxTagTextLength) + '...'
+      label = label.slice(0, maxTagTextLength) + "...";
     }
-    return label
+    return label;
   }
 
   function selectOption(option: T) {
-    if (isDisabledOption(option)) return
-    const v = getValue(option)
+    if (isDisabledOption(option)) return;
+    const v = getValue(option);
 
     if (!isMultiple) {
-      onValueChange?.(v, option)
-      onSelect?.(v, option)
-      setOpen(false)
-      if (autoClearSearchValue) setQuery('')
-      return
+      onValueChange?.(v, option);
+      onSelect?.(v, option);
+      setOpen(false);
+      if (autoClearSearchValue) setQuery("");
+      return;
     }
 
-    const current = Array.isArray(modelValue) ? [...modelValue] : []
+    const current = Array.isArray(modelValue) ? [...modelValue] : [];
     if (selectedSet.has(v)) {
-      const next = current.filter((x) => x !== v)
-      onValueChange?.(next, option)
-      onDeselect?.(v, option)
+      const next = current.filter((x) => x !== v);
+      onValueChange?.(next, option);
+      onDeselect?.(v, option);
     } else {
-      if (atMax) return
-      const next = [...current, v]
-      onValueChange?.(next, option)
-      onSelect?.(v, option)
+      if (atMax) return;
+      const next = [...current, v];
+      onValueChange?.(next, option);
+      onSelect?.(v, option);
     }
 
-    if (autoClearSearchValue) setQuery('')
+    if (autoClearSearchValue) setQuery("");
   }
 
   function removeTag(value: unknown, event: React.SyntheticEvent | Event) {
-    event.stopPropagation()
-    if (disabled) return
-    const current = Array.isArray(modelValue) ? [...modelValue] : []
-    const next = current.filter((x) => x !== value)
-    const option = getOptionByValue(value)
-    onValueChange?.(next, option as T)
-    if (option) onDeselect?.(value, option)
+    event.stopPropagation();
+    if (disabled) return;
+    const current = Array.isArray(modelValue) ? [...modelValue] : [];
+    const next = current.filter((x) => x !== value);
+    const option = getOptionByValue(value);
+    onValueChange?.(next, option as T);
+    if (option) onDeselect?.(value, option);
   }
 
   function clearAll(event?: React.SyntheticEvent | Event) {
-    event?.stopPropagation()
-    if (disabled) return
-    onClear?.()
+    event?.stopPropagation();
+    if (disabled) return;
+    onClear?.();
     if (isMultiple) {
-      onValueChange?.([], [])
+      onValueChange?.([], []);
     } else {
-      onValueChange?.(null, undefined as unknown as T)
+      onValueChange?.(null, undefined as unknown as T);
     }
-    setQuery('')
+    setQuery("");
   }
 
   function createTag() {
-    if (!allowCreate && mode !== 'tags') return
-    const q = query.trim()
-    if (!q) return
-    const exists = options.some((o) => getLabel(o) === q || String(getValue(o)) === q)
-    if (exists) return
+    if (!allowCreate && mode !== "tags") return;
+    const q = query.trim();
+    if (!q) return;
+    const exists = options.some(
+      (o) => getLabel(o) === q || String(getValue(o)) === q,
+    );
+    if (exists) return;
 
     if (!isMultiple) {
-      const newOption = { [labelKey]: q, [valueKey]: q } as T
-      onValueChange?.(q, newOption)
-      onSelect?.(q, newOption)
-      setOpen(false)
-      setQuery('')
-      return
+      const newOption = { [labelKey]: q, [valueKey]: q } as T;
+      onValueChange?.(q, newOption);
+      onSelect?.(q, newOption);
+      setOpen(false);
+      setQuery("");
+      return;
     }
 
-    if (atMax) return
-    const current = Array.isArray(modelValue) ? [...modelValue] : []
-    const next = [...current, q]
-    const newOption = { [labelKey]: q, [valueKey]: q } as T
-    onValueChange?.(next, newOption)
-    onSelect?.(q, newOption)
-    setQuery('')
+    if (atMax) return;
+    const current = Array.isArray(modelValue) ? [...modelValue] : [];
+    const next = [...current, q];
+    const newOption = { [labelKey]: q, [valueKey]: q } as T;
+    onValueChange?.(next, newOption);
+    onSelect?.(q, newOption);
+    setQuery("");
   }
 
   function handleInputKeydown(event: React.KeyboardEvent) {
-    onInputKeyDown?.(event)
-    if (event.key === 'Enter' && query.trim() && mode === 'tags') {
-      event.preventDefault()
-      createTag()
+    onInputKeyDown?.(event);
+    if (event.key === "Enter" && query.trim() && mode === "tags") {
+      event.preventDefault();
+      createTag();
     }
-    if (tokenSeparators.length && mode === 'tags') {
+    if (tokenSeparators.length && mode === "tags") {
       if (tokenSeparators.includes(event.key)) {
-        event.preventDefault()
-        createTag()
+        event.preventDefault();
+        createTag();
       }
     }
   }
 
   // Clear query when the popover closes.
   React.useEffect(() => {
-    if (!isOpen && autoClearSearchValue) setQuery('')
+    if (!isOpen && autoClearSearchValue) setQuery("");
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen])
+  }, [isOpen]);
 
   const triggerBaseClasses = cn(
-    'flex w-full items-center justify-between gap-2 rounded-md border text-sm transition-[color,box-shadow] outline-none disabled:cursor-not-allowed disabled:opacity-50',
+    "flex w-full items-center justify-between gap-2 rounded-md border text-sm transition-[color,box-shadow] outline-none disabled:cursor-not-allowed disabled:opacity-50",
     sizeClasses[size],
     variantClasses[variant],
     statusClasses[status],
     className,
-  )
+  );
 
   const isEmpty = isMultiple
     ? !Array.isArray(modelValue) || modelValue.length === 0
-    : modelValue == null || modelValue === ''
+    : modelValue == null || modelValue === "";
 
-  const showClear = allowClear && !isEmpty && !disabled && !loading
-  const showSearchInput = showSearch || mode === 'tags'
+  const showClear = allowClear && !isEmpty && !disabled && !loading;
+  const showSearchInput = showSearch || mode === "tags";
 
   return (
     <Popover open={isOpen} onOpenChange={setOpen}>
@@ -421,7 +462,7 @@ function AdvanceSelect<T extends Record<string, unknown> | string | number>({
           type="button"
           role="combobox"
           aria-expanded={isOpen}
-          aria-invalid={status === 'error' ? true : undefined}
+          aria-invalid={status === "error" ? true : undefined}
           disabled={disabled || loading}
           data-uipkge=""
           data-slot="advance-select"
@@ -436,7 +477,12 @@ function AdvanceSelect<T extends Record<string, unknown> | string | number>({
           {isMultiple ? (
             <div
               className="flex flex-1 flex-nowrap items-center gap-1 overflow-x-auto"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' } as React.CSSProperties}
+              style={
+                {
+                  scrollbarWidth: "none",
+                  msOverflowStyle: "none",
+                } as React.CSSProperties
+              }
             >
               {selectedOptions.length ? (
                 <>
@@ -465,9 +511,9 @@ function AdvanceSelect<T extends Record<string, unknown> | string | number>({
                             aria-label={`Remove ${getLabel(opt)}`}
                             onClick={(e) => removeTag(getValue(opt), e)}
                             onKeyDown={(e) => {
-                              if (e.key === 'Enter' || e.key === ' ') {
-                                e.preventDefault()
-                                removeTag(getValue(opt), e)
+                              if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault();
+                                removeTag(getValue(opt), e);
                               }
                             }}
                           >
@@ -478,9 +524,14 @@ function AdvanceSelect<T extends Record<string, unknown> | string | number>({
                     ),
                   )}
                   {hiddenTagCount > 0 && (
-                    <Badge variant="secondary" className="bg-muted text-foreground h-6 text-xs font-normal">
-                      {typeof maxTagPlaceholder === 'function'
-                        ? maxTagPlaceholder(selectedOptions.slice(maxTagCount ?? 0))
+                    <Badge
+                      variant="secondary"
+                      className="bg-muted text-foreground h-6 text-xs font-normal"
+                    >
+                      {typeof maxTagPlaceholder === "function"
+                        ? maxTagPlaceholder(
+                            selectedOptions.slice(maxTagCount ?? 0),
+                          )
                         : maxTagPlaceholder
                           ? maxTagPlaceholder
                           : `+${hiddenTagCount}`}
@@ -488,20 +539,24 @@ function AdvanceSelect<T extends Record<string, unknown> | string | number>({
                   )}
                 </>
               ) : (
-                <span className="text-muted-foreground truncate">{placeholder}</span>
+                <span className="text-muted-foreground truncate">
+                  {placeholder}
+                </span>
               )}
             </div>
           ) : /* Single mode display */
           renderLabel ? (
             renderLabel({
               value: modelValue,
-              label: selectedOptions[0] ? getLabel(selectedOptions[0]) : '',
+              label: selectedOptions[0] ? getLabel(selectedOptions[0]) : "",
             })
           ) : (
             <span
               className={cn(
-                'flex-1 truncate text-left',
-                selectedOptions.length ? 'text-foreground' : 'text-muted-foreground',
+                "flex-1 truncate text-left",
+                selectedOptions.length
+                  ? "text-foreground"
+                  : "text-muted-foreground",
               )}
             >
               {selectedOptions[0] ? getLabel(selectedOptions[0]) : placeholder}
@@ -522,16 +577,18 @@ function AdvanceSelect<T extends Record<string, unknown> | string | number>({
                 aria-label="Clear selection"
                 onClick={clearAll}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault()
-                    clearAll(e)
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    clearAll(e);
                   }
                 }}
               >
                 {clearIcon ?? <X className="size-4" aria-hidden="true" />}
               </span>
             ) : (
-              (suffixIcon ?? <ChevronDown className="text-muted-foreground size-4 opacity-50" />)
+              (suffixIcon ?? (
+                <ChevronDown className="text-muted-foreground size-4 opacity-50" />
+              ))
             )}
           </span>
         </button>
@@ -541,7 +598,10 @@ function AdvanceSelect<T extends Record<string, unknown> | string | number>({
         className="p-0"
         align="start"
         sideOffset={4}
-        style={{ width: 'var(--radix-popover-trigger-width)', maxHeight: `${listHeight}px` }}
+        style={{
+          width: "var(--radix-popover-trigger-width)",
+          maxHeight: `${listHeight}px`,
+        }}
         onScroll={onPopupScroll}
       >
         <Command shouldFilter={false} className="flex flex-col overflow-hidden">
@@ -555,9 +615,13 @@ function AdvanceSelect<T extends Record<string, unknown> | string | number>({
           )}
 
           <CommandList className="flex-1 overflow-y-auto">
-            {!loading && filteredOptions.length === 0 && <CommandEmpty>{emptyContent ?? notFoundContent}</CommandEmpty>}
+            {!loading && filteredOptions.length === 0 && (
+              <CommandEmpty>{emptyContent ?? notFoundContent}</CommandEmpty>
+            )}
 
-            {loading && filteredOptions.length === 0 && <div className="py-6 text-center text-sm">{loadingText}</div>}
+            {loading && filteredOptions.length === 0 && (
+              <div className="py-6 text-center text-sm">{loadingText}</div>
+            )}
 
             {grouped.map((group, gi) => (
               <React.Fragment key={group.heading || gi}>
@@ -567,22 +631,35 @@ function AdvanceSelect<T extends Record<string, unknown> | string | number>({
                     <CommandItem
                       key={String(getValue(opt))}
                       value={String(getValue(opt))}
-                      disabled={isDisabledOption(opt) || (atMax && !selectedSet.has(getValue(opt)))}
-                      data-active={gi === 0 && idx === 0 && defaultActiveFirstOption ? 'true' : undefined}
+                      disabled={
+                        isDisabledOption(opt) ||
+                        (atMax && !selectedSet.has(getValue(opt)))
+                      }
+                      data-active={
+                        gi === 0 && idx === 0 && defaultActiveFirstOption
+                          ? "true"
+                          : undefined
+                      }
                       style={
                         virtual && options.length > 100
-                          ? ({ contentVisibility: 'auto' } as React.CSSProperties)
+                          ? ({
+                              contentVisibility: "auto",
+                            } as React.CSSProperties)
                           : undefined
                       }
                       onSelect={() => selectOption(opt)}
                     >
                       <Check
                         className={cn(
-                          'mr-2 size-4 shrink-0',
-                          selectedSet.has(getValue(opt)) ? 'opacity-100' : 'opacity-0',
+                          "mr-2 size-4 shrink-0",
+                          selectedSet.has(getValue(opt))
+                            ? "opacity-100"
+                            : "opacity-0",
                         )}
                       />
-                      {renderOption ? renderOption({ option: opt, index: idx }) : getLabel(opt)}
+                      {renderOption
+                        ? renderOption({ option: opt, index: idx })
+                        : getLabel(opt)}
                     </CommandItem>
                   ))}
                 </CommandGroup>
@@ -590,19 +667,27 @@ function AdvanceSelect<T extends Record<string, unknown> | string | number>({
             ))}
 
             {/* Create new option in tags / allowCreate modes */}
-            {query.trim() && (allowCreate || mode === 'tags') && !options.some((o) => getLabel(o) === query.trim()) && (
-              <CommandItem value={`create:${query}`} onSelect={createTag}>
-                <Check className="mr-2 size-4 opacity-0" />
-                Create &quot;{query.trim()}&quot;
-              </CommandItem>
-            )}
+            {query.trim() &&
+              (allowCreate || mode === "tags") &&
+              !options.some((o) => getLabel(o) === query.trim()) && (
+                <CommandItem value={`create:${query}`} onSelect={createTag}>
+                  <Check className="mr-2 size-4 opacity-0" />
+                  Create &quot;{query.trim()}&quot;
+                </CommandItem>
+              )}
           </CommandList>
 
           {/* Footer for multiple mode */}
           {isMultiple && selectedOptions.length > 0 && (
             <div className="flex items-center justify-between border-t px-2 py-1.5 text-xs">
-              <span className="text-muted-foreground">{selectedOptions.length} selected</span>
-              <button type="button" className="text-muted-foreground hover:text-foreground" onClick={clearAll}>
+              <span className="text-muted-foreground">
+                {selectedOptions.length} selected
+              </span>
+              <button
+                type="button"
+                className="text-muted-foreground hover:text-foreground"
+                onClick={clearAll}
+              >
                 Clear all
               </button>
             </div>
@@ -610,8 +695,8 @@ function AdvanceSelect<T extends Record<string, unknown> | string | number>({
         </Command>
       </PopoverContent>
     </Popover>
-  )
+  );
 }
-AdvanceSelect.displayName = 'AdvanceSelect'
+AdvanceSelect.displayName = "AdvanceSelect";
 
-export { AdvanceSelect }
+export { AdvanceSelect };

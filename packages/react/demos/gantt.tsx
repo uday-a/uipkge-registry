@@ -1,173 +1,179 @@
-import { useState } from 'react'
-import Story from '../../components/story/Story'
-import { Gantt, GanttHeader, GanttTree, GanttTimeline, type GanttTask } from '@react-registry/gantt'
-import { Badge } from '@react-registry/badge'
+import { useState } from "react";
+import Story from "../../components/story/Story";
+import {
+  Gantt,
+  GanttHeader,
+  GanttTree,
+  GanttTimeline,
+  type GanttTask,
+} from "@react-registry/gantt";
+import { Badge } from "@react-registry/badge";
 
 const sampleTasks: GanttTask[] = [
   {
-    id: 't-1',
-    name: 'Discovery & System Architecture',
-    startDate: '2026-08-01',
-    endDate: '2026-08-08',
+    id: "t-1",
+    name: "Discovery & System Architecture",
+    startDate: "2026-08-01",
+    endDate: "2026-08-08",
     progress: 100,
-    status: 'done',
-    priority: 'high',
-    assignee: { name: 'Sarah Connor', initials: 'SC' },
+    status: "done",
+    priority: "high",
+    assignee: { name: "Sarah Connor", initials: "SC" },
   },
   {
-    id: 't-2',
-    name: 'Design Tokens & Component Specs',
-    startDate: '2026-08-06',
-    endDate: '2026-08-16',
+    id: "t-2",
+    name: "Design Tokens & Component Specs",
+    startDate: "2026-08-06",
+    endDate: "2026-08-16",
     progress: 85,
-    status: 'in-progress',
-    priority: 'urgent',
-    assignee: { name: 'Marcus Rivera', initials: 'MR' },
+    status: "in-progress",
+    priority: "urgent",
+    assignee: { name: "Marcus Rivera", initials: "MR" },
   },
   {
-    id: 't-3',
-    name: 'Core Primitives Implementation',
-    startDate: '2026-08-12',
-    endDate: '2026-08-24',
+    id: "t-3",
+    name: "Core Primitives Implementation",
+    startDate: "2026-08-12",
+    endDate: "2026-08-24",
     progress: 50,
-    status: 'in-progress',
-    priority: 'high',
-    dependencies: ['t-2'],
-    assignee: { name: 'Priya Nair', initials: 'PN' },
+    status: "in-progress",
+    priority: "high",
+    dependencies: ["t-2"],
+    assignee: { name: "Priya Nair", initials: "PN" },
   },
   {
-    id: 't-4',
-    name: 'Alpha Registry Release',
-    startDate: '2026-08-25',
-    endDate: '2026-08-25',
+    id: "t-4",
+    name: "Alpha Registry Release",
+    startDate: "2026-08-25",
+    endDate: "2026-08-25",
     isMilestone: true,
-    status: 'todo',
-    priority: 'urgent',
-    dependencies: ['t-3'],
+    status: "todo",
+    priority: "urgent",
+    dependencies: ["t-3"],
   },
   {
-    id: 't-5',
-    name: 'End-to-End Testing & Verification',
-    startDate: '2026-08-26',
-    endDate: '2026-09-06',
+    id: "t-5",
+    name: "End-to-End Testing & Verification",
+    startDate: "2026-08-26",
+    endDate: "2026-09-06",
     progress: 10,
-    status: 'todo',
-    priority: 'medium',
-    dependencies: ['t-4'],
-    assignee: { name: 'Sundar Krishnan', initials: 'SK' },
+    status: "todo",
+    priority: "medium",
+    dependencies: ["t-4"],
+    assignee: { name: "Sundar Krishnan", initials: "SK" },
   },
   {
-    id: 't-6',
-    name: 'Production Deployment',
-    startDate: '2026-09-08',
-    endDate: '2026-09-08',
+    id: "t-6",
+    name: "Production Deployment",
+    startDate: "2026-09-08",
+    endDate: "2026-09-08",
     isMilestone: true,
-    status: 'todo',
-    dependencies: ['t-5'],
+    status: "todo",
+    dependencies: ["t-5"],
   },
-]
+];
 
 const groupTasks: GanttTask[] = [
   {
-    id: 'grp-1',
-    name: 'Phase 1: Foundation',
-    startDate: '2026-08-01',
-    endDate: '2026-08-18',
+    id: "grp-1",
+    name: "Phase 1: Foundation",
+    startDate: "2026-08-01",
+    endDate: "2026-08-18",
     isGroup: true,
     progress: 90,
   },
   {
-    id: 'sub-1',
-    parentId: 'grp-1',
-    name: 'Design System Tokens',
-    startDate: '2026-08-01',
-    endDate: '2026-08-09',
+    id: "sub-1",
+    parentId: "grp-1",
+    name: "Design System Tokens",
+    startDate: "2026-08-01",
+    endDate: "2026-08-09",
     progress: 100,
-    status: 'done',
+    status: "done",
   },
   {
-    id: 'sub-2',
-    parentId: 'grp-1',
-    name: 'Headless Primitive Setup',
-    startDate: '2026-08-08',
-    endDate: '2026-08-18',
+    id: "sub-2",
+    parentId: "grp-1",
+    name: "Headless Primitive Setup",
+    startDate: "2026-08-08",
+    endDate: "2026-08-18",
     progress: 80,
-    status: 'in-progress',
+    status: "in-progress",
   },
   {
-    id: 'grp-2',
-    name: 'Phase 2: Productization',
-    startDate: '2026-08-19',
-    endDate: '2026-09-05',
+    id: "grp-2",
+    name: "Phase 2: Productization",
+    startDate: "2026-08-19",
+    endDate: "2026-09-05",
     isGroup: true,
     progress: 25,
   },
   {
-    id: 'sub-3',
-    parentId: 'grp-2',
-    name: 'Composed Dashboard Blocks',
-    startDate: '2026-08-19',
-    endDate: '2026-08-29',
+    id: "sub-3",
+    parentId: "grp-2",
+    name: "Composed Dashboard Blocks",
+    startDate: "2026-08-19",
+    endDate: "2026-08-29",
     progress: 40,
-    status: 'in-progress',
+    status: "in-progress",
   },
   {
-    id: 'sub-4',
-    parentId: 'grp-2',
-    name: 'Documentation Island Previews',
-    startDate: '2026-08-28',
-    endDate: '2026-09-05',
+    id: "sub-4",
+    parentId: "grp-2",
+    name: "Documentation Island Previews",
+    startDate: "2026-08-28",
+    endDate: "2026-09-05",
     progress: 0,
-    status: 'todo',
+    status: "todo",
   },
-]
+];
 
 const statusTasks: GanttTask[] = [
   {
-    id: 's-1',
-    name: 'Security Audit & Pen-Testing',
-    startDate: '2026-08-02',
-    endDate: '2026-08-10',
-    status: 'done',
+    id: "s-1",
+    name: "Security Audit & Pen-Testing",
+    startDate: "2026-08-02",
+    endDate: "2026-08-10",
+    status: "done",
     progress: 100,
   },
   {
-    id: 's-2',
-    name: 'Database Migration to Postgres',
-    startDate: '2026-08-08',
-    endDate: '2026-08-20',
-    status: 'in-progress',
+    id: "s-2",
+    name: "Database Migration to Postgres",
+    startDate: "2026-08-08",
+    endDate: "2026-08-20",
+    status: "in-progress",
     progress: 65,
   },
   {
-    id: 's-3',
-    name: 'Payment Gateway Webhook Sync',
-    startDate: '2026-08-14',
-    endDate: '2026-08-26',
-    status: 'at-risk',
+    id: "s-3",
+    name: "Payment Gateway Webhook Sync",
+    startDate: "2026-08-14",
+    endDate: "2026-08-26",
+    status: "at-risk",
     progress: 30,
   },
   {
-    id: 's-4',
-    name: 'SSO SAML Enterprise Auth',
-    startDate: '2026-08-18',
-    endDate: '2026-08-30',
-    status: 'blocked',
+    id: "s-4",
+    name: "SSO SAML Enterprise Auth",
+    startDate: "2026-08-18",
+    endDate: "2026-08-30",
+    status: "blocked",
     progress: 15,
   },
   {
-    id: 's-5',
-    name: 'Analytics Telemetry Pipeline',
-    startDate: '2026-08-25',
-    endDate: '2026-09-05',
-    status: 'todo',
+    id: "s-5",
+    name: "Analytics Telemetry Pipeline",
+    startDate: "2026-08-25",
+    endDate: "2026-09-05",
+    status: "todo",
     progress: 0,
   },
-]
+];
 
 export default function GanttDemo() {
-  const [tasks] = useState<GanttTask[]>(sampleTasks)
-  const [selectedTask, setSelectedTask] = useState<GanttTask | null>(null)
+  const [tasks] = useState<GanttTask[]>(sampleTasks);
+  const [selectedTask, setSelectedTask] = useState<GanttTask | null>(null);
 
   return (
     <>
@@ -253,7 +259,13 @@ export default function GanttDemo() {
         title="Compact Mini Widget"
         description="Dense 32px row height and slim tree width designed for dashboard sidebars and summary cards."
       >
-        <Gantt tasks={tasks.slice(0, 4)} scale="day" rowHeight={32} treeWidth={220} className="h-64">
+        <Gantt
+          tasks={tasks.slice(0, 4)}
+          scale="day"
+          rowHeight={32}
+          treeWidth={220}
+          className="h-64"
+        >
           <GanttHeader title="Active Sprint" showScaleSwitcher={false} />
           <div className="flex min-h-0 flex-1 overflow-hidden">
             <GanttTree showPriority={false} />
@@ -267,7 +279,12 @@ export default function GanttDemo() {
         description="Clicking any deliverable bar or tree row emits a task-click event to inspect task details."
       >
         <div className="space-y-4">
-          <Gantt tasks={tasks} scale="day" className="h-80" onTaskClick={setSelectedTask}>
+          <Gantt
+            tasks={tasks}
+            scale="day"
+            className="h-80"
+            onTaskClick={setSelectedTask}
+          >
             <GanttHeader title="Click any task to inspect details" />
             <div className="flex min-h-0 flex-1 overflow-hidden">
               <GanttTree />
@@ -279,22 +296,28 @@ export default function GanttDemo() {
             <div className="border-border bg-card flex items-center justify-between rounded-lg border p-4">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-muted-foreground font-mono text-xs">{selectedTask.id}</span>
+                  <span className="text-muted-foreground font-mono text-xs">
+                    {selectedTask.id}
+                  </span>
                   <Badge variant="secondary">{selectedTask.status}</Badge>
                 </div>
-                <p className="text-foreground mt-1 text-sm font-semibold">{selectedTask.name}</p>
+                <p className="text-foreground mt-1 text-sm font-semibold">
+                  {selectedTask.name}
+                </p>
                 <p className="text-muted-foreground text-xs">
                   {selectedTask.startDate} &rarr; {selectedTask.endDate}
                 </p>
               </div>
               <div className="text-right">
                 <p className="text-muted-foreground text-xs">Progress</p>
-                <p className="text-primary font-mono text-lg font-bold">{selectedTask.progress ?? 0}%</p>
+                <p className="text-primary font-mono text-lg font-bold">
+                  {selectedTask.progress ?? 0}%
+                </p>
               </div>
             </div>
           ) : null}
         </div>
       </Story>
     </>
-  )
+  );
 }

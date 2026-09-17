@@ -1,1 +1,4 @@
-export { CandlestickChart, type CandlestickChartProps } from './CandlestickChart'
+export {
+  CandlestickChart,
+  type CandlestickChartProps,
+} from "./CandlestickChart";

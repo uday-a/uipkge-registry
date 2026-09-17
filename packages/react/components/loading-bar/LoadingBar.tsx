@@ -1,48 +1,51 @@
-'use client'
+"use client";
 
-import * as React from 'react'
-import { cn } from '@/lib/utils'
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
 export interface LoadingBarHandle {
-  start: (from?: number) => void
-  finish: () => void
-  error: () => void
-  fail: () => void
-  inc: (amount?: number) => void
-  set: (value: number) => void
+  start: (from?: number) => void;
+  finish: () => void;
+  error: () => void;
+  fail: () => void;
+  inc: (amount?: number) => void;
+  set: (value: number) => void;
 }
 
-export interface LoadingBarProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
+export interface LoadingBarProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  "onChange"
+> {
   /** 0–100 progress value. Use with value/onChange or drive via the hook. */
-  value?: number
+  value?: number;
   /** Bar color. Accepts any CSS color value. */
-  color?: string
+  color?: string;
   /** Bar height in px. */
-  height?: number
+  height?: number;
   /** Indeterminate sliding animation (ignores value). */
-  indeterminate?: boolean
+  indeterminate?: boolean;
   /** Anchor the bar to the top or bottom of the viewport. */
-  position?: 'top' | 'bottom'
+  position?: "top" | "bottom";
   /** Show a spinner at the trailing edge of the bar. */
-  spinner?: boolean
+  spinner?: boolean;
   /** Error state tints the bar. */
-  error?: boolean
+  error?: boolean;
   /** Hide the bar entirely (e.g. when finished). */
-  hidden?: boolean
+  hidden?: boolean;
   /** Fired with the new value on every internal update (v-model equivalent). */
-  onValueChange?: (value: number) => void
+  onValueChange?: (value: number) => void;
   /** Fired when progress reaches 100. */
-  onFinish?: () => void
+  onFinish?: () => void;
 }
 
 const LoadingBar = React.forwardRef<LoadingBarHandle, LoadingBarProps>(
   (
     {
       value = 0,
-      color = '',
+      color = "",
       height = 3,
       indeterminate = false,
-      position = 'top',
+      position = "top",
       spinner = false,
       error = false,
       hidden = false,
@@ -53,146 +56,149 @@ const LoadingBar = React.forwardRef<LoadingBarHandle, LoadingBarProps>(
     },
     ref,
   ) => {
-    const [internal, setInternal] = React.useState(value)
+    const [internal, setInternal] = React.useState(value);
     /** Imperative fail() tints the bar without requiring the error prop. */
-    const [internalError, setInternalError] = React.useState(false)
+    const [internalError, setInternalError] = React.useState(false);
     /** After finish/fail, fade out then reset. */
-    const [fading, setFading] = React.useState(false)
-    const rafRef = React.useRef<number | null>(null)
-    const hideTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+    const [fading, setFading] = React.useState(false);
+    const rafRef = React.useRef<number | null>(null);
+    const hideTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(
+      null,
+    );
     /** Bumped on start/finish/fail so in-flight trickle frames abort. */
-    const generationRef = React.useRef(0)
-    const onValueChangeRef = React.useRef(onValueChange)
-    const onFinishRef = React.useRef(onFinish)
-    onValueChangeRef.current = onValueChange
-    onFinishRef.current = onFinish
+    const generationRef = React.useRef(0);
+    const onValueChangeRef = React.useRef(onValueChange);
+    const onFinishRef = React.useRef(onFinish);
+    onValueChangeRef.current = onValueChange;
+    onFinishRef.current = onFinish;
 
     // Keep internal in sync when the controlled value prop changes.
     React.useEffect(() => {
-      setInternal(value)
-    }, [value])
+      setInternal(value);
+    }, [value]);
 
     const clearTimers = React.useCallback(() => {
       if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current)
-        rafRef.current = null
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
       }
       if (hideTimerRef.current) {
-        clearTimeout(hideTimerRef.current)
-        hideTimerRef.current = null
+        clearTimeout(hideTimerRef.current);
+        hideTimerRef.current = null;
       }
-    }, [])
+    }, []);
 
     const set = React.useCallback((v: number) => {
-      setInternal(v)
-      onValueChangeRef.current?.(v)
-    }, [])
+      setInternal(v);
+      onValueChangeRef.current?.(v);
+    }, []);
 
     /** Slowly creep the bar toward a soft ceiling so progress feels alive. */
     const trickle = React.useCallback((gen: number) => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
       const step = () => {
-        if (gen !== generationRef.current) return
+        if (gen !== generationRef.current) return;
         setInternal((prev) => {
-          if (gen !== generationRef.current || prev >= 95) return prev
-          const next = Math.min(95, prev + (95 - prev) * 0.04 + 0.15)
-          onValueChangeRef.current?.(next)
+          if (gen !== generationRef.current || prev >= 95) return prev;
+          const next = Math.min(95, prev + (95 - prev) * 0.04 + 0.15);
+          onValueChangeRef.current?.(next);
           if (next < 95 && gen === generationRef.current) {
-            rafRef.current = requestAnimationFrame(step)
+            rafRef.current = requestAnimationFrame(step);
           }
-          return next
-        })
-      }
-      rafRef.current = requestAnimationFrame(step)
-    }, [])
+          return next;
+        });
+      };
+      rafRef.current = requestAnimationFrame(step);
+    }, []);
 
     const start = React.useCallback(
       (from = 20) => {
-        clearTimers()
-        generationRef.current += 1
-        const gen = generationRef.current
-        setInternalError(false)
-        setFading(false)
-        set(from)
-        trickle(gen)
+        clearTimers();
+        generationRef.current += 1;
+        const gen = generationRef.current;
+        setInternalError(false);
+        setFading(false);
+        set(from);
+        trickle(gen);
       },
       [set, trickle, clearTimers],
-    )
+    );
 
     const inc = React.useCallback((amount = 10) => {
       setInternal((prev) => {
-        const next = Math.min(99, prev + amount)
-        onValueChangeRef.current?.(next)
-        return next
-      })
-    }, [])
+        const next = Math.min(99, prev + amount);
+        onValueChangeRef.current?.(next);
+        return next;
+      });
+    }, []);
 
     const finish = React.useCallback(() => {
-      clearTimers()
-      generationRef.current += 1
-      setInternalError(false)
-      set(100)
-      onFinishRef.current?.()
+      clearTimers();
+      generationRef.current += 1;
+      setInternalError(false);
+      set(100);
+      onFinishRef.current?.();
       // Hold full bar briefly, then fade + reset so the next start() is clean.
       hideTimerRef.current = setTimeout(() => {
-        setFading(true)
+        setFading(true);
         hideTimerRef.current = setTimeout(() => {
-          setInternal(0)
-          onValueChangeRef.current?.(0)
-          setFading(false)
-          hideTimerRef.current = null
-        }, 300)
-      }, 200)
-    }, [set, clearTimers])
+          setInternal(0);
+          onValueChangeRef.current?.(0);
+          setFading(false);
+          hideTimerRef.current = null;
+        }, 300);
+      }, 200);
+    }, [set, clearTimers]);
 
     const fail = React.useCallback(() => {
-      clearTimers()
-      generationRef.current += 1
-      setInternalError(true)
-      setInternal(100)
-      onValueChangeRef.current?.(100)
-      onFinishRef.current?.()
+      clearTimers();
+      generationRef.current += 1;
+      setInternalError(true);
+      setInternal(100);
+      onValueChangeRef.current?.(100);
+      onFinishRef.current?.();
       hideTimerRef.current = setTimeout(() => {
-        setFading(true)
+        setFading(true);
         hideTimerRef.current = setTimeout(() => {
-          setInternal(0)
-          setInternalError(false)
-          onValueChangeRef.current?.(0)
-          setFading(false)
-          hideTimerRef.current = null
-        }, 300)
-      }, 400)
-    }, [clearTimers])
+          setInternal(0);
+          setInternalError(false);
+          onValueChangeRef.current?.(0);
+          setFading(false);
+          hideTimerRef.current = null;
+        }, 300);
+      }, 400);
+    }, [clearTimers]);
 
     React.useEffect(() => {
       return () => {
-        clearTimers()
-      }
-    }, [clearTimers])
+        clearTimers();
+      };
+    }, [clearTimers]);
 
-    React.useImperativeHandle(ref, () => ({ start, finish, error: fail, fail, inc, set }), [
-      start,
-      finish,
-      fail,
-      inc,
-      set,
-    ])
+    React.useImperativeHandle(
+      ref,
+      () => ({ start, finish, error: fail, fail, inc, set }),
+      [start, finish, fail, inc, set],
+    );
 
-    const pct = Math.min(100, Math.max(0, internal))
-    const isError = error || internalError
-    const barColor = color || (isError ? 'var(--destructive)' : 'var(--primary)')
-    const visible = !hidden && !fading && (indeterminate || internal > 0)
+    const pct = Math.min(100, Math.max(0, internal));
+    const isError = error || internalError;
+    const barColor =
+      color || (isError ? "var(--destructive)" : "var(--primary)");
+    const visible = !hidden && !fading && (indeterminate || internal > 0);
 
     return (
       <div
         data-uipkge=""
         data-slot="loading-bar"
         data-position={position}
-        data-state={isError ? 'error' : indeterminate ? 'indeterminate' : 'determinate'}
+        data-state={
+          isError ? "error" : indeterminate ? "indeterminate" : "determinate"
+        }
         className={cn(
-          'pointer-events-none fixed left-0 z-[9999] w-full transition-opacity duration-300',
-          position === 'top' ? 'top-0' : 'bottom-0',
-          visible ? 'opacity-100' : 'opacity-0',
+          "pointer-events-none fixed left-0 z-[9999] w-full transition-opacity duration-300",
+          position === "top" ? "top-0" : "bottom-0",
+          visible ? "opacity-100" : "opacity-0",
           className,
         )}
         style={{ height: `${height}px`, ...(props.style ?? {}) }}
@@ -251,9 +257,9 @@ const LoadingBar = React.forwardRef<LoadingBarHandle, LoadingBarProps>(
 }
 `}</style>
       </div>
-    )
+    );
   },
-)
-LoadingBar.displayName = 'LoadingBar'
+);
+LoadingBar.displayName = "LoadingBar";
 
-export { LoadingBar }
+export { LoadingBar };

@@ -1,20 +1,29 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Progress } from '@/components/ui/progress'
-const animated = ref(0)
+import { ref, onMounted, onBeforeUnmount } from "vue";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+const animated = ref(0);
 
 onMounted(() => {
   const tick = () => {
-    animated.value = animated.value >= 100 ? 0 : animated.value + 5
-  }
-  const id = window.setInterval(tick, 600)
-  onBeforeUnmount(() => window.clearInterval(id))
-})
+    animated.value = animated.value >= 100 ? 0 : animated.value + 5;
+  };
+  const id = window.setInterval(tick, 600);
+  onBeforeUnmount(() => window.clearInterval(id));
+});
 </script>
 
 <template>
-  <Story title="With label" description="Progress bar paired with label and percentage row above the track.">
+  <Story
+    title="With label"
+    description="Progress bar paired with label and percentage row above the track."
+  >
     <div class="max-w-md space-y-3">
       <div>
         <div class="text-muted-foreground mb-1.5 flex justify-between text-xs">
@@ -33,7 +42,10 @@ onMounted(() => {
     </div>
   </Story>
 
-  <Story title="Discrete states" description="Empty, half, and complete tracks side by side.">
+  <Story
+    title="Discrete states"
+    description="Empty, half, and complete tracks side by side."
+  >
     <div class="max-w-md space-y-4">
       <div>
         <div class="text-muted-foreground mb-1.5 text-xs">0%</div>
@@ -50,7 +62,10 @@ onMounted(() => {
     </div>
   </Story>
 
-  <Story title="Multi-percentage row" description="Static showcase across a typical 0–100 range.">
+  <Story
+    title="Multi-percentage row"
+    description="Static showcase across a typical 0–100 range."
+  >
     <div class="grid max-w-md gap-3">
       <Progress :model-value="10" />
       <Progress :model-value="30" />
@@ -73,7 +88,10 @@ onMounted(() => {
     </div>
   </Story>
 
-  <Story title="In a card" description="Common use inside a card: title, description, and a labeled progress row.">
+  <Story
+    title="In a card"
+    description="Common use inside a card: title, description, and a labeled progress row."
+  >
     <Card class="max-w-md">
       <CardHeader>
         <CardTitle>Storage</CardTitle>
@@ -81,7 +99,9 @@ onMounted(() => {
       </CardHeader>
       <CardContent>
         <Progress :model-value="64" />
-        <p class="text-muted-foreground mt-2 text-xs">3.6 GB remaining on your current plan.</p>
+        <p class="text-muted-foreground mt-2 text-xs">
+          3.6 GB remaining on your current plan.
+        </p>
       </CardContent>
     </Card>
   </Story>

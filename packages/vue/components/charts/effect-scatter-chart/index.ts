@@ -1,1 +1,1 @@
-export { default as EffectScatterChart } from './EffectScatterChart.vue'
+export { default as EffectScatterChart } from "./EffectScatterChart.vue";

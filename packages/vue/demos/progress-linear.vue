@@ -1,15 +1,21 @@
 <script setup lang="ts">
-import { ProgressLinear } from '@/components/ui/progress-linear'
+import { ProgressLinear } from "@/components/ui/progress-linear";
 </script>
 
 <template>
-  <Story title="Determinate" description="Linear progress bar driven by a fixed model value (0–100).">
+  <Story
+    title="Determinate"
+    description="Linear progress bar driven by a fixed model value (0–100)."
+  >
     <div class="max-w-md">
       <ProgressLinear :model-value="60" />
     </div>
   </Story>
 
-  <Story title="Indeterminate" description="indeterminate animates a sliding bar for unknown-duration tasks.">
+  <Story
+    title="Indeterminate"
+    description="indeterminate animates a sliding bar for unknown-duration tasks."
+  >
     <div class="max-w-md">
       <ProgressLinear indeterminate />
     </div>
@@ -33,7 +39,10 @@ import { ProgressLinear } from '@/components/ui/progress-linear'
     </div>
   </Story>
 
-  <Story title="Striped" description="striped paints diagonal hatch marks on the fill for a loading aesthetic.">
+  <Story
+    title="Striped"
+    description="striped paints diagonal hatch marks on the fill for a loading aesthetic."
+  >
     <div class="max-w-md space-y-3">
       <ProgressLinear :model-value="70" striped />
       <ProgressLinear :model-value="45" striped color="var(--info)" />
@@ -64,7 +73,10 @@ import { ProgressLinear } from '@/components/ui/progress-linear'
     </div>
   </Story>
 
-  <Story title="Reverse" description="reverse fills from right-to-left — useful for RTL UIs or count-down semantics.">
+  <Story
+    title="Reverse"
+    description="reverse fills from right-to-left — useful for RTL UIs or count-down semantics."
+  >
     <div class="max-w-md">
       <ProgressLinear :model-value="35" reverse />
     </div>

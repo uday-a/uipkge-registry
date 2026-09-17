@@ -1,1 +1,1 @@
-export { ScrollProgress, type ScrollProgressProps } from './ScrollProgress'
+export { ScrollProgress, type ScrollProgressProps } from "./ScrollProgress";

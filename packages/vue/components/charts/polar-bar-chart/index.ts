@@ -1,1 +1,1 @@
-export { default as PolarBarChart } from './PolarBarChart.vue'
+export { default as PolarBarChart } from "./PolarBarChart.vue";

@@ -1,19 +1,30 @@
 <script setup lang="ts">
-import type { Table } from '@tanstack/vue-table'
+import type { Table } from "@tanstack/vue-table";
 
-import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-vue-next'
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+} from "lucide-vue-next";
 
 withDefaults(
   defineProps<{
-    table: Table<any>
-    totalRows: number
-    isServerSide: boolean
-    borderless?: boolean
+    table: Table<any>;
+    totalRows: number;
+    isServerSide: boolean;
+    borderless?: boolean;
   }>(),
   { borderless: false },
-)
+);
 </script>
 
 <template>
@@ -24,7 +35,9 @@ withDefaults(
     ]"
   >
     <div class="text-muted-foreground text-sm tabular-nums">
-      <span class="text-foreground font-medium">{{ table.getFilteredSelectedRowModel().rows.length }}</span>
+      <span class="text-foreground font-medium">{{
+        table.getFilteredSelectedRowModel().rows.length
+      }}</span>
       of
       {{ isServerSide ? totalRows : table.getFilteredRowModel().rows.length }}
       row(s) selected
@@ -36,16 +49,22 @@ withDefaults(
           :model-value="`${table.getState().pagination.pageSize}`"
           @update:model-value="
             (value) => {
-              table.setPageSize(Number(value))
-              table.setPageIndex(0)
+              table.setPageSize(Number(value));
+              table.setPageIndex(0);
             }
           "
         >
           <SelectTrigger class="h-8 w-[4.5rem]">
-            <SelectValue :placeholder="`${table.getState().pagination.pageSize}`" />
+            <SelectValue
+              :placeholder="`${table.getState().pagination.pageSize}`"
+            />
           </SelectTrigger>
           <SelectContent side="top">
-            <SelectItem v-for="pageSize in [10, 20, 30, 40, 50]" :key="pageSize" :value="`${pageSize}`">
+            <SelectItem
+              v-for="pageSize in [10, 20, 30, 40, 50]"
+              :key="pageSize"
+              :value="`${pageSize}`"
+            >
               {{ pageSize }}
             </SelectItem>
           </SelectContent>

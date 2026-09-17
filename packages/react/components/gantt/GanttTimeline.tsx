@@ -1,20 +1,32 @@
-'use client'
+"use client";
 
-import * as React from 'react'
-import { cn } from '@/lib/utils'
-import { useGantt } from './Gantt'
-import { GanttBar } from './GanttBar'
-import { GanttMilestone } from './GanttMilestone'
-import type { GanttTask } from './types'
+import * as React from "react";
+import { cn } from "@/lib/utils";
+import { useGantt } from "./Gantt";
+import { GanttBar } from "./GanttBar";
+import { GanttMilestone } from "./GanttMilestone";
+import type { GanttTask } from "./types";
 
 export interface GanttTimelineProps extends React.HTMLAttributes<HTMLDivElement> {
-  showTodayLine?: boolean
-  showDependencies?: boolean
-  onTaskClick?: (task: GanttTask) => void
+  showTodayLine?: boolean;
+  showDependencies?: boolean;
+  onTaskClick?: (task: GanttTask) => void;
 }
 
-export const GanttTimeline = React.forwardRef<HTMLDivElement, GanttTimelineProps>(
-  ({ className, showTodayLine = true, showDependencies = true, onTaskClick: propOnTaskClick, ...props }, ref) => {
+export const GanttTimeline = React.forwardRef<
+  HTMLDivElement,
+  GanttTimelineProps
+>(
+  (
+    {
+      className,
+      showTodayLine = true,
+      showDependencies = true,
+      onTaskClick: propOnTaskClick,
+      ...props
+    },
+    ref,
+  ) => {
     const {
       startDate,
       totalDays,
@@ -23,97 +35,113 @@ export const GanttTimeline = React.forwardRef<HTMLDivElement, GanttTimelineProps
       rowHeight,
       tasks,
       onTaskClick: ctxOnTaskClick,
-    } = useGantt()
-    const handleTaskClick = propOnTaskClick ?? ctxOnTaskClick
+    } = useGantt();
+    const handleTaskClick = propOnTaskClick ?? ctxOnTaskClick;
 
     const columns = React.useMemo(() => {
-      const list: { date: Date; label: string; subLabel: string; isWeekend: boolean }[] = []
-      const start = new Date(startDate)
+      const list: {
+        date: Date;
+        label: string;
+        subLabel: string;
+        isWeekend: boolean;
+      }[] = [];
+      const start = new Date(startDate);
 
       for (let i = 0; i < totalDays; i++) {
-        const d = new Date(start)
-        d.setDate(d.getDate() + i)
-        const dayOfWeek = d.getDay()
-        const isWeekend = dayOfWeek === 0 || dayOfWeek === 6
+        const d = new Date(start);
+        d.setDate(d.getDate() + i);
+        const dayOfWeek = d.getDay();
+        const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
 
         list.push({
           date: d,
-          label: d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
-          subLabel: d.toLocaleDateString(undefined, { weekday: 'narrow' }),
+          label: d.toLocaleDateString(undefined, {
+            month: "short",
+            day: "numeric",
+          }),
+          subLabel: d.toLocaleDateString(undefined, { weekday: "narrow" }),
           isWeekend,
-        })
+        });
       }
-      return list
-    }, [startDate, totalDays])
+      return list;
+    }, [startDate, totalDays]);
 
-    const timelineWidth = columns.length * columnWidth
+    const timelineWidth = columns.length * columnWidth;
 
     const getTaskCoordinates = React.useCallback(
       (task: GanttTask, index: number) => {
-        const start = new Date(startDate).getTime()
-        const taskStart = new Date(task.startDate).getTime()
-        const taskEnd = new Date(task.endDate).getTime()
-        const oneDay = 1000 * 60 * 60 * 24
+        const start = new Date(startDate).getTime();
+        const taskStart = new Date(task.startDate).getTime();
+        const taskEnd = new Date(task.endDate).getTime();
+        const oneDay = 1000 * 60 * 60 * 24;
 
-        const startDiffDays = Math.max(0, (taskStart - start) / oneDay)
-        const durationDays = Math.max(1, (taskEnd - taskStart) / oneDay)
+        const startDiffDays = Math.max(0, (taskStart - start) / oneDay);
+        const durationDays = Math.max(1, (taskEnd - taskStart) / oneDay);
 
-        const left = startDiffDays * columnWidth
-        const width = durationDays * columnWidth
-        const top = index * rowHeight + (rowHeight - 28) / 2
+        const left = startDiffDays * columnWidth;
+        const width = durationDays * columnWidth;
+        const top = index * rowHeight + (rowHeight - 28) / 2;
 
-        return { left, width, top, height: 28 }
+        return { left, width, top, height: 28 };
       },
       [startDate, columnWidth, rowHeight],
-    )
+    );
 
     const todayPosition = React.useMemo(() => {
-      const start = new Date(startDate).getTime()
-      const today = new Date().setHours(0, 0, 0, 0)
-      const oneDay = 1000 * 60 * 60 * 24
-      const diffDays = (today - start) / oneDay
+      const start = new Date(startDate).getTime();
+      const today = new Date().setHours(0, 0, 0, 0);
+      const oneDay = 1000 * 60 * 60 * 24;
+      const diffDays = (today - start) / oneDay;
 
-      if (diffDays < 0 || diffDays > totalDays) return null
-      return diffDays * columnWidth + columnWidth / 2
-    }, [startDate, totalDays, columnWidth])
+      if (diffDays < 0 || diffDays > totalDays) return null;
+      return diffDays * columnWidth + columnWidth / 2;
+    }, [startDate, totalDays, columnWidth]);
 
     const dependencyPaths = React.useMemo(() => {
-      if (!showDependencies) return []
-      const taskMap = new Map<string, { task: GanttTask; index: number }>()
-      tasks.forEach((t, i) => taskMap.set(t.id, { task: t, index: i }))
+      if (!showDependencies) return [];
+      const taskMap = new Map<string, { task: GanttTask; index: number }>();
+      tasks.forEach((t, i) => taskMap.set(t.id, { task: t, index: i }));
 
-      const paths: { d: string; fromId: string; toId: string }[] = []
+      const paths: { d: string; fromId: string; toId: string }[] = [];
 
       tasks.forEach((toTask, toIdx) => {
-        if (!toTask.dependencies || toTask.dependencies.length === 0) return
+        if (!toTask.dependencies || toTask.dependencies.length === 0) return;
         toTask.dependencies.forEach((fromId) => {
-          const fromEntry = taskMap.get(fromId)
-          if (!fromEntry) return
+          const fromEntry = taskMap.get(fromId);
+          if (!fromEntry) return;
 
-          const fromCoords = getTaskCoordinates(fromEntry.task, fromEntry.index)
-          const toCoords = getTaskCoordinates(toTask, toIdx)
+          const fromCoords = getTaskCoordinates(
+            fromEntry.task,
+            fromEntry.index,
+          );
+          const toCoords = getTaskCoordinates(toTask, toIdx);
 
-          const startX = fromEntry.task.isMilestone ? fromCoords.left : fromCoords.left + fromCoords.width
-          const startY = fromCoords.top + 14
+          const startX = fromEntry.task.isMilestone
+            ? fromCoords.left
+            : fromCoords.left + fromCoords.width;
+          const startY = fromCoords.top + 14;
 
-          const endX = toCoords.left
-          const endY = toCoords.top + 14
+          const endX = toCoords.left;
+          const endY = toCoords.top + 14;
 
-          const deltaX = Math.max(16, (endX - startX) / 2)
-          const d = `M ${startX} ${startY} C ${startX + deltaX} ${startY}, ${endX - deltaX} ${endY}, ${endX} ${endY}`
-          paths.push({ d, fromId, toId: toTask.id })
-        })
-      })
+          const deltaX = Math.max(16, (endX - startX) / 2);
+          const d = `M ${startX} ${startY} C ${startX + deltaX} ${startY}, ${endX - deltaX} ${endY}, ${endX} ${endY}`;
+          paths.push({ d, fromId, toId: toTask.id });
+        });
+      });
 
-      return paths
-    }, [showDependencies, tasks, getTaskCoordinates])
+      return paths;
+    }, [showDependencies, tasks, getTaskCoordinates]);
 
     return (
       <div
         ref={ref}
         data-uipkge=""
         data-slot="gantt-timeline"
-        className={cn('bg-background relative flex-1 overflow-x-auto overflow-y-hidden select-none', className)}
+        className={cn(
+          "bg-background relative flex-1 overflow-x-auto overflow-y-hidden select-none",
+          className,
+        )}
         {...props}
       >
         <div style={{ width: `${timelineWidth}px` }} className="relative">
@@ -126,8 +154,8 @@ export const GanttTimeline = React.forwardRef<HTMLDivElement, GanttTimelineProps
                 key={i}
                 style={{ width: `${columnWidth}px` }}
                 className={cn(
-                  'border-border/50 text-muted-foreground flex flex-col items-center justify-center border-r text-xs',
-                  col.isWeekend && 'bg-muted/20 text-muted-foreground/60',
+                  "border-border/50 text-muted-foreground flex flex-col items-center justify-center border-r text-xs",
+                  col.isWeekend && "bg-muted/20 text-muted-foreground/60",
                 )}
               >
                 <span className="text-foreground font-medium">{col.label}</span>
@@ -142,7 +170,10 @@ export const GanttTimeline = React.forwardRef<HTMLDivElement, GanttTimelineProps
                 <div
                   key={i}
                   style={{ width: `${columnWidth}px` }}
-                  className={cn('border-border/30 h-full border-r', col.isWeekend && 'bg-muted/15')}
+                  className={cn(
+                    "border-border/30 h-full border-r",
+                    col.isWeekend && "bg-muted/15",
+                  )}
                 />
               ))}
             </div>
@@ -193,7 +224,7 @@ export const GanttTimeline = React.forwardRef<HTMLDivElement, GanttTimelineProps
             ) : null}
 
             {tasks.map((task, idx) => {
-              const coords = getTaskCoordinates(task, idx)
+              const coords = getTaskCoordinates(task, idx);
               return (
                 <div
                   key={task.id}
@@ -201,7 +232,12 @@ export const GanttTimeline = React.forwardRef<HTMLDivElement, GanttTimelineProps
                   className="border-border/40 hover:bg-muted/10 relative border-b transition-colors"
                 >
                   {task.isMilestone ? (
-                    <GanttMilestone task={task} left={coords.left} top={rowHeight / 2} onTaskClick={handleTaskClick} />
+                    <GanttMilestone
+                      task={task}
+                      left={coords.left}
+                      top={rowHeight / 2}
+                      onTaskClick={handleTaskClick}
+                    />
                   ) : (
                     <GanttBar
                       task={task}
@@ -213,13 +249,13 @@ export const GanttTimeline = React.forwardRef<HTMLDivElement, GanttTimelineProps
                     />
                   )}
                 </div>
-              )
+              );
             })}
           </div>
         </div>
       </div>
-    )
+    );
   },
-)
+);
 
-GanttTimeline.displayName = 'GanttTimeline'
+GanttTimeline.displayName = "GanttTimeline";

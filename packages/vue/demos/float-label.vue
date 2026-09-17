@@ -1,20 +1,26 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { FloatLabel } from '@/components/ui/float-label'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
+import { ref } from "vue";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { FloatLabel } from "@/components/ui/float-label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
-const nameValue = ref('')
-const emailValue = ref('')
-const preselectedValue = ref('John Doe')
-const messageValue = ref('')
-const firstNameValue = ref('')
-const lastNameValue = ref('')
-const profileName = ref('Jane Smith')
-const profileEmail = ref('jane.smith@example.com')
-const profileBio = ref('Product designer passionate about design systems.')
+const nameValue = ref("");
+const emailValue = ref("");
+const preselectedValue = ref("John Doe");
+const messageValue = ref("");
+const firstNameValue = ref("");
+const lastNameValue = ref("");
+const profileName = ref("Jane Smith");
+const profileEmail = ref("jane.smith@example.com");
+const profileBio = ref("Product designer passionate about design systems.");
 </script>
 
 <template>
@@ -26,7 +32,9 @@ const profileBio = ref('Product designer passionate about design systems.')
       <FloatLabel label="Full Name" class="w-full">
         <Input v-model="nameValue" placeholder=" " class="h-11" />
       </FloatLabel>
-      <p class="text-muted-foreground text-xs">Value: {{ nameValue || 'empty' }}</p>
+      <p class="text-muted-foreground text-xs">
+        Value: {{ nameValue || "empty" }}
+      </p>
     </div>
   </Story>
 
@@ -44,7 +52,10 @@ const profileBio = ref('Product designer passionate about design systems.')
     </div>
   </Story>
 
-  <Story title="Input types" description="Floating labels work across email, number, password, and textarea inputs.">
+  <Story
+    title="Input types"
+    description="Floating labels work across email, number, password, and textarea inputs."
+  >
     <div class="max-w-md space-y-4">
       <FloatLabel label="Email Address" required class="w-full">
         <Input type="email" placeholder=" " class="h-11" />
@@ -72,7 +83,10 @@ const profileBio = ref('Product designer passionate about design systems.')
     </div>
   </Story>
 
-  <Story title="Side by side" description="Two float-label inputs in a row — common in name fields and date ranges.">
+  <Story
+    title="Side by side"
+    description="Two float-label inputs in a row — common in name fields and date ranges."
+  >
     <div class="flex max-w-md gap-4">
       <FloatLabel label="First Name" class="flex-1">
         <Input v-model="firstNameValue" placeholder=" " class="h-11" />
@@ -90,7 +104,9 @@ const profileBio = ref('Product designer passionate about design systems.')
     <Card class="max-w-md">
       <CardHeader>
         <CardTitle>Edit profile</CardTitle>
-        <CardDescription>Update your personal information below.</CardDescription>
+        <CardDescription
+          >Update your personal information below.</CardDescription
+        >
       </CardHeader>
       <CardContent class="space-y-4">
         <div class="flex gap-4">
@@ -102,7 +118,12 @@ const profileBio = ref('Product designer passionate about design systems.')
           </FloatLabel>
         </div>
         <FloatLabel label="Email" required class="w-full">
-          <Input v-model="profileEmail" type="email" placeholder=" " class="h-11" />
+          <Input
+            v-model="profileEmail"
+            type="email"
+            placeholder=" "
+            class="h-11"
+          />
         </FloatLabel>
         <FloatLabel label="Bio" class="w-full">
           <Textarea v-model="profileBio" placeholder=" " class="min-h-20" />

@@ -1,34 +1,49 @@
-import Story from '../../components/story/Story'
-import { GradientText } from '@react-registry/gradient-text'
+import Story from "../../components/story/Story";
+import { GradientText } from "@react-registry/gradient-text";
 
 export default function GradientTextDemo() {
   return (
     <>
-      <Story title="Sunset preset" description="preset='sunset' applies a warm orange-to-peach gradient.">
+      <Story
+        title="Sunset preset"
+        description="preset='sunset' applies a warm orange-to-peach gradient."
+      >
         <p className="text-3xl font-bold">
           <GradientText preset="sunset">Beautiful Gradient</GradientText>
         </p>
       </Story>
 
-      <Story title="Ocean preset" description="preset='ocean' applies a teal-to-light-blue gradient.">
+      <Story
+        title="Ocean preset"
+        description="preset='ocean' applies a teal-to-light-blue gradient."
+      >
         <p className="text-3xl font-bold">
           <GradientText preset="ocean">Ocean Breeze</GradientText>
         </p>
       </Story>
 
-      <Story title="Forest preset" description="preset='forest' applies a deep-green-to-lime gradient.">
+      <Story
+        title="Forest preset"
+        description="preset='forest' applies a deep-green-to-lime gradient."
+      >
         <p className="text-3xl font-bold">
           <GradientText preset="forest">Forest Canopy</GradientText>
         </p>
       </Story>
 
-      <Story title="Rainbow preset" description="preset='rainbow' spans the full spectrum.">
+      <Story
+        title="Rainbow preset"
+        description="preset='rainbow' spans the full spectrum."
+      >
         <p className="text-3xl font-bold">
           <GradientText preset="rainbow">Rainbow Text</GradientText>
         </p>
       </Story>
 
-      <Story title="All presets" description="Every preset gradient in one row.">
+      <Story
+        title="All presets"
+        description="Every preset gradient in one row."
+      >
         <div className="flex flex-wrap gap-x-6 gap-y-2 text-xl font-bold">
           <GradientText preset="sunset">sunset</GradientText>
           <GradientText preset="ocean">ocean</GradientText>
@@ -42,7 +57,10 @@ export default function GradientTextDemo() {
         </div>
       </Story>
 
-      <Story title="Custom from/to" description="from and to define a two-stop gradient.">
+      <Story
+        title="Custom from/to"
+        description="from and to define a two-stop gradient."
+      >
         <p className="text-3xl font-bold">
           <GradientText from="#7c3aed" to="#ec4899">
             Custom Colors
@@ -50,7 +68,10 @@ export default function GradientTextDemo() {
         </p>
       </Story>
 
-      <Story title="Direction" description="direction controls the gradient axis.">
+      <Story
+        title="Direction"
+        description="direction controls the gradient axis."
+      >
         <div className="space-y-2 text-2xl font-bold">
           <GradientText from="#7c3aed" to="#ec4899" direction="to bottom">
             to bottom
@@ -64,7 +85,10 @@ export default function GradientTextDemo() {
         </div>
       </Story>
 
-      <Story title="Custom gradient" description="gradient accepts any full CSS gradient string (multi-stop, angled).">
+      <Story
+        title="Custom gradient"
+        description="gradient accepts any full CSS gradient string (multi-stop, angled)."
+      >
         <p className="text-3xl font-bold">
           <GradientText gradient="linear-gradient(45deg, #f12711, #f5af19, #2193b0, #6dd5ed)">
             Four-Stop Angled
@@ -72,7 +96,10 @@ export default function GradientTextDemo() {
         </p>
       </Story>
 
-      <Story title="Animated" description="animated shifts the background position for a flowing effect.">
+      <Story
+        title="Animated"
+        description="animated shifts the background position for a flowing effect."
+      >
         <p className="text-3xl font-bold">
           <GradientText preset="aurora" animated>
             Animated Gradient
@@ -80,7 +107,10 @@ export default function GradientTextDemo() {
         </p>
       </Story>
 
-      <Story title="Animated presets" description="All presets with the animated flag — each flows continuously.">
+      <Story
+        title="Animated presets"
+        description="All presets with the animated flag — each flows continuously."
+      >
         <div className="space-y-3">
           <p className="text-2xl font-bold">
             <GradientText preset="aurora" animated>
@@ -138,7 +168,10 @@ export default function GradientTextDemo() {
         </div>
       </Story>
 
-      <Story title="Animated custom gradient" description="Multi-stop custom gradients animate beautifully.">
+      <Story
+        title="Animated custom gradient"
+        description="Multi-stop custom gradients animate beautifully."
+      >
         <p className="text-3xl font-bold">
           <GradientText
             gradient="linear-gradient(45deg, #f12711, #f5af19, #2193b0, #6dd5ed, #f12711)"
@@ -160,20 +193,28 @@ export default function GradientTextDemo() {
             animated highlight
           </GradientText>
           that flows continuously, plus a
-          <GradientText preset="ocean" animated animationDuration={6} className="font-semibold">
+          <GradientText
+            preset="ocean"
+            animated
+            animationDuration={6}
+            className="font-semibold"
+          >
             slower one
           </GradientText>
           for contrast.
         </p>
       </Story>
 
-      <Story title="Inline in a sentence" description="GradientText renders inline so it blends into surrounding text.">
+      <Story
+        title="Inline in a sentence"
+        description="GradientText renders inline so it blends into surrounding text."
+      >
         <p className="text-base">
-          You can highlight{' '}
+          You can highlight{" "}
           <GradientText preset="fire" className="font-semibold">
             specific words
-          </GradientText>{' '}
-          inside a normal sentence using{' '}
+          </GradientText>{" "}
+          inside a normal sentence using{" "}
           <GradientText from="#10b981" to="#3b82f6" className="font-semibold">
             custom colors
           </GradientText>
@@ -181,11 +222,14 @@ export default function GradientTextDemo() {
         </p>
       </Story>
 
-      <Story title="As heading" description="Use as='h1' to render a semantic heading with gradient.">
+      <Story
+        title="As heading"
+        description="Use as='h1' to render a semantic heading with gradient."
+      >
         <GradientText as="h1" preset="grape" className="text-4xl font-bold">
           Heading Gradient
         </GradientText>
       </Story>
     </>
-  )
+  );
 }

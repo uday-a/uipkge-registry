@@ -1,1 +1,1 @@
-export { DataList, DataListItem } from './data-list'
+export { DataList, DataListItem } from "./data-list";

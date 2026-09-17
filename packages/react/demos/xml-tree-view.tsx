@@ -1,9 +1,9 @@
-import { useState } from 'react'
-import Story from '../../components/story/Story'
-import { XmlTreeView } from '@react-registry/xml-tree-view'
-import { Card, CardContent, CardHeader, CardTitle } from '@react-registry/card'
-import { Badge } from '@react-registry/badge'
-import { toast } from 'sonner'
+import { useState } from "react";
+import Story from "../../components/story/Story";
+import { XmlTreeView } from "@react-registry/xml-tree-view";
+import { Card, CardContent, CardHeader, CardTitle } from "@react-registry/card";
+import { Badge } from "@react-registry/badge";
+import { toast } from "sonner";
 
 const catalogXml = `<?xml version="1.0" encoding="UTF-8"?>
 <catalog>
@@ -28,7 +28,7 @@ const catalogXml = `<?xml version="1.0" encoding="UTF-8"?>
     <price>5.95</price>
     <publish_date>2000-11-17</publish_date>
   </book>
-</catalog>`
+</catalog>`;
 
 const soapFaultXml = `<?xml version="1.0" encoding="UTF-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -48,7 +48,7 @@ const soapFaultXml = `<?xml version="1.0" encoding="UTF-8"?>
       </detail>
     </soap:Fault>
   </soap:Body>
-</soap:Envelope>`
+</soap:Envelope>`;
 
 const configXml = `<?xml version="1.0"?>
 <!-- Application configuration -->
@@ -70,7 +70,7 @@ const configXml = `<?xml version="1.0"?>
     path: /var/log/app.log
     ]]>
   </logging>
-</config>`
+</config>`;
 
 const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
@@ -91,21 +91,21 @@ const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
       <description>Vue and React mirrors stay in lockstep.</description>
     </item>
   </channel>
-</rss>`
+</rss>`;
 
 const svgXml = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
   <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2" />
   <path d="M8 12l3 3 5-6" fill="none" stroke="currentColor" strokeWidth="2" />
-</svg>`
+</svg>`;
 
-const invalidXml = `<root><unclosed>`
+const invalidXml = `<root><unclosed>`;
 
 export default function XmlTreeViewDemo() {
-  const [lastCopied, setLastCopied] = useState('')
+  const [lastCopied, setLastCopied] = useState("");
 
   function onCopy(value: string, path: string) {
-    setLastCopied(`${path} = ${value.slice(0, 50)}`)
-    toast.success('Copied to clipboard', { description: path })
+    setLastCopied(`${path} = ${value.slice(0, 50)}`);
+    toast.success("Copied to clipboard", { description: path });
   }
 
   return (
@@ -121,7 +121,12 @@ export default function XmlTreeViewDemo() {
         title="SOAP fault"
         description="Namespaced SOAP envelope with a nested fault detail array — common in integration logs."
       >
-        <XmlTreeView data={soapFaultXml} rootLabel="Envelope" expandDepth={3} className="max-h-96" />
+        <XmlTreeView
+          data={soapFaultXml}
+          rootLabel="Envelope"
+          expandDepth={3}
+          className="max-h-96"
+        />
       </Story>
 
       <Story
@@ -131,7 +136,10 @@ export default function XmlTreeViewDemo() {
         <XmlTreeView data={configXml} expandDepth={2} className="max-h-96" />
       </Story>
 
-      <Story title="RSS feed" description="Channel + item list — how an RSS/Atom inspector looks with expandDepth 2.">
+      <Story
+        title="RSS feed"
+        description="Channel + item list — how an RSS/Atom inspector looks with expandDepth 2."
+      >
         <XmlTreeView data={rssXml} expandDepth={2} className="max-h-80" />
       </Story>
 
@@ -156,7 +164,11 @@ export default function XmlTreeViewDemo() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <XmlTreeView data={catalogXml} expandDepth={1} className="max-h-72" />
+            <XmlTreeView
+              data={catalogXml}
+              expandDepth={1}
+              className="max-h-72"
+            />
           </CardContent>
         </Card>
       </Story>
@@ -165,8 +177,17 @@ export default function XmlTreeViewDemo() {
         title="Searchable + copy on click"
         description="Filter dims non-matching nodes; click any node to copy its subtree and fire a copy event."
       >
-        <XmlTreeView data={catalogXml} expandDepth={3} onCopy={onCopy} className="max-h-96" />
-        {lastCopied && <p className="text-muted-foreground mt-2 text-xs">Last copied: {lastCopied}</p>}
+        <XmlTreeView
+          data={catalogXml}
+          expandDepth={3}
+          onCopy={onCopy}
+          className="max-h-96"
+        />
+        {lastCopied && (
+          <p className="text-muted-foreground mt-2 text-xs">
+            Last copied: {lastCopied}
+          </p>
+        )}
       </Story>
 
       <Story
@@ -175,12 +196,24 @@ export default function XmlTreeViewDemo() {
       >
         <div className="grid gap-4 lg:grid-cols-2">
           <div className="space-y-1.5">
-            <span className="text-muted-foreground text-xs">expandDepth 0 — collapsed</span>
-            <XmlTreeView data={catalogXml} expandDepth={0} className="max-h-64" />
+            <span className="text-muted-foreground text-xs">
+              expandDepth 0 — collapsed
+            </span>
+            <XmlTreeView
+              data={catalogXml}
+              expandDepth={0}
+              className="max-h-64"
+            />
           </div>
           <div className="space-y-1.5">
-            <span className="text-muted-foreground text-xs">expandDepth 2 — expanded</span>
-            <XmlTreeView data={catalogXml} expandDepth={2} className="max-h-64" />
+            <span className="text-muted-foreground text-xs">
+              expandDepth 2 — expanded
+            </span>
+            <XmlTreeView
+              data={catalogXml}
+              expandDepth={2}
+              className="max-h-64"
+            />
           </div>
         </div>
       </Story>
@@ -192,7 +225,12 @@ export default function XmlTreeViewDemo() {
         <div className="grid gap-4 lg:grid-cols-2">
           <div className="space-y-1.5">
             <span className="text-muted-foreground text-xs">No search</span>
-            <XmlTreeView data={catalogXml} showSearch={false} expandDepth={1} className="max-h-56" />
+            <XmlTreeView
+              data={catalogXml}
+              showSearch={false}
+              expandDepth={1}
+              className="max-h-56"
+            />
           </div>
           <div className="space-y-1.5">
             <span className="text-muted-foreground text-xs">No toolbar</span>
@@ -207,9 +245,12 @@ export default function XmlTreeViewDemo() {
         </div>
       </Story>
 
-      <Story title="Parse error" description="Malformed XML surfaces a clear error state instead of crashing the tree.">
+      <Story
+        title="Parse error"
+        description="Malformed XML surfaces a clear error state instead of crashing the tree."
+      >
         <XmlTreeView data={invalidXml} className="max-h-40" />
       </Story>
     </>
-  )
+  );
 }

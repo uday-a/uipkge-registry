@@ -1,16 +1,22 @@
 <script setup lang="ts">
-import type { SplitterPanelEmits, SplitterPanelProps } from 'reka-ui'
-import { SplitterPanel, useForwardExpose, useForwardPropsEmits } from 'reka-ui'
+import type { SplitterPanelEmits, SplitterPanelProps } from "reka-ui";
+import { SplitterPanel, useForwardExpose, useForwardPropsEmits } from "reka-ui";
 
-const props = defineProps<SplitterPanelProps>()
-const emits = defineEmits<SplitterPanelEmits>()
+const props = defineProps<SplitterPanelProps>();
+const emits = defineEmits<SplitterPanelEmits>();
 
-const forwarded = useForwardPropsEmits(props, emits)
-const { forwardRef } = useForwardExpose()
+const forwarded = useForwardPropsEmits(props, emits);
+const { forwardRef } = useForwardExpose();
 </script>
 
 <template>
-  <SplitterPanel :ref="forwardRef" v-slot="slotProps" data-uipkge data-slot="resizable-panel" v-bind="forwarded">
+  <SplitterPanel
+    :ref="forwardRef"
+    v-slot="slotProps"
+    data-uipkge
+    data-slot="resizable-panel"
+    v-bind="forwarded"
+  >
     <slot v-bind="slotProps" />
   </SplitterPanel>
 </template>

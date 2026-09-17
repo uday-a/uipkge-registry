@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onMounted, onScopeDispose, ref } from 'vue'
-import { cn } from '@/lib/utils'
+import { onMounted, onScopeDispose, ref } from "vue";
+import { cn } from "@/lib/utils";
 
 // Slack-style overlay scrollbar. Hides the native scrollbar entirely so the
 // scrolled content uses the full container width (no reservation), then draws
@@ -13,15 +13,15 @@ import { cn } from '@/lib/utils'
 const props = withDefaults(
   defineProps<{
     // Thumb width in px when idle. Expands to ~2x on hover / drag.
-    thumbWidth?: number
+    thumbWidth?: number;
     // Right offset of the thumb from the inner edge, in px.
-    thumbOffset?: number
+    thumbOffset?: number;
     // ms of scroll inactivity before the thumb fades.
-    idleHideMs?: number
+    idleHideMs?: number;
     // Allow dragging the thumb to scroll.
-    draggable?: boolean
+    draggable?: boolean;
     // Tailwind classes forwarded to the outer wrapper.
-    class?: string
+    class?: string;
   }>(),
   {
     thumbWidth: 4,
@@ -29,138 +29,138 @@ const props = withDefaults(
     idleHideMs: 800,
     draggable: true,
   },
-)
+);
 
-const scrollerEl = ref<HTMLElement | null>(null)
-const thumbEl = ref<HTMLElement | null>(null)
-const thumbHeight = ref(0)
-const thumbTop = ref(0)
-const showThumb = ref(false)
-const isHovered = ref(false)
-const isDragging = ref(false)
-let hideTimer: ReturnType<typeof setTimeout> | null = null
+const scrollerEl = ref<HTMLElement | null>(null);
+const thumbEl = ref<HTMLElement | null>(null);
+const thumbHeight = ref(0);
+const thumbTop = ref(0);
+const showThumb = ref(false);
+const isHovered = ref(false);
+const isDragging = ref(false);
+let hideTimer: ReturnType<typeof setTimeout> | null = null;
 
 const recompute = () => {
-  const el = scrollerEl.value
-  if (!el) return
-  const ratio = el.clientHeight / el.scrollHeight
+  const el = scrollerEl.value;
+  if (!el) return;
+  const ratio = el.clientHeight / el.scrollHeight;
   if (!Number.isFinite(ratio) || ratio >= 1) {
-    thumbHeight.value = 0
-    return
+    thumbHeight.value = 0;
+    return;
   }
-  thumbHeight.value = Math.max(24, el.clientHeight * ratio)
-  const maxScroll = el.scrollHeight - el.clientHeight
-  const maxThumb = el.clientHeight - thumbHeight.value
-  thumbTop.value = maxScroll > 0 ? (el.scrollTop / maxScroll) * maxThumb : 0
-}
+  thumbHeight.value = Math.max(24, el.clientHeight * ratio);
+  const maxScroll = el.scrollHeight - el.clientHeight;
+  const maxThumb = el.clientHeight - thumbHeight.value;
+  thumbTop.value = maxScroll > 0 ? (el.scrollTop / maxScroll) * maxThumb : 0;
+};
 
 const flashThumb = () => {
-  if (thumbHeight.value === 0) return
-  showThumb.value = true
-  if (hideTimer) clearTimeout(hideTimer)
+  if (thumbHeight.value === 0) return;
+  showThumb.value = true;
+  if (hideTimer) clearTimeout(hideTimer);
   hideTimer = setTimeout(() => {
-    if (!isHovered.value && !isDragging.value) showThumb.value = false
-  }, props.idleHideMs)
-}
+    if (!isHovered.value && !isDragging.value) showThumb.value = false;
+  }, props.idleHideMs);
+};
 
 const onScroll = () => {
-  recompute()
-  flashThumb()
-}
+  recompute();
+  flashThumb();
+};
 
 const onEnter = () => {
-  isHovered.value = true
-  recompute()
-  if (thumbHeight.value > 0) showThumb.value = true
-}
+  isHovered.value = true;
+  recompute();
+  if (thumbHeight.value > 0) showThumb.value = true;
+};
 
 const onLeave = () => {
-  isHovered.value = false
-  if (isDragging.value) return
-  if (hideTimer) clearTimeout(hideTimer)
-  showThumb.value = false
-}
+  isHovered.value = false;
+  if (isDragging.value) return;
+  if (hideTimer) clearTimeout(hideTimer);
+  showThumb.value = false;
+};
 
 // Pointer Events cover mouse + touch + pen on every modern browser
 // (Chrome 55+, Firefox 59+, Safari 13+, Edge). setPointerCapture keeps the
 // drag alive even if the pointer leaves the thumb, matching native feel.
-let activePointerId: number | null = null
-let dragStartY = 0
-let dragStartScrollTop = 0
+let activePointerId: number | null = null;
+let dragStartY = 0;
+let dragStartScrollTop = 0;
 
 const onPointerMove = (e: PointerEvent) => {
-  if (activePointerId !== e.pointerId) return
-  const el = scrollerEl.value
-  if (!el) return
-  const maxScroll = el.scrollHeight - el.clientHeight
-  const maxThumb = el.clientHeight - thumbHeight.value
-  if (maxThumb <= 0) return
-  const scrollRatio = maxScroll / maxThumb
-  el.scrollTop = dragStartScrollTop + (e.clientY - dragStartY) * scrollRatio
-}
+  if (activePointerId !== e.pointerId) return;
+  const el = scrollerEl.value;
+  if (!el) return;
+  const maxScroll = el.scrollHeight - el.clientHeight;
+  const maxThumb = el.clientHeight - thumbHeight.value;
+  if (maxThumb <= 0) return;
+  const scrollRatio = maxScroll / maxThumb;
+  el.scrollTop = dragStartScrollTop + (e.clientY - dragStartY) * scrollRatio;
+};
 
 const endDrag = (e?: PointerEvent) => {
-  if (e && activePointerId !== e.pointerId) return
-  isDragging.value = false
+  if (e && activePointerId !== e.pointerId) return;
+  isDragging.value = false;
   if (thumbEl.value && activePointerId !== null) {
     try {
-      thumbEl.value.releasePointerCapture(activePointerId)
+      thumbEl.value.releasePointerCapture(activePointerId);
     } catch {
       // pointer may already be released; ignore
     }
   }
-  activePointerId = null
-  thumbEl.value?.removeEventListener('pointermove', onPointerMove)
-  thumbEl.value?.removeEventListener('pointerup', endDrag)
-  thumbEl.value?.removeEventListener('pointercancel', endDrag)
-  if (!isHovered.value) showThumb.value = false
-}
+  activePointerId = null;
+  thumbEl.value?.removeEventListener("pointermove", onPointerMove);
+  thumbEl.value?.removeEventListener("pointerup", endDrag);
+  thumbEl.value?.removeEventListener("pointercancel", endDrag);
+  if (!isHovered.value) showThumb.value = false;
+};
 
 const onThumbPointerDown = (e: PointerEvent) => {
-  if (!props.draggable || !scrollerEl.value || !thumbEl.value) return
-  if (e.pointerType === 'mouse' && e.button !== 0) return
-  e.preventDefault()
-  isDragging.value = true
-  activePointerId = e.pointerId
-  dragStartY = e.clientY
-  dragStartScrollTop = scrollerEl.value.scrollTop
-  thumbEl.value.setPointerCapture(e.pointerId)
-  thumbEl.value.addEventListener('pointermove', onPointerMove)
-  thumbEl.value.addEventListener('pointerup', endDrag)
-  thumbEl.value.addEventListener('pointercancel', endDrag)
-}
+  if (!props.draggable || !scrollerEl.value || !thumbEl.value) return;
+  if (e.pointerType === "mouse" && e.button !== 0) return;
+  e.preventDefault();
+  isDragging.value = true;
+  activePointerId = e.pointerId;
+  dragStartY = e.clientY;
+  dragStartScrollTop = scrollerEl.value.scrollTop;
+  thumbEl.value.setPointerCapture(e.pointerId);
+  thumbEl.value.addEventListener("pointermove", onPointerMove);
+  thumbEl.value.addEventListener("pointerup", endDrag);
+  thumbEl.value.addEventListener("pointercancel", endDrag);
+};
 
-let resizeObserver: ResizeObserver | null = null
-let mutationObserver: MutationObserver | null = null
+let resizeObserver: ResizeObserver | null = null;
+let mutationObserver: MutationObserver | null = null;
 
 onMounted(() => {
-  recompute()
-  if (!scrollerEl.value) return
+  recompute();
+  if (!scrollerEl.value) return;
 
-  resizeObserver = new ResizeObserver(recompute)
-  resizeObserver.observe(scrollerEl.value)
+  resizeObserver = new ResizeObserver(recompute);
+  resizeObserver.observe(scrollerEl.value);
 
-  const inner = scrollerEl.value.firstElementChild as HTMLElement | null
+  const inner = scrollerEl.value.firstElementChild as HTMLElement | null;
   if (inner) {
-    resizeObserver.observe(inner)
-    mutationObserver = new MutationObserver(recompute)
-    mutationObserver.observe(inner, { childList: true, subtree: true })
+    resizeObserver.observe(inner);
+    mutationObserver = new MutationObserver(recompute);
+    mutationObserver.observe(inner, { childList: true, subtree: true });
   }
-})
+});
 
 onScopeDispose(() => {
-  resizeObserver?.disconnect()
-  mutationObserver?.disconnect()
-  if (hideTimer) clearTimeout(hideTimer)
-  endDrag()
-})
+  resizeObserver?.disconnect();
+  mutationObserver?.disconnect();
+  if (hideTimer) clearTimeout(hideTimer);
+  endDrag();
+});
 
 defineExpose({
   // Underlying scroller DOM element; call .scrollTo() on it from a parent.
   scrollerEl,
   // Force thumb recalc after a non-DOM size change.
   recompute,
-})
+});
 </script>
 
 <template>

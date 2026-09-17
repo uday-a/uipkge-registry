@@ -1,16 +1,32 @@
-import Story from '../../components/story/Story'
-import { useState } from 'react'
-import { Button } from '@react-registry/button'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@react-registry/tooltip'
-import { Bell, Copy, Eye, EyeOff, GitBranch, Settings, Trash2 } from 'lucide-react'
+import Story from "../../components/story/Story";
+import { useState } from "react";
+import { Button } from "@react-registry/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@react-registry/tooltip";
+import {
+  Bell,
+  Copy,
+  Eye,
+  EyeOff,
+  GitBranch,
+  Settings,
+  Trash2,
+} from "lucide-react";
 
 export default function TooltipDemo() {
-  const [visible] = useState(false)
+  const [visible] = useState(false);
 
   return (
     <TooltipProvider delayDuration={200}>
       <div className="space-y-4">
-        <Story title="Basic" description="Wrap any trigger; TooltipContent renders on hover/focus with a 200ms delay.">
+        <Story
+          title="Basic"
+          description="Wrap any trigger; TooltipContent renders on hover/focus with a 200ms delay."
+        >
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="outline">Hover me</Button>
@@ -119,13 +135,19 @@ export default function TooltipDemo() {
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="outline">
-                {visible ? <Eye className="size-4" /> : <EyeOff className="size-4" />}
-                <span>{visible ? 'Visible' : 'Hidden'}</span>
+                {visible ? (
+                  <Eye className="size-4" />
+                ) : (
+                  <EyeOff className="size-4" />
+                )}
+                <span>{visible ? "Visible" : "Hidden"}</span>
               </Button>
             </TooltipTrigger>
             <TooltipContent className="flex items-center gap-2">
               <span>Toggle visibility</span>
-              <kbd className="bg-background/20 rounded px-1.5 py-0.5 font-mono text-xs">⌘ ⇧ V</kbd>
+              <kbd className="bg-background/20 rounded px-1.5 py-0.5 font-mono text-xs">
+                ⌘ ⇧ V
+              </kbd>
             </TooltipContent>
           </Tooltip>
         </Story>
@@ -140,7 +162,9 @@ export default function TooltipDemo() {
                 <Button disabled>Publish</Button>
               </span>
             </TooltipTrigger>
-            <TooltipContent>Add a title and at least one section before publishing.</TooltipContent>
+            <TooltipContent>
+              Add a title and at least one section before publishing.
+            </TooltipContent>
           </Tooltip>
         </Story>
 
@@ -174,5 +198,5 @@ export default function TooltipDemo() {
         </Story>
       </div>
     </TooltipProvider>
-  )
+  );
 }

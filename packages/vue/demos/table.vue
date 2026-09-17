@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Badge } from '@/components/ui/badge'
+import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -9,18 +9,39 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
+} from "@/components/ui/table";
 const invoices = [
-  { invoice: 'INV001', status: 'Paid', method: 'Credit Card', amount: '$250.00' },
-  { invoice: 'INV002', status: 'Pending', method: 'PayPal', amount: '$150.00' },
-  { invoice: 'INV003', status: 'Unpaid', method: 'Bank Transfer', amount: '$350.00' },
-  { invoice: 'INV004', status: 'Paid', method: 'Credit Card', amount: '$420.00' },
-]
-const totals = invoices.reduce((s, i) => s + parseFloat(i.amount.replace('$', '').replace(',', '')), 0)
+  {
+    invoice: "INV001",
+    status: "Paid",
+    method: "Credit Card",
+    amount: "$250.00",
+  },
+  { invoice: "INV002", status: "Pending", method: "PayPal", amount: "$150.00" },
+  {
+    invoice: "INV003",
+    status: "Unpaid",
+    method: "Bank Transfer",
+    amount: "$350.00",
+  },
+  {
+    invoice: "INV004",
+    status: "Paid",
+    method: "Credit Card",
+    amount: "$420.00",
+  },
+];
+const totals = invoices.reduce(
+  (s, i) => s + parseFloat(i.amount.replace("$", "").replace(",", "")),
+  0,
+);
 </script>
 
 <template>
-  <Story title="Default" description="Plain Table with header + body. Use Badge in cells for status pills.">
+  <Story
+    title="Default"
+    description="Plain Table with header + body. Use Badge in cells for status pills."
+  >
     <Table>
       <TableHeader>
         <TableRow>
@@ -34,20 +55,36 @@ const totals = invoices.reduce((s, i) => s + parseFloat(i.amount.replace('$', ''
         <TableRow v-for="i in invoices" :key="i.invoice">
           <TableCell class="font-medium">{{ i.invoice }}</TableCell>
           <TableCell>
-            <Badge :variant="i.status === 'Paid' ? 'default' : i.status === 'Pending' ? 'secondary' : 'outline'">{{
-              i.status
-            }}</Badge>
+            <Badge
+              :variant="
+                i.status === 'Paid'
+                  ? 'default'
+                  : i.status === 'Pending'
+                    ? 'secondary'
+                    : 'outline'
+              "
+              >{{ i.status }}</Badge
+            >
           </TableCell>
           <TableCell class="text-muted-foreground">{{ i.method }}</TableCell>
-          <TableCell class="text-right font-medium tabular-nums">{{ i.amount }}</TableCell>
+          <TableCell class="text-right font-medium tabular-nums">{{
+            i.amount
+          }}</TableCell>
         </TableRow>
       </TableBody>
     </Table>
   </Story>
 
-  <Story title="With caption" description="Add a TableCaption at the bottom for a summary.">
+  <Story
+    title="With caption"
+    description="Add a TableCaption at the bottom for a summary."
+  >
     <Table>
-      <TableCaption>Showing {{ invoices.length }} invoices · total ${{ totals.toFixed(2) }}</TableCaption>
+      <TableCaption
+        >Showing {{ invoices.length }} invoices · total ${{
+          totals.toFixed(2)
+        }}</TableCaption
+      >
       <TableHeader>
         <TableRow>
           <TableHead>Invoice</TableHead>
@@ -77,7 +114,11 @@ const totals = invoices.reduce((s, i) => s + parseFloat(i.amount.replace('$', ''
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow v-for="i in invoices" :key="i.invoice" class="odd:bg-muted/40">
+        <TableRow
+          v-for="i in invoices"
+          :key="i.invoice"
+          class="odd:bg-muted/40"
+        >
           <TableCell class="font-medium">{{ i.invoice }}</TableCell>
           <TableCell>{{ i.status }}</TableCell>
           <TableCell class="text-muted-foreground">{{ i.method }}</TableCell>
@@ -109,7 +150,9 @@ const totals = invoices.reduce((s, i) => s + parseFloat(i.amount.replace('$', ''
       <TableFooter>
         <TableRow>
           <TableCell colspan="2">Total</TableCell>
-          <TableCell class="text-right font-bold tabular-nums">${{ totals.toFixed(2) }}</TableCell>
+          <TableCell class="text-right font-bold tabular-nums"
+            >${{ totals.toFixed(2) }}</TableCell
+          >
         </TableRow>
       </TableFooter>
     </Table>
@@ -131,11 +174,20 @@ const totals = invoices.reduce((s, i) => s + parseFloat(i.amount.replace('$', ''
         <TableRow v-for="i in invoices" :key="i.invoice">
           <TableCell class="py-1.5 font-medium">{{ i.invoice }}</TableCell>
           <TableCell class="py-1.5">
-            <Badge :variant="i.status === 'Paid' ? 'default' : i.status === 'Pending' ? 'secondary' : 'outline'">{{
-              i.status
-            }}</Badge>
+            <Badge
+              :variant="
+                i.status === 'Paid'
+                  ? 'default'
+                  : i.status === 'Pending'
+                    ? 'secondary'
+                    : 'outline'
+              "
+              >{{ i.status }}</Badge
+            >
           </TableCell>
-          <TableCell class="py-1.5 text-right tabular-nums">{{ i.amount }}</TableCell>
+          <TableCell class="py-1.5 text-right tabular-nums">{{
+            i.amount
+          }}</TableCell>
         </TableRow>
       </TableBody>
     </Table>
@@ -156,9 +208,13 @@ const totals = invoices.reduce((s, i) => s + parseFloat(i.amount.replace('$', ''
         </TableHeader>
         <TableBody>
           <TableRow v-for="n in 12" :key="n">
-            <TableCell class="font-medium">INV{{ String(n).padStart(3, '0') }}</TableCell>
-            <TableCell>{{ n % 3 === 0 ? 'Pending' : 'Paid' }}</TableCell>
-            <TableCell class="text-right tabular-nums">${{ (120 + n * 17).toFixed(2) }}</TableCell>
+            <TableCell class="font-medium"
+              >INV{{ String(n).padStart(3, "0") }}</TableCell
+            >
+            <TableCell>{{ n % 3 === 0 ? "Pending" : "Paid" }}</TableCell>
+            <TableCell class="text-right tabular-nums"
+              >${{ (120 + n * 17).toFixed(2) }}</TableCell
+            >
           </TableRow>
         </TableBody>
       </Table>
@@ -179,7 +235,11 @@ const totals = invoices.reduce((s, i) => s + parseFloat(i.amount.replace('$', ''
       </TableHeader>
       <TableBody>
         <TableRow class="hover:bg-transparent">
-          <TableCell colspan="3" class="text-muted-foreground h-24 text-center text-sm">No invoices yet.</TableCell>
+          <TableCell
+            colspan="3"
+            class="text-muted-foreground h-24 text-center text-sm"
+            >No invoices yet.</TableCell
+          >
         </TableRow>
       </TableBody>
     </Table>

@@ -1,1 +1,1 @@
-export { ParallelChart, type ParallelChartProps } from './ParallelChart'
+export { ParallelChart, type ParallelChartProps } from "./ParallelChart";

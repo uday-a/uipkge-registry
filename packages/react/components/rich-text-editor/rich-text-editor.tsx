@@ -1,14 +1,14 @@
-'use client'
+"use client";
 
-import * as React from 'react'
-import { useEditor, EditorContent } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-import Placeholder from '@tiptap/extension-placeholder'
-import Underline from '@tiptap/extension-underline'
-import Link from '@tiptap/extension-link'
-import TextAlign from '@tiptap/extension-text-align'
-import TaskList from '@tiptap/extension-task-list'
-import TaskItem from '@tiptap/extension-task-item'
+import * as React from "react";
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Placeholder from "@tiptap/extension-placeholder";
+import Underline from "@tiptap/extension-underline";
+import Link from "@tiptap/extension-link";
+import TextAlign from "@tiptap/extension-text-align";
+import TaskList from "@tiptap/extension-task-list";
+import TaskItem from "@tiptap/extension-task-item";
 import {
   Bold,
   Italic,
@@ -30,10 +30,10 @@ import {
   Code,
   RemoveFormatting,
   ChevronDown,
-} from 'lucide-react'
-import { Toggle } from '@/components/ui/toggle'
-import { Separator } from '@/components/ui/separator'
-import { cn } from '@/lib/utils'
+} from "lucide-react";
+import { Toggle } from "@/components/ui/toggle";
+import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
 
 // Ported from RichTextEditor.vue's <style> block. Injected once so the
 // component ships self-contained (placeholder, prose overrides, task-list,
@@ -169,31 +169,38 @@ const richTextEditorCss = `
   text-decoration: underline;
   cursor: pointer;
 }
-`
+`;
 
 export interface RichTextEditorProps {
-  value?: string
-  onValueChange?: (value: string) => void
-  placeholder?: string
-  className?: string
-  editorClassName?: string
-  minHeight?: string
+  value?: string;
+  onValueChange?: (value: string) => void;
+  placeholder?: string;
+  className?: string;
+  editorClassName?: string;
+  minHeight?: string;
 }
 
 interface ToolbarItem {
-  type: 'button' | 'separator'
-  icon?: React.ComponentType<{ className?: string }>
-  action?: () => void
-  isActive?: () => boolean
-  title?: string
+  type: "button" | "separator";
+  icon?: React.ComponentType<{ className?: string }>;
+  action?: () => void;
+  isActive?: () => boolean;
+  title?: string;
 }
 
 const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
   (
-    { value = '', onValueChange, placeholder = 'Start writing...', className, editorClassName, minHeight = '120px' },
+    {
+      value = "",
+      onValueChange,
+      placeholder = "Start writing...",
+      className,
+      editorClassName,
+      minHeight = "120px",
+    },
     ref,
   ) => {
-    const [showExtended, setShowExtended] = React.useState(false)
+    const [showExtended, setShowExtended] = React.useState(false);
 
     const editor = useEditor({
       content: value,
@@ -211,199 +218,211 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
         Underline,
         Link.configure({
           openOnClick: false,
-          HTMLAttributes: { class: 'text-primary underline cursor-pointer' },
+          HTMLAttributes: { class: "text-primary underline cursor-pointer" },
         }),
-        TextAlign.configure({ types: ['heading', 'paragraph'] }),
+        TextAlign.configure({ types: ["heading", "paragraph"] }),
         TaskList,
         TaskItem.configure({ nested: true }),
       ],
       editorProps: {
         attributes: {
-          class: 'prose prose-sm dark:prose-invert max-w-none focus:outline-none',
+          class:
+            "prose prose-sm dark:prose-invert max-w-none focus:outline-none",
         },
       },
       onUpdate: ({ editor: e }) => {
-        onValueChange?.(e.getHTML())
+        onValueChange?.(e.getHTML());
       },
-    })
+    });
 
     React.useEffect(() => {
       if (editor && editor.getHTML() !== value) {
-        editor.commands.setContent(value || '', { emitUpdate: false })
+        editor.commands.setContent(value || "", { emitUpdate: false });
       }
-    }, [editor, value])
+    }, [editor, value]);
 
     const toggleLink = React.useCallback(() => {
-      if (!editor) return
-      if (editor.isActive('link')) {
-        editor.chain().focus().unsetLink().run()
+      if (!editor) return;
+      if (editor.isActive("link")) {
+        editor.chain().focus().unsetLink().run();
       } else {
-        const url = window.prompt('Enter URL')
+        const url = window.prompt("Enter URL");
         if (url) {
-          editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
+          editor
+            .chain()
+            .focus()
+            .extendMarkRange("link")
+            .setLink({ href: url })
+            .run();
         }
       }
-    }, [editor])
+    }, [editor]);
 
     const essentialItems = React.useMemo<ToolbarItem[]>(() => {
-      if (!editor) return []
-      const e = editor
+      if (!editor) return [];
+      const e = editor;
       return [
         {
-          type: 'button',
+          type: "button",
           icon: Bold,
           action: () => e.chain().focus().toggleBold().run(),
-          isActive: () => e.isActive('bold'),
-          title: 'Bold',
+          isActive: () => e.isActive("bold"),
+          title: "Bold",
         },
         {
-          type: 'button',
+          type: "button",
           icon: Italic,
           action: () => e.chain().focus().toggleItalic().run(),
-          isActive: () => e.isActive('italic'),
-          title: 'Italic',
+          isActive: () => e.isActive("italic"),
+          title: "Italic",
         },
         {
-          type: 'button',
+          type: "button",
           icon: UnderlineIcon,
           action: () => e.chain().focus().toggleUnderline().run(),
-          isActive: () => e.isActive('underline'),
-          title: 'Underline',
+          isActive: () => e.isActive("underline"),
+          title: "Underline",
         },
         {
-          type: 'button',
+          type: "button",
           icon: Strikethrough,
           action: () => e.chain().focus().toggleStrike().run(),
-          isActive: () => e.isActive('strike'),
-          title: 'Strikethrough',
+          isActive: () => e.isActive("strike"),
+          title: "Strikethrough",
         },
-        { type: 'separator' },
+        { type: "separator" },
         {
-          type: 'button',
+          type: "button",
           icon: List,
           action: () => e.chain().focus().toggleBulletList().run(),
-          isActive: () => e.isActive('bulletList'),
-          title: 'Bullet list',
+          isActive: () => e.isActive("bulletList"),
+          title: "Bullet list",
         },
         {
-          type: 'button',
+          type: "button",
           icon: ListOrdered,
           action: () => e.chain().focus().toggleOrderedList().run(),
-          isActive: () => e.isActive('orderedList'),
-          title: 'Numbered list',
+          isActive: () => e.isActive("orderedList"),
+          title: "Numbered list",
         },
-        { type: 'separator' },
-        { type: 'button', icon: LinkIcon, action: toggleLink, isActive: () => e.isActive('link'), title: 'Link' },
-        { type: 'separator' },
+        { type: "separator" },
         {
-          type: 'button',
+          type: "button",
+          icon: LinkIcon,
+          action: toggleLink,
+          isActive: () => e.isActive("link"),
+          title: "Link",
+        },
+        { type: "separator" },
+        {
+          type: "button",
           icon: Undo2,
           action: () => e.chain().focus().undo().run(),
           isActive: () => false,
-          title: 'Undo',
+          title: "Undo",
         },
         {
-          type: 'button',
+          type: "button",
           icon: Redo2,
           action: () => e.chain().focus().redo().run(),
           isActive: () => false,
-          title: 'Redo',
+          title: "Redo",
         },
-      ]
-    }, [editor, toggleLink])
+      ];
+    }, [editor, toggleLink]);
 
     const extendedItems = React.useMemo<ToolbarItem[]>(() => {
-      if (!editor) return []
-      const e = editor
+      if (!editor) return [];
+      const e = editor;
       return [
         {
-          type: 'button',
+          type: "button",
           icon: Heading1,
           action: () => e.chain().focus().toggleHeading({ level: 1 }).run(),
-          isActive: () => e.isActive('heading', { level: 1 }),
-          title: 'Heading 1',
+          isActive: () => e.isActive("heading", { level: 1 }),
+          title: "Heading 1",
         },
         {
-          type: 'button',
+          type: "button",
           icon: Heading2,
           action: () => e.chain().focus().toggleHeading({ level: 2 }).run(),
-          isActive: () => e.isActive('heading', { level: 2 }),
-          title: 'Heading 2',
+          isActive: () => e.isActive("heading", { level: 2 }),
+          title: "Heading 2",
         },
-        { type: 'separator' },
+        { type: "separator" },
         {
-          type: 'button',
+          type: "button",
           icon: Code,
           action: () => e.chain().focus().toggleCode().run(),
-          isActive: () => e.isActive('code'),
-          title: 'Inline code',
+          isActive: () => e.isActive("code"),
+          title: "Inline code",
         },
         {
-          type: 'button',
+          type: "button",
           icon: Quote,
           action: () => e.chain().focus().toggleBlockquote().run(),
-          isActive: () => e.isActive('blockquote'),
-          title: 'Blockquote',
+          isActive: () => e.isActive("blockquote"),
+          title: "Blockquote",
         },
         {
-          type: 'button',
+          type: "button",
           icon: Minus,
           action: () => e.chain().focus().setHorizontalRule().run(),
           isActive: () => false,
-          title: 'Divider',
+          title: "Divider",
         },
         {
-          type: 'button',
+          type: "button",
           icon: ListChecks,
           action: () => e.chain().focus().toggleTaskList().run(),
-          isActive: () => e.isActive('taskList'),
-          title: 'Task list',
+          isActive: () => e.isActive("taskList"),
+          title: "Task list",
         },
-        { type: 'separator' },
+        { type: "separator" },
         {
-          type: 'button',
+          type: "button",
           icon: AlignLeft,
-          action: () => e.chain().focus().setTextAlign('left').run(),
-          isActive: () => e.isActive({ textAlign: 'left' }),
-          title: 'Align left',
+          action: () => e.chain().focus().setTextAlign("left").run(),
+          isActive: () => e.isActive({ textAlign: "left" }),
+          title: "Align left",
         },
         {
-          type: 'button',
+          type: "button",
           icon: AlignCenter,
-          action: () => e.chain().focus().setTextAlign('center').run(),
-          isActive: () => e.isActive({ textAlign: 'center' }),
-          title: 'Align center',
+          action: () => e.chain().focus().setTextAlign("center").run(),
+          isActive: () => e.isActive({ textAlign: "center" }),
+          title: "Align center",
         },
         {
-          type: 'button',
+          type: "button",
           icon: AlignRight,
-          action: () => e.chain().focus().setTextAlign('right').run(),
-          isActive: () => e.isActive({ textAlign: 'right' }),
-          title: 'Align right',
+          action: () => e.chain().focus().setTextAlign("right").run(),
+          isActive: () => e.isActive({ textAlign: "right" }),
+          title: "Align right",
         },
-        { type: 'separator' },
+        { type: "separator" },
         {
-          type: 'button',
+          type: "button",
           icon: RemoveFormatting,
           action: () => e.chain().focus().clearNodes().unsetAllMarks().run(),
           isActive: () => false,
-          title: 'Clear formatting',
+          title: "Clear formatting",
         },
-      ]
-    }, [editor])
+      ];
+    }, [editor]);
 
     React.useEffect(() => {
       return () => {
-        editor?.destroy()
-      }
-    }, [editor])
+        editor?.destroy();
+      };
+    }, [editor]);
 
     return (
       <div
         ref={ref}
         data-uipkge=""
         data-slot="rich-text-editor"
-        className={cn('rich-text-editor rounded-lg border', className)}
+        className={cn("rich-text-editor rounded-lg border", className)}
       >
         <style dangerouslySetInnerHTML={{ __html: richTextEditorCss }} />
         {/* Toolbar */}
@@ -412,11 +431,15 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
             {/* Essential row */}
             <div className="flex items-center gap-0.5 px-2 py-1.5">
               {essentialItems.map((item, i) =>
-                item.type === 'separator' ? (
-                  <Separator key={'e' + i} orientation="vertical" className="mx-1 h-5" />
+                item.type === "separator" ? (
+                  <Separator
+                    key={"e" + i}
+                    orientation="vertical"
+                    className="mx-1 h-5"
+                  />
                 ) : (
                   <Toggle
-                    key={'e' + i}
+                    key={"e" + i}
                     size="sm"
                     pressed={item.isActive?.()}
                     title={item.title}
@@ -424,7 +447,9 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
                     className="focus-visible:ring-ring size-7 p-0 focus-visible:ring-2 focus-visible:outline-none"
                     onClick={() => item.action?.()}
                   >
-                    {item.icon && <item.icon className="size-3.5" aria-hidden="true" />}
+                    {item.icon && (
+                      <item.icon className="size-3.5" aria-hidden="true" />
+                    )}
                   </Toggle>
                 ),
               )}
@@ -434,17 +459,22 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
               {/* Expand toggle */}
               <button
                 type="button"
-                title={showExtended ? 'Hide more options' : 'Show more options'}
-                aria-label={showExtended ? 'Hide more options' : 'Show more options'}
+                title={showExtended ? "Hide more options" : "Show more options"}
+                aria-label={
+                  showExtended ? "Hide more options" : "Show more options"
+                }
                 aria-expanded={showExtended}
                 className={cn(
-                  'text-muted-foreground hover:text-foreground hover:bg-muted focus-visible:ring-ring inline-flex size-7 items-center justify-center rounded-md transition-colors focus-visible:ring-2 focus-visible:outline-none',
-                  showExtended && 'bg-muted text-foreground',
+                  "text-muted-foreground hover:text-foreground hover:bg-muted focus-visible:ring-ring inline-flex size-7 items-center justify-center rounded-md transition-colors focus-visible:ring-2 focus-visible:outline-none",
+                  showExtended && "bg-muted text-foreground",
                 )}
                 onClick={() => setShowExtended((v) => !v)}
               >
                 <ChevronDown
-                  className={cn('size-3.5 transition-transform duration-200', showExtended && 'rotate-180')}
+                  className={cn(
+                    "size-3.5 transition-transform duration-200",
+                    showExtended && "rotate-180",
+                  )}
                   aria-hidden="true"
                 />
               </button>
@@ -453,18 +483,24 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
             {/* Extended row (collapsible) */}
             <div
               className={cn(
-                'grid transition-colors duration-200 ease-in-out',
-                showExtended ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0',
+                "grid transition-colors duration-200 ease-in-out",
+                showExtended
+                  ? "grid-rows-[1fr] opacity-100"
+                  : "grid-rows-[0fr] opacity-0",
               )}
             >
               <div className="overflow-hidden">
                 <div className="flex items-center gap-0.5 border-t px-2 py-1.5">
                   {extendedItems.map((item, i) =>
-                    item.type === 'separator' ? (
-                      <Separator key={'x' + i} orientation="vertical" className="mx-1 h-5" />
+                    item.type === "separator" ? (
+                      <Separator
+                        key={"x" + i}
+                        orientation="vertical"
+                        className="mx-1 h-5"
+                      />
                     ) : (
                       <Toggle
-                        key={'x' + i}
+                        key={"x" + i}
                         size="sm"
                         pressed={item.isActive?.()}
                         title={item.title}
@@ -472,7 +508,9 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
                         className="focus-visible:ring-ring size-7 p-0 focus-visible:ring-2 focus-visible:outline-none"
                         onClick={() => item.action?.()}
                       >
-                        {item.icon && <item.icon className="size-3.5" aria-hidden="true" />}
+                        {item.icon && (
+                          <item.icon className="size-3.5" aria-hidden="true" />
+                        )}
                       </Toggle>
                     ),
                   )}
@@ -485,14 +523,17 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
         {/* Editor */}
         <EditorContent
           editor={editor}
-          className={cn('rich-text-content cursor-text overflow-y-auto px-3 py-2', editorClassName)}
+          className={cn(
+            "rich-text-content cursor-text overflow-y-auto px-3 py-2",
+            editorClassName,
+          )}
           style={{ minHeight }}
           onClick={() => editor?.commands.focus()}
         />
       </div>
-    )
+    );
   },
-)
-RichTextEditor.displayName = 'RichTextEditor'
+);
+RichTextEditor.displayName = "RichTextEditor";
 
-export { RichTextEditor }
+export { RichTextEditor };

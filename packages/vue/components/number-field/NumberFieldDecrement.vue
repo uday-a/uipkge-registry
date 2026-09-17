@@ -1,33 +1,35 @@
 <script setup lang="ts">
-import type { NumberFieldDecrementProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
-import { computed } from 'vue'
-import { reactiveOmit } from '@vueuse/core'
-import { Minus } from 'lucide-vue-next'
-import { NumberFieldDecrement, useForwardProps } from 'reka-ui'
-import { cn } from '@/lib/utils'
-import { injectNumberFieldContext } from './NumberFieldContext'
+import type { NumberFieldDecrementProps } from "reka-ui";
+import type { HTMLAttributes } from "vue";
+import { computed } from "vue";
+import { reactiveOmit } from "@vueuse/core";
+import { Minus } from "lucide-vue-next";
+import { NumberFieldDecrement, useForwardProps } from "reka-ui";
+import { cn } from "@/lib/utils";
+import { injectNumberFieldContext } from "./NumberFieldContext";
 
-const props = defineProps<NumberFieldDecrementProps & { class?: HTMLAttributes['class'] }>()
+const props = defineProps<
+  NumberFieldDecrementProps & { class?: HTMLAttributes["class"] }
+>();
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegatedProps = reactiveOmit(props, "class");
 
-const forwarded = useForwardProps(delegatedProps)
+const forwarded = useForwardProps(delegatedProps);
 
-const uiContext = injectNumberFieldContext()
+const uiContext = injectNumberFieldContext();
 
-const isRight = computed(() => uiContext.controlsPosition.value === 'right')
+const isRight = computed(() => uiContext.controlsPosition.value === "right");
 
 const iconSize = computed(() => {
   switch (uiContext.size.value) {
-    case 'small':
-      return 'h-3 w-3'
-    case 'large':
-      return 'h-5 w-5'
+    case "small":
+      return "h-3 w-3";
+    case "large":
+      return "h-5 w-5";
     default:
-      return 'h-4 w-4'
+      return "h-4 w-4";
   }
-})
+});
 </script>
 
 <template>
@@ -42,7 +44,8 @@ const iconSize = computed(() => {
         !isRight && uiContext.size.value === 'small' && 'p-1.5',
         !isRight && uiContext.size.value === 'middle' && 'p-3',
         !isRight && uiContext.size.value === 'large' && 'p-4',
-        isRight && 'hover:bg-accent col-start-2 row-start-2 h-full w-auto rounded-none border-t border-l p-0 px-2',
+        isRight &&
+          'hover:bg-accent col-start-2 row-start-2 h-full w-auto rounded-none border-t border-l p-0 px-2',
         props.class,
       )
     "

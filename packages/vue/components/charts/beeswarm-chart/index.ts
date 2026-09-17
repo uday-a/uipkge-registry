@@ -1,1 +1,1 @@
-export { default as BeeswarmChart } from './BeeswarmChart.vue'
+export { default as BeeswarmChart } from "./BeeswarmChart.vue";

@@ -1,10 +1,10 @@
-import Story from '../../components/story/Story'
-import { Button } from '@react-registry/button'
-import { Input } from '@react-registry/input'
-import { Label } from '@react-registry/label'
-import { SectionCard } from '@react-registry/section-card'
-import { Textarea } from '@react-registry/textarea'
-import { MoreHorizontal, Plus, RefreshCw, Settings } from 'lucide-react'
+import Story from "../../components/story/Story";
+import { Button } from "@react-registry/button";
+import { Input } from "@react-registry/input";
+import { Label } from "@react-registry/label";
+import { SectionCard } from "@react-registry/section-card";
+import { Textarea } from "@react-registry/textarea";
+import { MoreHorizontal, Plus, RefreshCw, Settings } from "lucide-react";
 
 export default function SectionCardDemo() {
   return (
@@ -19,15 +19,23 @@ export default function SectionCardDemo() {
           headerAction={<Settings className="text-muted-foreground size-4" />}
         >
           <p className="text-muted-foreground text-sm">
-            Use SectionCard to wrap a labeled section with optional header description and a corner action.
+            Use SectionCard to wrap a labeled section with optional header
+            description and a corner action.
           </p>
         </SectionCard>
       </Story>
 
-      <Story title="Without action" description="Header-action slot is optional — drop it for plain titled sections.">
-        <SectionCard title="About" description="A short summary of this account.">
+      <Story
+        title="Without action"
+        description="Header-action slot is optional — drop it for plain titled sections."
+      >
+        <SectionCard
+          title="About"
+          description="A short summary of this account."
+        >
           <p className="text-muted-foreground text-sm">
-            No action slot is rendered here, so the title aligns flush with no trailing affordance.
+            No action slot is rendered here, so the title aligns flush with no
+            trailing affordance.
           </p>
         </SectionCard>
       </Story>
@@ -75,11 +83,21 @@ export default function SectionCardDemo() {
         description="Multiple SectionCards stacked vertically — a typical settings-page pattern."
       >
         <div className="space-y-4">
-          <SectionCard title="Profile" description="Your public-facing identity.">
-            <p className="text-muted-foreground text-sm">Name, avatar, and bio.</p>
+          <SectionCard
+            title="Profile"
+            description="Your public-facing identity."
+          >
+            <p className="text-muted-foreground text-sm">
+              Name, avatar, and bio.
+            </p>
           </SectionCard>
-          <SectionCard title="Notifications" description="Email and in-app preferences.">
-            <p className="text-muted-foreground text-sm">Choose which events alert you and how.</p>
+          <SectionCard
+            title="Notifications"
+            description="Email and in-app preferences."
+          >
+            <p className="text-muted-foreground text-sm">
+              Choose which events alert you and how.
+            </p>
           </SectionCard>
           <SectionCard
             title="Danger zone"
@@ -90,7 +108,9 @@ export default function SectionCardDemo() {
               </Button>
             }
           >
-            <p className="text-muted-foreground text-sm">Once deleted, your account cannot be recovered.</p>
+            <p className="text-muted-foreground text-sm">
+              Once deleted, your account cannot be recovered.
+            </p>
           </SectionCard>
         </div>
       </Story>
@@ -121,5 +141,5 @@ export default function SectionCardDemo() {
         </SectionCard>
       </Story>
     </>
-  )
+  );
 }

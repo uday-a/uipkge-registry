@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
+import type { HTMLAttributes } from "vue";
+import { cn } from "@/lib/utils";
 
 const props = withDefaults(
   defineProps<{
-    columns?: 2 | 3 | 4
-    class?: HTMLAttributes['class']
+    columns?: 2 | 3 | 4;
+    class?: HTMLAttributes["class"];
   }>(),
   { columns: 4 },
-)
+);
 </script>
 
 <template>
@@ -18,7 +18,11 @@ const props = withDefaults(
     :class="
       cn(
         'grid gap-4 md:grid-cols-2',
-        columns === 3 ? 'lg:grid-cols-3' : columns === 2 ? 'lg:grid-cols-2' : 'lg:grid-cols-4',
+        columns === 3
+          ? 'lg:grid-cols-3'
+          : columns === 2
+            ? 'lg:grid-cols-2'
+            : 'lg:grid-cols-4',
         props.class,
       )
     "

@@ -1,1 +1,1 @@
-export { default as ControlChart } from './ControlChart.vue'
+export { default as ControlChart } from "./ControlChart.vue";

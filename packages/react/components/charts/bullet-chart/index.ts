@@ -1,1 +1,5 @@
-export { BulletChart, type BulletChartProps, type BulletDatum } from './BulletChart'
+export {
+  BulletChart,
+  type BulletChartProps,
+  type BulletDatum,
+} from "./BulletChart";

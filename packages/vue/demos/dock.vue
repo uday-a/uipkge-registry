@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from "vue";
 import {
   Calendar,
   Camera,
@@ -12,29 +12,91 @@ import {
   Search,
   Settings,
   Terminal,
-} from 'lucide-vue-next'
-import { Dock, type DockItem } from '@/components/ui/dock'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+} from "lucide-vue-next";
+import { Dock, type DockItem } from "@/components/ui/dock";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
-const activeId = ref('finder')
-const lastLaunched = ref('—')
+const activeId = ref("finder");
+const lastLaunched = ref("—");
 
 const apps: DockItem[] = [
-  { id: 'finder', label: 'Finder', icon: Folder, active: true, handler: () => (activeId.value = 'finder') },
-  { id: 'mail', label: 'Mail', icon: Mail, handler: () => (activeId.value = 'mail') },
-  { id: 'calendar', label: 'Calendar', icon: Calendar, handler: () => (activeId.value = 'calendar') },
-  { id: 'notes', label: 'Notes', icon: FileText, handler: () => (activeId.value = 'notes') },
-  { id: 'terminal', label: 'Terminal', icon: Terminal, handler: () => (activeId.value = 'terminal') },
-  { id: 'music', label: 'Music', icon: Music, handler: () => (activeId.value = 'music') },
-  { id: 'settings', label: 'Settings', icon: Settings, handler: () => (activeId.value = 'settings') },
-]
+  {
+    id: "finder",
+    label: "Finder",
+    icon: Folder,
+    active: true,
+    handler: () => (activeId.value = "finder"),
+  },
+  {
+    id: "mail",
+    label: "Mail",
+    icon: Mail,
+    handler: () => (activeId.value = "mail"),
+  },
+  {
+    id: "calendar",
+    label: "Calendar",
+    icon: Calendar,
+    handler: () => (activeId.value = "calendar"),
+  },
+  {
+    id: "notes",
+    label: "Notes",
+    icon: FileText,
+    handler: () => (activeId.value = "notes"),
+  },
+  {
+    id: "terminal",
+    label: "Terminal",
+    icon: Terminal,
+    handler: () => (activeId.value = "terminal"),
+  },
+  {
+    id: "music",
+    label: "Music",
+    icon: Music,
+    handler: () => (activeId.value = "music"),
+  },
+  {
+    id: "settings",
+    label: "Settings",
+    icon: Settings,
+    handler: () => (activeId.value = "settings"),
+  },
+];
 
 const tools: DockItem[] = [
-  { id: 'search', label: 'Search', icon: Search, handler: () => (lastLaunched.value = 'Search') },
-  { id: 'camera', label: 'Camera', icon: Camera, handler: () => (lastLaunched.value = 'Camera') },
-  { id: 'chat', label: 'Messages', icon: MessageCircle, handler: () => (lastLaunched.value = 'Messages') },
-  { id: 'cloud', label: 'Cloud', icon: Cloud, handler: () => (lastLaunched.value = 'Cloud') },
-]
+  {
+    id: "search",
+    label: "Search",
+    icon: Search,
+    handler: () => (lastLaunched.value = "Search"),
+  },
+  {
+    id: "camera",
+    label: "Camera",
+    icon: Camera,
+    handler: () => (lastLaunched.value = "Camera"),
+  },
+  {
+    id: "chat",
+    label: "Messages",
+    icon: MessageCircle,
+    handler: () => (lastLaunched.value = "Messages"),
+  },
+  {
+    id: "cloud",
+    label: "Cloud",
+    icon: Cloud,
+    handler: () => (lastLaunched.value = "Cloud"),
+  },
+];
 </script>
 
 <template>
@@ -61,7 +123,9 @@ const tools: DockItem[] = [
     <div
       class="border-border/60 relative flex h-64 items-end justify-center overflow-hidden rounded-lg border bg-gradient-to-b from-zinc-800 to-zinc-950"
     >
-      <div class="absolute top-4 left-4 text-sm font-medium text-white/90">My Desktop</div>
+      <div class="absolute top-4 left-4 text-sm font-medium text-white/90">
+        My Desktop
+      </div>
       <Dock :items="apps" class="mb-3" />
     </div>
   </Story>
@@ -77,7 +141,8 @@ const tools: DockItem[] = [
       </CardHeader>
       <CardContent>
         <p class="text-muted-foreground text-sm">
-          Last launched: <span class="text-foreground font-medium">{{ lastLaunched }}</span>
+          Last launched:
+          <span class="text-foreground font-medium">{{ lastLaunched }}</span>
         </p>
       </CardContent>
     </Card>
@@ -94,7 +159,9 @@ const tools: DockItem[] = [
       <div class="bg-muted/30 flex items-end justify-center rounded-lg py-6">
         <Dock :items="apps" :base-size="36" />
       </div>
-      <div class="border-border/60 bg-muted/40 flex items-end justify-center rounded-lg border py-6">
+      <div
+        class="border-border/60 bg-muted/40 flex items-end justify-center rounded-lg border py-6"
+      >
         <Dock :items="apps" :magnification="2" :distance="150" />
       </div>
     </div>
@@ -105,11 +172,17 @@ const tools: DockItem[] = [
     description="The dock inherits border and backdrop styling — pass a class to match a dark theme or brand surface."
   >
     <div class="flex items-end justify-center rounded-lg bg-zinc-900 py-6">
-      <Dock :items="apps" class="border-zinc-700 bg-zinc-800/80 text-zinc-100" />
+      <Dock
+        :items="apps"
+        class="border-zinc-700 bg-zinc-800/80 text-zinc-100"
+      />
     </div>
   </Story>
 
-  <Story title="Tooltips off" description="Hide the hover tooltip labels for a minimal, icon-only dock.">
+  <Story
+    title="Tooltips off"
+    description="Hide the hover tooltip labels for a minimal, icon-only dock."
+  >
     <div class="bg-muted/30 flex items-end justify-center rounded-lg py-6">
       <Dock :items="apps" :show-tooltips="false" />
     </div>

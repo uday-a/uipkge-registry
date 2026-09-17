@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
-import { Skeleton } from '@/components/ui/skeleton'
+import type { HTMLAttributes } from "vue";
+import { cn } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const props = withDefaults(
   defineProps<{
-    showIcon?: boolean
-    width?: string
-    class?: HTMLAttributes['class']
+    showIcon?: boolean;
+    width?: string;
+    class?: HTMLAttributes["class"];
   }>(),
   {
     showIcon: false,
-    width: '70%',
+    width: "70%",
   },
-)
+);
 </script>
 
 <template>
@@ -23,7 +23,11 @@ const props = withDefaults(
     data-sidebar="menu-skeleton"
     :class="cn('flex h-8 items-center gap-2 rounded-md px-2', props.class)"
   >
-    <Skeleton v-if="showIcon" class="size-4 rounded-md" data-sidebar="menu-skeleton-icon" />
+    <Skeleton
+      v-if="showIcon"
+      class="size-4 rounded-md"
+      data-sidebar="menu-skeleton-icon"
+    />
 
     <Skeleton
       class="h-4 max-w-(--skeleton-width) flex-1"

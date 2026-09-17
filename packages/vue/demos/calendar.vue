@@ -1,50 +1,70 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { Calendar } from '@/components/ui/calendar'
-import { CalendarDate, today, getLocalTimeZone, type DateValue } from '@internationalized/date'
+import { ref } from "vue";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  CalendarDate,
+  today,
+  getLocalTimeZone,
+  type DateValue,
+} from "@internationalized/date";
 
-const date = ref(new CalendarDate(2026, 5, 15))
-const restrictedDate = ref<CalendarDate>()
-const usDate = ref<CalendarDate>()
-const jaDate = ref<CalendarDate>()
-const sideBySideA = ref<CalendarDate>()
-const sideBySideB = ref<CalendarDate>()
-const todayDate = ref(today(getLocalTimeZone()))
+const date = ref(new CalendarDate(2026, 5, 15));
+const restrictedDate = ref<CalendarDate>();
+const usDate = ref<CalendarDate>();
+const jaDate = ref<CalendarDate>();
+const sideBySideA = ref<CalendarDate>();
+const sideBySideB = ref<CalendarDate>();
+const todayDate = ref(today(getLocalTimeZone()));
 const multiDates = ref<DateValue[]>([
   new CalendarDate(2026, 5, 10),
   new CalendarDate(2026, 5, 15),
   new CalendarDate(2026, 5, 20),
-])
-const layoutDate = ref(new CalendarDate(2026, 5, 15))
-const multiMonthDate = ref(new CalendarDate(2026, 5, 15))
-const unavailableDate = ref<CalendarDate>()
+]);
+const layoutDate = ref(new CalendarDate(2026, 5, 15));
+const multiMonthDate = ref(new CalendarDate(2026, 5, 15));
+const unavailableDate = ref<CalendarDate>();
 
-const tz = getLocalTimeZone()
-const minValue = today(tz).subtract({ days: 7 })
-const maxValue = today(tz).add({ days: 30 })
+const tz = getLocalTimeZone();
+const minValue = today(tz).subtract({ days: 7 });
+const maxValue = today(tz).add({ days: 30 });
 
 /** Weekends unavailable — keyboard and click both honor isDateUnavailable. */
 function isWeekend(d: DateValue) {
-  const js = new Date(d.year, d.month - 1, d.day)
-  const day = js.getDay()
-  return day === 0 || day === 6
+  const js = new Date(d.year, d.month - 1, d.day);
+  const day = js.getDay();
+  return day === 0 || day === 6;
 }
 </script>
 
 <template>
-  <Story title="Default" description="Single-date calendar bound to a CalendarDate value.">
+  <Story
+    title="Default"
+    description="Single-date calendar bound to a CalendarDate value."
+  >
     <Calendar v-model="date" class="rounded-md border" />
   </Story>
 
-  <Story title="Min / max" description="Restrict selection to a window — here, 7 days back through 30 days forward.">
-    <Calendar v-model="restrictedDate" :min-value="minValue" :max-value="maxValue" class="rounded-md border" />
+  <Story
+    title="Min / max"
+    description="Restrict selection to a window — here, 7 days back through 30 days forward."
+  >
+    <Calendar
+      v-model="restrictedDate"
+      :min-value="minValue"
+      :max-value="maxValue"
+      class="rounded-md border"
+    />
   </Story>
 
   <Story
     title="Disabled dates"
     description="isDateUnavailable disables specific days (weekends here). Unavailable cells stay focusable for a11y but cannot be selected."
   >
-    <Calendar v-model="unavailableDate" :is-date-unavailable="isWeekend" class="rounded-md border" />
+    <Calendar
+      v-model="unavailableDate"
+      :is-date-unavailable="isWeekend"
+      class="rounded-md border"
+    />
   </Story>
 
   <Story
@@ -56,8 +76,11 @@ function isWeekend(d: DateValue) {
       Selected:
       {{
         multiDates
-          ?.map((d) => `${d.year}-${String(d.month).padStart(2, '0')}-${String(d.day).padStart(2, '0')}`)
-          .join(', ') || 'none'
+          ?.map(
+            (d) =>
+              `${d.year}-${String(d.month).padStart(2, "0")}-${String(d.day).padStart(2, "0")}`,
+          )
+          .join(", ") || "none"
       }}
     </p>
   </Story>
@@ -66,14 +89,22 @@ function isWeekend(d: DateValue) {
     title="Two months"
     description="numberOfMonths=2 shows consecutive months in one calendar root (true multi-month, not two separate instances)."
   >
-    <Calendar v-model="multiMonthDate" :number-of-months="2" class="rounded-md border" />
+    <Calendar
+      v-model="multiMonthDate"
+      :number-of-months="2"
+      class="rounded-md border"
+    />
   </Story>
 
   <Story
     title="Month and year layout"
     description="layout='month-and-year' turns the heading into native selects for fast jumps."
   >
-    <Calendar v-model="layoutDate" layout="month-and-year" class="rounded-md border" />
+    <Calendar
+      v-model="layoutDate"
+      layout="month-and-year"
+      class="rounded-md border"
+    />
   </Story>
 
   <Story

@@ -1,39 +1,39 @@
 <script setup lang="ts">
-import { computed, useId } from 'vue'
-import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
+import { computed, useId } from "vue";
+import type { HTMLAttributes } from "vue";
+import { cn } from "@/lib/utils";
 
 export interface RatingProps {
   /** Currently selected value */
-  modelValue?: number
+  modelValue?: number;
   /** Maximum rating value */
-  max?: number
+  max?: number;
   /** If true, prevents user interaction */
-  readonly?: boolean
+  readonly?: boolean;
   /** If true, disables the rating */
-  disabled?: boolean
+  disabled?: boolean;
   /** Density of the component */
-  density?: 'compact' | 'default' | 'comfortable'
+  density?: "compact" | "default" | "comfortable";
   /** Color of the selected stars */
-  color?: string
+  color?: string;
   /** If true, clicking the same value clears the rating */
-  clearable?: boolean
+  clearable?: boolean;
   /** If true, stars grow on hover */
-  hover?: boolean
+  hover?: boolean;
   /** ARIA label for each rating item */
-  itemAriaLabel?: string
+  itemAriaLabel?: string;
   /** Size of the stars */
-  size?: 'x-small' | 'small' | 'medium' | 'large' | 'x-large'
+  size?: "x-small" | "small" | "medium" | "large" | "x-large";
   /** Custom class for the component */
-  class?: HTMLAttributes['class']
+  class?: HTMLAttributes["class"];
   /** Show rating count (placeholder for future) */
-  showValue?: boolean
+  showValue?: boolean;
   /** Card variant styling */
-  variant?: 'outlined' | 'filled' | 'soft'
+  variant?: "outlined" | "filled" | "soft";
   /** If true, creates a half star at 0.5 */
-  halfIncrements?: boolean
+  halfIncrements?: boolean;
   /** If true, displays tooltips on hover */
-  tooltips?: string[]
+  tooltips?: string[];
 }
 
 const props = withDefaults(defineProps<RatingProps>(), {
@@ -41,126 +41,126 @@ const props = withDefaults(defineProps<RatingProps>(), {
   max: 5,
   readonly: false,
   disabled: false,
-  density: 'default',
-  color: 'var(--warning)',
+  density: "default",
+  color: "var(--warning)",
   clearable: false,
   hover: false,
-  itemAriaLabel: 'rating',
-  size: 'medium',
+  itemAriaLabel: "rating",
+  size: "medium",
   showValue: false,
-  variant: 'outlined',
+  variant: "outlined",
   halfIncrements: false,
-})
+});
 
 const emit = defineEmits<{
-  'update:modelValue': [value: number]
-}>()
+  "update:modelValue": [value: number];
+}>();
 
-const instanceId = useId()
+const instanceId = useId();
 
 const densityClasses = {
-  compact: 'rating-density-compact',
-  default: 'rating-density-default',
-  comfortable: 'rating-density-comfortable',
-}
+  compact: "rating-density-compact",
+  default: "rating-density-default",
+  comfortable: "rating-density-comfortable",
+};
 
 const variantClasses = {
-  outlined: 'rating-variant-outlined',
-  filled: 'rating-variant-filled',
-  soft: 'rating-variant-soft',
-}
+  outlined: "rating-variant-outlined",
+  filled: "rating-variant-filled",
+  soft: "rating-variant-soft",
+};
 
 const sizeClasses = {
-  'x-small': 'rating-size-xs',
-  small: 'rating-size-sm',
-  medium: 'rating-size-md',
-  large: 'rating-size-lg',
-  'x-large': 'rating-size-xl',
-}
+  "x-small": "rating-size-xs",
+  small: "rating-size-sm",
+  medium: "rating-size-md",
+  large: "rating-size-lg",
+  "x-large": "rating-size-xl",
+};
 
 const componentClasses = computed(() => [
-  'rating',
+  "rating",
   densityClasses[props.density],
   variantClasses[props.variant],
   sizeClasses[props.size],
   {
-    'rating-readonly': props.readonly,
-    'rating-disabled': props.disabled,
-    'rating-hover': props.hover,
-    'rating-clearable': props.clearable,
-    'rating-show-value': props.showValue,
+    "rating-readonly": props.readonly,
+    "rating-disabled": props.disabled,
+    "rating-hover": props.hover,
+    "rating-clearable": props.clearable,
+    "rating-show-value": props.showValue,
   },
   props.class,
-])
+]);
 
 function resolveClickValue(event: MouseEvent, star: number): number {
-  if (!props.halfIncrements) return star
-  const target = event.currentTarget as HTMLElement
-  const rect = target.getBoundingClientRect()
-  const isLeft = event.clientX - rect.left < rect.width / 2
-  const next = isLeft ? star - 0.5 : star
-  return next < 0.5 ? 0.5 : next
+  if (!props.halfIncrements) return star;
+  const target = event.currentTarget as HTMLElement;
+  const rect = target.getBoundingClientRect();
+  const isLeft = event.clientX - rect.left < rect.width / 2;
+  const next = isLeft ? star - 0.5 : star;
+  return next < 0.5 ? 0.5 : next;
 }
 
 function handleClick(event: MouseEvent, star: number) {
-  if (props.disabled || props.readonly) return
-  const value = resolveClickValue(event, star)
+  if (props.disabled || props.readonly) return;
+  const value = resolveClickValue(event, star);
   if (props.clearable && value === props.modelValue) {
-    emit('update:modelValue', 0)
+    emit("update:modelValue", 0);
   } else {
-    emit('update:modelValue', value)
+    emit("update:modelValue", value);
   }
 }
 
 function handleKeydown(event: KeyboardEvent, star: number) {
-  if (event.key === 'Enter' || event.key === ' ') {
-    event.preventDefault()
-    if (props.disabled || props.readonly) return
-    const value = star
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    if (props.disabled || props.readonly) return;
+    const value = star;
     if (props.clearable && value === props.modelValue) {
-      emit('update:modelValue', 0)
+      emit("update:modelValue", 0);
     } else {
-      emit('update:modelValue', value)
+      emit("update:modelValue", value);
     }
-    return
+    return;
   }
-  const step = props.halfIncrements ? 0.5 : 1
-  if (event.key === 'ArrowRight' || event.key === 'ArrowUp') {
-    event.preventDefault()
-    const next = Math.min(props.max, (props.modelValue ?? 0) + step)
-    emit('update:modelValue', next)
-  } else if (event.key === 'ArrowLeft' || event.key === 'ArrowDown') {
-    event.preventDefault()
-    const next = Math.max(0, (props.modelValue ?? 0) - step)
-    emit('update:modelValue', next)
-  } else if (event.key === 'Home') {
-    event.preventDefault()
-    emit('update:modelValue', props.halfIncrements ? 0.5 : 1)
-  } else if (event.key === 'End') {
-    event.preventDefault()
-    emit('update:modelValue', props.max)
+  const step = props.halfIncrements ? 0.5 : 1;
+  if (event.key === "ArrowRight" || event.key === "ArrowUp") {
+    event.preventDefault();
+    const next = Math.min(props.max, (props.modelValue ?? 0) + step);
+    emit("update:modelValue", next);
+  } else if (event.key === "ArrowLeft" || event.key === "ArrowDown") {
+    event.preventDefault();
+    const next = Math.max(0, (props.modelValue ?? 0) - step);
+    emit("update:modelValue", next);
+  } else if (event.key === "Home") {
+    event.preventDefault();
+    emit("update:modelValue", props.halfIncrements ? 0.5 : 1);
+  } else if (event.key === "End") {
+    event.preventDefault();
+    emit("update:modelValue", props.max);
   }
 }
 
 function getStarClass(index: number): string[] {
-  const value = props.modelValue
-  const classes = ['rating-star']
+  const value = props.modelValue;
+  const classes = ["rating-star"];
 
   if (value >= index + 1) {
-    classes.push('rating-star-full')
+    classes.push("rating-star-full");
   } else if (value >= index + 0.5 && props.halfIncrements) {
-    classes.push('rating-star-half')
+    classes.push("rating-star-half");
   } else {
-    classes.push('rating-star-empty')
+    classes.push("rating-star-empty");
   }
 
-  return classes
+  return classes;
 }
 
 /** Stagger cascade only for filled stars (0-based index). */
 function starDelay(index: number): string {
-  if (props.modelValue < index + 1) return '0ms'
-  return `${index * 45}ms`
+  if (props.modelValue < index + 1) return "0ms";
+  return `${index * 45}ms`;
 }
 </script>
 
@@ -187,7 +187,9 @@ function starDelay(index: number): string {
       :aria-label="tooltips?.[n - 1] ?? `${itemAriaLabel} ${n} of ${max}`"
       :aria-checked="Math.ceil(modelValue || 0) === n"
       :title="tooltips?.[n - 1]"
-      :tabindex="readonly || disabled ? -1 : Math.ceil(modelValue || 1) === n ? 0 : -1"
+      :tabindex="
+        readonly || disabled ? -1 : Math.ceil(modelValue || 1) === n ? 0 : -1
+      "
       @click="handleClick($event, n)"
       @keydown="handleKeydown($event, n)"
     >
@@ -200,7 +202,9 @@ function starDelay(index: number): string {
         aria-hidden="true"
         :style="{ color: props.color }"
       >
-        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+        <path
+          d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+        />
       </svg>
       <!-- Half Star Icon -->
       <svg
@@ -233,7 +237,9 @@ function starDelay(index: number): string {
         stroke-width="1.5"
         aria-hidden="true"
       >
-        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+        <path
+          d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+        />
       </svg>
     </button>
     <span v-if="showValue" class="rating-value">{{ modelValue }}</span>

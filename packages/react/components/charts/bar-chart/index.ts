@@ -1,1 +1,1 @@
-export { BarChart, type BarChartProps } from './BarChart'
+export { BarChart, type BarChartProps } from "./BarChart";

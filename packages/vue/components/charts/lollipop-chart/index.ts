@@ -1,1 +1,1 @@
-export { default as LollipopChart } from './LollipopChart.vue'
+export { default as LollipopChart } from "./LollipopChart.vue";

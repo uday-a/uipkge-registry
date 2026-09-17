@@ -1,21 +1,30 @@
-import { useEffect, useState } from 'react'
-import Story from '../../components/story/Story'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@react-registry/card'
-import { Progress } from '@react-registry/progress'
+import { useEffect, useState } from "react";
+import Story from "../../components/story/Story";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@react-registry/card";
+import { Progress } from "@react-registry/progress";
 
 export default function ProgressDemo() {
-  const [animated, setAnimated] = useState(0)
+  const [animated, setAnimated] = useState(0);
 
   useEffect(() => {
     const id = window.setInterval(() => {
-      setAnimated((v) => (v >= 100 ? 0 : v + 5))
-    }, 600)
-    return () => window.clearInterval(id)
-  }, [])
+      setAnimated((v) => (v >= 100 ? 0 : v + 5));
+    }, 600);
+    return () => window.clearInterval(id);
+  }, []);
 
   return (
     <>
-      <Story title="With label" description="Progress bar paired with label and percentage row above the track.">
+      <Story
+        title="With label"
+        description="Progress bar paired with label and percentage row above the track."
+      >
         <div className="max-w-md space-y-3">
           <div>
             <div className="text-muted-foreground mb-1.5 flex justify-between text-xs">
@@ -34,7 +43,10 @@ export default function ProgressDemo() {
         </div>
       </Story>
 
-      <Story title="Discrete states" description="Empty, half, and complete tracks side by side.">
+      <Story
+        title="Discrete states"
+        description="Empty, half, and complete tracks side by side."
+      >
         <div className="max-w-md space-y-4">
           <div>
             <div className="text-muted-foreground mb-1.5 text-xs">0%</div>
@@ -51,7 +63,10 @@ export default function ProgressDemo() {
         </div>
       </Story>
 
-      <Story title="Multi-percentage row" description="Static showcase across a typical 0–100 range.">
+      <Story
+        title="Multi-percentage row"
+        description="Static showcase across a typical 0–100 range."
+      >
         <div className="grid max-w-md gap-3">
           <Progress value={10} />
           <Progress value={30} />
@@ -74,7 +89,10 @@ export default function ProgressDemo() {
         </div>
       </Story>
 
-      <Story title="In a card" description="Common use inside a card: title, description, and a labeled progress row.">
+      <Story
+        title="In a card"
+        description="Common use inside a card: title, description, and a labeled progress row."
+      >
         <Card className="max-w-md">
           <CardHeader>
             <CardTitle>Storage</CardTitle>
@@ -82,10 +100,12 @@ export default function ProgressDemo() {
           </CardHeader>
           <CardContent>
             <Progress value={64} />
-            <p className="text-muted-foreground mt-2 text-xs">3.6 GB remaining on your current plan.</p>
+            <p className="text-muted-foreground mt-2 text-xs">
+              3.6 GB remaining on your current plan.
+            </p>
           </CardContent>
         </Card>
       </Story>
     </>
-  )
+  );
 }

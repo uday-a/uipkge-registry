@@ -1,17 +1,20 @@
 <script setup lang="ts">
-import { NightingaleChart } from '@/components/ui/charts'
+import { NightingaleChart } from "@/components/ui/charts";
 
 const traffic = [
-  { name: 'Organic', value: 480 },
-  { name: 'Paid', value: 360 },
-  { name: 'Referral', value: 220 },
-  { name: 'Social', value: 150 },
-  { name: 'Email', value: 90 },
-]
+  { name: "Organic", value: 480 },
+  { name: "Paid", value: 360 },
+  { name: "Referral", value: 220 },
+  { name: "Social", value: 150 },
+  { name: "Email", value: 90 },
+];
 </script>
 
 <template>
-  <Story title="Channel rose" description="Radius encodes value; bigger slices reach further.">
+  <Story
+    title="Channel rose"
+    description="Radius encodes value; bigger slices reach further."
+  >
     <NightingaleChart :data="traffic" height="340" />
   </Story>
 

@@ -1,102 +1,122 @@
-'use client'
+"use client";
 
-import * as React from 'react'
-import { Check, ChevronDown, ChevronUp, Copy } from 'lucide-react'
-import { codeToTokens, type ThemedToken, type BundledLanguage } from 'shiki/bundle/web'
-import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
+import * as React from "react";
+import { Check, ChevronDown, ChevronUp, Copy } from "lucide-react";
+import {
+  codeToTokens,
+  type ThemedToken,
+  type BundledLanguage,
+} from "shiki/bundle/web";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 export interface CodeBlockProps {
   /** Source code to display. */
-  code: string
+  code: string;
   /** Language label shown in the header. */
-  language?: string
+  language?: string;
   /** Render line numbers in the gutter. */
-  showLineNumbers?: boolean
+  showLineNumbers?: boolean;
   /** Maximum height of the code body before scrolling kicks in. CSS length (e.g. '400px'). */
-  maxHeight?: string
+  maxHeight?: string;
   /** Render expanded on first paint. Default true. */
-  defaultExpanded?: boolean
+  defaultExpanded?: boolean;
   /** Show the language label / copy / collapse header. */
-  showHeader?: boolean
-  className?: string
+  showHeader?: boolean;
+  className?: string;
 }
 
 interface HighlightSegment {
-  content: string
-  style?: ThemedToken['htmlStyle']
+  content: string;
+  style?: ThemedToken["htmlStyle"];
 }
 
-function toHighlightSegments(tokens: ThemedToken[][], source: string): HighlightSegment[] {
-  const segments: HighlightSegment[] = []
-  let cursor = 0
+function toHighlightSegments(
+  tokens: ThemedToken[][],
+  source: string,
+): HighlightSegment[] {
+  const segments: HighlightSegment[] = [];
+  let cursor = 0;
 
   for (const token of tokens.flat()) {
-    if (token.offset > cursor) segments.push({ content: source.slice(cursor, token.offset) })
-    segments.push({ content: token.content, style: token.htmlStyle })
-    cursor = token.offset + token.content.length
+    if (token.offset > cursor)
+      segments.push({ content: source.slice(cursor, token.offset) });
+    segments.push({ content: token.content, style: token.htmlStyle });
+    cursor = token.offset + token.content.length;
   }
 
-  if (cursor < source.length) segments.push({ content: source.slice(cursor) })
-  return segments
+  if (cursor < source.length) segments.push({ content: source.slice(cursor) });
+  return segments;
 }
 
 function CodeBlock({
   code,
-  language = 'tsx',
+  language = "tsx",
   showLineNumbers = true,
-  maxHeight = '400px',
+  maxHeight = "400px",
   defaultExpanded = true,
   showHeader = true,
   className,
 }: CodeBlockProps) {
-  const [isExpanded, setIsExpanded] = React.useState(defaultExpanded)
-  const [copyStatus, setCopyStatus] = React.useState<'idle' | 'copied' | 'error'>('idle')
-  const [highlightedSegments, setHighlightedSegments] = React.useState<HighlightSegment[] | null>(null)
-  const copyResetTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [isExpanded, setIsExpanded] = React.useState(defaultExpanded);
+  const [copyStatus, setCopyStatus] = React.useState<
+    "idle" | "copied" | "error"
+  >("idle");
+  const [highlightedSegments, setHighlightedSegments] = React.useState<
+    HighlightSegment[] | null
+  >(null);
+  const copyResetTimer = React.useRef<ReturnType<typeof setTimeout> | null>(
+    null,
+  );
 
-  const bodyId = `code-block-${React.useId()}`
-  const lines = React.useMemo(() => code.split('\n'), [code])
-  const bodyVisible = !showHeader || isExpanded
-  const copyLabel = copyStatus === 'copied' ? 'Copied' : copyStatus === 'error' ? 'Copy failed' : 'Copy'
+  const bodyId = `code-block-${React.useId()}`;
+  const lines = React.useMemo(() => code.split("\n"), [code]);
+  const bodyVisible = !showHeader || isExpanded;
+  const copyLabel =
+    copyStatus === "copied"
+      ? "Copied"
+      : copyStatus === "error"
+        ? "Copy failed"
+        : "Copy";
 
   React.useEffect(() => {
     return () => {
-      if (copyResetTimer.current) clearTimeout(copyResetTimer.current)
-    }
-  }, [])
+      if (copyResetTimer.current) clearTimeout(copyResetTimer.current);
+    };
+  }, []);
 
   React.useEffect(() => {
-    let cancelled = false
-    setHighlightedSegments(null)
+    let cancelled = false;
+    setHighlightedSegments(null);
 
     codeToTokens(code, {
       lang: language.toLowerCase() as BundledLanguage,
-      themes: { light: 'github-light', dark: 'github-dark' },
+      themes: { light: "github-light", dark: "github-dark" },
       defaultColor: false,
     })
       .then(({ tokens }) => {
-        if (!cancelled) setHighlightedSegments(toHighlightSegments(tokens, code))
+        if (!cancelled)
+          setHighlightedSegments(toHighlightSegments(tokens, code));
       })
       .catch(() => {
-        if (!cancelled) setHighlightedSegments(null)
-      })
+        if (!cancelled) setHighlightedSegments(null);
+      });
 
     return () => {
-      cancelled = true
-    }
-  }, [code, language])
+      cancelled = true;
+    };
+  }, [code, language]);
 
   async function copyToClipboard() {
     try {
-      await navigator.clipboard.writeText(code)
-      setCopyStatus('copied')
+      await navigator.clipboard.writeText(code);
+      setCopyStatus("copied");
     } catch (e) {
-      setCopyStatus('error')
-      console.warn('Clipboard write failed', e)
+      setCopyStatus("error");
+      console.warn("Clipboard write failed", e);
     } finally {
-      if (copyResetTimer.current) clearTimeout(copyResetTimer.current)
-      copyResetTimer.current = setTimeout(() => setCopyStatus('idle'), 1600)
+      if (copyResetTimer.current) clearTimeout(copyResetTimer.current);
+      copyResetTimer.current = setTimeout(() => setCopyStatus("idle"), 1600);
     }
   }
 
@@ -104,21 +124,34 @@ function CodeBlock({
     <div
       data-uipkge=""
       data-slot="code-block"
-      className={cn('group border-border bg-muted/20 relative overflow-hidden rounded-lg border', className)}
+      className={cn(
+        "group border-border bg-muted/20 relative overflow-hidden rounded-lg border",
+        className,
+      )}
     >
       {/* Header */}
       {showHeader && (
         <div className="border-border bg-muted/40 flex items-center justify-between gap-2 border-b px-3 py-2">
-          <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">{language}</span>
+          <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
+            {language}
+          </span>
           <div className="flex items-center gap-1">
-            <Button variant="ghost" size="xs" className="h-7 gap-1.5 px-2" onClick={copyToClipboard}>
-              {copyStatus === 'copied' ? (
+            <Button
+              variant="ghost"
+              size="xs"
+              className="h-7 gap-1.5 px-2"
+              onClick={copyToClipboard}
+            >
+              {copyStatus === "copied" ? (
                 <Check className="text-success size-3" aria-hidden="true" />
               ) : (
                 <Copy className="size-3" aria-hidden="true" />
               )}
               <span
-                className={cn('text-xs', copyStatus === 'error' && 'text-destructive')}
+                className={cn(
+                  "text-xs",
+                  copyStatus === "error" && "text-destructive",
+                )}
                 aria-live="polite"
                 aria-atomic="true"
               >
@@ -138,7 +171,9 @@ function CodeBlock({
               ) : (
                 <ChevronDown className="size-3" aria-hidden="true" />
               )}
-              <span className="text-xs">{isExpanded ? 'Hide' : 'Show'} code</span>
+              <span className="text-xs">
+                {isExpanded ? "Hide" : "Show"} code
+              </span>
             </Button>
           </div>
         </div>
@@ -187,7 +222,7 @@ function CodeBlock({
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export { CodeBlock }
+export { CodeBlock };

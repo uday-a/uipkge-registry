@@ -1,16 +1,17 @@
-import * as React from 'react'
-import { Slot } from '@radix-ui/react-slot'
-import { cn } from '@/lib/utils'
-import { badgeVariants, type BadgeVariants } from './badge.variants'
+import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
+import { cn } from "@/lib/utils";
+import { badgeVariants, type BadgeVariants } from "./badge.variants";
 
-export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement>, BadgeVariants {
+export interface BadgeProps
+  extends React.HTMLAttributes<HTMLSpanElement>, BadgeVariants {
   /** Render the child element as the badge (e.g. an <a>) instead of a <span>. */
-  asChild?: boolean
+  asChild?: boolean;
 }
 
 const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
   ({ className, variant, wrap, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : 'span'
+    const Comp = asChild ? Slot : "span";
     return (
       <Comp
         ref={ref}
@@ -19,9 +20,9 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
         className={cn(badgeVariants({ variant, wrap }), className)}
         {...props}
       />
-    )
+    );
   },
-)
-Badge.displayName = 'Badge'
+);
+Badge.displayName = "Badge";
 
-export { Badge }
+export { Badge };

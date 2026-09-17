@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { PaginationLast as RkPaginationLast } from 'reka-ui'
-import { ChevronsRight } from 'lucide-vue-next'
+import { PaginationLast as RkPaginationLast } from "reka-ui";
+import { ChevronsRight } from "lucide-vue-next";
 </script>
 <template>
   <RkPaginationLast aria-label="Go to last page"

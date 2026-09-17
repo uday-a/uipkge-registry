@@ -1,1 +1,1 @@
-export { default as SankeyChart } from './SankeyChart.vue'
+export { default as SankeyChart } from "./SankeyChart.vue";

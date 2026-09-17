@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { Button } from '@/components/ui/button'
+import { ref } from "vue";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -16,7 +16,7 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from "@/components/ui/dropdown-menu";
 import {
   ChevronDown,
   Cloud,
@@ -35,13 +35,13 @@ import {
   User,
   UserPlus,
   Users,
-} from 'lucide-vue-next'
+} from "lucide-vue-next";
 
-const showStatus = ref(true)
-const showActivity = ref(false)
-const showPanel = ref(true)
+const showStatus = ref(true);
+const showActivity = ref(false);
+const showPanel = ref(true);
 
-const position = ref('center')
+const position = ref("center");
 </script>
 
 <template>
@@ -58,9 +58,15 @@ const position = ref('center')
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem><User class="size-4" /> Profile</DropdownMenuItem>
-          <DropdownMenuItem><CreditCard class="size-4" /> Billing</DropdownMenuItem>
-          <DropdownMenuItem><Settings class="size-4" /> Settings</DropdownMenuItem>
-          <DropdownMenuItem><Keyboard class="size-4" /> Shortcuts</DropdownMenuItem>
+          <DropdownMenuItem
+            ><CreditCard class="size-4" /> Billing</DropdownMenuItem
+          >
+          <DropdownMenuItem
+            ><Settings class="size-4" /> Settings</DropdownMenuItem
+          >
+          <DropdownMenuItem
+            ><Keyboard class="size-4" /> Shortcuts</DropdownMenuItem
+          >
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem class="text-destructive focus:text-destructive">
@@ -111,9 +117,15 @@ const position = ref('center')
       <DropdownMenuContent class="w-56">
         <DropdownMenuLabel>Appearance</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuCheckboxItem v-model:checked="showStatus"> Status bar </DropdownMenuCheckboxItem>
-        <DropdownMenuCheckboxItem v-model:checked="showActivity"> Activity bar </DropdownMenuCheckboxItem>
-        <DropdownMenuCheckboxItem v-model:checked="showPanel"> Panel </DropdownMenuCheckboxItem>
+        <DropdownMenuCheckboxItem v-model:checked="showStatus">
+          Status bar
+        </DropdownMenuCheckboxItem>
+        <DropdownMenuCheckboxItem v-model:checked="showActivity">
+          Activity bar
+        </DropdownMenuCheckboxItem>
+        <DropdownMenuCheckboxItem v-model:checked="showPanel">
+          Panel
+        </DropdownMenuCheckboxItem>
       </DropdownMenuContent>
     </DropdownMenu>
   </Story>
@@ -138,7 +150,10 @@ const position = ref('center')
     </DropdownMenu>
   </Story>
 
-  <Story title="With submenus" description="DropdownMenuSub + SubTrigger + SubContent build a nested cascading menu.">
+  <Story
+    title="With submenus"
+    description="DropdownMenuSub + SubTrigger + SubContent build a nested cascading menu."
+  >
     <DropdownMenu>
       <DropdownMenuTrigger as-child>
         <Button variant="outline">Help</Button>
@@ -147,17 +162,27 @@ const position = ref('center')
         <DropdownMenuItem><LifeBuoy class="size-4" /> Support</DropdownMenuItem>
         <DropdownMenuItem><GitBranch class="size-4" /> GitHub</DropdownMenuItem>
         <DropdownMenuSub>
-          <DropdownMenuSubTrigger> <UserPlus class="size-4" /> Invite teammates </DropdownMenuSubTrigger>
+          <DropdownMenuSubTrigger>
+            <UserPlus class="size-4" /> Invite teammates
+          </DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
             <DropdownMenuItem><Mail class="size-4" /> Email</DropdownMenuItem>
-            <DropdownMenuItem><MessageSquare class="size-4" /> Message</DropdownMenuItem>
+            <DropdownMenuItem
+              ><MessageSquare class="size-4" /> Message</DropdownMenuItem
+            >
             <DropdownMenuSeparator />
-            <DropdownMenuItem><PlusCircle class="size-4" /> Send invite link</DropdownMenuItem>
+            <DropdownMenuItem
+              ><PlusCircle class="size-4" /> Send invite link</DropdownMenuItem
+            >
           </DropdownMenuSubContent>
         </DropdownMenuSub>
-        <DropdownMenuItem><HelpCircle class="size-4" /> Keyboard shortcuts</DropdownMenuItem>
+        <DropdownMenuItem
+          ><HelpCircle class="size-4" /> Keyboard shortcuts</DropdownMenuItem
+        >
         <DropdownMenuSeparator />
-        <DropdownMenuItem disabled> <Cloud class="size-4" /> API (coming soon) </DropdownMenuItem>
+        <DropdownMenuItem disabled>
+          <Cloud class="size-4" /> API (coming soon)
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   </Story>
@@ -177,12 +202,17 @@ const position = ref('center')
         <DropdownMenuItem>Rename…</DropdownMenuItem>
         <DropdownMenuItem>Move to folder…</DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem class="text-destructive focus:text-destructive">Delete</DropdownMenuItem>
+        <DropdownMenuItem class="text-destructive focus:text-destructive"
+          >Delete</DropdownMenuItem
+        >
       </DropdownMenuContent>
     </DropdownMenu>
   </Story>
 
-  <Story title="Action menu" description="Chevron-trigger pattern for create-new menus.">
+  <Story
+    title="Action menu"
+    description="Chevron-trigger pattern for create-new menus."
+  >
     <DropdownMenu>
       <DropdownMenuTrigger as-child>
         <Button>

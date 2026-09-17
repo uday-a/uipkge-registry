@@ -1,18 +1,24 @@
-import { useState } from 'react'
-import Story from '../../components/story/Story'
-import { Fab } from '@react-registry/fab'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@react-registry/card'
-import { Edit, Mail, MessageSquare, Plus, Send, Trash2 } from 'lucide-react'
+import { useState } from "react";
+import Story from "../../components/story/Story";
+import { Fab } from "@react-registry/fab";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@react-registry/card";
+import { Edit, Mail, MessageSquare, Plus, Send, Trash2 } from "lucide-react";
 
 export default function FabDemo() {
-  const [clicks, setClicks] = useState(0)
-  const [lastAction, setLastAction] = useState<string>('')
+  const [clicks, setClicks] = useState(0);
+  const [lastAction, setLastAction] = useState<string>("");
 
   const handleFabClick = (label: string) => {
-    setClicks((c) => c + 1)
-    setLastAction(label)
-    setTimeout(() => setLastAction(''), 1500)
-  }
+    setClicks((c) => c + 1);
+    setLastAction(label);
+    setTimeout(() => setLastAction(""), 1500);
+  };
 
   return (
     <>
@@ -45,13 +51,14 @@ export default function FabDemo() {
             absolute
             position="bottom-right"
             aria-label="Invite member"
-            onClick={() => handleFabClick('Invite member')}
+            onClick={() => handleFabClick("Invite member")}
           >
             <Plus />
           </Fab>
         </Card>
         <p className="text-muted-foreground mt-3 text-xs">
-          Invites triggered: {clicks} {lastAction ? `(Clicked ${lastAction})` : ''}
+          Invites triggered: {clicks}{" "}
+          {lastAction ? `(Clicked ${lastAction})` : ""}
         </p>
       </Story>
 
@@ -61,27 +68,61 @@ export default function FabDemo() {
       >
         <div className="flex flex-wrap items-center gap-8">
           <div className="flex items-center gap-4">
-            <Fab position="inline" aria-label="Add" onClick={() => handleFabClick('Add')}>
+            <Fab
+              position="inline"
+              aria-label="Add"
+              onClick={() => handleFabClick("Add")}
+            >
               <Plus />
             </Fab>
-            <Fab variant="secondary" position="inline" aria-label="Edit" onClick={() => handleFabClick('Edit')}>
+            <Fab
+              variant="secondary"
+              position="inline"
+              aria-label="Edit"
+              onClick={() => handleFabClick("Edit")}
+            >
               <Edit />
             </Fab>
-            <Fab variant="destructive" position="inline" aria-label="Delete" onClick={() => handleFabClick('Delete')}>
+            <Fab
+              variant="destructive"
+              position="inline"
+              aria-label="Delete"
+              onClick={() => handleFabClick("Delete")}
+            >
               <Trash2 />
             </Fab>
-            <Fab variant="outline" position="inline" aria-label="Send" onClick={() => handleFabClick('Send')}>
+            <Fab
+              variant="outline"
+              position="inline"
+              aria-label="Send"
+              onClick={() => handleFabClick("Send")}
+            >
               <Send />
             </Fab>
           </div>
           <div className="flex items-center gap-4">
-            <Fab size="mini" position="inline" aria-label="Mini" onClick={() => handleFabClick('Mini')}>
+            <Fab
+              size="mini"
+              position="inline"
+              aria-label="Mini"
+              onClick={() => handleFabClick("Mini")}
+            >
               <Plus />
             </Fab>
-            <Fab size="default" position="inline" aria-label="Default" onClick={() => handleFabClick('Default')}>
+            <Fab
+              size="default"
+              position="inline"
+              aria-label="Default"
+              onClick={() => handleFabClick("Default")}
+            >
               <Plus />
             </Fab>
-            <Fab size="large" position="inline" aria-label="Large" onClick={() => handleFabClick('Large')}>
+            <Fab
+              size="large"
+              position="inline"
+              aria-label="Large"
+              onClick={() => handleFabClick("Large")}
+            >
               <Plus />
             </Fab>
           </div>
@@ -93,10 +134,19 @@ export default function FabDemo() {
         description="Pass label to render a pill-shaped extended FAB — used for the primary action on a screen when a label aids discoverability."
       >
         <div className="flex flex-wrap items-center gap-4">
-          <Fab label="Compose" position="inline" onClick={() => handleFabClick('Compose')}>
+          <Fab
+            label="Compose"
+            position="inline"
+            onClick={() => handleFabClick("Compose")}
+          >
             <Mail />
           </Fab>
-          <Fab label="New message" variant="secondary" position="inline" onClick={() => handleFabClick('New message')}>
+          <Fab
+            label="New message"
+            variant="secondary"
+            position="inline"
+            onClick={() => handleFabClick("New message")}
+          >
             <MessageSquare />
           </Fab>
         </div>
@@ -119,7 +169,11 @@ export default function FabDemo() {
           <Fab position="bottom-right" aria-label="Bottom right">
             <Plus />
           </Fab>
-          <Fab position="bottom-center" label="Center" aria-label="Bottom center">
+          <Fab
+            position="bottom-center"
+            label="Center"
+            aria-label="Bottom center"
+          >
             <Plus />
           </Fab>
         </div>
@@ -139,7 +193,10 @@ export default function FabDemo() {
         </div>
       </Story>
 
-      <Story title="Disabled" description="Non-interactive FABs are dimmed and ignore clicks.">
+      <Story
+        title="Disabled"
+        description="Non-interactive FABs are dimmed and ignore clicks."
+      >
         <div className="flex items-center gap-4">
           <Fab disabled position="inline" aria-label="Disabled">
             <Plus />
@@ -155,12 +212,13 @@ export default function FabDemo() {
         description="A real fixed FAB pinned to the demo viewport bottom-right. Scroll the page — it stays put."
       >
         <p className="text-muted-foreground max-w-md text-sm">
-          The button in the corner is live. It remains anchored to the viewport as you scroll.
+          The button in the corner is live. It remains anchored to the viewport
+          as you scroll.
         </p>
         <Fab label="Action" aria-label="Fixed action">
           <Plus />
         </Fab>
       </Story>
     </>
-  )
+  );
 }

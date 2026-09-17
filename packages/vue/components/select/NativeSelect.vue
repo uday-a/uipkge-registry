@@ -1,66 +1,66 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from 'vue'
-import { computed, useAttrs } from 'vue'
-import { useVModel } from '@vueuse/core'
-import { ChevronDown } from 'lucide-vue-next'
-import { cn } from '@/lib/utils'
+import type { HTMLAttributes } from "vue";
+import { computed, useAttrs } from "vue";
+import { useVModel } from "@vueuse/core";
+import { ChevronDown } from "lucide-vue-next";
+import { cn } from "@/lib/utils";
 
 defineOptions({
   inheritAttrs: false,
-})
+});
 
 export interface NativeSelectOption {
-  label: string
-  value: string | number
-  disabled?: boolean
+  label: string;
+  value: string | number;
+  disabled?: boolean;
 }
 
 interface Props {
-  modelValue?: string | number
-  defaultValue?: string | number
-  options?: (NativeSelectOption | string)[]
-  size?: 'sm' | 'md' | 'lg'
-  disabled?: boolean
-  class?: HTMLAttributes['class']
-  selectClass?: HTMLAttributes['class']
+  modelValue?: string | number;
+  defaultValue?: string | number;
+  options?: (NativeSelectOption | string)[];
+  size?: "sm" | "md" | "lg";
+  disabled?: boolean;
+  class?: HTMLAttributes["class"];
+  selectClass?: HTMLAttributes["class"];
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  size: 'md',
-})
+  size: "md",
+});
 
 const emits = defineEmits<{
-  (e: 'update:modelValue', val: string | number): void
-}>()
+  (e: "update:modelValue", val: string | number): void;
+}>();
 
-const attrs = useAttrs()
+const attrs = useAttrs();
 
-const modelValue = useVModel(props, 'modelValue', emits, {
+const modelValue = useVModel(props, "modelValue", emits, {
   passive: true,
   defaultValue: props.defaultValue,
-})
+});
 
 const sizeClasses: Record<string, string> = {
-  sm: 'h-8 text-xs pl-2.5 pr-8',
-  md: 'h-9 text-sm pl-3 pr-9',
-  lg: 'h-11 text-base pl-4 pr-10',
-}
+  sm: "h-8 text-xs pl-2.5 pr-8",
+  md: "h-9 text-sm pl-3 pr-9",
+  lg: "h-11 text-base pl-4 pr-10",
+};
 
 const iconSizes: Record<string, string> = {
-  sm: 'size-3.5 right-2.5',
-  md: 'size-4 right-3',
-  lg: 'size-5 right-3.5',
-}
+  sm: "size-3.5 right-2.5",
+  md: "size-4 right-3",
+  lg: "size-5 right-3.5",
+};
 
 const normalizedOptions = computed(() => {
-  if (!props.options) return []
+  if (!props.options) return [];
   return props.options.map((opt) => {
-    if (typeof opt === 'string') {
-      return { label: opt, value: opt, disabled: false }
+    if (typeof opt === "string") {
+      return { label: opt, value: opt, disabled: false };
     }
-    return opt
-  })
-})
+    return opt;
+  });
+});
 </script>
 
 <template>
@@ -86,7 +86,12 @@ const normalizedOptions = computed(() => {
       @change="modelValue = ($event.target as HTMLSelectElement).value"
     >
       <template v-if="normalizedOptions.length > 0">
-        <option v-for="opt in normalizedOptions" :key="String(opt.value)" :value="opt.value" :disabled="opt.disabled">
+        <option
+          v-for="opt in normalizedOptions"
+          :key="String(opt.value)"
+          :value="opt.value"
+          :disabled="opt.disabled"
+        >
           {{ opt.label }}
         </option>
       </template>

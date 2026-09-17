@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from "zod";
 
 const fileSchema = z.object({
   /** Source file path relative to the .registry.ts directory. */
@@ -7,13 +7,13 @@ const fileSchema = z.object({
    *  (e.g. `~/tailwind.css`); otherwise interpreted relative to the consumer's
    *  configured alias root (typically `components`). */
   target: z.string(),
-})
+});
 
 const cssVarsSchema = z.object({
   theme: z.record(z.string()).optional(),
   light: z.record(z.string()).optional(),
   dark: z.record(z.string()).optional(),
-})
+});
 
 /**
  * Spec compliance: this matches the upstream shadcn-vue / shadcn
@@ -33,15 +33,15 @@ const registryItemSchema = z.object({
    *  Case humanization of `name` (kebab-case -> "Kebab Case"). */
   title: z.string().optional(),
   type: z.enum([
-    'registry:ui',
-    'registry:block',
-    'registry:lib',
-    'registry:hook',
-    'registry:style',
-    'registry:theme',
-    'registry:component',
-    'registry:page',
-    'registry:file',
+    "registry:ui",
+    "registry:block",
+    "registry:lib",
+    "registry:hook",
+    "registry:style",
+    "registry:theme",
+    "registry:component",
+    "registry:page",
+    "registry:file",
   ]),
   description: z.string().optional(),
   /** Spec-supported categorisation; surfaced in the docs site for filtering. */
@@ -61,10 +61,12 @@ const registryItemSchema = z.object({
       config: z.record(z.unknown()).optional(),
     })
     .optional(),
-})
+});
 
-export type RegistryItem = z.infer<typeof registryItemSchema>
+export type RegistryItem = z.infer<typeof registryItemSchema>;
 
-export function defineRegistryItem(item: z.input<typeof registryItemSchema>): RegistryItem {
-  return registryItemSchema.parse(item)
+export function defineRegistryItem(
+  item: z.input<typeof registryItemSchema>,
+): RegistryItem {
+  return registryItemSchema.parse(item);
 }

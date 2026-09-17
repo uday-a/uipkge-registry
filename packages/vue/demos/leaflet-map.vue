@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from "vue";
 import {
   LeafletMap,
   LeafletMarker,
@@ -13,44 +13,73 @@ import {
   LeafletTileLayer,
   type LeafletMapRef,
   type LeafletMapVariant,
-} from '@/components/ui/leaflet-map'
+} from "@/components/ui/leaflet-map";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 1. VARIANT SWITCHER — every key-free basemap preset
 // ─────────────────────────────────────────────────────────────────────────────
-const activeVariant = ref<LeafletMapVariant>('default')
-const variantOptions: { id: LeafletMapVariant; label: string; desc: string }[] = [
-  { id: 'default', label: 'Default', desc: 'Theme-aware Esri light/dark' },
-  { id: 'streets', label: 'Streets', desc: 'OpenStreetMap Standard tiles' },
-  { id: 'light', label: 'Light', desc: 'Esri Light Gray — clean editorial canvas' },
-  { id: 'dark', label: 'Dark', desc: 'Esri Dark Gray — dashboard canvas' },
-  { id: 'muted', label: 'Muted', desc: 'Theme-aware + desaturated tile pane' },
-  { id: 'outdoors', label: 'Outdoors', desc: 'OpenTopoMap contours & trails' },
-  { id: 'satellite-streets', label: 'Satellite Hybrid', desc: 'Esri imagery + label overlay' },
-  { id: 'satellite', label: 'Satellite', desc: 'Esri World Imagery, no labels' },
-  { id: 'navigation-day', label: 'Nav Day', desc: 'Esri Street Map high contrast' },
-  { id: 'navigation-night', label: 'Nav Night', desc: 'Esri dark canvas HUD' },
-]
+const activeVariant = ref<LeafletMapVariant>("default");
+const variantOptions: { id: LeafletMapVariant; label: string; desc: string }[] =
+  [
+    { id: "default", label: "Default", desc: "Theme-aware Esri light/dark" },
+    { id: "streets", label: "Streets", desc: "OpenStreetMap Standard tiles" },
+    {
+      id: "light",
+      label: "Light",
+      desc: "Esri Light Gray — clean editorial canvas",
+    },
+    { id: "dark", label: "Dark", desc: "Esri Dark Gray — dashboard canvas" },
+    {
+      id: "muted",
+      label: "Muted",
+      desc: "Theme-aware + desaturated tile pane",
+    },
+    {
+      id: "outdoors",
+      label: "Outdoors",
+      desc: "OpenTopoMap contours & trails",
+    },
+    {
+      id: "satellite-streets",
+      label: "Satellite Hybrid",
+      desc: "Esri imagery + label overlay",
+    },
+    {
+      id: "satellite",
+      label: "Satellite",
+      desc: "Esri World Imagery, no labels",
+    },
+    {
+      id: "navigation-day",
+      label: "Nav Day",
+      desc: "Esri Street Map high contrast",
+    },
+    {
+      id: "navigation-night",
+      label: "Nav Night",
+      desc: "Esri dark canvas HUD",
+    },
+  ];
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 2. MARKERS & POPUPS
 // ─────────────────────────────────────────────────────────────────────────────
 const landmarks = [
   {
-    id: 'hq',
-    name: 'Global Operations HQ',
-    detail: '350 5th Ave, New York',
-    status: 'Active · 1,420 staff',
+    id: "hq",
+    name: "Global Operations HQ",
+    detail: "350 5th Ave, New York",
+    status: "Active · 1,420 staff",
     lngLat: [-73.985, 40.748] as [number, number],
   },
   {
-    id: 'depot',
-    name: 'East River Depot',
-    detail: '12 W 34th St, New York',
-    status: 'Active · 24 bays',
+    id: "depot",
+    name: "East River Depot",
+    detail: "12 W 34th St, New York",
+    status: "Active · 24 bays",
     lngLat: [-73.961, 40.763] as [number, number],
   },
-]
+];
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 3. ROUTE LAYER — polyline with casing + waypoints
@@ -61,23 +90,23 @@ const routePath: [number, number][] = [
   [-73.985, 40.7484],
   [-73.968, 40.7614],
   [-73.9776, 40.7736],
-]
+];
 const routeWaypoints = [
-  { name: 'Pickup · SoHo', lngLat: routePath[0] },
-  { name: 'Drop-off · UWS', lngLat: routePath[routePath.length - 1] },
-]
+  { name: "Pickup · SoHo", lngLat: routePath[0] },
+  { name: "Drop-off · UWS", lngLat: routePath[routePath.length - 1] },
+];
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 4. GEOJSON — service areas + camera helpers
 // ─────────────────────────────────────────────────────────────────────────────
 const zones: GeoJSON.FeatureCollection = {
-  type: 'FeatureCollection',
+  type: "FeatureCollection",
   features: [
     {
-      type: 'Feature',
-      properties: { name: 'Zone A — Midtown', quota: '92%' },
+      type: "Feature",
+      properties: { name: "Zone A — Midtown", quota: "92%" },
       geometry: {
-        type: 'Polygon',
+        type: "Polygon",
         coordinates: [
           [
             [-74.01, 40.735],
@@ -90,10 +119,10 @@ const zones: GeoJSON.FeatureCollection = {
       },
     },
     {
-      type: 'Feature',
-      properties: { name: 'Zone B — FiDi', quota: '71%' },
+      type: "Feature",
+      properties: { name: "Zone B — FiDi", quota: "71%" },
       geometry: {
-        type: 'Polygon',
+        type: "Polygon",
         coordinates: [
           [
             [-74.02, 40.7],
@@ -106,28 +135,28 @@ const zones: GeoJSON.FeatureCollection = {
       },
     },
   ],
-}
+};
 
-const geoMap = ref<LeafletMapRef | null>(null)
+const geoMap = ref<LeafletMapRef | null>(null);
 function fitZones() {
   geoMap.value?.fitBounds([
     [-74.03, 40.69],
     [-73.95, 40.78],
-  ])
+  ]);
 }
 function resetZones() {
-  geoMap.value?.flyTo({ center: [-73.99, 40.735], zoom: 13, duration: 700 })
+  geoMap.value?.flyTo({ center: [-73.99, 40.735], zoom: 13, duration: 700 });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 5. CONTROLS STORY STATE
 // ─────────────────────────────────────────────────────────────────────────────
-const controlsMap = ref<LeafletMapRef | null>(null)
-const controlsZoom = ref(12)
+const controlsMap = ref<LeafletMapRef | null>(null);
+const controlsZoom = ref(12);
 function onControlsCreated(m: any) {
-  m.on('zoomend', () => {
-    controlsZoom.value = Math.round(m.getZoom() * 10) / 10
-  })
+  m.on("zoomend", () => {
+    controlsZoom.value = Math.round(m.getZoom() * 10) / 10;
+  });
 }
 </script>
 
@@ -137,7 +166,11 @@ function onControlsCreated(m: any) {
     title="Default — theme-aware"
     description="Free Esri light/dark canvas tiles follow the app theme automatically. No API key, no token, no setup."
   >
-    <LeafletMap :center="[-73.985, 40.748]" :zoom="12.5" class="h-96 w-full rounded-lg border" />
+    <LeafletMap
+      :center="[-73.985, 40.748]"
+      :zoom="12.5"
+      class="h-96 w-full rounded-lg border"
+    />
   </Story>
 
   <!-- 2 ─────────────────────────────────────────────────────────────────── -->
@@ -178,8 +211,18 @@ function onControlsCreated(m: any) {
     title="Markers & Popups"
     description="LeafletMarker renders real DOM into a div icon — buttons, badges, and Vue handlers all keep working."
   >
-    <LeafletMap variant="light" :center="[-73.975, 40.755]" :zoom="13.5" class="h-96 w-full rounded-lg border">
-      <LeafletMarker v-for="m in landmarks" :key="m.id" :lng-lat="m.lngLat" anchor="bottom">
+    <LeafletMap
+      variant="light"
+      :center="[-73.975, 40.755]"
+      :zoom="13.5"
+      class="h-96 w-full rounded-lg border"
+    >
+      <LeafletMarker
+        v-for="m in landmarks"
+        :key="m.id"
+        :lng-lat="m.lngLat"
+        anchor="bottom"
+      >
         <div class="group flex cursor-pointer flex-col items-center">
           <span
             class="bg-primary ring-primary/25 size-3.5 rounded-full ring-4 transition-transform group-hover:scale-110"
@@ -194,7 +237,9 @@ function onControlsCreated(m: any) {
         <LeafletPopup :offset="[0, -38]" class="space-y-1 text-xs">
           <div class="text-foreground font-bold">{{ m.name }}</div>
           <div class="text-muted-foreground">{{ m.detail }}</div>
-          <div class="font-mono text-xs font-medium text-emerald-500">{{ m.status }}</div>
+          <div class="font-mono text-xs font-medium text-emerald-500">
+            {{ m.status }}
+          </div>
         </LeafletPopup>
       </LeafletMarker>
     </LeafletMap>
@@ -205,7 +250,11 @@ function onControlsCreated(m: any) {
     title="Tooltips"
     description="LeafletTooltip binds to the nearest ancestor layer — or floats standalone at a coordinate."
   >
-    <LeafletMap :center="[-73.985, 40.748]" :zoom="12.5" class="h-96 w-full rounded-lg border">
+    <LeafletMap
+      :center="[-73.985, 40.748]"
+      :zoom="12.5"
+      class="h-96 w-full rounded-lg border"
+    >
       <LeafletCircleMarker
         :center="[-73.985, 40.748]"
         :radius="10"
@@ -215,7 +264,9 @@ function onControlsCreated(m: any) {
         :fill-opacity="0.9"
       >
         <LeafletTooltip direction="top" :offset="[0, -12]">
-          <span class="font-mono text-xs font-bold">Empire State — 1,250 ft</span>
+          <span class="font-mono text-xs font-bold"
+            >Empire State — 1,250 ft</span
+          >
         </LeafletTooltip>
       </LeafletCircleMarker>
       <LeafletCircleMarker
@@ -238,12 +289,35 @@ function onControlsCreated(m: any) {
     title="Route Layer"
     description="LeafletPolyline draws a cased route line; waypoint markers pin the endpoints."
   >
-    <LeafletMap variant="streets" :center="[-73.985, 40.745]" :zoom="13" class="h-96 w-full rounded-lg border">
-      <LeafletPolyline :lng-lat-path="routePath" color="#0f172a" :weight="7" :opacity="0.35" />
-      <LeafletPolyline :lng-lat-path="routePath" color="#3b82f6" :weight="4" :opacity="1" dash-array="1 0" />
-      <LeafletMarker v-for="w in routeWaypoints" :key="w.name" :lng-lat="w.lngLat" anchor="bottom">
+    <LeafletMap
+      variant="streets"
+      :center="[-73.985, 40.745]"
+      :zoom="13"
+      class="h-96 w-full rounded-lg border"
+    >
+      <LeafletPolyline
+        :lng-lat-path="routePath"
+        color="#0f172a"
+        :weight="7"
+        :opacity="0.35"
+      />
+      <LeafletPolyline
+        :lng-lat-path="routePath"
+        color="#3b82f6"
+        :weight="4"
+        :opacity="1"
+        dash-array="1 0"
+      />
+      <LeafletMarker
+        v-for="w in routeWaypoints"
+        :key="w.name"
+        :lng-lat="w.lngLat"
+        anchor="bottom"
+      >
         <div class="flex flex-col items-center">
-          <span class="border-background size-3 rounded-full border-2 bg-blue-600 shadow" />
+          <span
+            class="border-background size-3 rounded-full border-2 bg-blue-600 shadow"
+          />
           <span
             class="border-border bg-background/95 mt-1 rounded border px-1.5 py-0.5 font-mono text-[10px] font-semibold shadow-xs"
           >
@@ -303,7 +377,12 @@ function onControlsCreated(m: any) {
     title="Circles & Radii"
     description="LeafletCircle is meter-accurate (coverage rings); LeafletCircleMarker is pixel-fixed (data points)."
   >
-    <LeafletMap variant="outdoors" :center="[-119.5383, 37.8651]" :zoom="11" class="h-96 w-full rounded-lg border">
+    <LeafletMap
+      variant="outdoors"
+      :center="[-119.5383, 37.8651]"
+      :zoom="11"
+      class="h-96 w-full rounded-lg border"
+    >
       <LeafletCircle
         :center="[-119.5383, 37.8651]"
         :radius="9000"
@@ -325,7 +404,9 @@ function onControlsCreated(m: any) {
       />
       <LeafletMarker :lng-lat="[-119.5383, 37.8651]" anchor="bottom">
         <div class="flex flex-col items-center">
-          <span class="border-background size-3 rounded-full border-2 bg-amber-500 shadow" />
+          <span
+            class="border-background size-3 rounded-full border-2 bg-amber-500 shadow"
+          />
           <span
             class="border-border bg-background/95 mt-1 rounded border px-1.5 py-0.5 font-mono text-[10px] font-semibold shadow-xs"
             >Yosemite Gate</span
@@ -356,7 +437,9 @@ function onControlsCreated(m: any) {
         >
           Zoom out
         </button>
-        <span class="text-muted-foreground ml-2 font-mono text-xs">zoom {{ controlsZoom }}</span>
+        <span class="text-muted-foreground ml-2 font-mono text-xs"
+          >zoom {{ controlsZoom }}</span
+        >
       </div>
       <LeafletMap
         ref="controlsMap"
@@ -377,14 +460,21 @@ function onControlsCreated(m: any) {
     title="Custom Tile Layer"
     description="LeafletTileLayer stacks extra raster layers; tile-url on LeafletMap swaps the basemap outright."
   >
-    <LeafletMap variant="satellite" :center="[-122.478, 37.819]" :zoom="13" class="h-96 w-full rounded-lg border">
+    <LeafletMap
+      variant="satellite"
+      :center="[-122.478, 37.819]"
+      :zoom="13"
+      class="h-96 w-full rounded-lg border"
+    >
       <LeafletTileLayer
         url="https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}"
         :opacity="0.9"
       />
       <LeafletMarker :lng-lat="[-122.478, 37.819]" anchor="bottom">
         <div class="flex flex-col items-center">
-          <span class="border-background size-3 rounded-full border-2 bg-white shadow" />
+          <span
+            class="border-background size-3 rounded-full border-2 bg-white shadow"
+          />
           <span
             class="mt-1 rounded border border-white/20 bg-black/70 px-1.5 py-0.5 font-mono text-[10px] font-semibold text-white shadow-xs"
             >Golden Gate</span
@@ -415,7 +505,12 @@ function onControlsCreated(m: any) {
     title="Polygon Boundary"
     description="LeafletPolygon renders cadastral-style boundaries; dashed rings read as restricted airspace."
   >
-    <LeafletMap variant="navigation-day" :center="[4.4, 51.9]" :zoom="11" class="h-96 w-full rounded-lg border">
+    <LeafletMap
+      variant="navigation-day"
+      :center="[4.4, 51.9]"
+      :zoom="11"
+      class="h-96 w-full rounded-lg border"
+    >
       <LeafletPolygon
         :lng-lat-path="[
           [4.28, 51.82],

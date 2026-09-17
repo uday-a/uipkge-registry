@@ -1,1 +1,1 @@
-export { ProgressItem, type ProgressItemProps } from './ProgressItem'
+export { ProgressItem, type ProgressItemProps } from "./ProgressItem";

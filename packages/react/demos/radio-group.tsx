@@ -1,31 +1,38 @@
-import Story from '../../components/story/Story'
-import { useState } from 'react'
-import { Label } from '@react-registry/label'
-import { RadioButton, RadioGroup, RadioGroupItem } from '@react-registry/radio-group'
+import Story from "../../components/story/Story";
+import { useState } from "react";
+import { Label } from "@react-registry/label";
+import {
+  RadioButton,
+  RadioGroup,
+  RadioGroupItem,
+} from "@react-registry/radio-group";
 
 const fruitOptions = [
-  { label: 'Apple', value: 'apple' },
-  { label: 'Banana', value: 'banana' },
-  { label: 'Cherry', value: 'cherry', disabled: true },
-  { label: 'Date', value: 'date' },
-]
+  { label: "Apple", value: "apple" },
+  { label: "Banana", value: "banana" },
+  { label: "Cherry", value: "cherry", disabled: true },
+  { label: "Date", value: "date" },
+];
 
 const planOptions = [
-  { label: 'Daily', value: 'daily' },
-  { label: 'Weekly', value: 'weekly' },
-  { label: 'Monthly', value: 'monthly' },
-]
+  { label: "Daily", value: "daily" },
+  { label: "Weekly", value: "weekly" },
+  { label: "Monthly", value: "monthly" },
+];
 
 export default function RadioGroupDemo() {
-  const [value, setValue] = useState('comfortable')
-  const [buttonValue, setButtonValue] = useState('b')
-  const [solidValue, setSolidValue] = useState('weekly')
-  const [optionsValue, setOptionsValue] = useState('apple')
-  const [disabledValue, setDisabledValue] = useState('option1')
+  const [value, setValue] = useState("comfortable");
+  const [buttonValue, setButtonValue] = useState("b");
+  const [solidValue, setSolidValue] = useState("weekly");
+  const [optionsValue, setOptionsValue] = useState("apple");
+  const [disabledValue, setDisabledValue] = useState("option1");
 
   return (
     <>
-      <Story title="Default" description="Single-select group of mutually exclusive options.">
+      <Story
+        title="Default"
+        description="Single-select group of mutually exclusive options."
+      >
         <RadioGroup value={value} onValueChange={setValue}>
           <div className="flex items-center gap-2">
             <RadioGroupItem id="r1" value="default" />
@@ -42,8 +49,15 @@ export default function RadioGroupDemo() {
         </RadioGroup>
       </Story>
 
-      <Story title="Options prop" description="Render radios automatically from an options array.">
-        <RadioGroup value={optionsValue} onValueChange={setOptionsValue} options={fruitOptions} />
+      <Story
+        title="Options prop"
+        description="Render radios automatically from an options array."
+      >
+        <RadioGroup
+          value={optionsValue}
+          onValueChange={setOptionsValue}
+          options={fruitOptions}
+        />
       </Story>
 
       <Story
@@ -64,7 +78,10 @@ export default function RadioGroupDemo() {
         </RadioGroup>
       </Story>
 
-      <Story title="Button style — solid" description="Filled background when checked.">
+      <Story
+        title="Button style — solid"
+        description="Filled background when checked."
+      >
         <RadioGroup
           value={solidValue}
           onValueChange={setSolidValue}
@@ -78,7 +95,10 @@ export default function RadioGroupDemo() {
         </RadioGroup>
       </Story>
 
-      <Story title="Button sizes" description="Small, middle (default), and large button radios.">
+      <Story
+        title="Button sizes"
+        description="Small, middle (default), and large button radios."
+      >
         <div className="space-y-3">
           <RadioGroup
             value={buttonValue}
@@ -113,7 +133,10 @@ export default function RadioGroupDemo() {
         </div>
       </Story>
 
-      <Story title="Button group vertical" description="Button radios stacked vertically.">
+      <Story
+        title="Button group vertical"
+        description="Button radios stacked vertically."
+      >
         <RadioGroup
           value={solidValue}
           onValueChange={setSolidValue}
@@ -127,7 +150,10 @@ export default function RadioGroupDemo() {
         </RadioGroup>
       </Story>
 
-      <Story title="Button group with options" description="Button style rendered automatically from options.">
+      <Story
+        title="Button group with options"
+        description="Button style rendered automatically from options."
+      >
         <RadioGroup
           value={solidValue}
           onValueChange={setSolidValue}
@@ -138,8 +164,15 @@ export default function RadioGroupDemo() {
         />
       </Story>
 
-      <Story title="Group disabled" description="Disabling the group disables all children automatically.">
-        <RadioGroup value={disabledValue} onValueChange={setDisabledValue} disabled>
+      <Story
+        title="Group disabled"
+        description="Disabling the group disables all children automatically."
+      >
+        <RadioGroup
+          value={disabledValue}
+          onValueChange={setDisabledValue}
+          disabled
+        >
           <div className="flex items-center gap-2">
             <RadioGroupItem id="d1" value="option1" />
             <Label htmlFor="d1">Option 1</Label>
@@ -151,7 +184,10 @@ export default function RadioGroupDemo() {
         </RadioGroup>
       </Story>
 
-      <Story title="Disabled button group" description="Disabled state works with button-style radios too.">
+      <Story
+        title="Disabled button group"
+        description="Disabled state works with button-style radios too."
+      >
         <RadioGroup
           value={buttonValue}
           onValueChange={setButtonValue}
@@ -164,5 +200,5 @@ export default function RadioGroupDemo() {
         </RadioGroup>
       </Story>
     </>
-  )
+  );
 }

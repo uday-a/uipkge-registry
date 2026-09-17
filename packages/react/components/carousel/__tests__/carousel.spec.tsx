@@ -1,8 +1,14 @@
-import { describe, it, expect } from 'vitest'
-import { render } from '@testing-library/react'
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from '../carousel'
+import { describe, it, expect } from "vitest";
+import { render } from "@testing-library/react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "../carousel";
 
-describe('Carousel', () => {
+describe("Carousel", () => {
   it('Carousel renders with data-slot="carousel"', () => {
     const { container } = render(
       <Carousel>
@@ -10,20 +16,24 @@ describe('Carousel', () => {
           <CarouselItem>Slide 1</CarouselItem>
         </CarouselContent>
       </Carousel>,
-    )
-    expect(container.querySelector('[data-slot="carousel"]')).toBeTruthy()
-  })
+    );
+    expect(container.querySelector('[data-slot="carousel"]')).toBeTruthy();
+  });
 
-  it('Carousel has data-uipkge', () => {
+  it("Carousel has data-uipkge", () => {
     const { container } = render(
       <Carousel>
         <CarouselContent>
           <CarouselItem>Slide 1</CarouselItem>
         </CarouselContent>
       </Carousel>,
-    )
-    expect(container.querySelector('[data-slot="carousel"]')?.hasAttribute('data-uipkge')).toBe(true)
-  })
+    );
+    expect(
+      container
+        .querySelector('[data-slot="carousel"]')
+        ?.hasAttribute("data-uipkge"),
+    ).toBe(true);
+  });
 
   it('Carousel has role="region"', () => {
     const { container } = render(
@@ -32,9 +42,11 @@ describe('Carousel', () => {
           <CarouselItem>Slide 1</CarouselItem>
         </CarouselContent>
       </Carousel>,
-    )
-    expect(container.querySelector('[data-slot="carousel"]')?.getAttribute('role')).toBe('region')
-  })
+    );
+    expect(
+      container.querySelector('[data-slot="carousel"]')?.getAttribute("role"),
+    ).toBe("region");
+  });
 
   it('CarouselContent renders with data-slot="carousel-content"', () => {
     const { container } = render(
@@ -43,9 +55,11 @@ describe('Carousel', () => {
           <CarouselItem>Slide 1</CarouselItem>
         </CarouselContent>
       </Carousel>,
-    )
-    expect(container.querySelector('[data-slot="carousel-content"]')).toBeTruthy()
-  })
+    );
+    expect(
+      container.querySelector('[data-slot="carousel-content"]'),
+    ).toBeTruthy();
+  });
 
   it('CarouselItem renders with data-slot="carousel-item"', () => {
     const { container } = render(
@@ -54,11 +68,11 @@ describe('Carousel', () => {
           <CarouselItem>Slide 1</CarouselItem>
         </CarouselContent>
       </Carousel>,
-    )
-    expect(container.querySelector('[data-slot="carousel-item"]')).toBeTruthy()
-  })
+    );
+    expect(container.querySelector('[data-slot="carousel-item"]')).toBeTruthy();
+  });
 
-  it('Carousel renders all slides', () => {
+  it("Carousel renders all slides", () => {
     const { container } = render(
       <Carousel>
         <CarouselContent>
@@ -67,11 +81,13 @@ describe('Carousel', () => {
           <CarouselItem>Slide 3</CarouselItem>
         </CarouselContent>
       </Carousel>,
-    )
-    expect(container.querySelectorAll('[data-slot="carousel-item"]').length).toBe(3)
-  })
+    );
+    expect(
+      container.querySelectorAll('[data-slot="carousel-item"]').length,
+    ).toBe(3);
+  });
 
-  it('CarouselPrevious renders a button', () => {
+  it("CarouselPrevious renders a button", () => {
     const { container } = render(
       <Carousel>
         <CarouselContent>
@@ -79,13 +95,13 @@ describe('Carousel', () => {
         </CarouselContent>
         <CarouselPrevious />
       </Carousel>,
-    )
-    const prev = container.querySelector('[aria-label="Previous slide"]')
-    expect(prev).toBeTruthy()
-    expect(prev?.tagName.toLowerCase()).toBe('button')
-  })
+    );
+    const prev = container.querySelector('[aria-label="Previous slide"]');
+    expect(prev).toBeTruthy();
+    expect(prev?.tagName.toLowerCase()).toBe("button");
+  });
 
-  it('CarouselNext renders a button', () => {
+  it("CarouselNext renders a button", () => {
     const { container } = render(
       <Carousel>
         <CarouselContent>
@@ -93,22 +109,26 @@ describe('Carousel', () => {
         </CarouselContent>
         <CarouselNext />
       </Carousel>,
-    )
-    const next = container.querySelector('[aria-label="Next slide"]')
-    expect(next).toBeTruthy()
-    expect(next?.tagName.toLowerCase()).toBe('button')
-  })
+    );
+    const next = container.querySelector('[aria-label="Next slide"]');
+    expect(next).toBeTruthy();
+    expect(next?.tagName.toLowerCase()).toBe("button");
+  });
 
-  it('Carousel applies orientation', () => {
+  it("Carousel applies orientation", () => {
     const { container } = render(
       <Carousel orientation="vertical">
         <CarouselContent>
           <CarouselItem>Slide 1</CarouselItem>
         </CarouselContent>
       </Carousel>,
-    )
-    expect(container.querySelector('[data-slot="carousel-content"]')?.getAttribute('aria-orientation')).toBe('vertical')
-  })
+    );
+    expect(
+      container
+        .querySelector('[data-slot="carousel-content"]')
+        ?.getAttribute("aria-orientation"),
+    ).toBe("vertical");
+  });
 
   it('CarouselItem has role="group"', () => {
     const { container } = render(
@@ -117,11 +137,15 @@ describe('Carousel', () => {
           <CarouselItem>Slide 1</CarouselItem>
         </CarouselContent>
       </Carousel>,
-    )
-    expect(container.querySelector('[data-slot="carousel-item"]')?.getAttribute('role')).toBe('group')
-  })
+    );
+    expect(
+      container
+        .querySelector('[data-slot="carousel-item"]')
+        ?.getAttribute("role"),
+    ).toBe("group");
+  });
 
-  it('CarouselPrevious has aria-label', () => {
+  it("CarouselPrevious has aria-label", () => {
     const { container } = render(
       <Carousel>
         <CarouselContent>
@@ -129,11 +153,13 @@ describe('Carousel', () => {
         </CarouselContent>
         <CarouselPrevious />
       </Carousel>,
-    )
-    expect(container.querySelector('[aria-label="Previous slide"]')).toBeTruthy()
-  })
+    );
+    expect(
+      container.querySelector('[aria-label="Previous slide"]'),
+    ).toBeTruthy();
+  });
 
-  it('CarouselNext has aria-label', () => {
+  it("CarouselNext has aria-label", () => {
     const { container } = render(
       <Carousel>
         <CarouselContent>
@@ -141,7 +167,7 @@ describe('Carousel', () => {
         </CarouselContent>
         <CarouselNext />
       </Carousel>,
-    )
-    expect(container.querySelector('[aria-label="Next slide"]')).toBeTruthy()
-  })
-})
+    );
+    expect(container.querySelector('[aria-label="Next slide"]')).toBeTruthy();
+  });
+});

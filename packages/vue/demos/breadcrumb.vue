@@ -7,9 +7,14 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { ChevronDown, Home, Slash } from 'lucide-vue-next'
+} from "@/components/ui/breadcrumb";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ChevronDown, Home, Slash } from "lucide-vue-next";
 </script>
 
 <template>
@@ -19,16 +24,25 @@ import { ChevronDown, Home, Slash } from 'lucide-vue-next'
   >
     <Breadcrumb>
       <BreadcrumbList>
-        <BreadcrumbItem><BreadcrumbLink href="#">Home</BreadcrumbLink></BreadcrumbItem>
+        <BreadcrumbItem
+          ><BreadcrumbLink href="#">Home</BreadcrumbLink></BreadcrumbItem
+        >
         <BreadcrumbSeparator />
-        <BreadcrumbItem><BreadcrumbLink href="#">Components</BreadcrumbLink></BreadcrumbItem>
+        <BreadcrumbItem
+          ><BreadcrumbLink href="#">Components</BreadcrumbLink></BreadcrumbItem
+        >
         <BreadcrumbSeparator />
-        <BreadcrumbItem><BreadcrumbPage>Breadcrumb</BreadcrumbPage></BreadcrumbItem>
+        <BreadcrumbItem
+          ><BreadcrumbPage>Breadcrumb</BreadcrumbPage></BreadcrumbItem
+        >
       </BreadcrumbList>
     </Breadcrumb>
   </Story>
 
-  <Story title="With leading icon" description="Wrap a Lucide icon in BreadcrumbLink for an iconic Home root.">
+  <Story
+    title="With leading icon"
+    description="Wrap a Lucide icon in BreadcrumbLink for an iconic Home root."
+  >
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
@@ -38,9 +52,13 @@ import { ChevronDown, Home, Slash } from 'lucide-vue-next'
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
-        <BreadcrumbItem><BreadcrumbLink href="#">Settings</BreadcrumbLink></BreadcrumbItem>
+        <BreadcrumbItem
+          ><BreadcrumbLink href="#">Settings</BreadcrumbLink></BreadcrumbItem
+        >
         <BreadcrumbSeparator />
-        <BreadcrumbItem><BreadcrumbPage>Account</BreadcrumbPage></BreadcrumbItem>
+        <BreadcrumbItem
+          ><BreadcrumbPage>Account</BreadcrumbPage></BreadcrumbItem
+        >
       </BreadcrumbList>
     </Breadcrumb>
   </Story>
@@ -52,34 +70,57 @@ import { ChevronDown, Home, Slash } from 'lucide-vue-next'
     <div class="space-y-3">
       <Breadcrumb>
         <BreadcrumbList>
-          <BreadcrumbItem><BreadcrumbLink href="#">Docs</BreadcrumbLink></BreadcrumbItem>
-          <BreadcrumbSeparator><Slash class="text-muted-foreground/60 size-3.5 -rotate-12" /></BreadcrumbSeparator>
-          <BreadcrumbItem><BreadcrumbLink href="#">Guides</BreadcrumbLink></BreadcrumbItem>
-          <BreadcrumbSeparator><Slash class="text-muted-foreground/60 size-3.5 -rotate-12" /></BreadcrumbSeparator>
-          <BreadcrumbItem><BreadcrumbPage>Routing</BreadcrumbPage></BreadcrumbItem>
+          <BreadcrumbItem
+            ><BreadcrumbLink href="#">Docs</BreadcrumbLink></BreadcrumbItem
+          >
+          <BreadcrumbSeparator
+            ><Slash class="text-muted-foreground/60 size-3.5 -rotate-12"
+          /></BreadcrumbSeparator>
+          <BreadcrumbItem
+            ><BreadcrumbLink href="#">Guides</BreadcrumbLink></BreadcrumbItem
+          >
+          <BreadcrumbSeparator
+            ><Slash class="text-muted-foreground/60 size-3.5 -rotate-12"
+          /></BreadcrumbSeparator>
+          <BreadcrumbItem
+            ><BreadcrumbPage>Routing</BreadcrumbPage></BreadcrumbItem
+          >
         </BreadcrumbList>
       </Breadcrumb>
 
       <Breadcrumb>
         <BreadcrumbList>
-          <BreadcrumbItem><BreadcrumbLink href="#">Library</BreadcrumbLink></BreadcrumbItem>
+          <BreadcrumbItem
+            ><BreadcrumbLink href="#">Library</BreadcrumbLink></BreadcrumbItem
+          >
           <BreadcrumbSeparator>·</BreadcrumbSeparator>
-          <BreadcrumbItem><BreadcrumbLink href="#">UI</BreadcrumbLink></BreadcrumbItem>
+          <BreadcrumbItem
+            ><BreadcrumbLink href="#">UI</BreadcrumbLink></BreadcrumbItem
+          >
           <BreadcrumbSeparator>·</BreadcrumbSeparator>
-          <BreadcrumbItem><BreadcrumbPage>Toggle</BreadcrumbPage></BreadcrumbItem>
+          <BreadcrumbItem
+            ><BreadcrumbPage>Toggle</BreadcrumbPage></BreadcrumbItem
+          >
         </BreadcrumbList>
       </Breadcrumb>
     </div>
   </Story>
 
-  <Story title="Long path with ellipsis" description="Use BreadcrumbEllipsis to collapse middle segments visually.">
+  <Story
+    title="Long path with ellipsis"
+    description="Use BreadcrumbEllipsis to collapse middle segments visually."
+  >
     <Breadcrumb>
       <BreadcrumbList>
-        <BreadcrumbItem><BreadcrumbLink href="#">Workspace</BreadcrumbLink></BreadcrumbItem>
+        <BreadcrumbItem
+          ><BreadcrumbLink href="#">Workspace</BreadcrumbLink></BreadcrumbItem
+        >
         <BreadcrumbSeparator />
         <BreadcrumbItem><BreadcrumbEllipsis /></BreadcrumbItem>
         <BreadcrumbSeparator />
-        <BreadcrumbItem><BreadcrumbLink href="#">2026</BreadcrumbLink></BreadcrumbItem>
+        <BreadcrumbItem
+          ><BreadcrumbLink href="#">2026</BreadcrumbLink></BreadcrumbItem
+        >
         <BreadcrumbSeparator />
         <BreadcrumbItem><BreadcrumbPage>May</BreadcrumbPage></BreadcrumbItem>
       </BreadcrumbList>
@@ -92,11 +133,15 @@ import { ChevronDown, Home, Slash } from 'lucide-vue-next'
   >
     <Breadcrumb>
       <BreadcrumbList>
-        <BreadcrumbItem><BreadcrumbLink href="#">Org</BreadcrumbLink></BreadcrumbItem>
+        <BreadcrumbItem
+          ><BreadcrumbLink href="#">Org</BreadcrumbLink></BreadcrumbItem
+        >
         <BreadcrumbSeparator />
         <BreadcrumbItem>
           <DropdownMenu>
-            <DropdownMenuTrigger class="hover:text-foreground flex items-center gap-1 transition-colors">
+            <DropdownMenuTrigger
+              class="hover:text-foreground flex items-center gap-1 transition-colors"
+            >
               <BreadcrumbEllipsis />
               <ChevronDown class="size-3" />
             </DropdownMenuTrigger>
@@ -108,7 +153,9 @@ import { ChevronDown, Home, Slash } from 'lucide-vue-next'
           </DropdownMenu>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
-        <BreadcrumbItem><BreadcrumbLink href="#">Tickets</BreadcrumbLink></BreadcrumbItem>
+        <BreadcrumbItem
+          ><BreadcrumbLink href="#">Tickets</BreadcrumbLink></BreadcrumbItem
+        >
         <BreadcrumbSeparator />
         <BreadcrumbItem><BreadcrumbPage>#4218</BreadcrumbPage></BreadcrumbItem>
       </BreadcrumbList>
@@ -121,7 +168,9 @@ import { ChevronDown, Home, Slash } from 'lucide-vue-next'
   >
     <Breadcrumb>
       <BreadcrumbList>
-        <BreadcrumbItem><BreadcrumbLink href="#">Home</BreadcrumbLink></BreadcrumbItem>
+        <BreadcrumbItem
+          ><BreadcrumbLink href="#">Home</BreadcrumbLink></BreadcrumbItem
+        >
         <BreadcrumbSeparator />
         <BreadcrumbItem class="hidden md:inline-flex">
           <BreadcrumbLink href="#">Reports</BreadcrumbLink>
@@ -135,7 +184,9 @@ import { ChevronDown, Home, Slash } from 'lucide-vue-next'
           <BreadcrumbEllipsis />
         </BreadcrumbItem>
         <BreadcrumbSeparator class="md:hidden" />
-        <BreadcrumbItem><BreadcrumbPage>Sales by region</BreadcrumbPage></BreadcrumbItem>
+        <BreadcrumbItem
+          ><BreadcrumbPage>Sales by region</BreadcrumbPage></BreadcrumbItem
+        >
       </BreadcrumbList>
     </Breadcrumb>
   </Story>

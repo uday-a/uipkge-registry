@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { Icon } from '@/components/ui/icons'
-import { Home, Settings, User } from 'lucide-vue-next'
+import { Icon } from "@/components/ui/icons";
+import { Home, Settings, User } from "lucide-vue-next";
 </script>
 
 <template>
-  <Story title="Sizes" description="Icon component in different sizes using Lucide icons via slot.">
+  <Story
+    title="Sizes"
+    description="Icon component in different sizes using Lucide icons via slot."
+  >
     <div class="flex items-center gap-4">
       <Icon size="xs"><Home class="size-3" aria-hidden="true" /></Icon>
       <Icon size="sm"><Home class="size-4" aria-hidden="true" /></Icon>
@@ -14,7 +17,10 @@ import { Home, Settings, User } from 'lucide-vue-next'
     </div>
   </Story>
 
-  <Story title="Color & rotation" description="Custom color and rotation applied to the icon wrapper.">
+  <Story
+    title="Color & rotation"
+    description="Custom color and rotation applied to the icon wrapper."
+  >
     <div class="flex items-center gap-4">
       <Icon color="var(--destructive)" :rotation="0">
         <Settings class="size-5" aria-hidden="true" />
@@ -28,7 +34,10 @@ import { Home, Settings, User } from 'lucide-vue-next'
     </div>
   </Story>
 
-  <Story title="Flip" description="Horizontal and vertical flip transformations.">
+  <Story
+    title="Flip"
+    description="Horizontal and vertical flip transformations."
+  >
     <div class="flex items-center gap-4">
       <Icon><User class="size-5" aria-hidden="true" /></Icon>
       <Icon flip="horizontal"><User class="size-5" aria-hidden="true" /></Icon>

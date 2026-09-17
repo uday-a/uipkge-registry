@@ -5,39 +5,49 @@ import {
   VerticalTabsList,
   VerticalTabsSection,
   VerticalTabsTrigger,
-} from '@/components/ui/vertical-tabs'
-import { ref } from 'vue'
-import { AlertTriangle, Bell, GitBranch, Key, Mail, RefreshCw, Settings, Shield, User } from 'lucide-vue-next'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import { Switch } from '@/components/ui/switch'
-import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
+} from "@/components/ui/vertical-tabs";
+import { ref } from "vue";
+import {
+  AlertTriangle,
+  Bell,
+  GitBranch,
+  Key,
+  Mail,
+  RefreshCw,
+  Settings,
+  Shield,
+  User,
+} from "lucide-vue-next";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 
 // Settings-with-forms demo state. Mock save handler so the demo emits
 // to the console rather than hitting a backend.
 const profile = ref({
-  name: 'Alex Morgan',
-  email: 'alex@example.com',
-  bio: 'Frontend engineer working on dashboards and design systems.',
-})
+  name: "Alex Morgan",
+  email: "alex@example.com",
+  bio: "Frontend engineer working on dashboards and design systems.",
+});
 const security = ref({
   twoFactor: true,
-  sessionTimeout: '30',
-})
+  sessionTimeout: "30",
+});
 const notifications = ref({
   productUpdates: true,
   weeklyDigest: false,
   securityAlerts: true,
-})
+});
 function onSave(section: string) {
   // eslint-disable-next-line no-console
   console.log(`saved ${section}`, {
     profile: profile.value,
     security: security.value,
     notifications: notifications.value,
-  })
+  });
 }
 </script>
 
@@ -67,7 +77,9 @@ function onSave(section: string) {
           <form class="space-y-5" @submit.prevent="onSave('profile')">
             <div>
               <h3 class="text-lg font-semibold">Profile</h3>
-              <p class="text-muted-foreground mt-0.5 text-sm">How your account appears to teammates.</p>
+              <p class="text-muted-foreground mt-0.5 text-sm">
+                How your account appears to teammates.
+              </p>
             </div>
             <Separator />
             <div class="grid gap-4 sm:grid-cols-2">
@@ -77,13 +89,20 @@ function onSave(section: string) {
               </div>
               <div class="grid gap-1.5">
                 <Label for="settings-email">Email</Label>
-                <Input id="settings-email" v-model="profile.email" type="email" :prefix-icon="Mail" />
+                <Input
+                  id="settings-email"
+                  v-model="profile.email"
+                  type="email"
+                  :prefix-icon="Mail"
+                />
               </div>
             </div>
             <div class="grid gap-1.5">
               <Label for="settings-bio">Bio</Label>
               <Textarea id="settings-bio" v-model="profile.bio" :rows="3" />
-              <p class="text-muted-foreground text-xs">Markdown supported. Shows on your public profile.</p>
+              <p class="text-muted-foreground text-xs">
+                Markdown supported. Shows on your public profile.
+              </p>
             </div>
             <div class="flex justify-end gap-2">
               <Button type="button" variant="ghost">Cancel</Button>
@@ -96,19 +115,29 @@ function onSave(section: string) {
           <form class="space-y-5" @submit.prevent="onSave('security')">
             <div>
               <h3 class="text-lg font-semibold">Security</h3>
-              <p class="text-muted-foreground mt-0.5 text-sm">Sign-in protection and session lifetime.</p>
+              <p class="text-muted-foreground mt-0.5 text-sm">
+                Sign-in protection and session lifetime.
+              </p>
             </div>
             <Separator />
             <div class="flex items-center justify-between gap-4">
               <div class="space-y-0.5">
                 <Label class="font-medium">Two-factor authentication</Label>
-                <p class="text-muted-foreground text-xs">Require a one-time code on every new device.</p>
+                <p class="text-muted-foreground text-xs">
+                  Require a one-time code on every new device.
+                </p>
               </div>
               <Switch v-model="security.twoFactor" />
             </div>
             <div class="grid gap-1.5">
               <Label for="settings-timeout">Session timeout (minutes)</Label>
-              <Input id="settings-timeout" v-model="security.sessionTimeout" type="number" min="5" max="240" />
+              <Input
+                id="settings-timeout"
+                v-model="security.sessionTimeout"
+                type="number"
+                min="5"
+                max="240"
+              />
             </div>
             <div class="flex justify-end gap-2">
               <Button type="button" variant="ghost">Cancel</Button>
@@ -122,7 +151,10 @@ function onSave(section: string) {
             <div>
               <h3 class="text-lg font-semibold">Notifications</h3>
               <p class="text-muted-foreground mt-0.5 text-sm">
-                Which emails we send to <span class="text-foreground font-medium">{{ profile.email }}</span
+                Which emails we send to
+                <span class="text-foreground font-medium">{{
+                  profile.email
+                }}</span
                 >.
               </p>
             </div>
@@ -131,14 +163,18 @@ function onSave(section: string) {
               <div class="flex items-center justify-between gap-4">
                 <div class="space-y-0.5">
                   <Label class="font-medium">Product updates</Label>
-                  <p class="text-muted-foreground text-xs">Feature releases, breaking changes, deprecations.</p>
+                  <p class="text-muted-foreground text-xs">
+                    Feature releases, breaking changes, deprecations.
+                  </p>
                 </div>
                 <Switch v-model="notifications.productUpdates" />
               </div>
               <div class="flex items-center justify-between gap-4">
                 <div class="space-y-0.5">
                   <Label class="font-medium">Weekly digest</Label>
-                  <p class="text-muted-foreground text-xs">Activity summary every Monday morning.</p>
+                  <p class="text-muted-foreground text-xs">
+                    Activity summary every Monday morning.
+                  </p>
                 </div>
                 <Switch v-model="notifications.weeklyDigest" />
               </div>
@@ -146,7 +182,8 @@ function onSave(section: string) {
                 <div class="space-y-0.5">
                   <Label class="font-medium">Security alerts</Label>
                   <p class="text-muted-foreground text-xs">
-                    New sign-ins, password changes. We recommend keeping these on.
+                    New sign-ins, password changes. We recommend keeping these
+                    on.
                   </p>
                 </div>
                 <Switch v-model="notifications.securityAlerts" />
@@ -162,7 +199,10 @@ function onSave(section: string) {
     </div>
   </Story>
 
-  <Story title="Default" description="Settings-style left rail with section labels and icon-prefixed items.">
+  <Story
+    title="Default"
+    description="Settings-style left rail with section labels and icon-prefixed items."
+  >
     <div class="bg-card rounded-lg border p-6">
       <VerticalTabs default-value="general">
         <VerticalTabsList>
@@ -185,7 +225,10 @@ function onSave(section: string) {
             API Key
           </VerticalTabsTrigger>
           <VerticalTabsSection label="Danger" />
-          <VerticalTabsTrigger value="danger" class="text-destructive hover:text-destructive">
+          <VerticalTabsTrigger
+            value="danger"
+            class="text-destructive hover:text-destructive"
+          >
             <AlertTriangle />
             Danger Zone
           </VerticalTabsTrigger>
@@ -193,29 +236,42 @@ function onSave(section: string) {
 
         <VerticalTabsContent value="general">
           <h3 class="text-lg font-semibold">General</h3>
-          <p class="text-muted-foreground mt-1 text-sm">Basic project information and settings.</p>
+          <p class="text-muted-foreground mt-1 text-sm">
+            Basic project information and settings.
+          </p>
         </VerticalTabsContent>
         <VerticalTabsContent value="sync">
           <h3 class="text-lg font-semibold">Sync</h3>
-          <p class="text-muted-foreground mt-1 text-sm">Configure scheduled translation sync.</p>
+          <p class="text-muted-foreground mt-1 text-sm">
+            Configure scheduled translation sync.
+          </p>
         </VerticalTabsContent>
         <VerticalTabsContent value="git-sync">
           <h3 class="text-lg font-semibold">Git Sync</h3>
-          <p class="text-muted-foreground mt-1 text-sm">Connect your repository for two-way sync.</p>
+          <p class="text-muted-foreground mt-1 text-sm">
+            Connect your repository for two-way sync.
+          </p>
         </VerticalTabsContent>
         <VerticalTabsContent value="api-key">
           <h3 class="text-lg font-semibold">API Key</h3>
-          <p class="text-muted-foreground mt-1 text-sm">Manage credentials used by your app.</p>
+          <p class="text-muted-foreground mt-1 text-sm">
+            Manage credentials used by your app.
+          </p>
         </VerticalTabsContent>
         <VerticalTabsContent value="danger">
           <h3 class="text-destructive text-lg font-semibold">Danger Zone</h3>
-          <p class="text-muted-foreground mt-1 text-sm">Permanently delete this project.</p>
+          <p class="text-muted-foreground mt-1 text-sm">
+            Permanently delete this project.
+          </p>
         </VerticalTabsContent>
       </VerticalTabs>
     </div>
   </Story>
 
-  <Story title="Without sections" description="Drop VerticalTabsSection for a flat list of items.">
+  <Story
+    title="Without sections"
+    description="Drop VerticalTabsSection for a flat list of items."
+  >
     <div class="bg-card rounded-lg border p-6">
       <VerticalTabs default-value="profile">
         <VerticalTabsList>
@@ -236,16 +292,23 @@ function onSave(section: string) {
           <p class="text-muted-foreground text-sm">Profile preferences.</p>
         </VerticalTabsContent>
         <VerticalTabsContent value="security">
-          <p class="text-muted-foreground text-sm">Two-factor and password options.</p>
+          <p class="text-muted-foreground text-sm">
+            Two-factor and password options.
+          </p>
         </VerticalTabsContent>
         <VerticalTabsContent value="notifications">
-          <p class="text-muted-foreground text-sm">Email + in-app notification controls.</p>
+          <p class="text-muted-foreground text-sm">
+            Email + in-app notification controls.
+          </p>
         </VerticalTabsContent>
       </VerticalTabs>
     </div>
   </Story>
 
-  <Story title="Disabled item" description="Set disabled on a trigger to prevent selection.">
+  <Story
+    title="Disabled item"
+    description="Set disabled on a trigger to prevent selection."
+  >
     <div class="bg-card rounded-lg border p-6">
       <VerticalTabs default-value="active">
         <VerticalTabsList>
@@ -272,7 +335,10 @@ function onSave(section: string) {
     </div>
   </Story>
 
-  <Story title="Compact (no icons)" description="Drop the leading icon for a tighter list.">
+  <Story
+    title="Compact (no icons)"
+    description="Drop the leading icon for a tighter list."
+  >
     <div class="bg-card rounded-lg border p-6">
       <VerticalTabs default-value="overview">
         <VerticalTabsList class="w-44">
@@ -318,13 +384,19 @@ function onSave(section: string) {
           </VerticalTabsTrigger>
         </VerticalTabsList>
         <VerticalTabsContent value="profile">
-          <p class="text-muted-foreground text-sm">Static chrome — no slide between items.</p>
+          <p class="text-muted-foreground text-sm">
+            Static chrome — no slide between items.
+          </p>
         </VerticalTabsContent>
         <VerticalTabsContent value="security">
-          <p class="text-muted-foreground text-sm">Active styles snap instantly.</p>
+          <p class="text-muted-foreground text-sm">
+            Active styles snap instantly.
+          </p>
         </VerticalTabsContent>
         <VerticalTabsContent value="notifications">
-          <p class="text-muted-foreground text-sm">Useful when motion is undesired.</p>
+          <p class="text-muted-foreground text-sm">
+            Useful when motion is undesired.
+          </p>
         </VerticalTabsContent>
       </VerticalTabs>
     </div>

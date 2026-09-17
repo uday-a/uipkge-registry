@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { LiquidFillChart } from '@/components/ui/charts'
+import { LiquidFillChart } from "@/components/ui/charts";
 </script>
 
 <template>
@@ -7,11 +7,17 @@ import { LiquidFillChart } from '@/components/ui/charts'
     <LiquidFillChart :value="68" unit="%" height="220" />
   </Story>
 
-  <Story title="Full" description="Waves rise to the value; label centres automatically.">
+  <Story
+    title="Full"
+    description="Waves rise to the value; label centres automatically."
+  >
     <LiquidFillChart :value="92" unit="%" height="220" />
   </Story>
 
-  <Story title="Custom colour" description="Override the wave colour for semantic fills.">
+  <Story
+    title="Custom colour"
+    description="Override the wave colour for semantic fills."
+  >
     <LiquidFillChart :value="34" color="var(--chart-2)" height="220" />
   </Story>
 
