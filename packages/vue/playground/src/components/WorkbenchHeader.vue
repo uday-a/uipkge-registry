@@ -49,17 +49,63 @@ const props = withDefaults(
 
 const emit = defineEmits<{
   (e: "toggleTheme"): void;
+  (e: "toggle-theme"): void;
   (e: "toggleSidebar"): void;
+  (e: "toggle-sidebar"): void;
+  (e: "update:isSidebarOpen", open: boolean): void;
+  (e: "update:is-sidebar-open", open: boolean): void;
   (e: "update:activeColorTheme", theme: string): void;
+  (e: "update:active-color-theme", theme: string): void;
   (e: "update:activeRadius", radius: string): void;
+  (e: "update:active-radius", radius: string): void;
   (e: "update:activeViewport", viewport: string): void;
+  (e: "update:active-viewport", viewport: string): void;
   (e: "update:canvasBg", bg: CanvasBackground): void;
+  (e: "update:canvas-bg", bg: CanvasBackground): void;
   (e: "update:isInspectorOpen", open: boolean): void;
+  (e: "update:is-inspector-open", open: boolean): void;
   (e: "remount"): void;
 }>();
 
 const copied = ref(false);
 const showThemeMenu = ref(false);
+
+const setViewport = (vp: string) => {
+  emit("update:activeViewport", vp);
+  emit("update:active-viewport", vp);
+};
+
+const setCanvas = (bg: CanvasBackground) => {
+  emit("update:canvasBg", bg);
+  emit("update:canvas-bg", bg);
+};
+
+const setColorTheme = (theme: string) => {
+  emit("update:activeColorTheme", theme);
+  emit("update:active-color-theme", theme);
+};
+
+const setRadius = (rad: string) => {
+  emit("update:activeRadius", rad);
+  emit("update:active-radius", rad);
+};
+
+const toggleSidebarAction = () => {
+  emit("toggleSidebar");
+  emit("toggle-sidebar");
+  emit("update:isSidebarOpen", !props.isSidebarOpen);
+  emit("update:is-sidebar-open", !props.isSidebarOpen);
+};
+
+const toggleThemeAction = () => {
+  emit("toggleTheme");
+  emit("toggle-theme");
+};
+
+const toggleInspectorAction = () => {
+  emit("update:isInspectorOpen", !props.isInspectorOpen);
+  emit("update:is-inspector-open", !props.isInspectorOpen);
+};
 
 const copyCommand = async () => {
   try {
@@ -78,7 +124,7 @@ const copyCommand = async () => {
 
 <template>
   <header
-    class="flex h-14 shrink-0 items-center justify-between border-b border-border bg-card px-3 sm:px-4 z-20 gap-2 sm:gap-4 overflow-hidden select-none"
+    class="flex h-14 shrink-0 items-center justify-between border-b border-border bg-card px-3 sm:px-4 z-20 gap-2 sm:gap-4 select-none"
   >
     <!-- Left Section: Monogram & Component Info -->
     <div class="flex items-center gap-2 sm:gap-2.5 shrink-0 min-w-0">
@@ -86,7 +132,7 @@ const copyCommand = async () => {
       <button
         type="button"
         class="flex size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-2xs cursor-pointer"
-        @click="emit('toggleSidebar')"
+        @click="toggleSidebarAction"
         :title="isSidebarOpen ? 'Hide sidebar (⌘B)' : 'Show sidebar (⌘B)'"
       >
         <PanelLeftClose v-if="isSidebarOpen" class="size-4 shrink-0" />
@@ -167,10 +213,10 @@ const copyCommand = async () => {
         class="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition whitespace-nowrap shrink-0 cursor-pointer"
         :class="
           activeViewport === 'fluid'
-            ? 'bg-background text-foreground shadow-xs'
-            : 'text-muted-foreground hover:text-foreground'
+            ? 'bg-background text-foreground shadow-xs font-semibold border border-border/80'
+            : 'text-muted-foreground hover:text-foreground border border-transparent'
         "
-        @click="emit('update:activeViewport', 'fluid')"
+        @click="setViewport('fluid')"
         title="Fluid (100%)"
       >
         <Maximize2 class="size-3.5 shrink-0" />
@@ -182,10 +228,10 @@ const copyCommand = async () => {
         class="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition whitespace-nowrap shrink-0 cursor-pointer"
         :class="
           activeViewport === 'desktop'
-            ? 'bg-background text-foreground shadow-xs'
-            : 'text-muted-foreground hover:text-foreground'
+            ? 'bg-background text-foreground shadow-xs font-semibold border border-border/80'
+            : 'text-muted-foreground hover:text-foreground border border-transparent'
         "
-        @click="emit('update:activeViewport', 'desktop')"
+        @click="setViewport('desktop')"
         title="Desktop (1280px)"
       >
         <Monitor class="size-3.5 shrink-0" />
@@ -197,10 +243,10 @@ const copyCommand = async () => {
         class="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition whitespace-nowrap shrink-0 cursor-pointer"
         :class="
           activeViewport === 'laptop'
-            ? 'bg-background text-foreground shadow-xs'
-            : 'text-muted-foreground hover:text-foreground'
+            ? 'bg-background text-foreground shadow-xs font-semibold border border-border/80'
+            : 'text-muted-foreground hover:text-foreground border border-transparent'
         "
-        @click="emit('update:activeViewport', 'laptop')"
+        @click="setViewport('laptop')"
         title="Laptop (1024px)"
       >
         <Laptop class="size-3.5 shrink-0" />
@@ -212,10 +258,10 @@ const copyCommand = async () => {
         class="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition whitespace-nowrap shrink-0 cursor-pointer"
         :class="
           activeViewport === 'tablet'
-            ? 'bg-background text-foreground shadow-xs'
-            : 'text-muted-foreground hover:text-foreground'
+            ? 'bg-background text-foreground shadow-xs font-semibold border border-border/80'
+            : 'text-muted-foreground hover:text-foreground border border-transparent'
         "
-        @click="emit('update:activeViewport', 'tablet')"
+        @click="setViewport('tablet')"
         title="Tablet (768px)"
       >
         <Tablet class="size-3.5 shrink-0" />
@@ -227,10 +273,10 @@ const copyCommand = async () => {
         class="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition whitespace-nowrap shrink-0 cursor-pointer"
         :class="
           activeViewport === 'mobile'
-            ? 'bg-background text-foreground shadow-xs'
-            : 'text-muted-foreground hover:text-foreground'
+            ? 'bg-background text-foreground shadow-xs font-semibold border border-border/80'
+            : 'text-muted-foreground hover:text-foreground border border-transparent'
         "
-        @click="emit('update:activeViewport', 'mobile')"
+        @click="setViewport('mobile')"
         title="Mobile (375px)"
       >
         <Smartphone class="size-3.5 shrink-0" />
@@ -249,10 +295,10 @@ const copyCommand = async () => {
           class="flex size-7 items-center justify-center rounded-md transition shrink-0 cursor-pointer"
           :class="
             canvasBg === 'dots'
-              ? 'bg-background text-foreground shadow-xs'
-              : 'text-muted-foreground hover:text-foreground'
+              ? 'bg-background text-foreground shadow-xs border border-border/80'
+              : 'text-muted-foreground hover:text-foreground border border-transparent'
           "
-          @click="emit('update:canvasBg', 'dots')"
+          @click="setCanvas('dots')"
           title="Dot pattern canvas"
         >
           <CircleDot class="size-3.5 shrink-0" />
@@ -262,10 +308,10 @@ const copyCommand = async () => {
           class="flex size-7 items-center justify-center rounded-md transition shrink-0 cursor-pointer"
           :class="
             canvasBg === 'grid'
-              ? 'bg-background text-foreground shadow-xs'
-              : 'text-muted-foreground hover:text-foreground'
+              ? 'bg-background text-foreground shadow-xs border border-border/80'
+              : 'text-muted-foreground hover:text-foreground border border-transparent'
           "
-          @click="emit('update:canvasBg', 'grid')"
+          @click="setCanvas('grid')"
           title="Grid pattern canvas"
         >
           <Grid class="size-3.5 shrink-0" />
@@ -275,10 +321,10 @@ const copyCommand = async () => {
           class="flex size-7 items-center justify-center rounded-md transition shrink-0 cursor-pointer"
           :class="
             canvasBg === 'solid'
-              ? 'bg-background text-foreground shadow-xs'
-              : 'text-muted-foreground hover:text-foreground'
+              ? 'bg-background text-foreground shadow-xs border border-border/80'
+              : 'text-muted-foreground hover:text-foreground border border-transparent'
           "
-          @click="emit('update:canvasBg', 'solid')"
+          @click="setCanvas('solid')"
           title="Solid clean canvas"
         >
           <Square class="size-3.5 shrink-0" />
@@ -288,7 +334,7 @@ const copyCommand = async () => {
       <!-- Remount Canvas Button -->
       <button
         type="button"
-        class="flex size-8 shrink-0 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-muted hover:text-foreground transition shadow-xs cursor-pointer"
+        class="flex size-8 shrink-0 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-muted hover:text-foreground active:rotate-180 transition-all duration-300 shadow-xs cursor-pointer"
         @click="emit('remount')"
         title="Reset & remount component"
       >
@@ -306,10 +352,17 @@ const copyCommand = async () => {
           <Palette class="size-3.5 shrink-0" />
         </button>
 
+        <!-- Click outside backdrop -->
+        <div
+          v-if="showThemeMenu"
+          class="fixed inset-0 z-40"
+          @click="showThemeMenu = false"
+        />
+
         <!-- Dropdown Popover -->
         <div
           v-if="showThemeMenu"
-          class="absolute right-0 top-10 w-64 rounded-xl border border-border bg-card p-4 shadow-xl z-50 animate-in fade-in zoom-in-95 duration-150"
+          class="absolute right-0 top-11 w-72 rounded-xl border border-border bg-card p-4 shadow-xl z-50 animate-in fade-in zoom-in-95 duration-150"
         >
           <div
             class="flex items-center justify-between pb-2 border-b border-border"
@@ -330,17 +383,17 @@ const copyCommand = async () => {
                 v-for="color in COLOR_THEMES"
                 :key="color.id"
                 type="button"
-                class="flex flex-col items-center gap-1 rounded-md p-1.5 border transition"
+                class="flex flex-col items-center gap-1 rounded-md p-1.5 border transition cursor-pointer"
                 :class="
                   activeColorTheme === color.id
-                    ? 'border-foreground bg-muted shadow-xs'
+                    ? 'border-primary bg-primary/10 shadow-xs font-medium'
                     : 'border-transparent hover:bg-muted/50'
                 "
-                @click="emit('update:activeColorTheme', color.id)"
+                @click="setColorTheme(color.id)"
                 :title="color.name"
               >
                 <span
-                  class="size-4 rounded-full border border-black/10"
+                  class="size-4 rounded-full border border-black/10 dark:border-white/10"
                   :style="{ backgroundColor: color.swatch }"
                 />
                 <span class="text-xs font-medium text-muted-foreground">{{
@@ -355,18 +408,18 @@ const copyCommand = async () => {
             <div class="text-xs font-medium text-muted-foreground mb-2">
               Border Radius
             </div>
-            <div class="grid grid-cols-3 gap-1">
+            <div class="grid grid-cols-5 gap-1">
               <button
                 v-for="rad in RADIUS_PRESETS"
                 :key="rad.id"
                 type="button"
-                class="rounded-md px-2 py-1 text-xs font-medium border text-center transition"
+                class="rounded-md px-1.5 py-1 text-xs font-mono font-medium border text-center transition cursor-pointer"
                 :class="
                   activeRadius === rad.value
-                    ? 'border-foreground bg-foreground text-background shadow-xs font-semibold'
-                    : 'border-border text-muted-foreground hover:bg-muted'
+                    ? 'border-primary bg-primary text-primary-foreground shadow-xs font-semibold'
+                    : 'border-border text-muted-foreground hover:bg-muted hover:text-foreground'
                 "
-                @click="emit('update:activeRadius', rad.value)"
+                @click="setRadius(rad.value)"
               >
                 {{ rad.id }}
               </button>
@@ -379,7 +432,7 @@ const copyCommand = async () => {
       <button
         type="button"
         class="flex size-8 shrink-0 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs cursor-pointer"
-        @click="emit('toggleTheme')"
+        @click="toggleThemeAction"
         :title="isDark ? 'Switch to Light' : 'Switch to Dark'"
       >
         <Sun v-if="isDark" class="size-4 shrink-0" />
@@ -397,7 +450,7 @@ const copyCommand = async () => {
             ? 'bg-primary text-primary-foreground border-primary'
             : 'bg-background text-muted-foreground border-border hover:text-foreground hover:bg-muted'
         "
-        @click="emit('update:isInspectorOpen', !isInspectorOpen)"
+        @click="toggleInspectorAction"
         title="Toggle Test Bench & Inspector"
       >
         <Sliders class="size-3.5 shrink-0" />

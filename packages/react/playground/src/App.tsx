@@ -324,7 +324,11 @@ export default function App() {
 
   // Sync color theme on document element
   useEffect(() => {
-    document.documentElement.setAttribute("data-theme", activeColorTheme);
+    if (activeColorTheme === "default") {
+      document.documentElement.removeAttribute("data-color-theme");
+    } else {
+      document.documentElement.setAttribute("data-color-theme", activeColorTheme);
+    }
   }, [activeColorTheme]);
 
   // Sync radius on document element
@@ -430,7 +434,7 @@ export default function App() {
                   <span className="uppercase tracking-wider">
                     {
                       VIEWPORT_PRESETS.find((v) => v.id === activeViewport)
-                        ?.label
+                        ?.name
                     }{" "}
                     VIEWPORT
                   </span>
