@@ -12,15 +12,6 @@ function registryBlocksAlias(): Plugin {
     name: "uipkge-registry-blocks-alias",
     enforce: "pre",
     resolveId(source: string) {
-      if (source.startsWith("@/components/blocks/")) {
-        let name = source.slice("@/components/blocks/".length);
-        if (!name.includes("/")) {
-          const file = name.replace(/\.(tsx?)$/, "");
-          const dir = file.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
-          name = `${dir}/${name}`;
-        }
-        return path.join(root, "blocks", name);
-      }
       if (source.startsWith("@/lib/") && !source.endsWith("utils")) {
         const name = source.slice("@/lib/".length);
         const camel = name.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
@@ -85,10 +76,6 @@ export default defineConfig({
       {
         find: /^@react-registry\/(.*)$/,
         replacement: path.join(root, "components/$1"),
-      },
-      {
-        find: /^@react-registry-blocks\/(.*)$/,
-        replacement: path.join(root, "blocks/$1"),
       },
     ],
   },

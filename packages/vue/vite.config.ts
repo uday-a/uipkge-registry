@@ -39,16 +39,6 @@ function registryAtAlias(): Plugin {
         return path.join(root, "components", comp);
       }
 
-      if (rest.startsWith("components/blocks/")) {
-        let name = rest.slice("components/blocks/".length);
-        if (!name.includes("/")) {
-          const file = name.replace(/\.(vue|tsx?)$/, "");
-          const dir = file.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
-          name = `${dir}/${name}`;
-        }
-        return path.join(root, "blocks", name);
-      }
-
       return null;
     },
   };

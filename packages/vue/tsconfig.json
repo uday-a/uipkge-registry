@@ -16,10 +16,6 @@
     "baseUrl": ".",
     "paths": {
       "@/components/ui/*": ["components/*"],
-      "@/components/blocks/CommandPalette.vue": ["blocks/command-palette/CommandPalette.vue"],
-      "@/components/blocks/NotificationsPopover.vue": ["blocks/notifications-popover/NotificationsPopover.vue"],
-      "@/components/blocks/PaymentForm.vue": ["blocks/payment-form/PaymentForm.vue"],
-      "@/components/blocks/*": ["blocks/*"],
       "@/lib/utils": ["lib/utils.ts"],
       "@/lib/*": ["lib/*"],
       "@/composables/useKanban": ["bootstrap/use-kanban/useKanban.ts"],
@@ -30,7 +26,7 @@
       "@/bootstrap/*": ["bootstrap/*"]
     }
   },
-  "include": ["components", "blocks", "bootstrap", "lib", "types", "vitest.config.ts"],
+  "include": ["components", "bootstrap", "lib", "types", "vitest.config.ts"],
   // __tests__ are dev-only (vitest runs them); the typecheck gate covers
   // shipped source that consumers copy into their projects.
   // __tests__ are dev-only (vitest runs them); page.vue files are docs-site
