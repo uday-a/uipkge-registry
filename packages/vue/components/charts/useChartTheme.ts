@@ -161,6 +161,22 @@ export const chartBgColor: ComputedRef<string> = computed(() => {
   return resolveVar("--card", resolveVar("--background", "#ffffff"));
 });
 
+// The app's accent, for the one highlighted element on a chart or map — a
+// selected route, a focused bar. Category series keep using chartColors.
+export const chartAccentColor: ComputedRef<string> = computed(() => {
+  themeKey.value;
+  return resolveVar("--primary", "#38bdf8");
+});
+
+// Out-of-bounds / failure colour for charts that encode good vs bad rather
+// than a category — control limits, error series. CSS-level marks can use
+// `var(--destructive)` directly; this exists because ECharts needs a resolved
+// colour string on the canvas.
+export const chartDangerColor: ComputedRef<string> = computed(() => {
+  themeKey.value;
+  return resolveVar("--destructive", "#dc2626");
+});
+
 // Two-level deep merge for ECharts option blocks (xAxis, yAxis, grid,
 // tooltip, legend, singleAxis, parallel, etc.). The top-level keys merge
 // shallowly, but one nested level (axisLabel, axisLine, splitLine, etc.)

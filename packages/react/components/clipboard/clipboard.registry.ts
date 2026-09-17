@@ -11,6 +11,6 @@ export default defineRegistryItem({
     { path: "Clipboard.tsx", target: "components/ui/clipboard/Clipboard.tsx" },
     { path: "index.ts", target: "components/ui/clipboard/index.ts" },
   ],
-  dependencies: ["lucide-react", "@radix-ui/react-tooltip"],
+  dependencies: ["lucide-react"],
   registryDependencies: ["https://uipkge.dev/r/tooltip.json"],
 });

@@ -196,4 +196,24 @@ describe("Timeline", () => {
         ?.tagName.toLowerCase(),
     ).toBe("h3");
   });
+
+  it('align="center" applies row-start-1 and col-start-2 to timeline-media', () => {
+    const { container } = render(
+      <Timeline align="center">
+        <TimelineItem>
+          <TimelineMedia />
+          <TimelineContent>
+            <TimelineTitle>Title 1</TimelineTitle>
+          </TimelineContent>
+        </TimelineItem>
+      </Timeline>,
+    );
+    const item = container.querySelector('[data-slot="timeline-item"]');
+    expect(item?.className).toContain(
+      "[&>[data-slot=timeline-media]]:row-start-1",
+    );
+    expect(item?.className).toContain(
+      "[&>[data-slot=timeline-content]]:row-start-1",
+    );
+  });
 });

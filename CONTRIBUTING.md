@@ -170,6 +170,7 @@ Blocks compose existing UI primitives (`Card`, `Button`, `Badge`, `Input`, `Prog
 ## 🛡️ Contributor & Maintainer Precautions
 
 ### Pre-flight Checklist Before Submitting a PR
+
 - [ ] `bun run check:scope`: Validates that block PRs do NOT touch existing primitives or shared tokens.
 - [ ] `bun run typecheck`: TypeScript passes without diagnostics.
 - [ ] `bun test`: All unit tests pass in both frameworks.
@@ -179,7 +180,9 @@ Blocks compose existing UI primitives (`Card`, `Button`, `Badge`, `Input`, `Prog
 - [ ] No arbitrary pixel values (`text-[10px]` or hardcoded `#hex` colors). Use semantic OKLCH tokens (`border-border`, `bg-card`, `text-foreground`).
 
 ### Maintainer Sync Procedure
+
 When a community or registry PR is merged into `main` of `uipkge-registry`:
+
 ```bash
 # 1. Inside the main uipkge-ui monorepo:
 # Copy the new block source & sidecar from uipkge-registry:

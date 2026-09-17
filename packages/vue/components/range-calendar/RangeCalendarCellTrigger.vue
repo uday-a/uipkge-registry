@@ -27,7 +27,7 @@ const forwardedProps = useForwardProps(delegatedProps);
     :class="
       cn(
         buttonVariants({ variant: 'ghost' }),
-        'h-8 w-8 p-0 font-normal transition-[color,background-color,transform] duration-150 data-[selected]:opacity-100',
+        'size-9 cursor-pointer p-0 font-normal transition-[color,background-color,transform,box-shadow] duration-150 data-[selected]:opacity-100',
         '[&[data-today]:not([data-selected])]:bg-accent [&[data-today]:not([data-selected])]:text-accent-foreground',
         // Selection Start / End — subtle pop
         'data-[selection-start]:bg-primary data-[selection-start]:text-primary-foreground data-[selection-start]:hover:bg-primary data-[selection-start]:hover:text-primary-foreground data-[selection-start]:focus:bg-primary data-[selection-start]:focus:text-primary-foreground motion-safe:data-[selection-start]:animate-[calendar-day-pop_220ms_cubic-bezier(0.22,1.4,0.36,1)_both]',

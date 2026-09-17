@@ -14,7 +14,15 @@ export interface MentionOption {
   label: string;
   description?: string;
   avatar?: string;
+  email?: string;
+  handle?: string;
+  bio?: string;
+  joined?: string;
+  following?: number | string;
+  followers?: number | string;
+  verified?: boolean;
   disabled?: boolean;
+  [key: string]: any;
 }
 
 export interface MentionsProps<O extends MentionOption = MentionOption> {
@@ -22,8 +30,9 @@ export interface MentionsProps<O extends MentionOption = MentionOption> {
   value?: string;
   /** Fires with the next textarea value on every input + on insert. */
   onValueChange?: (value: string) => void;
-  options?: O[];
+  options?: O[] | Record<string, O[]>;
   triggers?: string[];
+  triggerPrefixes?: Record<string, string>;
   prefix?: string;
   rows?: number;
   loading?: boolean;
@@ -45,6 +54,7 @@ function MentionsInner<O extends MentionOption = MentionOption>(
     onValueChange,
     options = [] as unknown as O[],
     triggers = ["@"],
+    triggerPrefixes,
     prefix = "@",
     rows = 4,
     loading = false,
@@ -82,15 +92,27 @@ function MentionsInner<O extends MentionOption = MentionOption>(
   const listboxId = React.useId();
   const optionId = (i: number) => `${listboxId}-opt-${i}`;
 
+  const currentOptionsList = React.useMemo<O[]>(() => {
+    if (!options) return [];
+    if (Array.isArray(options)) return options;
+    if (typeof options === "object") {
+      return (options as Record<string, O[]>)[activeTrigger] ?? [];
+    }
+    return [];
+  }, [options, activeTrigger]);
+
   const filtered = React.useMemo<O[]>(() => {
     if (loadOptions) return asyncResults;
-    if (!query) return options;
+    const source = currentOptionsList;
+    if (!query) return source;
     const q = query.toLowerCase();
-    return options.filter(
+    return source.filter(
       (o) =>
-        o.label.toLowerCase().includes(q) || o.value.toLowerCase().includes(q),
+        o.label.toLowerCase().includes(q) ||
+        o.value.toLowerCase().includes(q) ||
+        (o.email && o.email.toLowerCase().includes(q)),
     );
-  }, [loadOptions, asyncResults, query, options]);
+  }, [loadOptions, asyncResults, query, currentOptionsList]);
 
   const totalLoading = loading || isAsyncLoading;
 
@@ -107,11 +129,8 @@ function MentionsInner<O extends MentionOption = MentionOption>(
       for (let n = 0; n < len; n++) {
         i = (i + delta + len) % len;
         if (!filtered[i]?.disabled) {
-          requestAnimationFrame(() => {
-            document
-              .getElementById(optionId(i))
-              ?.scrollIntoView({ block: "nearest" });
-          });
+          const opt = document.getElementById(optionId(i));
+          opt?.scrollIntoView({ block: "nearest" });
           return i;
         }
       }
@@ -138,57 +157,53 @@ function MentionsInner<O extends MentionOption = MentionOption>(
   }
 
   const updateAnchor = React.useCallback(() => {
-    if (!innerRef.current) return;
-    setCaretRect(
-      getCaretRect(innerRef.current, innerRef.current.selectionStart ?? 0),
-    );
+    const ta = innerRef.current;
+    if (!ta) return;
+    setCaretRect(getCaretRect(ta, ta.selectionStart ?? 0));
   }, []);
 
-  const asyncToken = React.useRef(0);
+  const asyncTokenRef = React.useRef(0);
   const runAsync = React.useCallback(
     async (trigger: string, q: string) => {
       if (!loadOptions) return;
-      const token = ++asyncToken.current;
+      const token = ++asyncTokenRef.current;
       setIsAsyncLoading(true);
       try {
         const results = await loadOptions(q, trigger);
-        if (token === asyncToken.current) setAsyncResults(results);
+        if (token === asyncTokenRef.current) setAsyncResults(results);
       } finally {
-        if (token === asyncToken.current) setIsAsyncLoading(false);
+        if (token === asyncTokenRef.current) setIsAsyncLoading(false);
       }
     },
     [loadOptions],
   );
 
-  const debounceTimer = React.useRef<ReturnType<typeof setTimeout> | null>(
+  const debounceTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(
     null,
   );
   const scheduleAsync = React.useCallback(
     (trigger: string, q: string) => {
-      if (debounceTimer.current) clearTimeout(debounceTimer.current);
-      debounceTimer.current = setTimeout(() => runAsync(trigger, q), 200);
+      if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
+      debounceTimerRef.current = setTimeout(() => runAsync(trigger, q), 200);
     },
     [runAsync],
   );
 
   React.useEffect(() => {
     return () => {
-      if (debounceTimer.current) clearTimeout(debounceTimer.current);
+      if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
     };
   }, []);
 
   function onInput(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    const ta = e.target;
-    onValueChange?.(ta.value);
-
-    const match = findActiveMention(ta.value, ta.selectionStart ?? 0);
+    const next = e.target.value;
+    onValueChange?.(next);
+    const match = findActiveMention(next, e.target.selectionStart ?? 0);
     if (match) {
       setOpen(true);
       setActiveTrigger(match.trigger);
       setTriggerIndex(match.index);
       setQuery(match.query);
-      // Highlight is reset after filtered recompute; start at first non-disabled.
-      setHighlightedIndex(0);
       onSearch?.({ trigger: match.trigger, query: match.query });
       if (loadOptions) scheduleAsync(match.trigger, match.query);
       requestAnimationFrame(updateAnchor);
@@ -197,38 +212,10 @@ function MentionsInner<O extends MentionOption = MentionOption>(
     }
   }
 
-  // Keep highlight on an enabled option when the filtered list changes.
-  React.useEffect(() => {
-    if (!open || filtered.length === 0) return;
-    if (filtered[highlightedIndex]?.disabled) {
-      setHighlightedIndex(firstEnabledIndex(filtered));
-    }
-  }, [filtered, open, highlightedIndex]);
-
-  function onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-    if (!open) return;
-    // Escape must work even when there are no matches / still loading.
-    if (e.key === "Escape") {
-      e.preventDefault();
-      setOpen(false);
-      return;
-    }
-    if (filtered.length === 0) return;
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      moveHighlight(1);
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault();
-      moveHighlight(-1);
-    } else if (e.key === "Enter" || e.key === "Tab") {
-      e.preventDefault();
-      const opt = filtered[highlightedIndex];
-      if (opt && !opt.disabled) insert(opt);
-    }
-  }
-
-  function defaultFormat(option: O, _trigger: string) {
-    return `${prefix}${option.value} `;
+  function defaultFormat(option: O, trigger: string) {
+    const resolvedPrefix =
+      triggerPrefixes?.[trigger] ?? trigger ?? prefix ?? "@";
+    return `${resolvedPrefix}${option.value} `;
   }
 
   function insert(option: O) {
@@ -249,21 +236,43 @@ function MentionsInner<O extends MentionOption = MentionOption>(
     });
   }
 
-  const anchorStyle: React.CSSProperties = caretRect
-    ? {
-        position: "fixed",
-        top: `${caretRect.top + caretRect.height}px`,
-        left: `${caretRect.left}px`,
-        width: "0px",
-        height: "0px",
-        pointerEvents: "none",
-      }
-    : { display: "none" };
+  function onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+    if (!open) return;
+    if (e.key === "Escape") {
+      e.preventDefault();
+      setOpen(false);
+      return;
+    }
+    if (filtered.length === 0) return;
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      moveHighlight(1);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      moveHighlight(-1);
+    } else if (e.key === "Enter" || e.key === "Tab") {
+      e.preventDefault();
+      const opt = filtered[highlightedIndex];
+      if (opt && !opt.disabled) insert(opt);
+    }
+  }
+
+  const anchorStyle: React.CSSProperties = React.useMemo(() => {
+    if (!caretRect) return { display: "none" };
+    return {
+      position: "fixed",
+      top: `${caretRect.top + caretRect.height}px`,
+      left: `${caretRect.left}px`,
+      width: "0px",
+      height: "0px",
+      pointerEvents: "none",
+    };
+  }, [caretRect]);
 
   return (
     <div
       className={cn("relative w-full", className)}
-      data-uipkge=""
+      data-uipkge
       data-slot="mentions"
     >
       <textarea
@@ -293,7 +302,7 @@ function MentionsInner<O extends MentionOption = MentionOption>(
         <PopoverContent
           align="start"
           sideOffset={4}
-          className="w-64 p-1"
+          className="border-border/80 w-64 rounded-lg p-1 shadow-md"
           onOpenAutoFocus={(e) => e.preventDefault()}
         >
           <div id={listboxId}>
@@ -317,45 +326,48 @@ function MentionsInner<O extends MentionOption = MentionOption>(
                 role="listbox"
                 aria-label="Mentions"
               >
-                {filtered.map((opt, i) => (
-                  <li
-                    id={optionId(i)}
-                    key={opt.value}
-                    role="option"
-                    aria-selected={i === highlightedIndex}
-                    aria-disabled={opt.disabled || undefined}
-                    className={cn(
-                      "flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 text-sm",
-                      i === highlightedIndex && !opt.disabled
-                        ? "bg-accent text-accent-foreground"
-                        : "",
-                      opt.disabled ? "cursor-not-allowed opacity-50" : "",
-                    )}
-                    onMouseEnter={() => {
-                      if (!opt.disabled) setHighlightedIndex(i);
-                    }}
-                    onMouseDown={(e) => {
-                      e.preventDefault();
-                      if (!opt.disabled) insert(opt);
-                    }}
-                  >
-                    {opt.avatar && (
-                      <img
-                        src={opt.avatar}
-                        alt=""
-                        className="size-6 rounded-full"
-                      />
-                    )}
-                    <div className="min-w-0 flex-1">
-                      <div className="truncate">{opt.label}</div>
-                      {opt.description && (
-                        <div className="text-muted-foreground truncate text-xs">
-                          {opt.description}
-                        </div>
+                {filtered.map((opt, i) => {
+                  const active = i === highlightedIndex;
+                  return (
+                    <li
+                      key={opt.value}
+                      id={optionId(i)}
+                      role="option"
+                      aria-selected={active}
+                      aria-disabled={opt.disabled || undefined}
+                      className={cn(
+                        "flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors",
+                        active && !opt.disabled
+                          ? "bg-accent text-accent-foreground"
+                          : "",
+                        opt.disabled ? "cursor-not-allowed opacity-50" : "",
                       )}
-                    </div>
-                  </li>
-                ))}
+                      onMouseEnter={() =>
+                        !opt.disabled && setHighlightedIndex(i)
+                      }
+                      onMouseDown={(e) => {
+                        e.preventDefault();
+                        if (!opt.disabled) insert(opt);
+                      }}
+                    >
+                      {opt.avatar && (
+                        <img
+                          src={opt.avatar}
+                          alt=""
+                          className="size-6 rounded-full object-cover"
+                        />
+                      )}
+                      <div className="min-w-0 flex-1">
+                        <div className="truncate font-medium">{opt.label}</div>
+                        {(opt.description || opt.email) && (
+                          <div className="text-muted-foreground truncate text-xs">
+                            {opt.description || opt.email}
+                          </div>
+                        )}
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </div>
@@ -365,12 +377,10 @@ function MentionsInner<O extends MentionOption = MentionOption>(
   );
 }
 
-// forwardRef erases the generic; the cast restores the generic call signature so
-// consumers can still get type inference on `options`/`onSelect`.
-const Mentions = React.forwardRef(MentionsInner) as <
+export const Mentions = React.forwardRef(MentionsInner) as <
   O extends MentionOption = MentionOption,
 >(
   props: MentionsProps<O> & { ref?: React.ForwardedRef<HTMLTextAreaElement> },
 ) => React.ReactElement;
 
-export { Mentions };
+export default Mentions;

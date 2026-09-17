@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, watch, onBeforeUnmount, ref } from "vue";
+import { computed, watch, onBeforeUnmount, ref, useId } from "vue";
 import { useEditor, EditorContent } from "@tiptap/vue-3";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -32,6 +32,13 @@ import {
 } from "lucide-vue-next";
 import { Toggle } from "@/components/ui/toggle";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
 const props = withDefaults(
@@ -97,25 +104,41 @@ onBeforeUnmount(() => {
   editor.value?.destroy();
 });
 
-function toggleLink() {
+// Link editing lives in a popover rather than window.prompt: a native prompt
+// is unstyleable, blocks the main thread, cannot be tested, and is suppressed
+// outright in sandboxed iframes and some mobile browsers.
+const linkOpen = ref(false);
+const linkUrl = ref("");
+const linkFieldId = useId();
+
+function openLinkEditor() {
   if (!editor.value) return;
-  if (editor.value.isActive("link")) {
-    editor.value.chain().focus().unsetLink().run();
-  } else {
-    const url = window.prompt("Enter URL");
-    if (url) {
-      editor.value
-        .chain()
-        .focus()
-        .extendMarkRange("link")
-        .setLink({ href: url })
-        .run();
-    }
-  }
+  // Prefill with the current href so the popover edits instead of replaces.
+  linkUrl.value =
+    (editor.value.getAttributes("link").href as string | undefined) ?? "";
+  linkOpen.value = true;
+}
+
+function applyLink() {
+  const url = linkUrl.value.trim();
+  if (!editor.value || !url) return;
+  editor.value
+    .chain()
+    .focus()
+    .extendMarkRange("link")
+    .setLink({ href: url })
+    .run();
+  linkOpen.value = false;
+}
+
+function removeLink() {
+  editor.value?.chain().focus().extendMarkRange("link").unsetLink().run();
+  linkUrl.value = "";
+  linkOpen.value = false;
 }
 
 interface ToolbarItem {
-  type: "button" | "separator";
+  type: "button" | "separator" | "link";
   icon?: any;
   action?: () => void;
   isActive?: () => boolean;
@@ -173,9 +196,9 @@ const essentialItems = computed<ToolbarItem[]>(() => {
     },
     { type: "separator" },
     {
-      type: "button",
+      type: "link",
       icon: LinkIcon,
-      action: toggleLink,
+      action: openLinkEditor,
       isActive: () => e.isActive("link"),
       title: "Link",
     },
@@ -299,6 +322,56 @@ const extendedItems = computed<ToolbarItem[]>(() => {
             orientation="vertical"
             class="mx-1 h-5"
           />
+          <Popover v-else-if="item.type === 'link'" v-model:open="linkOpen">
+            <PopoverTrigger as-child>
+              <Toggle
+                size="sm"
+                :pressed="item.isActive?.()"
+                :title="item.title"
+                :aria-label="item.title"
+                class="focus-visible:ring-ring size-7 p-0 focus-visible:ring-2 focus-visible:outline-none"
+                @click="openLinkEditor"
+              >
+                <component
+                  :is="item.icon"
+                  class="size-3.5"
+                  aria-hidden="true"
+                />
+              </Toggle>
+            </PopoverTrigger>
+            <PopoverContent align="start" class="w-72 p-3">
+              <form class="flex flex-col gap-2" @submit.prevent="applyLink">
+                <label
+                  :for="`${linkFieldId}`"
+                  class="text-foreground text-xs font-medium"
+                  >Link URL</label
+                >
+                <Input
+                  :id="linkFieldId"
+                  v-model="linkUrl"
+                  type="url"
+                  size="small"
+                  placeholder="https://example.com"
+                  autocomplete="url"
+                  spellcheck="false"
+                />
+                <div class="flex items-center justify-end gap-2">
+                  <Button
+                    v-if="item.isActive?.()"
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    @click="removeLink"
+                  >
+                    Remove
+                  </Button>
+                  <Button type="submit" size="sm" :disabled="!linkUrl.trim()"
+                    >Apply</Button
+                  >
+                </div>
+              </form>
+            </PopoverContent>
+          </Popover>
           <Toggle
             v-else
             size="sm"

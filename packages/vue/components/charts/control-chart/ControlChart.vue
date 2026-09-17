@@ -13,6 +13,7 @@ import VChart from "vue-echarts";
 import { cn } from "@/lib/utils";
 import {
   chartColors,
+  chartDangerColor,
   chartTextColor,
   chartAxisColor,
   chartSplitLineColor,
@@ -71,7 +72,7 @@ const stats = computed(() => {
 const mergedOption = computed(() => {
   const { mean, ucl, lcl } = stats.value;
   const line = chartColors.value[0];
-  const bad = "#dc2626";
+  const bad = chartDangerColor.value;
   const series = [
     {
       type: "line",

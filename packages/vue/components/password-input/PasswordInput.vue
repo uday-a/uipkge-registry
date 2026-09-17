@@ -219,7 +219,7 @@ const togglePadding = computed(() => {
         aria-hidden="true"
       >
         <div
-          class="h-full rounded-full transition-all duration-300"
+          class="h-full rounded-full transition-[width] duration-300"
           :class="strength.barColor"
           :style="{ width: `${strength.percent}%` }"
         />

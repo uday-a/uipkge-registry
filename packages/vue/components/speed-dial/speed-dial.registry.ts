@@ -11,7 +11,7 @@ export default defineRegistryItem({
     { path: "SpeedDial.vue", target: "components/ui/speed-dial/SpeedDial.vue" },
     { path: "index.ts", target: "components/ui/speed-dial/index.ts" },
   ],
-  dependencies: ["lucide-vue-next", "reka-ui"],
+  dependencies: ["lucide-vue-next"],
   registryDependencies: [
     "https://uipkge.dev/r/fab.json",
     "https://uipkge.dev/r/popover.json",

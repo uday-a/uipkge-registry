@@ -168,9 +168,16 @@ onMounted(() => {
     return;
   }
   if (typeof IntersectionObserver !== "undefined") {
+    // Latch: the observer only defers the first paint. Un-setting it on scroll
+    // would tear the WebGL map down and rebuild it (fresh style fetch, camera
+    // reset, markers re-laid-out against a stale canvas size) every time the
+    // block leaves the viewport.
     intersectionObserver = new IntersectionObserver(
       ([entry]) => {
-        inView.value = entry.isIntersecting;
+        if (!entry.isIntersecting) return;
+        inView.value = true;
+        intersectionObserver?.disconnect();
+        intersectionObserver = null;
       },
       { rootMargin: "160px", threshold: 0.01 },
     );
@@ -388,6 +395,10 @@ function updateFullscreenControl() {
 
 function onCreated(instance: mapboxgl.Map) {
   map = instance;
+  // The ResizeObserver's first callback runs before this instance exists, so a
+  // container that settled its height during mount would leave the canvas --
+  // and every marker laid out against it -- at the stale size.
+  map.resize();
   try {
     (map as any).setProjection(props.projection);
   } catch {

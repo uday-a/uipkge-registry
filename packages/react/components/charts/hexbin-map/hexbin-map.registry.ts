@@ -13,6 +13,6 @@ export default defineRegistryItem({
     },
     { path: "index.ts", target: "components/ui/charts/hexbin-map/index.ts" },
   ],
-  dependencies: ["mapbox-gl", "react-map-gl", "lucide-react"],
+  dependencies: ["lucide-react"],
   registryDependencies: ["https://uipkge.dev/r/map.json"],
 });

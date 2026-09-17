@@ -38,7 +38,7 @@ export default defineRegistryItem({
   // arrays with `Validation failed: resolvedPaths: Required`. So we ship
   // the full file and rely on the user choosing skip-vs-overwrite.
   files: [{ path: "tailwind.css", target: "~/app/assets/css/tailwind.css" }],
-  dependencies: ["tailwindcss", "tw-animate-css"],
+  dependencies: [],
   cssVars: {
     theme: parseTokens(slurp("parts/theme.css")),
     light: parseTokens(slurp("parts/light.css")),

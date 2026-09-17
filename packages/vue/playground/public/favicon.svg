@@ -5,38 +5,38 @@
     }
 
     .frame {
-      fill: #f7faf4;
-      stroke: #d9dfd4;
+      fill: #ffffff;
+      stroke: #e4e4e7;
     }
 
     .ink {
-      fill: #172016;
+      fill: #18181b;
     }
 
     .accent {
-      fill: #3b6f40;
+      fill: #18181b;
     }
 
     .soft {
-      fill: #dcefd5;
+      fill: #e4e4e7;
     }
 
     @media (prefers-color-scheme: dark) {
       .frame {
-        fill: #121812;
-        stroke: #33402f;
+        fill: #09090b;
+        stroke: #27272a;
       }
 
       .ink {
-        fill: #f3f7ef;
+        fill: #fafafa;
       }
 
       .accent {
-        fill: #7fb77d;
+        fill: #fafafa;
       }
 
       .soft {
-        fill: #d8efd0;
+        fill: #27272a;
       }
     }
   </style>

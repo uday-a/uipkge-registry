@@ -57,10 +57,8 @@ describe("MaskedInput", () => {
   it("applies mask format when user types", async () => {
     const w = mount(MaskedInput, { props: { modelValue: "", mask: "##-##" } });
     const input = w.find("input");
-    // Simulate typing - the input event handler applies the mask
     input.element.value = "12";
     await input.trigger("input");
-    // The emitted value should contain the mask separator
     const emitted = w.emitted("update:modelValue");
     expect(emitted).toBeTruthy();
     expect(emitted![0][0]).toContain("-");
@@ -71,11 +69,48 @@ describe("MaskedInput", () => {
     const w = mount(MaskedInput, { props: { modelValue: "", mask: "##" } });
     const input = w.find("input");
     await input.setValue("12");
-    // complete should fire when all replacement positions are filled
     const completeEvents = w.emitted("complete");
     if (completeEvents) {
       expect(completeEvents[0]).toEqual(["12"]);
     }
+    w.unmount();
+  });
+
+  it("blocks non-digits in numeric slots", async () => {
+    const w = mount(MaskedInput, { props: { modelValue: "", mask: "##-##" } });
+    const input = w.find("input");
+    input.element.value = "ab";
+    await input.trigger("input");
+    const emitted = w.emitted("update:modelValue");
+    expect(emitted).toBeTruthy();
+    // Non-digits are blocked, so output contains only mask placeholders
+    expect(emitted![0][0]).toBe("__-__");
+    w.unmount();
+  });
+
+  it("displays placeholder text when provided", () => {
+    const w = mount(MaskedInput, {
+      props: { modelValue: "", mask: "##/##/####", placeholder: "MM/DD/YYYY" },
+    });
+    const input = w.find("input");
+    expect(input.attributes("placeholder")).toBe("MM/DD/YYYY");
+    w.unmount();
+  });
+
+  it("displays error message and sets aria-invalid", () => {
+    const w = mount(MaskedInput, {
+      props: {
+        modelValue: "12",
+        mask: "##/##/####",
+        invalid: true,
+        errorMessage: "Date is incomplete",
+      },
+    });
+    const input = w.find("input");
+    expect(input.attributes("aria-invalid")).toBe("true");
+    const errorEl = w.find('[data-slot="masked-input-error"]');
+    expect(errorEl.exists()).toBe(true);
+    expect(errorEl.text()).toBe("Date is incomplete");
     w.unmount();
   });
 });

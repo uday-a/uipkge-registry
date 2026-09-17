@@ -17,6 +17,6 @@ export default defineRegistryItem({
       target: "components/ui/charts/route-flow-map/index.ts",
     },
   ],
-  dependencies: ["mapbox-gl", "@studiometa/vue-mapbox-gl", "lucide-vue-next"],
+  dependencies: ["lucide-vue-next"],
   registryDependencies: ["https://uipkge.dev/r/map.json"],
 });

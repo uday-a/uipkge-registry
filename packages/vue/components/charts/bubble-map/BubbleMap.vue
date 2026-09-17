@@ -176,7 +176,7 @@ export const CONTINENT_LANDMASSES: Array<{
           />
 
           <div
-            class="relative flex size-4/5 items-center justify-center rounded-full border border-white/40 shadow-sm backdrop-blur-[1px] transition-all"
+            class="relative flex size-4/5 items-center justify-center rounded-full border border-white/40 shadow-sm backdrop-blur-[1px] transition-[background-color,box-shadow]"
             :style="{
               backgroundColor: getBubbleColor(b),
               boxShadow:

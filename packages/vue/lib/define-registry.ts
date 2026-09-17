@@ -46,6 +46,13 @@ const registryItemSchema = z.object({
   description: z.string().optional(),
   /** Spec-supported categorisation; surfaced in the docs site for filtering. */
   categories: z.array(z.string()).optional(),
+  /** Deprecation marker. When set, the item's JSON keeps serving (the install
+   *  URL stays alive) but the docs site badges it and points consumers at
+   *  `replacedBy`. `true` = generic notice; string = custom reason. */
+  deprecated: z.union([z.boolean(), z.string()]).optional(),
+  /** Name of the replacement item consumers should install instead. Only
+   *  meaningful alongside `deprecated`. */
+  replacedBy: z.string().optional(),
   files: z.array(fileSchema).default([]),
   dependencies: z.array(z.string()).default([]),
   devDependencies: z.array(z.string()).default([]),

@@ -4,6 +4,7 @@ export {
   TimelineMedia,
   TimelineSeparator,
   TimelineContent,
+  TimelineHeader,
   TimelineTitle,
   TimelineDescription,
   TimelineDate,

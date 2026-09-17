@@ -26,6 +26,9 @@ export default defineRegistryItem({
     "lucide-vue-next",
   ],
   registryDependencies: [
+    "https://uipkge.dev/r/button.json",
+    "https://uipkge.dev/r/input.json",
+    "https://uipkge.dev/r/popover.json",
     "https://uipkge.dev/r/separator.json",
     "https://uipkge.dev/r/toggle.json",
   ],

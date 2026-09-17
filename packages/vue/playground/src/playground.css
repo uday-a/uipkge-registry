@@ -1,9 +1,10 @@
 @import "../../styles/tailwind.css";
 @import "../../../shared/styles/color-themes.css";
 
-@source "../../components";
-@source "../../demos";
-@source "../../bootstrap";
+@source '../../components';
+@source '../../blocks';
+@source '../../bootstrap';
+@source '../../../../apps/astro-site/src/demos/vue';
 
 /* Canvas background textures */
 .canvas-dots {

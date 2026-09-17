@@ -17,11 +17,13 @@ export const kanbanColumnVariants = cva(
 );
 
 export const kanbanCardVariants = cva(
-  "group relative flex cursor-grab flex-col gap-2 rounded-lg border bg-card p-3 text-card-foreground shadow-xs transition-all duration-150 ease-out active:cursor-grabbing hover:border-border hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+  "group relative flex cursor-grab flex-col gap-2 rounded-lg border bg-card p-3 text-card-foreground shadow-xs transition-[border-color,box-shadow,opacity] duration-150 ease-out active:cursor-grabbing hover:border-border hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
   {
     variants: {
       isDragging: {
-        true: "opacity-40 shadow-none ring-2 ring-primary/30",
+        // Keyboard grab reuses this state, so the held card stays fully
+        // opaque — unlike a pointer drag there is no drag image to look at.
+        true: "shadow-none ring-2 ring-primary/40 opacity-100 data-[state=dragging]:opacity-40",
         false: "opacity-100",
       },
     },

@@ -73,7 +73,8 @@ const items: SidebarItem[] = demoKeys
 
 const getInitialDark = () => {
   if (typeof window === "undefined") return false;
-  const saved = localStorage.getItem("uipkge-theme") || localStorage.getItem("uipkge_dark");
+  const saved =
+    localStorage.getItem("uipkge-theme") || localStorage.getItem("uipkge_dark");
   if (saved !== null) return saved === "dark" || saved === "true";
   return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
 };
@@ -97,7 +98,9 @@ export default function App() {
         return param;
       }
     }
-    return items.some((it) => it.id === "button") ? "button" : items[0]?.id || "";
+    return items.some((it) => it.id === "button")
+      ? "button"
+      : items[0]?.id || "";
   });
   const [ActiveComponent, setActiveComponent] =
     useState<React.ComponentType | null>(null);
@@ -107,7 +110,8 @@ export default function App() {
 
   // Theme & Canvas state
   const [isDark, setIsDark] = useState(getInitialDark);
-  const [activeColorTheme, setActiveColorTheme] = useState(getInitialColorTheme);
+  const [activeColorTheme, setActiveColorTheme] =
+    useState(getInitialColorTheme);
   const [activeRadius, setActiveRadius] = useState(getInitialRadius);
   const [activeViewport, setActiveViewport] = useState("fluid");
   const [canvasBg, setCanvasBg] = useState<CanvasBackground>("dots");
@@ -179,7 +183,12 @@ export default function App() {
       const a = (e.target as HTMLElement)?.closest("a");
       if (a) {
         const href = a.getAttribute("href");
-        if (!href || href === "#" || href.startsWith("#") || href === "javascript:void(0)") {
+        if (
+          !href ||
+          href === "#" ||
+          href.startsWith("#") ||
+          href === "javascript:void(0)"
+        ) {
           e.preventDefault();
         }
       }
@@ -192,8 +201,14 @@ export default function App() {
 
     el.addEventListener("click", clickHandler as any, { capture: true });
     el.addEventListener("submit", submitHandler as any, { capture: true });
-    el.addEventListener("input", logEvent as any, { capture: true, passive: true });
-    el.addEventListener("change", logEvent as any, { capture: true, passive: true });
+    el.addEventListener("input", logEvent as any, {
+      capture: true,
+      passive: true,
+    });
+    el.addEventListener("change", logEvent as any, {
+      capture: true,
+      passive: true,
+    });
 
     return () => {
       el.removeEventListener("click", clickHandler as any, { capture: true });
@@ -358,7 +373,10 @@ export default function App() {
     if (activeColorTheme === "default") {
       document.documentElement.removeAttribute("data-color-theme");
     } else {
-      document.documentElement.setAttribute("data-color-theme", activeColorTheme);
+      document.documentElement.setAttribute(
+        "data-color-theme",
+        activeColorTheme,
+      );
     }
     try {
       localStorage.setItem("uipkge-color-theme", activeColorTheme);
@@ -410,7 +428,7 @@ export default function App() {
   }, [activeViewport]);
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-background text-foreground font-sans antialiased">
+    <div className="bg-background text-foreground flex h-screen w-screen overflow-hidden font-sans antialiased">
       {/* Sidebar Catalog */}
       <WorkbenchSidebar
         items={items}
@@ -458,20 +476,20 @@ export default function App() {
           <div
             ref={previewContainerRef}
             style={viewportStyle}
-            className={`transition-all duration-200 ${
+            className={`transition-[width] duration-200 ${
               activeViewport === "mobile"
-                ? "rounded-2xl border border-border/80 bg-background/95 p-3 shadow-2xl backdrop-blur-xs ring-1 ring-black/5 dark:ring-white/10 my-4"
+                ? "border-border/80 bg-background/95 my-4 rounded-2xl border p-3 shadow-2xl ring-1 ring-black/5 backdrop-blur-xs dark:ring-white/10"
                 : activeViewport !== "fluid"
-                  ? "rounded-2xl border border-border/80 bg-background/95 p-4 sm:p-6 shadow-2xl backdrop-blur-xs ring-1 ring-black/5 dark:ring-white/10 my-4"
-                  : "max-w-7xl mx-auto"
+                  ? "border-border/80 bg-background/95 my-4 rounded-2xl border p-4 shadow-2xl ring-1 ring-black/5 backdrop-blur-xs sm:p-6 dark:ring-white/10"
+                  : "mx-auto max-w-7xl"
             }`}
           >
             {/* Viewport Frame Header badge if simulated */}
             {activeViewport !== "fluid" && (
-              <div className="mb-4 flex items-center justify-between border-b border-border/60 pb-2.5 text-xs font-mono text-muted-foreground">
-                <div className="flex items-center gap-1.5 font-medium text-foreground">
-                  <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span className="uppercase tracking-wider">
+              <div className="border-border/60 text-muted-foreground mb-4 flex items-center justify-between border-b pb-2.5 font-mono text-xs">
+                <div className="text-foreground flex items-center gap-1.5 font-medium">
+                  <span className="size-2 animate-pulse rounded-full bg-emerald-500" />
+                  <span className="tracking-wider uppercase">
                     {
                       VIEWPORT_PRESETS.find((v) => v.id === activeViewport)
                         ?.name
@@ -489,8 +507,8 @@ export default function App() {
             {/* Dynamic React Demo Component wrapped in StoryCodeContext */}
             {loading ? (
               <div className="flex h-64 items-center justify-center">
-                <div className="flex flex-col items-center gap-2 text-xs text-muted-foreground font-mono">
-                  <div className="size-5 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+                <div className="text-muted-foreground flex flex-col items-center gap-2 font-mono text-xs">
+                  <div className="border-primary size-5 animate-spin rounded-full border-2 border-t-transparent" />
                   <span>Loading {selectedItemName}...</span>
                 </div>
               </div>
@@ -499,7 +517,7 @@ export default function App() {
                 <ActiveComponent key={`${selectedId}-${remountKey}`} />
               </StoryCodeContext.Provider>
             ) : (
-              <div className="flex h-64 items-center justify-center rounded-xl border border-dashed border-border text-center text-xs text-muted-foreground">
+              <div className="border-border text-muted-foreground flex h-64 items-center justify-center rounded-xl border border-dashed text-center text-xs">
                 No demo component found for &quot;{selectedId}&quot;.
               </div>
             )}

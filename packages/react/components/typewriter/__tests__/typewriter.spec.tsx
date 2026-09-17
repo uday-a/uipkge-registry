@@ -1,7 +1,7 @@
 import React from "react";
 import { describe, it, expect, afterEach } from "vitest";
 import { render, cleanup } from "@testing-library/react";
-import { Typewriter } from "../typewriter";
+import { Typewriter } from "../Typewriter";
 
 afterEach(cleanup);
 

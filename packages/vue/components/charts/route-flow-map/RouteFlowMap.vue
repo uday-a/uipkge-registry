@@ -53,6 +53,7 @@ import {
   type MapVariant,
 } from "@/components/ui/map";
 import { cn } from "@/lib/utils";
+import { chartAccentColor } from "../useChartTheme";
 import { Globe, Plane, Navigation2 } from "lucide-vue-next";
 
 const props = withDefaults(defineProps<RouteFlowMapProps>(), {
@@ -129,7 +130,7 @@ const routeLinePaint = computed(() => ({
   "line-color": [
     "case",
     ["==", ["get", "id"], activeRouteId.value],
-    "#38bdf8",
+    chartAccentColor.value,
     ["get", "color"],
   ],
   "line-width": ["case", ["==", ["get", "id"], activeRouteId.value], 3, 1.5],

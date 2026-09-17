@@ -2,7 +2,7 @@ import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
 
 export const fabVariants = cva(
-  "inline-flex items-center justify-center gap-2 rounded-full font-medium shadow-lg transition-[color,background-color,box-shadow,transform] duration-200 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] active:scale-95 touch-manipulation [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-6 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center gap-2 rounded-full font-medium shadow-lg transition-[color,background-color,box-shadow,transform,scale] duration-200 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] active:scale-95 touch-manipulation [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-6 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {

@@ -16,7 +16,6 @@ export default defineRegistryItem({
   dependencies: [
     "@tiptap/react",
     "@tiptap/starter-kit",
-    "@tiptap/pm",
     "@tiptap/extension-link",
     "@tiptap/extension-placeholder",
     "@tiptap/extension-task-item",
@@ -26,6 +25,9 @@ export default defineRegistryItem({
     "lucide-react",
   ],
   registryDependencies: [
+    "https://uipkge.dev/r/button.json",
+    "https://uipkge.dev/r/input.json",
+    "https://uipkge.dev/r/popover.json",
     "https://uipkge.dev/r/separator.json",
     "https://uipkge.dev/r/toggle.json",
   ],

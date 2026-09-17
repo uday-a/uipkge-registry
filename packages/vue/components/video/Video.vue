@@ -377,7 +377,7 @@ onBeforeUnmount(() => {
               step="0.05"
               :value="isMuted ? 0 : volume"
               aria-label="Volume"
-              class="accent-primary [&::-webkit-slider-thumb]:bg-primary h-1 w-0 cursor-pointer appearance-none rounded-full bg-white/30 transition-all duration-200 group-hover/volume:w-16 motion-reduce:transition-none [&::-webkit-slider-thumb]:size-3 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full"
+              class="accent-primary [&::-webkit-slider-thumb]:bg-primary h-1 w-0 cursor-pointer appearance-none rounded-full bg-white/30 transition-[width] duration-200 group-hover/volume:w-16 motion-reduce:transition-none [&::-webkit-slider-thumb]:size-3 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full"
               @input="setVolume"
             />
           </div>

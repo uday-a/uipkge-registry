@@ -33,6 +33,13 @@ import {
 } from "lucide-react";
 import { Toggle } from "@/components/ui/toggle";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
 // Ported from RichTextEditor.vue's <style> block. Injected once so the
@@ -181,7 +188,7 @@ export interface RichTextEditorProps {
 }
 
 interface ToolbarItem {
-  type: "button" | "separator";
+  type: "button" | "separator" | "link";
   icon?: React.ComponentType<{ className?: string }>;
   action?: () => void;
   isActive?: () => boolean;
@@ -235,27 +242,59 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
       },
     });
 
+    // TipTap v3's useEditor no longer re-renders the component on every
+    // transaction, so every `editor.isActive(...)` read below would be computed
+    // once and then go stale — toggling Bold would leave its toolbar control
+    // looking inactive until some unrelated state change repainted it. Re-render
+    // on transactions so the toolbar tracks the cursor. (Vue's useEditor returns
+    // a ref, so the template re-evaluates on its own.)
+    const [, forceRender] = React.useReducer((n: number) => n + 1, 0);
+    React.useEffect(() => {
+      if (!editor) return;
+      editor.on("transaction", forceRender);
+      return () => {
+        editor.off("transaction", forceRender);
+      };
+    }, [editor]);
+
     React.useEffect(() => {
       if (editor && editor.getHTML() !== value) {
         editor.commands.setContent(value || "", { emitUpdate: false });
       }
     }, [editor, value]);
 
-    const toggleLink = React.useCallback(() => {
+    // Link editing lives in a popover rather than window.prompt: a native
+    // prompt is unstyleable, blocks the main thread, cannot be tested, and is
+    // suppressed outright in sandboxed iframes and some mobile browsers.
+    const [linkOpen, setLinkOpen] = React.useState(false);
+    const [linkUrl, setLinkUrl] = React.useState("");
+    const linkFieldId = React.useId();
+
+    const openLinkEditor = React.useCallback(() => {
       if (!editor) return;
-      if (editor.isActive("link")) {
-        editor.chain().focus().unsetLink().run();
-      } else {
-        const url = window.prompt("Enter URL");
-        if (url) {
-          editor
-            .chain()
-            .focus()
-            .extendMarkRange("link")
-            .setLink({ href: url })
-            .run();
-        }
-      }
+      // Prefill with the current href so the popover edits instead of replaces.
+      setLinkUrl(
+        (editor.getAttributes("link").href as string | undefined) ?? "",
+      );
+      setLinkOpen(true);
+    }, [editor]);
+
+    const applyLink = React.useCallback(() => {
+      const url = linkUrl.trim();
+      if (!editor || !url) return;
+      editor
+        .chain()
+        .focus()
+        .extendMarkRange("link")
+        .setLink({ href: url })
+        .run();
+      setLinkOpen(false);
+    }, [editor, linkUrl]);
+
+    const removeLink = React.useCallback(() => {
+      editor?.chain().focus().extendMarkRange("link").unsetLink().run();
+      setLinkUrl("");
+      setLinkOpen(false);
     }, [editor]);
 
     const essentialItems = React.useMemo<ToolbarItem[]>(() => {
@@ -307,9 +346,9 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
         },
         { type: "separator" },
         {
-          type: "button",
+          type: "link",
           icon: LinkIcon,
-          action: toggleLink,
+          action: openLinkEditor,
           isActive: () => e.isActive("link"),
           title: "Link",
         },
@@ -329,7 +368,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
           title: "Redo",
         },
       ];
-    }, [editor, toggleLink]);
+    }, [editor, openLinkEditor]);
 
     const extendedItems = React.useMemo<ToolbarItem[]>(() => {
       if (!editor) return [];
@@ -437,6 +476,72 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
                     orientation="vertical"
                     className="mx-1 h-5"
                   />
+                ) : item.type === "link" ? (
+                  <Popover
+                    key={"e" + i}
+                    open={linkOpen}
+                    onOpenChange={setLinkOpen}
+                  >
+                    <PopoverTrigger asChild>
+                      <Toggle
+                        size="sm"
+                        pressed={item.isActive?.()}
+                        title={item.title}
+                        aria-label={item.title}
+                        className="focus-visible:ring-ring size-7 p-0 focus-visible:ring-2 focus-visible:outline-none"
+                        onClick={openLinkEditor}
+                      >
+                        {item.icon && (
+                          <item.icon className="size-3.5" aria-hidden="true" />
+                        )}
+                      </Toggle>
+                    </PopoverTrigger>
+                    <PopoverContent align="start" className="w-72 p-3">
+                      <form
+                        className="flex flex-col gap-2"
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          applyLink();
+                        }}
+                      >
+                        <label
+                          htmlFor={linkFieldId}
+                          className="text-foreground text-xs font-medium"
+                        >
+                          Link URL
+                        </label>
+                        <Input
+                          id={linkFieldId}
+                          value={linkUrl}
+                          onChange={(e) => setLinkUrl(e.target.value)}
+                          type="url"
+                          size="small"
+                          placeholder="https://example.com"
+                          autoComplete="url"
+                          spellCheck={false}
+                        />
+                        <div className="flex items-center justify-end gap-2">
+                          {item.isActive?.() && (
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              onClick={removeLink}
+                            >
+                              Remove
+                            </Button>
+                          )}
+                          <Button
+                            type="submit"
+                            size="sm"
+                            disabled={!linkUrl.trim()}
+                          >
+                            Apply
+                          </Button>
+                        </div>
+                      </form>
+                    </PopoverContent>
+                  </Popover>
                 ) : (
                   <Toggle
                     key={"e" + i}

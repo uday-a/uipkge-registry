@@ -87,7 +87,7 @@ export const GanttBar = React.forwardRef<HTMLDivElement, GanttBarProps>(
           <div
             style={{ width: `${task.progress}%` }}
             className={cn(
-              "absolute inset-y-0 left-0 transition-all",
+              "absolute inset-y-0 left-0 transition-[left]",
               progressColors[task.status ?? "in-progress"],
             )}
           />

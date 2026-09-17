@@ -133,15 +133,15 @@ const copyCommand = async () => {
 
 <template>
   <header
-    class="flex h-14 shrink-0 items-center justify-between border-b border-border bg-card px-3 sm:px-4 z-20 gap-2 sm:gap-4 select-none"
+    class="border-border bg-card z-20 flex h-14 shrink-0 items-center justify-between gap-2 border-b px-3 select-none sm:gap-4 sm:px-4"
   >
     <!-- Left Section: Monogram & Component Info -->
-    <div class="flex items-center gap-2 sm:gap-2.5 min-w-0 flex-1">
+    <div class="flex min-w-0 flex-1 items-center gap-2 sm:gap-2.5">
       <!-- Toggle sidebar button (only when sidebar is closed) -->
       <button
         v-if="!isSidebarOpen"
         type="button"
-        class="flex size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-2xs cursor-pointer"
+        class="border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-lg border shadow-2xs transition"
         @click="toggleSidebarAction"
         title="Show sidebar (⌘B)"
       >
@@ -151,23 +151,58 @@ const copyCommand = async () => {
       <!-- UIPKGE brand icon (only when sidebar is closed) -->
       <div
         v-if="!isSidebarOpen"
-        class="flex size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-card shadow-xs select-none"
+        class="border-border bg-card flex size-8 shrink-0 items-center justify-center rounded-lg border shadow-xs select-none"
         title="UIPKGE Dev Workbench"
       >
-        <svg width="22" height="22" viewBox="0 0 32 32" class="shrink-0" aria-hidden="true">
-          <rect x="0.5" y="0.5" width="31" height="31" rx="7" class="fill-card stroke-border" stroke-width="1" />
-          <rect x="6" y="6" width="8" height="8" rx="1.6" class="fill-foreground" />
-          <rect x="18" y="6" width="8" height="8" rx="1.6" class="fill-primary" />
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 32 32"
+          class="shrink-0"
+          aria-hidden="true"
+        >
+          <rect
+            x="0.5"
+            y="0.5"
+            width="31"
+            height="31"
+            rx="7"
+            class="fill-card stroke-border"
+            stroke-width="1"
+          />
+          <rect
+            x="6"
+            y="6"
+            width="8"
+            height="8"
+            rx="1.6"
+            class="fill-foreground"
+          />
+          <rect
+            x="18"
+            y="6"
+            width="8"
+            height="8"
+            rx="1.6"
+            class="fill-primary"
+          />
           <rect x="6" y="18" width="8" height="8" rx="1.6" class="fill-muted" />
-          <rect x="18" y="18" width="8" height="8" rx="1.6" class="fill-foreground" />
+          <rect
+            x="18"
+            y="18"
+            width="8"
+            height="8"
+            rx="1.6"
+            class="fill-foreground"
+          />
         </svg>
       </div>
 
       <!-- Framework switch & links -->
-      <div class="flex items-center gap-1.5 shrink-0">
-        <div class="flex items-center gap-1 shrink-0">
+      <div class="flex shrink-0 items-center gap-1.5">
+        <div class="flex shrink-0 items-center gap-1">
           <span
-            class="inline-flex items-center h-7 px-2 rounded-md border border-border bg-muted/40 font-mono text-xs font-semibold text-foreground whitespace-nowrap shrink-0 shadow-2xs"
+            class="border-border bg-muted/40 text-foreground inline-flex h-7 shrink-0 items-center rounded-md border px-2 font-mono text-xs font-semibold whitespace-nowrap shadow-2xs"
           >
             Vue 3.5
           </span>
@@ -175,27 +210,27 @@ const copyCommand = async () => {
             :href="'http://localhost:5174?c=' + componentId"
             target="_blank"
             rel="noreferrer"
-            class="hidden sm:inline-flex items-center h-7 px-2 rounded-md border border-border bg-muted/40 font-mono text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition whitespace-nowrap shrink-0"
+            class="border-border bg-muted/40 text-muted-foreground hover:text-foreground hover:bg-muted hidden h-7 shrink-0 items-center rounded-md border px-2 font-mono text-xs whitespace-nowrap transition sm:inline-flex"
             title="Open React 19 Playground on :5174"
           >
             <span>React 19</span>
-            <ExternalLink class="size-2.5 ml-1" />
+            <ExternalLink class="ml-1 size-2.5" />
           </a>
         </div>
       </div>
 
-      <div class="hidden sm:block h-4 w-px bg-border shrink-0" />
+      <div class="bg-border hidden h-4 w-px shrink-0 sm:block" />
 
       <!-- Breadcrumbs & metadata -->
-      <div class="flex items-center gap-1.5 min-w-0 shrink">
+      <div class="flex min-w-0 shrink items-center gap-1.5">
         <h2
-          class="text-xs sm:text-sm font-semibold tracking-tight text-foreground truncate whitespace-nowrap shrink min-w-0 max-w-[140px] md:max-w-[200px]"
+          class="text-foreground max-w-[140px] min-w-0 shrink truncate text-xs font-semibold tracking-tight whitespace-nowrap sm:text-sm md:max-w-[200px]"
         >
           {{ componentName }}
         </h2>
         <span
           v-if="categories && categories[0]"
-          class="hidden xl:inline-block rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground whitespace-nowrap shrink-0"
+          class="bg-muted text-muted-foreground hidden shrink-0 rounded-md px-2 py-0.5 text-xs whitespace-nowrap xl:inline-block"
         >
           {{ categories[0] }}
         </span>
@@ -204,35 +239,37 @@ const copyCommand = async () => {
       <!-- Quick copy install command: Full command on wide screens, compact icon on smaller -->
       <button
         type="button"
-        class="hidden min-[1400px]:flex items-center gap-1.5 rounded-lg border border-border bg-background px-2.5 h-8 text-xs font-mono text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs whitespace-nowrap shrink-0 cursor-pointer"
+        class="border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted hidden h-8 shrink-0 cursor-pointer items-center gap-1.5 rounded-lg border px-2.5 font-mono text-xs whitespace-nowrap shadow-xs transition min-[1400px]:flex"
         @click="copyCommand"
         title="Copy install command"
       >
-        <Check v-if="copied" class="size-3 text-emerald-500 shrink-0" />
+        <Check v-if="copied" class="size-3 shrink-0 text-emerald-500" />
         <Copy v-else class="size-3 shrink-0" />
-        <span class="whitespace-nowrap max-w-[180px] truncate">add @uipkge/{{ componentId }}</span>
+        <span class="max-w-[180px] truncate whitespace-nowrap"
+          >add @uipkge/{{ componentId }}</span
+        >
       </button>
       <button
         type="button"
-        class="flex min-[1400px]:hidden size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs cursor-pointer"
+        class="border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-lg border shadow-xs transition min-[1400px]:hidden"
         @click="copyCommand"
         :title="'Copy install command: add @uipkge/' + componentId"
       >
-        <Check v-if="copied" class="size-3.5 text-emerald-500 shrink-0" />
+        <Check v-if="copied" class="size-3.5 shrink-0 text-emerald-500" />
         <Copy v-else class="size-3.5 shrink-0" />
       </button>
     </div>
 
     <!-- Center Section: Viewport Switcher Toolbar (Visible on lg+) -->
     <div
-      class="hidden lg:flex items-center rounded-lg border border-border bg-muted/40 p-0.5 shadow-xs shrink-0"
+      class="border-border bg-muted/40 hidden shrink-0 items-center rounded-lg border p-0.5 shadow-xs lg:flex"
     >
       <button
         type="button"
-        class="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition whitespace-nowrap shrink-0 cursor-pointer"
+        class="flex shrink-0 cursor-pointer items-center gap-1 rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap transition"
         :class="
           activeViewport === 'fluid'
-            ? 'bg-background text-foreground shadow-xs font-semibold border border-border/80'
+            ? 'bg-background text-foreground border-border/80 border font-semibold shadow-xs'
             : 'text-muted-foreground hover:text-foreground border border-transparent'
         "
         @click="setViewport('fluid')"
@@ -244,10 +281,10 @@ const copyCommand = async () => {
 
       <button
         type="button"
-        class="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition whitespace-nowrap shrink-0 cursor-pointer"
+        class="flex shrink-0 cursor-pointer items-center gap-1 rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap transition"
         :class="
           activeViewport === 'desktop'
-            ? 'bg-background text-foreground shadow-xs font-semibold border border-border/80'
+            ? 'bg-background text-foreground border-border/80 border font-semibold shadow-xs'
             : 'text-muted-foreground hover:text-foreground border border-transparent'
         "
         @click="setViewport('desktop')"
@@ -259,10 +296,10 @@ const copyCommand = async () => {
 
       <button
         type="button"
-        class="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition whitespace-nowrap shrink-0 cursor-pointer"
+        class="flex shrink-0 cursor-pointer items-center gap-1 rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap transition"
         :class="
           activeViewport === 'laptop'
-            ? 'bg-background text-foreground shadow-xs font-semibold border border-border/80'
+            ? 'bg-background text-foreground border-border/80 border font-semibold shadow-xs'
             : 'text-muted-foreground hover:text-foreground border border-transparent'
         "
         @click="setViewport('laptop')"
@@ -274,10 +311,10 @@ const copyCommand = async () => {
 
       <button
         type="button"
-        class="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition whitespace-nowrap shrink-0 cursor-pointer"
+        class="flex shrink-0 cursor-pointer items-center gap-1 rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap transition"
         :class="
           activeViewport === 'tablet'
-            ? 'bg-background text-foreground shadow-xs font-semibold border border-border/80'
+            ? 'bg-background text-foreground border-border/80 border font-semibold shadow-xs'
             : 'text-muted-foreground hover:text-foreground border border-transparent'
         "
         @click="setViewport('tablet')"
@@ -289,10 +326,10 @@ const copyCommand = async () => {
 
       <button
         type="button"
-        class="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition whitespace-nowrap shrink-0 cursor-pointer"
+        class="flex shrink-0 cursor-pointer items-center gap-1 rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap transition"
         :class="
           activeViewport === 'mobile'
-            ? 'bg-background text-foreground shadow-xs font-semibold border border-border/80'
+            ? 'bg-background text-foreground border-border/80 border font-semibold shadow-xs'
             : 'text-muted-foreground hover:text-foreground border border-transparent'
         "
         @click="setViewport('mobile')"
@@ -304,17 +341,17 @@ const copyCommand = async () => {
     </div>
 
     <!-- Right Section: Canvas Controls & Theme -->
-    <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+    <div class="flex shrink-0 items-center gap-1.5 sm:gap-2">
       <!-- Canvas Background Selector -->
       <div
-        class="hidden lg:flex items-center rounded-lg border border-border bg-muted/40 p-0.5 shadow-xs shrink-0"
+        class="border-border bg-muted/40 hidden shrink-0 items-center rounded-lg border p-0.5 shadow-xs lg:flex"
       >
         <button
           type="button"
-          class="flex size-7 items-center justify-center rounded-md transition shrink-0 cursor-pointer"
+          class="flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md transition"
           :class="
             canvasBg === 'dots'
-              ? 'bg-background text-foreground shadow-xs border border-border/80'
+              ? 'bg-background text-foreground border-border/80 border shadow-xs'
               : 'text-muted-foreground hover:text-foreground border border-transparent'
           "
           @click="setCanvas('dots')"
@@ -324,10 +361,10 @@ const copyCommand = async () => {
         </button>
         <button
           type="button"
-          class="flex size-7 items-center justify-center rounded-md transition shrink-0 cursor-pointer"
+          class="flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md transition"
           :class="
             canvasBg === 'grid'
-              ? 'bg-background text-foreground shadow-xs border border-border/80'
+              ? 'bg-background text-foreground border-border/80 border shadow-xs'
               : 'text-muted-foreground hover:text-foreground border border-transparent'
           "
           @click="setCanvas('grid')"
@@ -337,10 +374,10 @@ const copyCommand = async () => {
         </button>
         <button
           type="button"
-          class="flex size-7 items-center justify-center rounded-md transition shrink-0 cursor-pointer"
+          class="flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md transition"
           :class="
             canvasBg === 'solid'
-              ? 'bg-background text-foreground shadow-xs border border-border/80'
+              ? 'bg-background text-foreground border-border/80 border shadow-xs'
               : 'text-muted-foreground hover:text-foreground border border-transparent'
           "
           @click="setCanvas('solid')"
@@ -353,7 +390,7 @@ const copyCommand = async () => {
       <!-- Remount Canvas Button -->
       <button
         type="button"
-        class="flex size-8 shrink-0 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-muted hover:text-foreground active:rotate-180 transition-all duration-300 shadow-xs cursor-pointer"
+        class="border-border bg-background text-muted-foreground hover:bg-muted hover:text-foreground flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md border shadow-xs transition-[color,background-color,transform] duration-300 active:rotate-180"
         @click="emit('remount')"
         title="Reset & remount component"
       >
@@ -364,7 +401,7 @@ const copyCommand = async () => {
       <div class="relative shrink-0">
         <button
           type="button"
-          class="flex size-8 shrink-0 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-muted hover:text-foreground transition shadow-xs cursor-pointer"
+          class="border-border bg-background text-muted-foreground hover:bg-muted hover:text-foreground flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md border shadow-xs transition"
           @click="showThemeMenu = !showThemeMenu"
           title="Customize Theme & Radius"
         >
@@ -381,31 +418,41 @@ const copyCommand = async () => {
         <!-- Dropdown Popover -->
         <div
           v-if="showThemeMenu"
-          class="absolute right-0 top-11 w-80 rounded-[14px] border border-border bg-popover/95 text-popover-foreground p-4 shadow-2xl backdrop-blur-md z-50 animate-in fade-in zoom-in-95 duration-150"
+          class="border-border bg-popover/95 text-popover-foreground animate-in fade-in zoom-in-95 absolute top-11 right-0 z-50 w-80 rounded-[14px] border p-4 shadow-2xl backdrop-blur-md duration-150"
         >
           <!-- Header -->
-          <div class="flex items-center justify-between border-b border-border pb-3 mb-3.5">
+          <div
+            class="border-border mb-3.5 flex items-center justify-between border-b pb-3"
+          >
             <div class="flex items-center gap-2">
-              <div class="flex size-7 items-center justify-center rounded-[8px] border border-border bg-muted/50 text-foreground shadow-2xs">
+              <div
+                class="border-border bg-muted/50 text-foreground flex size-7 items-center justify-center rounded-[8px] border shadow-2xs"
+              >
                 <Palette class="size-3.5" />
               </div>
               <div>
                 <div class="flex items-center gap-1.5">
-                  <h4 class="text-xs font-semibold text-foreground tracking-tight">
+                  <h4
+                    class="text-foreground text-xs font-semibold tracking-tight"
+                  >
                     Theme Customizer
                   </h4>
-                  <span class="rounded-[4px] bg-muted px-1.5 py-0.5 font-mono text-[10px] font-medium text-muted-foreground uppercase">
+                  <span
+                    class="bg-muted text-muted-foreground rounded-[4px] px-1.5 py-0.5 font-mono text-[10px] font-medium uppercase"
+                  >
                     OKLCH
                   </span>
                 </div>
-                <p class="text-[11px] text-muted-foreground">Tokens & preview settings</p>
+                <p class="text-muted-foreground text-[11px]">
+                  Tokens & preview settings
+                </p>
               </div>
             </div>
             <button
               type="button"
               @click="resetTheme"
               title="Reset to default theme & radius"
-              class="flex shrink-0 items-center gap-1 rounded-[6px] px-2 py-1 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition cursor-pointer border border-transparent hover:border-border/60"
+              class="text-muted-foreground hover:text-foreground hover:bg-muted hover:border-border/60 flex shrink-0 cursor-pointer items-center gap-1 rounded-[6px] border border-transparent px-2 py-1 text-xs font-medium transition"
             >
               <RotateCcw class="size-3" />
               <span>Reset</span>
@@ -413,16 +460,20 @@ const copyCommand = async () => {
           </div>
 
           <!-- Appearance / Color Mode -->
-          <div class="space-y-1.5 mb-3.5">
-            <label class="text-xs font-medium text-muted-foreground">Appearance</label>
-            <div class="grid grid-cols-2 gap-1 rounded-[8px] border border-border/60 bg-muted/40 p-1">
+          <div class="mb-3.5 space-y-1.5">
+            <label class="text-muted-foreground text-xs font-medium"
+              >Appearance</label
+            >
+            <div
+              class="border-border/60 bg-muted/40 grid grid-cols-2 gap-1 rounded-[8px] border p-1"
+            >
               <button
                 type="button"
                 @click="setDark(false)"
-                class="flex items-center justify-center gap-2 rounded-[6px] py-1.5 text-xs font-medium transition cursor-pointer"
+                class="flex cursor-pointer items-center justify-center gap-2 rounded-[6px] py-1.5 text-xs font-medium transition"
                 :class="
                   !isDark
-                    ? 'bg-background text-foreground shadow-xs border border-border/80 font-semibold'
+                    ? 'bg-background text-foreground border-border/80 border font-semibold shadow-xs'
                     : 'text-muted-foreground hover:text-foreground'
                 "
               >
@@ -432,10 +483,10 @@ const copyCommand = async () => {
               <button
                 type="button"
                 @click="setDark(true)"
-                class="flex items-center justify-center gap-2 rounded-[6px] py-1.5 text-xs font-medium transition cursor-pointer"
+                class="flex cursor-pointer items-center justify-center gap-2 rounded-[6px] py-1.5 text-xs font-medium transition"
                 :class="
                   isDark
-                    ? 'bg-background text-foreground shadow-xs border border-border/80 font-semibold'
+                    ? 'bg-background text-foreground border-border/80 border font-semibold shadow-xs'
                     : 'text-muted-foreground hover:text-foreground'
                 "
               >
@@ -446,10 +497,14 @@ const copyCommand = async () => {
           </div>
 
           <!-- Accent Color -->
-          <div class="space-y-1.5 mb-3.5">
+          <div class="mb-3.5 space-y-1.5">
             <div class="flex items-center justify-between">
-              <label class="text-xs font-medium text-muted-foreground">Accent Color</label>
-              <span class="text-[11px] font-mono text-muted-foreground capitalize flex items-center gap-1.5">
+              <label class="text-muted-foreground text-xs font-medium"
+                >Accent Color</label
+              >
+              <span
+                class="text-muted-foreground flex items-center gap-1.5 font-mono text-[11px] capitalize"
+              >
                 <span
                   class="size-2 rounded-full border border-black/10 dark:border-white/20"
                   :style="{
@@ -458,10 +513,14 @@ const copyCommand = async () => {
                         ? isDark
                           ? '#fafafa'
                           : '#18181b'
-                        : COLOR_THEMES.find((t) => t.id === activeColorTheme)?.swatch || '#18181b',
+                        : COLOR_THEMES.find((t) => t.id === activeColorTheme)
+                            ?.swatch || '#18181b',
                   }"
                 />
-                {{ COLOR_THEMES.find((t) => t.id === activeColorTheme)?.name || 'Neutral' }}
+                {{
+                  COLOR_THEMES.find((t) => t.id === activeColorTheme)?.name ||
+                  "Neutral"
+                }}
               </span>
             </div>
             <div class="grid grid-cols-3 gap-1.5">
@@ -471,7 +530,7 @@ const copyCommand = async () => {
                 type="button"
                 @click="setColorTheme(color.id)"
                 :title="color.name"
-                class="group flex items-center gap-2 rounded-[6px] border px-2 py-1.5 text-xs font-medium transition cursor-pointer"
+                class="group flex cursor-pointer items-center gap-2 rounded-[6px] border px-2 py-1.5 text-xs font-medium transition"
                 :class="
                   activeColorTheme === color.id
                     ? 'border-primary bg-primary/10 text-foreground font-semibold shadow-2xs'
@@ -479,10 +538,14 @@ const copyCommand = async () => {
                 "
               >
                 <span
-                  class="relative size-3.5 shrink-0 rounded-full border border-black/10 dark:border-white/20 shadow-2xs transition-transform group-hover:scale-110 flex items-center justify-center"
+                  class="relative flex size-3.5 shrink-0 items-center justify-center rounded-full border border-black/10 shadow-2xs transition-transform group-hover:scale-110 dark:border-white/20"
                   :style="{
                     backgroundColor:
-                      color.id === 'default' ? (isDark ? '#fafafa' : '#18181b') : color.swatch,
+                      color.id === 'default'
+                        ? isDark
+                          ? '#fafafa'
+                          : '#18181b'
+                        : color.swatch,
                   }"
                 >
                   <Check
@@ -494,8 +557,8 @@ const copyCommand = async () => {
                           ? 'text-black'
                           : 'text-white'
                         : color.id === 'amber' || color.id === 'cyan'
-                        ? 'text-black'
-                        : 'text-white'
+                          ? 'text-black'
+                          : 'text-white'
                     "
                   />
                 </span>
@@ -507,22 +570,29 @@ const copyCommand = async () => {
           <!-- Border Radius -->
           <div class="space-y-1.5">
             <div class="flex items-center justify-between">
-              <label class="text-xs font-medium text-muted-foreground">Border Radius</label>
-              <span class="text-[11px] font-mono text-muted-foreground">
-                {{ RADIUS_PRESETS.find((r) => r.value === activeRadius)?.name || activeRadius }}
+              <label class="text-muted-foreground text-xs font-medium"
+                >Border Radius</label
+              >
+              <span class="text-muted-foreground font-mono text-[11px]">
+                {{
+                  RADIUS_PRESETS.find((r) => r.value === activeRadius)?.name ||
+                  activeRadius
+                }}
               </span>
             </div>
-            <div class="grid grid-cols-4 gap-1 rounded-[8px] border border-border/60 bg-muted/40 p-1">
+            <div
+              class="border-border/60 bg-muted/40 grid grid-cols-4 gap-1 rounded-[8px] border p-1"
+            >
               <button
                 v-for="rad in RADIUS_PRESETS"
                 :key="rad.id"
                 type="button"
                 @click="setRadius(rad.value)"
                 :title="rad.name"
-                class="flex items-center justify-center rounded-[6px] py-1.5 text-xs font-mono transition cursor-pointer"
+                class="flex cursor-pointer items-center justify-center rounded-[6px] py-1.5 font-mono text-xs transition"
                 :class="
                   activeRadius === rad.value
-                    ? 'bg-background text-foreground font-semibold shadow-xs border border-border/80'
+                    ? 'bg-background text-foreground border-border/80 border font-semibold shadow-xs'
                     : 'text-muted-foreground hover:text-foreground hover:bg-background/40'
                 "
               >
@@ -536,7 +606,7 @@ const copyCommand = async () => {
       <!-- Dark / Light Mode Toggle -->
       <button
         type="button"
-        class="flex size-8 shrink-0 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs cursor-pointer"
+        class="border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md border shadow-xs transition"
         @click="toggleThemeAction"
         :title="isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
       >
@@ -544,12 +614,12 @@ const copyCommand = async () => {
         <Moon v-else class="size-4 shrink-0" />
       </button>
 
-      <div class="h-4 w-px bg-border shrink-0" />
+      <div class="bg-border h-4 w-px shrink-0" />
 
       <!-- Inspector Toggle Button -->
       <button
         type="button"
-        class="flex items-center gap-1.5 rounded-md px-2.5 h-8 text-xs font-medium transition shadow-xs border whitespace-nowrap shrink-0 cursor-pointer"
+        class="flex h-8 shrink-0 cursor-pointer items-center gap-1.5 rounded-md border px-2.5 text-xs font-medium whitespace-nowrap shadow-xs transition"
         :class="
           isInspectorOpen
             ? 'bg-primary text-primary-foreground border-primary'
@@ -559,7 +629,7 @@ const copyCommand = async () => {
         title="Toggle Test Bench & Inspector"
       >
         <Sliders class="size-3.5 shrink-0" />
-        <span class="hidden md:inline whitespace-nowrap">Test Bench</span>
+        <span class="hidden whitespace-nowrap md:inline">Test Bench</span>
       </button>
     </div>
   </header>

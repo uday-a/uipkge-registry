@@ -13,8 +13,9 @@ import type { MentionOption } from ".";
 const props = withDefaults(
   defineProps<{
     modelValue?: string;
-    options?: O[];
+    options?: O[] | Record<string, O[]>;
     triggers?: string[];
+    triggerPrefixes?: Record<string, string>;
     prefix?: string;
     rows?: number;
     loading?: boolean;
@@ -60,13 +61,26 @@ const isAsyncLoading = ref(false);
 
 const caretRect = ref<CaretRect | null>(null);
 
+const currentOptionsList = computed<O[]>(() => {
+  if (!props.options) return [];
+  if (Array.isArray(props.options)) return props.options as O[];
+  if (typeof props.options === "object") {
+    const list = (props.options as Record<string, O[]>)[activeTrigger.value];
+    return list ?? [];
+  }
+  return [];
+});
+
 const filtered = computed((): O[] => {
   if (props.loadOptions) return asyncResults.value as O[];
-  if (!query.value) return props.options as O[];
+  const source = currentOptionsList.value;
+  if (!query.value) return source;
   const q = query.value.toLowerCase();
-  return (props.options as O[]).filter(
+  return source.filter(
     (o) =>
-      o.label.toLowerCase().includes(q) || o.value.toLowerCase().includes(q),
+      o.label.toLowerCase().includes(q) ||
+      o.value.toLowerCase().includes(q) ||
+      (o.email && o.email.toLowerCase().includes(q)),
   );
 });
 
@@ -182,8 +196,10 @@ function onKeydown(e: KeyboardEvent) {
   }
 }
 
-function defaultFormat(option: O, _trigger: string) {
-  return `${props.prefix}${option.value} `;
+function defaultFormat(option: O, trigger: string) {
+  const resolvedPrefix =
+    props.triggerPrefixes?.[trigger] ?? trigger ?? props.prefix ?? "@";
+  return `${resolvedPrefix}${option.value} `;
 }
 
 function insert(option: O) {
@@ -255,23 +271,27 @@ onBeforeUnmount(() => {
       <PopoverContent
         align="start"
         :side-offset="4"
-        class="w-64 p-1"
+        class="border-border/80 w-64 rounded-lg p-1 shadow-md"
         @open-auto-focus="(e: Event) => e.preventDefault()"
       >
         <div :id="listboxId">
+          <slot name="header" :trigger="activeTrigger" :query="query" />
+
           <div
             v-if="totalLoading"
             class="text-muted-foreground px-2 py-3 text-sm"
             role="status"
           >
-            Loading...
+            <slot name="loading">Loading...</slot>
           </div>
           <div
             v-else-if="filtered.length === 0"
             class="text-muted-foreground px-2 py-3 text-sm"
             role="status"
           >
-            No matches
+            <slot name="empty" :trigger="activeTrigger" :query="query"
+              >No matches</slot
+            >
           </div>
           <ul
             v-else
@@ -287,7 +307,7 @@ onBeforeUnmount(() => {
               :aria-selected="i === highlightedIndex"
               :aria-disabled="opt.disabled || undefined"
               :class="[
-                'flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 text-sm',
+                'flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors',
                 i === highlightedIndex && !opt.disabled
                   ? 'bg-accent text-accent-foreground'
                   : '',
@@ -296,23 +316,37 @@ onBeforeUnmount(() => {
               @mouseenter="!opt.disabled && (highlightedIndex = i)"
               @mousedown.prevent="!opt.disabled && insert(opt)"
             >
-              <img
-                v-if="opt.avatar"
-                :src="opt.avatar"
-                alt=""
-                class="size-6 rounded-full"
-              />
-              <div class="min-w-0 flex-1">
-                <div class="truncate">{{ opt.label }}</div>
-                <div
-                  v-if="opt.description"
-                  class="text-muted-foreground truncate text-xs"
-                >
-                  {{ opt.description }}
+              <slot
+                name="option"
+                :option="opt"
+                :index="i"
+                :active="i === highlightedIndex"
+                :trigger="activeTrigger"
+              >
+                <img
+                  v-if="opt.avatar"
+                  :src="opt.avatar"
+                  alt=""
+                  class="size-6 rounded-full object-cover"
+                />
+                <div class="min-w-0 flex-1">
+                  <div class="truncate font-medium">{{ opt.label }}</div>
+                  <div
+                    v-if="opt.description || opt.email"
+                    class="text-muted-foreground truncate text-xs"
+                  >
+                    {{ opt.description || opt.email }}
+                  </div>
                 </div>
-              </div>
+              </slot>
             </li>
           </ul>
+
+          <slot
+            name="footer"
+            :trigger="activeTrigger"
+            :count="filtered.length"
+          />
         </div>
       </PopoverContent>
     </Popover>

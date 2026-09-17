@@ -45,11 +45,11 @@ export default function WorkbenchSidebar({
 
   const componentsList = useMemo(
     () => items.filter((i) => !isBlockItem(i)),
-    [items]
+    [items],
   );
   const blocksList = useMemo(
     () => items.filter((i) => isBlockItem(i)),
-    [items]
+    [items],
   );
 
   const [activeTab, setActiveTab] = useState<"components" | "blocks">(() => {
@@ -117,7 +117,7 @@ export default function WorkbenchSidebar({
       (i) =>
         i.id.toLowerCase().includes(q) ||
         i.name.toLowerCase().includes(q) ||
-        i.categories?.some((c) => c.toLowerCase().includes(q))
+        i.categories?.some((c) => c.toLowerCase().includes(q)),
     );
   }, [currentTabItems, search]);
 
@@ -152,36 +152,82 @@ export default function WorkbenchSidebar({
 
   return (
     <aside
-      className={`flex shrink-0 flex-col border-r border-border bg-card select-none transition-all duration-200 ${
+      className={`border-border bg-card flex shrink-0 flex-col border-r transition-[width,opacity,border-right-width] duration-200 select-none ${
         collapsed
-          ? "w-0 overflow-hidden border-r-0 p-0 opacity-0 pointer-events-none"
+          ? "pointer-events-none w-0 overflow-hidden border-r-0 p-0 opacity-0"
           : "w-[300px]"
       }`}
     >
       {/* Brand Header: UIPKGE Registry Logo, Title & Collapse Action */}
-      <div className="flex h-14 shrink-0 items-center justify-between px-3.5 border-b border-border bg-card/80">
-        <div className="flex items-center gap-2.5 min-w-0">
+      <div className="border-border bg-card/80 flex h-14 shrink-0 items-center justify-between border-b px-3.5">
+        <div className="flex min-w-0 items-center gap-2.5">
           {/* UIPKGE Official Brand Icon */}
-          <svg width="24" height="24" viewBox="0 0 32 32" className="shrink-0" aria-hidden="true">
-            <rect x="0.5" y="0.5" width="31" height="31" rx="7" className="fill-card stroke-border" strokeWidth="1" />
-            <rect x="6" y="6" width="8" height="8" rx="1.6" className="fill-foreground" />
-            <rect x="18" y="6" width="8" height="8" rx="1.6" className="fill-primary" />
-            <rect x="6" y="18" width="8" height="8" rx="1.6" className="fill-muted" />
-            <rect x="18" y="18" width="8" height="8" rx="1.6" className="fill-foreground" />
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 32 32"
+            className="shrink-0"
+            aria-hidden="true"
+          >
+            <rect
+              x="0.5"
+              y="0.5"
+              width="31"
+              height="31"
+              rx="7"
+              className="fill-card stroke-border"
+              strokeWidth="1"
+            />
+            <rect
+              x="6"
+              y="6"
+              width="8"
+              height="8"
+              rx="1.6"
+              className="fill-foreground"
+            />
+            <rect
+              x="18"
+              y="6"
+              width="8"
+              height="8"
+              rx="1.6"
+              className="fill-primary"
+            />
+            <rect
+              x="6"
+              y="18"
+              width="8"
+              height="8"
+              rx="1.6"
+              className="fill-muted"
+            />
+            <rect
+              x="18"
+              y="18"
+              width="8"
+              height="8"
+              rx="1.6"
+              className="fill-foreground"
+            />
           </svg>
-          <div className="flex items-baseline gap-1.5 min-w-0">
-            <span className="text-sm font-bold tracking-tight text-foreground font-display">UIPKGE</span>
-            <span className="text-xs font-semibold text-muted-foreground">Registry</span>
+          <div className="flex min-w-0 items-baseline gap-1.5">
+            <span className="text-foreground font-display text-sm font-bold tracking-tight">
+              UIPKGE
+            </span>
+            <span className="text-muted-foreground text-xs font-semibold">
+              Registry
+            </span>
           </div>
         </div>
-        <div className="flex items-center gap-1.5 shrink-0">
-          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-medium border border-border bg-muted/60 text-muted-foreground">
+        <div className="flex shrink-0 items-center gap-1.5">
+          <span className="border-border bg-muted/60 text-muted-foreground inline-flex items-center rounded border px-1.5 py-0.5 font-mono text-[10px] font-medium">
             v1.0
           </span>
           {onToggleCollapse && (
             <button
               type="button"
-              className="flex size-7 shrink-0 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition cursor-pointer shadow-2xs"
+              className="border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md border shadow-2xs transition"
               onClick={onToggleCollapse}
               title="Close sidebar (⌘B)"
             >
@@ -192,16 +238,16 @@ export default function WorkbenchSidebar({
       </div>
 
       {/* Top Header: Components & Blocks Tabs Side by Side + Search Bar */}
-      <div className="border-b border-border p-3 space-y-2.5">
+      <div className="border-border space-y-2.5 border-b p-3">
         {/* Tabs Side by Side: Flexible Components tab + snug Blocks tab */}
-        <div className="flex items-center gap-1 p-0.5 bg-muted/60 rounded-lg text-xs font-medium border border-border/50">
+        <div className="bg-muted/60 border-border/50 flex items-center gap-1 rounded-lg border p-0.5 text-xs font-medium">
           <button
             type="button"
             id="tab-components"
             title="Components (UI Primitives)"
-            className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-md transition cursor-pointer whitespace-nowrap min-w-0 select-none ${
+            className={`flex min-w-0 flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-md px-2 py-1.5 whitespace-nowrap transition select-none ${
               activeTab === "components"
-                ? "bg-background text-foreground shadow-xs font-semibold"
+                ? "bg-background text-foreground font-semibold shadow-xs"
                 : "text-muted-foreground hover:text-foreground"
             }`}
             onClick={() => switchTab("components")}
@@ -209,7 +255,7 @@ export default function WorkbenchSidebar({
             <Layers className="size-3.5 shrink-0" />
             <span className="text-xs font-medium">Components</span>
             <span
-              className={`text-[10px] px-1.5 py-0.5 rounded-full font-mono shrink-0 leading-none tabular-nums ${
+              className={`shrink-0 rounded-full px-1.5 py-0.5 font-mono text-[10px] leading-none tabular-nums ${
                 activeTab === "components"
                   ? "bg-muted text-foreground"
                   : "text-muted-foreground"
@@ -223,9 +269,9 @@ export default function WorkbenchSidebar({
             type="button"
             id="tab-blocks"
             title="Blocks (Composed Layouts)"
-            className={`shrink-0 flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded-md transition cursor-pointer whitespace-nowrap select-none ${
+            className={`flex shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-md px-2.5 py-1.5 whitespace-nowrap transition select-none ${
               activeTab === "blocks"
-                ? "bg-background text-foreground shadow-xs font-semibold"
+                ? "bg-background text-foreground font-semibold shadow-xs"
                 : "text-muted-foreground hover:text-foreground"
             }`}
             onClick={() => switchTab("blocks")}
@@ -233,7 +279,7 @@ export default function WorkbenchSidebar({
             <LayoutGrid className="size-3.5 shrink-0" />
             <span className="text-xs font-medium">Blocks</span>
             <span
-              className={`text-[10px] px-1.5 py-0.5 rounded-full font-mono shrink-0 leading-none tabular-nums ${
+              className={`shrink-0 rounded-full px-1.5 py-0.5 font-mono text-[10px] leading-none tabular-nums ${
                 activeTab === "blocks"
                   ? "bg-muted text-foreground"
                   : "text-muted-foreground"
@@ -246,7 +292,7 @@ export default function WorkbenchSidebar({
 
         {/* Search Input */}
         <div className="relative">
-          <Search className="absolute left-2.5 top-2.5 size-3.5 text-muted-foreground pointer-events-none" />
+          <Search className="text-muted-foreground pointer-events-none absolute top-2.5 left-2.5 size-3.5" />
           <input
             ref={searchInputRef}
             type="text"
@@ -257,12 +303,12 @@ export default function WorkbenchSidebar({
                 ? "Search blocks... (/)"
                 : "Search components... (/)"
             }
-            className="w-full rounded-md border border-border bg-background pl-8 pr-7 py-1.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary font-sans shadow-xs"
+            className="border-border bg-background text-foreground placeholder:text-muted-foreground focus:ring-primary w-full rounded-md border py-1.5 pr-7 pl-8 font-sans text-xs shadow-xs focus:ring-1 focus:outline-none"
           />
           {search && (
             <button
               type="button"
-              className="absolute right-2.5 top-2.5 text-muted-foreground hover:text-foreground cursor-pointer"
+              className="text-muted-foreground hover:text-foreground absolute top-2.5 right-2.5 cursor-pointer"
               onClick={() => setSearch("")}
             >
               <X className="size-3.5" />
@@ -272,23 +318,23 @@ export default function WorkbenchSidebar({
       </div>
 
       {/* Navigation List */}
-      <div className="flex-1 overflow-y-auto p-2 space-y-3">
+      <div className="flex-1 space-y-3 overflow-y-auto p-2">
         {sortedCategories.map((cat) => (
           <div key={cat} className="space-y-1">
             <button
               type="button"
-              className="flex w-full items-center justify-between px-2 py-1 text-xs font-semibold text-muted-foreground hover:text-foreground tracking-tight transition cursor-pointer"
+              className="text-muted-foreground hover:text-foreground flex w-full cursor-pointer items-center justify-between px-2 py-1 text-xs font-semibold tracking-tight transition"
               onClick={() => toggleCategory(cat)}
             >
               <div className="flex items-center gap-1.5">
                 {collapsedCategories[cat] ? (
-                  <ChevronRight className="size-3 text-muted-foreground/70 shrink-0" />
+                  <ChevronRight className="text-muted-foreground/70 size-3 shrink-0" />
                 ) : (
-                  <ChevronDown className="size-3 text-muted-foreground/70 shrink-0" />
+                  <ChevronDown className="text-muted-foreground/70 size-3 shrink-0" />
                 )}
                 <span>{cat}</span>
               </div>
-              <span className="font-mono text-[10px] text-muted-foreground">
+              <span className="text-muted-foreground font-mono text-[10px]">
                 {groupedItems[cat]?.length || 0}
               </span>
             </button>
@@ -301,7 +347,7 @@ export default function WorkbenchSidebar({
                     id={`sidebar-item-${item.id}`}
                     type="button"
                     onClick={() => onSelect(item.id)}
-                    className={`flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-left text-xs transition group cursor-pointer ${
+                    className={`group flex w-full cursor-pointer items-center justify-between rounded-md px-2.5 py-1.5 text-left text-xs transition ${
                       selectedId === item.id
                         ? "bg-primary text-primary-foreground font-medium shadow-xs"
                         : "text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -310,7 +356,7 @@ export default function WorkbenchSidebar({
                     <span className="truncate pr-2">{item.name}</span>
                     {(item.id.includes("chart") ||
                       item.category === "Charts") && (
-                      <span className="text-[10px] opacity-70 shrink-0 font-mono">
+                      <span className="shrink-0 font-mono text-[10px] opacity-70">
                         chart
                       </span>
                     )}
@@ -322,14 +368,15 @@ export default function WorkbenchSidebar({
         ))}
 
         {filteredItems.length === 0 && (
-          <div className="py-8 text-center text-xs text-muted-foreground">
-            No {activeTab === "blocks" ? "blocks" : "components"} match &quot;{search}&quot;
+          <div className="text-muted-foreground py-8 text-center text-xs">
+            No {activeTab === "blocks" ? "blocks" : "components"} match &quot;
+            {search}&quot;
           </div>
         )}
       </div>
 
       {/* Footer Counter */}
-      <div className="border-t border-border p-3 bg-muted/20 flex items-center justify-between text-xs text-muted-foreground font-mono">
+      <div className="border-border bg-muted/20 text-muted-foreground flex items-center justify-between border-t p-3 font-mono text-xs">
         <span>
           {filteredItems.length}{" "}
           {activeTab === "blocks"

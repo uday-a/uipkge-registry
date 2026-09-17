@@ -2,52 +2,133 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Timeline,
   TimelineContent,
   TimelineDate,
   TimelineDescription,
+  TimelineHeader,
   TimelineItem,
   TimelineMedia,
   TimelineSeparator,
   TimelineTitle,
 } from "@/components/ui/timeline";
 import {
+  AlertTriangle,
   Bell,
   Calendar,
   Check,
   Circle,
   CircleDashed,
+  CircleDot,
   ClipboardCheck,
+  Clock,
   CreditCard,
   Database,
+  ExternalLink,
   FileText,
   GitCommit,
   GitMerge,
   GitPullRequest,
-  ImageIcon,
+  Image as ImageIcon,
   MessageSquare,
   Package,
   Rocket,
-  AlertTriangle,
   Truck,
 } from "lucide-vue-next";
 
-const events = [
-  { id: 1, title: "Project created", time: "May 1, 2026", icon: Rocket },
-  { id: 2, title: "First commit pushed", time: "May 2, 2026", icon: GitCommit },
+const releaseEvents = [
+  {
+    id: 1,
+    title: "Release v2.4.0 tagged",
+    time: "12m ago",
+    desc: "Tagged on main and artifacts pushed to staging registry.",
+  },
+  {
+    id: 2,
+    title: "Automated test suites passed",
+    time: "35m ago",
+    desc: "All 84 unit, integration, and cross-framework parity tests passed.",
+  },
   {
     id: 3,
-    title: "Documentation drafted",
-    time: "May 3, 2026",
-    icon: FileText,
+    title: "Security audit cleared",
+    time: "50m ago",
+    desc: "Static analysis and dependency vulnerability scan cleared with 0 findings.",
   },
   {
     id: 4,
-    title: "Public release scheduled",
-    time: "May 5, 2026",
-    icon: Calendar,
+    title: "Pull request approved",
+    time: "1h ago",
+    desc: "Changes reviewed and signed off by core platform maintainers.",
+  },
+];
+
+const deploymentStages = [
+  {
+    id: 1,
+    title: "Commit pushed to main",
+    time: "10:14 AM",
+    desc: "feat(auth): enable WebAuthn biometric passkey authentication",
+    icon: GitCommit,
+  },
+  {
+    id: 2,
+    title: "Pull request merged",
+    time: "10:18 AM",
+    desc: "PR #892 merged into main with 3 approvals",
+    icon: GitPullRequest,
+  },
+  {
+    id: 3,
+    title: "Container image packaged",
+    time: "10:22 AM",
+    desc: "Docker image built and pushed digest to registry",
+    icon: Package,
+  },
+  {
+    id: 4,
+    title: "Production deploy completed",
+    time: "10:25 AM",
+    desc: "Live traffic switched across all 18 edge CDN clusters",
+    icon: Check,
+  },
+];
+
+const pipelineStages = [
+  {
+    id: 1,
+    title: "Static Analysis & Lint",
+    desc: "ESLint and TypeScript strict typechecks passed",
+    time: "14s",
+    status: "success" as const,
+    icon: Check,
+  },
+  {
+    id: 2,
+    title: "Automated Test Suites",
+    desc: "128 unit and browser integration tests completed",
+    time: "38s",
+    status: "success" as const,
+    icon: Check,
+  },
+  {
+    id: 3,
+    title: "Container Image Build",
+    desc: "Compiling multi-arch Docker image (layer 8/12)",
+    time: "In progress",
+    status: "current" as const,
+    icon: CircleDot,
+  },
+  {
+    id: 4,
+    title: "Canary Rollout (10%)",
+    desc: "Queued behind container build completion",
+    time: "Pending",
+    status: "muted" as const,
+    icon: Circle,
   },
 ];
 
@@ -55,30 +136,37 @@ const statuses = [
   {
     id: 1,
     title: "Build #482",
-    desc: "Compiled in 38s",
+    desc: "Compiled successfully in 38s",
     status: "success" as const,
     icon: Check,
   },
   {
     id: 2,
     title: "Build #483",
-    desc: "Compiled in 42s",
-    status: "success" as const,
+    desc: "Integration test passed in 42s",
+    status: "info" as const,
     icon: Check,
   },
   {
     id: 3,
     title: "Build #484",
-    desc: "Lint failed at app/utils.ts",
+    desc: "Lint check failed at app/utils.ts",
     status: "error" as const,
     icon: AlertTriangle,
   },
   {
     id: 4,
     title: "Build #485",
-    desc: "Queued · waiting on runner",
+    desc: "Worker runner high memory load",
     status: "warning" as const,
     icon: CircleDashed,
+  },
+  {
+    id: 5,
+    title: "Build #486",
+    desc: "Queued · waiting for runner slot",
+    status: "muted" as const,
+    icon: Clock,
   },
 ];
 
@@ -114,56 +202,144 @@ const ship = [
 ];
 
 const milestones = [
-  { id: 1, title: "Q1 Kickoff", time: "Jan 2026", status: "success" as const },
-  {
-    id: 2,
-    title: "MVP launched",
-    time: "Mar 2026",
-    status: "success" as const,
-  },
-  { id: 3, title: "GA release", time: "Jun 2026", status: "info" as const },
-  { id: 4, title: "v2 planning", time: "Sep 2026", status: "muted" as const },
-];
-
-const compact = [
-  { id: 1, title: "09:14 — Logged in from Chrome" },
-  { id: 2, title: "09:22 — Created new workspace" },
-  { id: 3, title: "09:31 — Invited 3 members" },
-  { id: 4, title: "10:02 — Updated billing details" },
-  { id: 5, title: "10:15 — Generated API key" },
-];
-
-const activity = [
   {
     id: 1,
-    title: "opened pull request",
-    user: "alice",
-    time: "2h ago",
-    icon: GitPullRequest,
-    status: "info" as const,
+    title: "Q1 2026 — Core Architecture",
+    time: "Jan 2026",
+    desc: "Distributed runtime RFC approved and core system interfaces defined.",
   },
   {
     id: 2,
-    title: "merged main into feature/x",
-    user: "bob",
-    time: "4h ago",
-    icon: GitMerge,
-    status: "success" as const,
+    title: "Q2 2026 — Developer Preview",
+    time: "Apr 2026",
+    desc: "First cohort of 50 enterprise design partners onboarded to SDK.",
   },
   {
     id: 3,
-    title: "reviewed and approved",
-    user: "carol",
-    time: "6h ago",
+    title: "Q3 2026 — Multi-Region Availability",
+    time: "Jul 2026",
+    desc: "Zero-downtime replication active across US, EU, and APAC clusters.",
+  },
+  {
+    id: 4,
+    title: "Q4 2026 — General Availability",
+    time: "Oct 2026",
+    desc: "Public launch with self-service signups and enterprise SLA.",
+  },
+];
+
+const auditLogs = [
+  {
+    id: 1,
+    time: "14:22:05",
+    event: "API secret key rotated for staging-worker",
+  },
+  { id: 2, time: "14:18:40", event: "User permissions updated for admin_812" },
+  { id: 3, time: "14:05:12", event: "SSO session authenticated via Okta" },
+  {
+    id: 4,
+    time: "13:52:19",
+    event: "Webhook endpoint verified: /api/v1/billing",
+  },
+  { id: 5, time: "13:40:02", event: "IP whitelist rule updated for eu-west-1" },
+];
+
+const activityMembers = [
+  {
+    id: 1,
+    user: "Sarah Chen",
+    initials: "SC",
+    action: "opened pull request #402",
+    time: "12m ago",
+    detail:
+      "feat(tokens): add support for OKLCH color spaces and dynamic contrast clamping",
+  },
+  {
+    id: 2,
+    user: "Marcus Vance",
+    initials: "MV",
+    action: "approved pull request with comments",
+    time: "8m ago",
+    detail:
+      "Verified visual rendering and responsive layout across desktop and mobile.",
+  },
+  {
+    id: 3,
+    user: "Elena Rostova",
+    initials: "ER",
+    action: "merged into main and generated changelog",
+    time: "Just now",
+    detail: "Tagged v2.4.1 release candidate and published to edge nodes.",
+  },
+];
+
+const roadmapEvents = [
+  {
+    id: 1,
+    title: "Project Kickoff",
+    time: "Jan 15, 2026",
+    desc: "Scope alignment & team ramp-up",
+    icon: Calendar,
+  },
+  {
+    id: 2,
+    title: "Internal Beta Testing",
+    time: "Feb 20, 2026",
+    desc: "Dogfooding with internal teams",
+    icon: GitCommit,
+  },
+  {
+    id: 3,
+    title: "Security Audit & Compliance",
+    time: "Mar 10, 2026",
+    desc: "SOC2 Type II sign-off",
     icon: Check,
-    status: "success" as const,
+  },
+];
+
+const onboarding = [
+  {
+    id: 1,
+    title: "Create your workspace",
+    desc: "Pick a name and invite your core team.",
+    done: true,
+  },
+  {
+    id: 2,
+    title: "Connect a data source",
+    desc: "PostgreSQL, MySQL, or ClickHouse data warehouse.",
+    done: true,
+  },
+  {
+    id: 3,
+    title: "Configure billing",
+    desc: "Add a payment method to unlock production quotas.",
+    done: true,
+  },
+  {
+    id: 4,
+    title: "Invite your first member",
+    desc: "Send a magic-link invitation via email.",
+    done: false,
+  },
+  {
+    id: 5,
+    title: "Publish your first dashboard",
+    desc: "Pick a template or start from blank canvas.",
+    done: false,
+  },
+  {
+    id: 6,
+    title: "Set up alerts",
+    desc: "Configure Slack, email, or PagerDuty webhooks.",
+    done: false,
   },
 ];
 
 const activityFiles = [
   { name: "Project-Spec-v3.pdf", size: "1.9 MB", icon: FileText },
   { name: "Hero-mockups.zip", size: "18 KB", icon: FileText },
-  { name: "Brand-system.css", size: "20 MB", icon: FileText },
+  { name: "Brand-system.css", size: "20 KB", icon: FileText },
 ];
 
 const activityGallery = [
@@ -171,60 +347,73 @@ const activityGallery = [
   { id: 2, label: "Concept B" },
   { id: 3, label: "Concept C" },
 ];
-
-const onboarding = [
-  {
-    id: 1,
-    title: "Create your workspace",
-    desc: "Pick a name and invite your team.",
-    done: true,
-  },
-  {
-    id: 2,
-    title: "Connect a data source",
-    desc: "Postgres, MySQL, or BigQuery.",
-    done: true,
-  },
-  {
-    id: 3,
-    title: "Configure billing",
-    desc: "Add a payment method to unlock production.",
-    done: true,
-  },
-  {
-    id: 4,
-    title: "Invite your first member",
-    desc: "Send a magic-link invitation by email.",
-    done: false,
-  },
-  {
-    id: 5,
-    title: "Publish your first dashboard",
-    desc: "Pick a template or start from scratch.",
-    done: false,
-  },
-  {
-    id: 6,
-    title: "Set up alerts",
-    desc: "Slack, email, or PagerDuty integrations.",
-    done: false,
-  },
-];
 </script>
 
 <template>
   <Story
     title="Default"
-    description="Vertical timeline with TimelineMedia (icon variant) and status colors. Connector auto-hides on the last item."
+    description="Chronological event rail with minimalist dot markers and dynamic connector lines."
   >
     <Timeline class="max-w-md">
-      <TimelineItem v-for="e in events" :key="e.id">
+      <TimelineItem v-for="e in releaseEvents" :key="e.id">
+        <TimelineMedia />
+        <TimelineContent>
+          <TimelineHeader>
+            <TimelineTitle>{{ e.title }}</TimelineTitle>
+            <TimelineDate>{{ e.time }}</TimelineDate>
+          </TimelineHeader>
+          <TimelineDescription>{{ e.desc }}</TimelineDescription>
+        </TimelineContent>
+      </TimelineItem>
+    </Timeline>
+  </Story>
+
+  <Story
+    title="Icon markers"
+    description="Framed icon markers for categorical event feeds such as deployment and release workflows."
+  >
+    <Timeline class="max-w-md">
+      <TimelineItem v-for="s in deploymentStages" :key="s.id">
         <TimelineMedia variant="icon">
-          <component :is="e.icon" />
+          <component :is="s.icon" />
         </TimelineMedia>
         <TimelineContent>
-          <TimelineTitle>{{ e.title }}</TimelineTitle>
-          <TimelineDate>{{ e.time }}</TimelineDate>
+          <TimelineHeader>
+            <TimelineTitle>{{ s.title }}</TimelineTitle>
+            <TimelineDate>{{ s.time }}</TimelineDate>
+          </TimelineHeader>
+          <TimelineDescription>{{ s.desc }}</TimelineDescription>
+        </TimelineContent>
+      </TimelineItem>
+    </Timeline>
+  </Story>
+
+  <Story
+    title="Status indicators"
+    description="Semantic status markers (success, current, muted) with subtle tonal accents for CI/CD pipelines."
+  >
+    <Timeline class="max-w-md">
+      <TimelineItem v-for="p in pipelineStages" :key="p.id" :status="p.status">
+        <TimelineMedia variant="icon">
+          <component :is="p.icon" />
+        </TimelineMedia>
+        <TimelineContent>
+          <TimelineHeader>
+            <TimelineTitle>{{ p.title }}</TimelineTitle>
+            <Badge
+              :variant="
+                p.status === 'success'
+                  ? 'secondary'
+                  : p.status === 'current'
+                    ? 'default'
+                    : 'outline'
+              "
+              class="text-xs"
+            >
+              {{ p.time }}
+            </Badge>
+          </TimelineHeader>
+          <TimelineDescription>{{ p.desc }}</TimelineDescription>
         </TimelineContent>
       </TimelineItem>
     </Timeline>
@@ -232,7 +421,7 @@ const onboarding = [
 
   <Story
     title="Status colors"
-    description="Set status on TimelineItem (or directly on TimelineMedia) to color the marker per token: success, warning, error, info, muted."
+    description="Set status on TimelineItem (or TimelineMedia) to color the marker per token: success, info, warning, error, muted."
   >
     <Timeline class="max-w-md">
       <TimelineItem v-for="s in statuses" :key="s.id" :status="s.status">
@@ -265,15 +454,16 @@ const onboarding = [
   </Story>
 
   <Story
-    title="Alternating (zigzag)"
-    description="align='center' alternates content across the rail per item — classic milestones layout."
+    title="Alternating sides"
+    description="align='center' alternates milestone entries across a centered thread."
   >
     <Timeline align="center" class="max-w-2xl">
-      <TimelineItem v-for="m in milestones" :key="m.id" :status="m.status">
+      <TimelineItem v-for="m in milestones" :key="m.id">
         <TimelineMedia variant="dot" />
         <TimelineContent class="space-y-1">
           <TimelineTitle>{{ m.title }}</TimelineTitle>
           <TimelineDate>{{ m.time }}</TimelineDate>
+          <TimelineDescription>{{ m.desc }}</TimelineDescription>
         </TimelineContent>
       </TimelineItem>
     </Timeline>
@@ -281,21 +471,23 @@ const onboarding = [
 
   <Story
     title="Horizontal"
-    description="direction='horizontal' threads the rail left-to-right; markers sit on top by default."
+    description="direction='horizontal' lays out lifecycle stages left-to-right for fulfillment and order tracking."
   >
     <Timeline direction="horizontal" class="w-full overflow-x-auto py-2">
       <TimelineItem
         v-for="s in ship"
         :key="s.id"
         :status="s.status"
-        class="min-w-32"
+        class="min-w-36"
       >
         <TimelineMedia variant="icon">
           <component :is="s.icon" />
         </TimelineMedia>
         <TimelineContent>
-          <TimelineTitle>{{ s.title }}</TimelineTitle>
-          <TimelineDate>{{ s.time }}</TimelineDate>
+          <TimelineTitle class="text-xs font-semibold">{{
+            s.title
+          }}</TimelineTitle>
+          <TimelineDate class="text-xs">{{ s.time }}</TimelineDate>
         </TimelineContent>
       </TimelineItem>
     </Timeline>
@@ -303,19 +495,26 @@ const onboarding = [
 
   <Story
     title="Avatar markers"
-    description="variant='avatar' on TimelineMedia lets you slot in an image or initials for activity-feed style timelines."
+    description="variant='avatar' on TimelineMedia embeds team member avatars for collaboration audit feeds."
   >
-    <Timeline class="max-w-md">
-      <TimelineItem v-for="a in activity" :key="a.id" :status="a.status">
-        <TimelineMedia variant="icon">
-          <component :is="a.icon" />
+    <Timeline class="max-w-lg">
+      <TimelineItem v-for="m in activityMembers" :key="m.id">
+        <TimelineMedia variant="avatar">
+          <Avatar class="size-8">
+            <AvatarFallback class="text-xs font-medium">{{
+              m.initials
+            }}</AvatarFallback>
+          </Avatar>
         </TimelineMedia>
         <TimelineContent>
-          <div class="flex items-center gap-1.5 text-sm">
-            <span class="font-semibold">{{ a.user }}</span>
-            <span class="text-muted-foreground">{{ a.title }}</span>
-          </div>
-          <TimelineDate>{{ a.time }}</TimelineDate>
+          <TimelineHeader>
+            <div class="flex items-center gap-1.5 text-sm">
+              <span class="font-semibold">{{ m.user }}</span>
+              <span class="text-muted-foreground">{{ m.action }}</span>
+            </div>
+            <TimelineDate>{{ m.time }}</TimelineDate>
+          </TimelineHeader>
+          <TimelineDescription>{{ m.detail }}</TimelineDescription>
         </TimelineContent>
       </TimelineItem>
     </Timeline>
@@ -323,13 +522,16 @@ const onboarding = [
 
   <Story
     title="Compact density"
-    description="density='compact' tightens row spacing for audit-log streams. Use TimelineSeparator for the smaller 16px marker."
+    description="density='compact' tightens row height for dense audit logs and security telemetry feeds."
   >
     <Timeline density="compact" class="max-w-md">
-      <TimelineItem v-for="c in compact" :key="c.id">
+      <TimelineItem v-for="log in auditLogs" :key="log.id">
         <TimelineSeparator />
         <TimelineContent>
-          <p class="text-sm">{{ c.title }}</p>
+          <div class="flex items-center gap-2 text-xs">
+            <span class="text-muted-foreground font-mono">{{ log.time }}</span>
+            <span class="text-foreground">{{ log.event }}</span>
+          </div>
         </TimelineContent>
       </TimelineItem>
     </Timeline>
@@ -340,13 +542,105 @@ const onboarding = [
     description="density='comfortable' adds breathing room for sparse milestone-style timelines."
   >
     <Timeline density="comfortable" class="max-w-md">
-      <TimelineItem v-for="e in events.slice(0, 3)" :key="e.id">
+      <TimelineItem v-for="r in roadmapEvents" :key="r.id">
         <TimelineMedia variant="icon">
-          <component :is="e.icon" />
+          <component :is="r.icon" />
         </TimelineMedia>
         <TimelineContent>
-          <TimelineTitle>{{ e.title }}</TimelineTitle>
-          <TimelineDate>{{ e.time }}</TimelineDate>
+          <TimelineTitle>{{ r.title }}</TimelineTitle>
+          <TimelineDate>{{ r.time }}</TimelineDate>
+          <TimelineDescription>{{ r.desc }}</TimelineDescription>
+        </TimelineContent>
+      </TimelineItem>
+    </Timeline>
+  </Story>
+
+  <Story
+    title="Outline marker & dashed connector"
+    description="Combine TimelineHeader for aligned titles/badges with variant='outline' markers and line-style='dashed' connectors."
+  >
+    <Timeline class="max-w-lg">
+      <TimelineItem status="success">
+        <TimelineMedia variant="outline" line-style="dashed">
+          <Check />
+        </TimelineMedia>
+        <TimelineContent>
+          <TimelineHeader>
+            <TimelineTitle>Specification Approved</TimelineTitle>
+            <Badge variant="outline" class="text-xs">Phase 1</Badge>
+          </TimelineHeader>
+          <TimelineDate>September 15, 2026</TimelineDate>
+          <TimelineDescription>
+            System architecture and OpenAPI spec signed off by engineering
+            leads.
+          </TimelineDescription>
+        </TimelineContent>
+      </TimelineItem>
+
+      <TimelineItem status="info">
+        <TimelineMedia variant="outline" line-style="dashed">
+          <GitCommit />
+        </TimelineMedia>
+        <TimelineContent>
+          <TimelineHeader>
+            <TimelineTitle>Alpha Deployment</TimelineTitle>
+            <Badge variant="secondary" class="text-xs">In Progress</Badge>
+          </TimelineHeader>
+          <TimelineDate>September 18, 2026</TimelineDate>
+          <TimelineDescription>
+            Continuous integration runner deployed artifacts to staging sandbox
+            for QA smoke tests.
+          </TimelineDescription>
+        </TimelineContent>
+      </TimelineItem>
+
+      <TimelineItem status="muted">
+        <TimelineMedia variant="outline" line-style="dashed">
+          <Rocket />
+        </TimelineMedia>
+        <TimelineContent>
+          <TimelineHeader>
+            <TimelineTitle>Production Rollout</TimelineTitle>
+            <Badge variant="outline" class="text-xs">Scheduled</Badge>
+          </TimelineHeader>
+          <TimelineDate>October 1, 2026</TimelineDate>
+          <TimelineDescription>
+            Canary release at 10% traffic threshold before universal cutover.
+          </TimelineDescription>
+        </TimelineContent>
+      </TimelineItem>
+    </Timeline>
+  </Story>
+
+  <Story
+    title="Checklist (done / pending)"
+    description="Map a boolean state to status: done items use status='success' with a Check icon, pending items use status='muted' with an outlined Circle. Opt in to colored-connector on TimelineMedia so the connector line adopts the item status color."
+  >
+    <Timeline class="max-w-lg">
+      <TimelineItem
+        v-for="item in onboarding"
+        :key="item.id"
+        :status="item.done ? 'success' : 'muted'"
+      >
+        <TimelineMedia variant="icon" colored-connector>
+          <Check v-if="item.done" />
+          <Circle v-else />
+        </TimelineMedia>
+        <TimelineContent>
+          <div class="flex items-center gap-2">
+            <TimelineTitle
+              :class="item.done && 'text-muted-foreground line-through'"
+            >
+              {{ item.title }}
+            </TimelineTitle>
+            <Badge
+              :variant="item.done ? 'secondary' : 'outline'"
+              class="text-xs"
+            >
+              {{ item.done ? "Done" : "Pending" }}
+            </Badge>
+          </div>
+          <TimelineDescription>{{ item.desc }}</TimelineDescription>
         </TimelineContent>
       </TimelineItem>
     </Timeline>
@@ -545,34 +839,55 @@ const onboarding = [
   </Story>
 
   <Story
-    title="Checklist (done / pending)"
-    description="Map a boolean state to status: done items use status='success' (green) with a Check icon, pending items use status='muted' (gray) with an outlined Circle. Opt in to `colored-connector` on TimelineMedia so the line below each marker adopts the same status color — done rows get a green connector, pending rows get a muted one."
+    title="Rich content cards"
+    description="Nest cards and action triggers inside timeline items for detailed changelogs or incident post-mortems."
   >
     <Timeline class="max-w-lg">
-      <TimelineItem
-        v-for="item in onboarding"
-        :key="item.id"
-        :status="item.done ? 'success' : 'muted'"
-      >
-        <TimelineMedia variant="icon" colored-connector>
-          <Check v-if="item.done" />
-          <Circle v-else />
+      <TimelineItem status="success">
+        <TimelineMedia variant="icon">
+          <Check />
         </TimelineMedia>
         <TimelineContent>
-          <div class="flex items-center gap-2">
-            <TimelineTitle
-              :class="item.done && 'text-muted-foreground line-through'"
-            >
-              {{ item.title }}
-            </TimelineTitle>
-            <Badge
-              :variant="item.done ? 'secondary' : 'outline'"
-              class="text-xs"
-            >
-              {{ item.done ? "Done" : "Pending" }}
-            </Badge>
-          </div>
-          <TimelineDescription>{{ item.desc }}</TimelineDescription>
+          <TimelineHeader>
+            <TimelineTitle>Version 2.4.0 Released</TimelineTitle>
+            <Badge variant="secondary">Production</Badge>
+          </TimelineHeader>
+          <TimelineDate>September 20, 2026 · 11:30 AM</TimelineDate>
+          <Card class="mt-2">
+            <CardHeader class="pb-2">
+              <CardTitle class="text-sm font-medium"
+                >Core Enhancements</CardTitle
+              >
+            </CardHeader>
+            <CardContent class="text-muted-foreground space-y-1.5 text-xs">
+              <p>• Added dual-framework timeline and calendar components.</p>
+              <p>• Calibrated optical alignment on dot and icon markers.</p>
+              <p>• Clean monochromatic surfaces across light and dark modes.</p>
+              <div class="pt-2">
+                <Button size="sm" variant="outline" class="h-7 gap-1.5 text-xs">
+                  View changelog
+                  <ExternalLink class="size-3" />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </TimelineContent>
+      </TimelineItem>
+
+      <TimelineItem status="muted">
+        <TimelineMedia variant="icon">
+          <Circle />
+        </TimelineMedia>
+        <TimelineContent>
+          <TimelineHeader>
+            <TimelineTitle>Scheduled Database Maintenance</TimelineTitle>
+            <Badge variant="outline">Upcoming</Badge>
+          </TimelineHeader>
+          <TimelineDate>September 22, 2026 · 02:00 AM UTC</TimelineDate>
+          <TimelineDescription>
+            Zero-downtime replication failover to warm standby nodes in the
+            secondary availability zone.
+          </TimelineDescription>
         </TimelineContent>
       </TimelineItem>
     </Timeline>

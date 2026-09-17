@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { computed, inject, provide, type HTMLAttributes } from "vue";
+import { computed, inject, provide, toRef, type HTMLAttributes } from "vue";
 import { cn } from "@/lib/utils";
 import { KanbanColumnContextKey, KanbanContextKey } from "./context";
 import { kanbanColumnVariants } from "./kanban.variants";
 
 interface Props {
   id: string;
+  /** Accessible name for the column, also used in keyboard move
+   *  announcements ("moved to In progress"). Falls back to the id. */
+  label?: string;
   class?: HTMLAttributes["class"];
 }
 
@@ -14,6 +17,7 @@ const kanban = inject(KanbanContextKey);
 
 provide(KanbanColumnContextKey, {
   columnId: props.id,
+  label: toRef(props, "label"),
 });
 
 const isOver = computed(() => kanban?.overColumnId.value === props.id);
@@ -53,7 +57,10 @@ function handleDrop(e: DragEvent) {
 
 <template>
   <div
+    data-uipkge
     data-slot="kanban-column"
+    role="group"
+    :aria-label="label ?? id"
     :data-column-id="id"
     :data-over="isOver ? '' : undefined"
     :class="cn(kanbanColumnVariants({ isOver }), props.class)"

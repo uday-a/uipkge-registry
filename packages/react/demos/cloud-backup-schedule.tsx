@@ -1,5 +1,5 @@
-import Story from '../../components/story/Story'
-import { CloudBackupSchedule } from '@/components/blocks/cloud-backup-schedule/CloudBackupSchedule'
+import Story from "../../components/story/Story";
+import { CloudBackupSchedule } from "@/components/blocks/cloud-backup-schedule/CloudBackupSchedule";
 
 export default function CloudBackupScheduleDemo() {
   return (
@@ -36,5 +36,5 @@ export default function CloudBackupScheduleDemo() {
         />
       </Story>
     </>
-  )
+  );
 }

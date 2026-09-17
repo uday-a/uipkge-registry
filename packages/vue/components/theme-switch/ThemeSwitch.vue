@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, nextTick } from "vue";
 import {
   ChevronDown,
   Monitor,
@@ -50,9 +50,11 @@ const props = withDefaults(
     variant?: Variant;
     title?: string;
     description?: string;
+    /** Wipe the new theme in from the clicked control. Ignored without View Transition support or with reduced motion. */
+    viewTransition?: boolean;
     class?: string;
   }>(),
-  { variant: "cards" },
+  { variant: "cards", viewTransition: true },
 );
 
 const emit = defineEmits<{ "update:modelValue": [Theme] }>();
@@ -72,12 +74,74 @@ const switchThumbStyle = computed(() => ({
   transform: `translateX(${props.modelValue === "dark" ? "36px" : "4px"})`,
 }));
 
-function set(t: Theme) {
-  emit("update:modelValue", t);
+/**
+ * Swap the theme inside a View Transition so the new theme wipes in as a
+ * circle growing from the control that was clicked. The keyframes live in
+ * tailwind.css behind `html[data-uipkge-theme-reveal]`, so this never
+ * hijacks a consumer's own view transitions.
+ *
+ * Falls back to a plain emit when `view-transition` is off, the browser has
+ * no startViewTransition, or the user prefers reduced motion. The theme is
+ * applied by whoever owns the model (useTheme / next-themes), so the swap
+ * awaits nextTick to let that watcher run inside the transition.
+ */
+type ViewTransitionDocument = Document & {
+  startViewTransition?: (callback: () => unknown) => {
+    finished: Promise<void>;
+  };
+};
+
+// The dropdown variant fires both @select and @click; without this a second
+// startViewTransition would abort the first mid-wipe.
+let revealing = false;
+
+async function withThemeReveal(
+  event: MouseEvent | undefined,
+  swap: () => void,
+) {
+  const startViewTransition = (
+    document as ViewTransitionDocument
+  ).startViewTransition?.bind(document);
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+  if (!props.viewTransition || !startViewTransition || reduceMotion) {
+    swap();
+    return;
+  }
+  if (revealing) return;
+  revealing = true;
+
+  const root = document.documentElement;
+  const x = event?.clientX ?? window.innerWidth / 2;
+  const y = event?.clientY ?? window.innerHeight / 2;
+  // Radius that still covers the farthest corner from the click.
+  const radius = Math.hypot(
+    Math.max(x, window.innerWidth - x),
+    Math.max(y, window.innerHeight - y),
+  );
+  root.style.setProperty("--uipkge-theme-x", `${x}px`);
+  root.style.setProperty("--uipkge-theme-y", `${y}px`);
+  root.style.setProperty("--uipkge-theme-r", `${radius}px`);
+  root.setAttribute("data-uipkge-theme-reveal", "");
+
+  try {
+    await startViewTransition(async () => {
+      swap();
+      await nextTick();
+    }).finished;
+  } finally {
+    root.removeAttribute("data-uipkge-theme-reveal");
+    revealing = false;
+  }
 }
-function cycle() {
+
+function set(t: Theme, event?: MouseEvent) {
+  withThemeReveal(event, () => emit("update:modelValue", t));
+}
+function cycle(event?: MouseEvent) {
   const next = options.value[(activeIndex.value + 1) % options.value.length];
-  if (next) emit("update:modelValue", next);
+  if (next) withThemeReveal(event, () => emit("update:modelValue", next));
 }
 </script>
 
@@ -109,7 +173,7 @@ function cycle() {
             ? 'border-primary ring-primary bg-primary/5 ring-1'
             : 'border-border hover:bg-muted/50'
         "
-        @click="set(t)"
+        @click="set(t, $event)"
       >
         <component
           :is="ICONS[t]"
@@ -144,7 +208,7 @@ function cycle() {
           ? 'bg-primary text-primary-foreground'
           : 'text-muted-foreground hover:bg-muted hover:text-foreground'
       "
-      @click="set(t)"
+      @click="set(t, $event)"
     >
       <component :is="ICONS[t]" class="size-4" aria-hidden="true" />
     </button>
@@ -195,7 +259,7 @@ function cycle() {
         v-for="t in options"
         :key="t"
         @select="set(t)"
-        @click="set(t)"
+        @click="set(t, $event)"
       >
         <component :is="ICONS[t]" class="mr-2 size-4" aria-hidden="true" />
         <span>{{ LABELS[t] }}</span>
@@ -231,7 +295,7 @@ function cycle() {
           ? 'text-primary-foreground'
           : 'text-muted-foreground hover:text-foreground'
       "
-      @click="set(t)"
+      @click="set(t, $event)"
     >
       <component :is="ICONS[t]" class="size-3.5" aria-hidden="true" />
       <span>{{ LABELS[t] }}</span>
@@ -250,7 +314,7 @@ function cycle() {
       modelValue === 'dark' ? 'bg-primary' : 'bg-muted',
       $props.class,
     ]"
-    @click="set(modelValue === 'dark' ? 'light' : 'dark')"
+    @click="set(modelValue === 'dark' ? 'light' : 'dark', $event)"
   >
     <Sun
       class="text-warning absolute left-1.5 size-4 transition-opacity"

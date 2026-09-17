@@ -92,7 +92,7 @@ const FloatLabel = React.forwardRef<HTMLDivElement, FloatLabelProps>(
     );
 
     const labelClasses = cn(
-      "text-muted-foreground pointer-events-none absolute left-3 z-10 bg-transparent px-1 text-sm transition-all duration-200",
+      "text-muted-foreground pointer-events-none absolute left-3 z-10 bg-transparent px-1 text-sm transition-[color,background-color,top,translate,scale] duration-200",
       !isFloating && "top-1/2 -translate-y-1/2",
       isFloating &&
         "top-0 -translate-y-1/2 scale-75 bg-background text-foreground",

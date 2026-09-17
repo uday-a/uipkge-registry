@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { Map, MapMarker, type MapVariant } from "@/components/ui/map";
 import { cn } from "@/lib/utils";
@@ -161,7 +163,7 @@ export function BubbleMap({
                 />
 
                 <div
-                  className="relative flex size-4/5 items-center justify-center rounded-full border border-white/40 shadow-sm backdrop-blur-[1px] transition-all"
+                  className="relative flex size-4/5 items-center justify-center rounded-full border border-white/40 shadow-sm backdrop-blur-[1px] transition-[background-color,box-shadow]"
                   style={{
                     backgroundColor: color,
                     boxShadow: isSelected ? `0 0 16px ${color}` : "none",

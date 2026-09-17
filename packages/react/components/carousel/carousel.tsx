@@ -430,7 +430,7 @@ const CarouselIndicators = React.forwardRef<
           aria-label={`Go to slide ${index + 1}`}
           aria-selected={index === selectedIndex}
           className={cn(
-            "h-2 w-2 rounded-full transition-all duration-200",
+            "h-2 w-2 rounded-full transition-colors duration-200",
             index === selectedIndex
               ? "bg-primary w-6"
               : "bg-muted-foreground/30 hover:bg-muted-foreground/50",

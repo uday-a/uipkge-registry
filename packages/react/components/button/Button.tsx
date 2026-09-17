@@ -1,18 +1,29 @@
-import * as React from 'react'
-import { Slot } from '@radix-ui/react-slot'
-import { cn } from '@/lib/utils'
-import { buttonVariants, type ButtonVariants } from './button.variants'
+import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
+import { cn } from "@/lib/utils";
+import { buttonVariants, type ButtonVariants } from "./button.variants";
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, ButtonVariants {
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>, ButtonVariants {
   /** Render the child element as the button (merging props/styles) instead of
    *  emitting a <button> — the React equivalent of reka-ui's as-child. Use it
    *  to give a Next.js <Link> or <a> full button styling. */
-  asChild?: boolean
+  asChild?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = 'default', size = 'default', asChild = false, type = 'button', ...props }, ref) => {
-    const Comp = asChild ? Slot : 'button'
+  (
+    {
+      className,
+      variant = "default",
+      size = "default",
+      asChild = false,
+      type = "button",
+      ...props
+    },
+    ref,
+  ) => {
+    const Comp = asChild ? Slot : "button";
     return (
       <Comp
         data-uipkge=""
@@ -26,9 +37,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         {...props}
       />
-    )
+    );
   },
-)
-Button.displayName = 'Button'
+);
+Button.displayName = "Button";
 
-export { Button }
+export { Button };

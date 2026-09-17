@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import {
   Maximize,
@@ -389,7 +391,7 @@ const Video = React.forwardRef<HTMLDivElement, VideoProps>(
                     step="0.05"
                     value={isMuted ? 0 : volume}
                     aria-label="Volume"
-                    className="accent-primary [&::-webkit-slider-thumb]:bg-primary h-1 w-0 cursor-pointer appearance-none rounded-full bg-white/30 transition-all duration-200 group-hover/volume:w-16 motion-reduce:transition-none [&::-webkit-slider-thumb]:size-3 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full"
+                    className="accent-primary [&::-webkit-slider-thumb]:bg-primary h-1 w-0 cursor-pointer appearance-none rounded-full bg-white/30 transition-[width] duration-200 group-hover/volume:w-16 motion-reduce:transition-none [&::-webkit-slider-thumb]:size-3 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full"
                     onChange={setVolumeInput}
                   />
                 </div>

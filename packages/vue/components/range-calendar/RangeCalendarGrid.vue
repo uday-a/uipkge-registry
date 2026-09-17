@@ -18,7 +18,7 @@ const forwardedProps = useForwardProps(delegatedProps);
   <RangeCalendarGrid
     data-uipkge
     data-slot="range-calendar-grid"
-    :class="cn('w-full border-collapse space-x-1', props.class)"
+    :class="cn('w-full border-collapse', props.class)"
     v-bind="forwardedProps"
   >
     <slot />

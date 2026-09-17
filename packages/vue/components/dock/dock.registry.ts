@@ -11,6 +11,6 @@ export default defineRegistryItem({
     { path: "Dock.vue", target: "components/ui/dock/Dock.vue" },
     { path: "index.ts", target: "components/ui/dock/index.ts" },
   ],
-  dependencies: ["lucide-vue-next"],
+  dependencies: [],
   registryDependencies: [],
 });

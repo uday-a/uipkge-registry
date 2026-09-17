@@ -320,7 +320,7 @@ function toggleProjection() {
       >
         <button
           type="button"
-          class="group/hex relative flex size-10 items-center justify-center font-mono transition-all"
+          class="group/hex relative flex size-10 items-center justify-center font-mono"
           @click="handleSelect(item)"
         >
           <!-- Hexagon Shape Container -->

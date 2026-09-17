@@ -123,4 +123,29 @@ describe("Timeline", () => {
     expect(w.find('h3[data-slot="timeline-title"]').exists()).toBe(true);
     w.unmount();
   });
+
+  it('align="center" applies row-start-1 and col-start-2 to timeline-media', () => {
+    const w = mount(
+      {
+        template:
+          '<Timeline align="center"><TimelineItem><TimelineMedia /><TimelineContent><TimelineTitle>Title 1</TimelineTitle></TimelineContent></TimelineItem></Timeline>',
+        components: {
+          Timeline,
+          TimelineItem,
+          TimelineMedia,
+          TimelineContent,
+          TimelineTitle,
+        },
+      },
+      { attachTo: document.body },
+    );
+    const item = w.find('[data-slot="timeline-item"]');
+    expect(item.classes()).toContain(
+      "[&>[data-slot=timeline-media]]:row-start-1",
+    );
+    expect(item.classes()).toContain(
+      "[&>[data-slot=timeline-content]]:row-start-1",
+    );
+    w.unmount();
+  });
 });

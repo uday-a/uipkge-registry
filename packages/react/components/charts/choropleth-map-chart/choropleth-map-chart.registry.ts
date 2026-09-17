@@ -17,6 +17,6 @@ export default defineRegistryItem({
       target: "components/ui/charts/choropleth-map-chart/index.ts",
     },
   ],
-  dependencies: ["mapbox-gl", "react-map-gl", "lucide-react"],
+  dependencies: ["lucide-react"],
   registryDependencies: ["https://uipkge.dev/r/map.json"],
 });

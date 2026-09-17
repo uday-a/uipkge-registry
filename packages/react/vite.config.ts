@@ -23,8 +23,10 @@ function registryBlocksAlias(): Plugin {
         if (existsSync(candidate)) return candidate;
         if (existsSync(`${candidate}.tsx`)) return `${candidate}.tsx`;
         if (existsSync(`${candidate}.ts`)) return `${candidate}.ts`;
-        if (existsSync(path.join(candidate, "index.ts"))) return path.join(candidate, "index.ts");
-        if (existsSync(path.join(candidate, "index.tsx"))) return path.join(candidate, "index.tsx");
+        if (existsSync(path.join(candidate, "index.ts")))
+          return path.join(candidate, "index.ts");
+        if (existsSync(path.join(candidate, "index.tsx")))
+          return path.join(candidate, "index.tsx");
         return candidate;
       }
       if (source.startsWith("@/lib/") && !source.endsWith("utils")) {

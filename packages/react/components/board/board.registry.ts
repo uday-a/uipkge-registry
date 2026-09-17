@@ -17,5 +17,5 @@ export default defineRegistryItem({
     { path: "index.ts", target: "components/ui/board/index.ts" },
   ],
   dependencies: ["class-variance-authority"],
-  registryDependencies: ["https://uipkge.dev/r/motion-list.json"],
+  registryDependencies: [],
 });

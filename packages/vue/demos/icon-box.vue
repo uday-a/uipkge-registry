@@ -155,7 +155,7 @@ const tiles = [
       <Card
         v-for="t in tiles"
         :key="t.label"
-        class="cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md"
+        class="cursor-pointer transition-[box-shadow,translate] hover:-translate-y-0.5 hover:shadow-md"
       >
         <CardContent class="flex items-center gap-3 p-4">
           <IconBox

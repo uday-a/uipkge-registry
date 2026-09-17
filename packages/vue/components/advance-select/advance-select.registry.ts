@@ -19,7 +19,7 @@ export default defineRegistryItem({
     { path: "types.ts", target: "components/ui/advance-select/types.ts" },
     { path: "index.ts", target: "components/ui/advance-select/index.ts" },
   ],
-  dependencies: ["@vueuse/core", "lucide-vue-next", "reka-ui"],
+  dependencies: ["lucide-vue-next"],
   registryDependencies: [
     "https://uipkge.dev/r/popover.json",
     "https://uipkge.dev/r/command.json",

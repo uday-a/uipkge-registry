@@ -15,6 +15,6 @@ export default defineRegistryItem({
     { path: "types.ts", target: "components/ui/cascade-select/types.ts" },
     { path: "index.ts", target: "components/ui/cascade-select/index.ts" },
   ],
-  dependencies: ["lucide-vue-next", "reka-ui"],
+  dependencies: ["lucide-vue-next"],
   registryDependencies: ["https://uipkge.dev/r/popover.json"],
 });

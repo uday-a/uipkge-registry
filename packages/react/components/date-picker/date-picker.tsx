@@ -1,7 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { Calendar as CalendarIcon, X } from "lucide-react";
+import {
+  Calendar as CalendarIcon,
+  ChevronLeft,
+  ChevronRight,
+  X,
+} from "lucide-react";
 import {
   DayButton as RdpDayButton,
   type DateRange,
@@ -886,20 +891,26 @@ const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(
               <div className="mb-3 flex items-center justify-between">
                 <button
                   type="button"
-                  className="hover:bg-accent focus-visible:ring-ring inline-flex size-9 items-center justify-center rounded transition-colors focus-visible:ring-2 focus-visible:outline-none"
+                  className="border-input hover:bg-accent focus-visible:ring-ring inline-flex size-7 items-center justify-center rounded-md border bg-transparent transition-colors focus-visible:ring-1 focus-visible:outline-none"
                   aria-label="Previous"
                   onClick={() => shiftAnchor(-1)}
                 >
-                  <span className="text-muted-foreground text-sm">‹</span>
+                  <ChevronLeft
+                    className="text-muted-foreground size-4"
+                    aria-hidden="true"
+                  />
                 </button>
                 <span className="text-sm font-medium">{monthYearLabel}</span>
                 <button
                   type="button"
-                  className="hover:bg-accent focus-visible:ring-ring inline-flex size-9 items-center justify-center rounded transition-colors focus-visible:ring-2 focus-visible:outline-none"
+                  className="border-input hover:bg-accent focus-visible:ring-ring inline-flex size-7 items-center justify-center rounded-md border bg-transparent transition-colors focus-visible:ring-1 focus-visible:outline-none"
                   aria-label="Next"
                   onClick={() => shiftAnchor(1)}
                 >
-                  <span className="text-muted-foreground text-sm">›</span>
+                  <ChevronRight
+                    className="text-muted-foreground size-4"
+                    aria-hidden="true"
+                  />
                 </button>
               </div>
 

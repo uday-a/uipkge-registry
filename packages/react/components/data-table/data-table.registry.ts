@@ -36,7 +36,6 @@ export default defineRegistryItem({
   registryDependencies: [
     "https://uipkge.dev/r/badge.json",
     "https://uipkge.dev/r/button.json",
-    "https://uipkge.dev/r/card.json",
     "https://uipkge.dev/r/command.json",
     "https://uipkge.dev/r/dropdown-menu.json",
     "https://uipkge.dev/r/input.json",

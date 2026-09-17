@@ -2,7 +2,12 @@
 import type { DateValue } from "reka-ui";
 import type { HTMLAttributes } from "vue";
 import { computed, ref, watch } from "vue";
-import { Calendar as CalendarIcon, X } from "lucide-vue-next";
+import {
+  Calendar as CalendarIcon,
+  ChevronLeft,
+  ChevronRight,
+  X,
+} from "lucide-vue-next";
 import {
   CalendarDate,
   CalendarDateTime,
@@ -909,11 +914,14 @@ function applyAndClose() {
           <div class="mb-3 flex items-center justify-between">
             <button
               type="button"
-              class="hover:bg-accent focus-visible:ring-ring inline-flex size-9 items-center justify-center rounded transition-colors focus-visible:ring-2 focus-visible:outline-none"
+              class="border-input hover:bg-accent focus-visible:ring-ring inline-flex size-7 items-center justify-center rounded-md border bg-transparent transition-colors focus-visible:ring-1 focus-visible:outline-none"
               aria-label="Previous"
               @click="shiftAnchor(-1)"
             >
-              <span class="text-muted-foreground text-sm">‹</span>
+              <ChevronLeft
+                class="text-muted-foreground size-4"
+                aria-hidden="true"
+              />
             </button>
             <span class="text-sm font-medium">
               {{
@@ -925,11 +933,14 @@ function applyAndClose() {
             </span>
             <button
               type="button"
-              class="hover:bg-accent focus-visible:ring-ring inline-flex size-9 items-center justify-center rounded transition-colors focus-visible:ring-2 focus-visible:outline-none"
+              class="border-input hover:bg-accent focus-visible:ring-ring inline-flex size-7 items-center justify-center rounded-md border bg-transparent transition-colors focus-visible:ring-1 focus-visible:outline-none"
               aria-label="Next"
               @click="shiftAnchor(1)"
             >
-              <span class="text-muted-foreground text-sm">›</span>
+              <ChevronRight
+                class="text-muted-foreground size-4"
+                aria-hidden="true"
+              />
             </button>
           </div>
           <div class="flex flex-col gap-1">
@@ -972,20 +983,26 @@ function applyAndClose() {
           <div class="mb-3 flex items-center justify-between">
             <button
               type="button"
-              class="hover:bg-accent focus-visible:ring-ring inline-flex size-9 items-center justify-center rounded transition-colors focus-visible:ring-2 focus-visible:outline-none"
+              class="border-input hover:bg-accent focus-visible:ring-ring inline-flex size-7 items-center justify-center rounded-md border bg-transparent transition-colors focus-visible:ring-1 focus-visible:outline-none"
               aria-label="Previous"
               @click="shiftAnchor(-1)"
             >
-              <span class="text-muted-foreground text-sm">‹</span>
+              <ChevronLeft
+                class="text-muted-foreground size-4"
+                aria-hidden="true"
+              />
             </button>
             <span class="text-sm font-medium">{{ monthYearAnchor.year }}</span>
             <button
               type="button"
-              class="hover:bg-accent focus-visible:ring-ring inline-flex size-9 items-center justify-center rounded transition-colors focus-visible:ring-2 focus-visible:outline-none"
+              class="border-input hover:bg-accent focus-visible:ring-ring inline-flex size-7 items-center justify-center rounded-md border bg-transparent transition-colors focus-visible:ring-1 focus-visible:outline-none"
               aria-label="Next"
               @click="shiftAnchor(1)"
             >
-              <span class="text-muted-foreground text-sm">›</span>
+              <ChevronRight
+                class="text-muted-foreground size-4"
+                aria-hidden="true"
+              />
             </button>
           </div>
           <div class="grid grid-cols-2 gap-2">
@@ -1017,11 +1034,14 @@ function applyAndClose() {
           <div class="mb-3 flex items-center justify-between">
             <button
               type="button"
-              class="hover:bg-accent focus-visible:ring-ring inline-flex size-9 items-center justify-center rounded transition-colors focus-visible:ring-2 focus-visible:outline-none"
+              class="border-input hover:bg-accent focus-visible:ring-ring inline-flex size-7 items-center justify-center rounded-md border bg-transparent transition-colors focus-visible:ring-1 focus-visible:outline-none"
               aria-label="Previous"
               @click="shiftAnchor(-1)"
             >
-              <span class="text-muted-foreground text-sm">‹</span>
+              <ChevronLeft
+                class="text-muted-foreground size-4"
+                aria-hidden="true"
+              />
             </button>
             <span class="text-sm font-medium">
               {{
@@ -1032,11 +1052,14 @@ function applyAndClose() {
             </span>
             <button
               type="button"
-              class="hover:bg-accent focus-visible:ring-ring inline-flex size-9 items-center justify-center rounded transition-colors focus-visible:ring-2 focus-visible:outline-none"
+              class="border-input hover:bg-accent focus-visible:ring-ring inline-flex size-7 items-center justify-center rounded-md border bg-transparent transition-colors focus-visible:ring-1 focus-visible:outline-none"
               aria-label="Next"
               @click="shiftAnchor(1)"
             >
-              <span class="text-muted-foreground text-sm">›</span>
+              <ChevronRight
+                class="text-muted-foreground size-4"
+                aria-hidden="true"
+              />
             </button>
           </div>
           <div v-if="picker === 'month'" class="grid grid-cols-3 gap-2">

@@ -265,8 +265,9 @@ function TimelineItem({
             direction === "vertical" &&
             cn(
               "grid grid-cols-[1fr_auto_1fr] items-start gap-x-4",
-              "[&>[data-slot=timeline-media]]:col-start-2",
-              "[&>[data-slot=timeline-separator]]:col-start-2",
+              "[&>[data-slot=timeline-media]]:col-start-2 [&>[data-slot=timeline-media]]:row-start-1",
+              "[&>[data-slot=timeline-separator]]:col-start-2 [&>[data-slot=timeline-separator]]:row-start-1",
+              "[&>[data-slot=timeline-content]]:row-start-1",
               effectiveSide === "left" &&
                 "[&>[data-slot=timeline-content]]:col-start-1 [&>[data-slot=timeline-content]]:text-right",
               effectiveSide === "right" &&
@@ -277,8 +278,9 @@ function TimelineItem({
             direction === "horizontal" &&
             cn(
               "grid grid-rows-[1fr_auto_1fr] items-start gap-y-2",
-              "[&>[data-slot=timeline-media]]:row-start-2",
-              "[&>[data-slot=timeline-separator]]:row-start-2",
+              "[&>[data-slot=timeline-media]]:col-start-1 [&>[data-slot=timeline-media]]:row-start-2",
+              "[&>[data-slot=timeline-separator]]:col-start-1 [&>[data-slot=timeline-separator]]:row-start-2",
+              "[&>[data-slot=timeline-content]]:col-start-1",
               effectiveSide === "top" &&
                 "[&>[data-slot=timeline-content]]:row-start-1 [&>[data-slot=timeline-content]]:self-end",
               effectiveSide === "bottom" &&
@@ -308,6 +310,8 @@ export interface TimelineMediaProps extends React.HTMLAttributes<HTMLDivElement>
    * Opt-in so existing timelines stay visually unchanged.
    */
   coloredConnector?: boolean;
+  /** Line style for the connector. */
+  lineStyle?: "solid" | "dashed" | "dotted";
 }
 
 function TimelineMedia({
@@ -316,93 +320,78 @@ function TimelineMedia({
   status,
   hideConnector,
   coloredConnector,
+  lineStyle = "solid",
   children,
   ...props
 }: TimelineMediaProps) {
   const item = React.useContext(TimelineItemContext);
 
   const direction = item?.direction ?? "vertical";
-  const isFirst = item?.isFirst ?? true;
   const isLast = item?.isLast ?? true;
   const effectiveStatus: TimelineStatus = status ?? item?.status ?? "default";
-  const showConnector = !hideConnector && !(isFirst && isLast);
+  const showConnector = !hideConnector && !isLast;
 
-  // Marker half-size in rem, used to crop the line so it visually emerges
-  // from the marker center on the first item.
-  const markerHalfRem = {
-    dot: "0.375rem", // size-3 = 12px / 2
-    icon: "1rem", // size-8 = 32px / 2
-    avatar: "1.125rem", // size-9 = 36px / 2
-  }[(variant ?? "dot") as "dot" | "icon" | "avatar"];
-
-  const connectorBgClass = !coloredConnector
-    ? "bg-border"
-    : {
-        default: "bg-primary",
-        current: "bg-primary",
-        success: "bg-success",
-        warning: "bg-warning",
-        error: "bg-destructive",
-        info: "bg-info",
-        muted: "bg-muted-foreground/40",
-      }[effectiveStatus];
+  const connectorBgClass = React.useMemo(() => {
+    if (lineStyle === "dashed") {
+      return direction === "vertical"
+        ? "border-l-2 border-dashed border-border bg-transparent w-0"
+        : "border-t-2 border-dashed border-border bg-transparent h-0";
+    }
+    if (lineStyle === "dotted") {
+      return direction === "vertical"
+        ? "border-l-2 border-dotted border-border bg-transparent w-0"
+        : "border-t-2 border-dotted border-border bg-transparent h-0";
+    }
+    if (!coloredConnector) return "bg-border";
+    return {
+      default: "bg-primary",
+      current: "bg-primary",
+      success: "bg-success",
+      warning: "bg-warning",
+      error: "bg-destructive",
+      info: "bg-info",
+      muted: "bg-muted-foreground/40",
+    }[effectiveStatus];
+  }, [lineStyle, direction, coloredConnector, effectiveStatus]);
 
   return (
     <div
       data-uipkge=""
       data-slot="timeline-media"
+      data-variant={variant}
       className={cn(
-        "relative shrink-0 self-stretch",
+        "relative flex shrink-0 items-center",
         direction === "vertical"
-          ? "flex w-9 flex-col items-center"
-          : "flex h-9 flex-row items-center",
+          ? "flex-col self-stretch"
+          : "flex-row items-center self-stretch",
         className,
       )}
-      style={{ "--timeline-marker-half": markerHalfRem } as React.CSSProperties}
       {...props}
     >
-      {/* Single continuous connector line, positioned through the marker.
-          The marker's bg + ring-background acts as a "punch-through" so the
-          line appears to break at each marker without any per-item math. */}
-      {showConnector && (
-        <div
-          data-uipkge=""
-          data-slot="timeline-media-connector"
-          aria-hidden="true"
-          className={
-            direction === "vertical"
-              ? cn("absolute left-1/2 w-px -translate-x-1/2", connectorBgClass)
-              : cn("absolute top-1/2 h-px -translate-y-1/2", connectorBgClass)
-          }
-          style={
-            direction === "vertical"
-              ? {
-                  top: isFirst ? "var(--timeline-marker-half)" : "0",
-                  bottom: isLast
-                    ? "calc(100% - var(--timeline-marker-half))"
-                    : "0",
-                }
-              : {
-                  left: isFirst ? "var(--timeline-marker-half)" : "0",
-                  right: isLast
-                    ? "calc(100% - var(--timeline-marker-half))"
-                    : "0",
-                }
-          }
-        />
-      )}
-
-      {/* Marker — its bg + ring-background hides the line behind it. */}
+      {/* Marker */}
       <div
         data-uipkge=""
         data-slot="timeline-media-marker"
         className={cn(
           timelineMediaVariants({ variant, status: effectiveStatus }),
-          "relative z-10",
+          direction === "vertical" && variant === "dot" && "mt-1",
         )}
       >
         {children}
       </div>
+
+      {/* Connector line */}
+      {showConnector && (
+        <div
+          data-uipkge=""
+          data-slot="timeline-media-connector"
+          aria-hidden="true"
+          className={cn(
+            direction === "vertical" ? "my-1 w-px flex-1" : "mx-1 h-px flex-1",
+            connectorBgClass,
+          )}
+        />
+      )}
     </div>
   );
 }
@@ -424,59 +413,41 @@ function TimelineSeparator({
 }: TimelineSeparatorProps) {
   const item = React.useContext(TimelineItemContext);
   const direction = item?.direction ?? "vertical";
-  const isFirst = item?.isFirst ?? true;
   const isLast = item?.isLast ?? true;
-  const showConnector = !hideConnector && !(isFirst && isLast);
+  const showConnector = !hideConnector && !isLast;
 
   return (
-    // Legacy compact separator: 16px marker, customizable inner dot via `dot`
-    // prop. Uses the same single-absolute-line strategy as TimelineMedia so
-    // the connector is pixel-aligned across items. --marker-half = 0.5rem
-    // (= size-4 / 2).
     <div
       data-uipkge=""
       data-slot="timeline-separator"
       className={cn(
-        "relative shrink-0 self-stretch",
+        "relative flex shrink-0 items-center",
         direction === "vertical"
-          ? "flex w-4 flex-col items-center"
-          : "flex h-4 flex-row items-center",
+          ? "w-4 flex-col self-stretch"
+          : "h-4 flex-row items-center self-stretch",
         className,
       )}
-      style={{ "--timeline-marker-half": "0.5rem" } as React.CSSProperties}
       {...props}
     >
+      <div
+        data-slot="timeline-separator-marker"
+        className="bg-primary ring-background relative z-10 flex size-4 items-center justify-center rounded-full shadow-2xs ring-4"
+      >
+        {dot ?? <div className="bg-primary-foreground size-1.5 rounded-full" />}
+      </div>
+
       {showConnector && (
         <div
           aria-hidden="true"
-          className={
+          data-slot="timeline-media-connector"
+          className={cn(
+            "bg-border",
             direction === "vertical"
-              ? "bg-border absolute left-1/2 w-px -translate-x-1/2"
-              : "bg-border absolute top-1/2 h-px -translate-y-1/2"
-          }
-          style={
-            direction === "vertical"
-              ? {
-                  top: isFirst ? "var(--timeline-marker-half)" : "0",
-                  bottom: isLast
-                    ? "calc(100% - var(--timeline-marker-half))"
-                    : "0",
-                }
-              : {
-                  left: isFirst ? "var(--timeline-marker-half)" : "0",
-                  right: isLast
-                    ? "calc(100% - var(--timeline-marker-half))"
-                    : "0",
-                }
-          }
+              ? "my-1.5 w-0.5 flex-1"
+              : "mx-1.5 h-0.5 flex-1",
+          )}
         />
       )}
-      <div
-        data-slot="timeline-separator-marker"
-        className="bg-primary ring-background relative z-10 flex size-4 items-center justify-center rounded-full ring-4"
-      >
-        {dot ?? <div className="bg-primary-foreground size-2 rounded-full" />}
-      </div>
     </div>
   );
 }
@@ -492,6 +463,25 @@ function TimelineContent({
       data-uipkge=""
       data-slot="timeline-content"
       className={cn("flex-1 space-y-1", className)}
+      {...props}
+    />
+  );
+}
+
+/* ------------------------------------------------------------ TimelineHeader */
+
+function TimelineHeader({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      data-uipkge=""
+      data-slot="timeline-header"
+      className={cn(
+        "flex flex-wrap items-center justify-between gap-2",
+        className,
+      )}
       {...props}
     />
   );
@@ -556,6 +546,7 @@ export {
   TimelineMedia,
   TimelineSeparator,
   TimelineContent,
+  TimelineHeader,
   TimelineTitle,
   TimelineDescription,
   TimelineDate,

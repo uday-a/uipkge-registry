@@ -72,8 +72,44 @@ describe("MaskedInput", () => {
     const input = container.querySelector("input")!;
     fireEvent.change(input, { target: { value: "12" } });
     expect(onValueChange).toHaveBeenCalled();
-    // The emitted value should contain the mask separator
     const emittedValue = onValueChange.mock.calls[0][0];
     expect(emittedValue).toContain("-");
+  });
+
+  it("blocks non-digits in numeric slots", () => {
+    const onValueChange = vi.fn();
+    const { container } = render(
+      <MaskedInput mask="##-##" value="" onValueChange={onValueChange} />,
+    );
+    const input = container.querySelector("input")!;
+    fireEvent.change(input, { target: { value: "ab" } });
+    expect(onValueChange).toHaveBeenCalled();
+    expect(onValueChange.mock.calls[0][0]).toBe("__-__");
+  });
+
+  it("displays placeholder text", () => {
+    const { container } = render(
+      <MaskedInput mask="##/##/####" placeholder="MM/DD/YYYY" />,
+    );
+    expect(container.querySelector("input")?.getAttribute("placeholder")).toBe(
+      "MM/DD/YYYY",
+    );
+  });
+
+  it("renders error message and aria-invalid", () => {
+    const { container } = render(
+      <MaskedInput
+        mask="##/##/####"
+        value="12"
+        invalid
+        errorMessage="Date is incomplete"
+      />,
+    );
+    expect(container.querySelector("input")?.getAttribute("aria-invalid")).toBe(
+      "true",
+    );
+    const err = container.querySelector('[data-slot="masked-input-error"]');
+    expect(err).toBeTruthy();
+    expect(err?.textContent).toBe("Date is incomplete");
   });
 });

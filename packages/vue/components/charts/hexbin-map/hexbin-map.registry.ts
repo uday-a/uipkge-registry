@@ -14,6 +14,6 @@ export default defineRegistryItem({
     },
     { path: "index.ts", target: "components/ui/charts/hexbin-map/index.ts" },
   ],
-  dependencies: ["mapbox-gl", "@studiometa/vue-mapbox-gl", "lucide-vue-next"],
+  dependencies: ["lucide-vue-next"],
   registryDependencies: ["https://uipkge.dev/r/map.json"],
 });

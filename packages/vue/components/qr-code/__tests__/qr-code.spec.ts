@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { mount } from "@vue/test-utils";
 import { QRCode } from "../index";
 
@@ -21,13 +21,14 @@ describe("QRCode", () => {
     w.unmount();
   });
 
+  // Poll instead of sleeping a fixed 300ms: QR generation is async, and under
+  // a loaded full-suite run the fixed wait expired before the image landed.
   it("renders an img element for canvas type", async () => {
     const w = mount(QRCode, {
       props: { value: "https://example.com", type: "canvas" },
       attachTo: document.body,
     });
-    await new Promise((r) => setTimeout(r, 300));
-    expect(w.find("img").exists()).toBe(true);
+    await vi.waitFor(() => expect(w.find("img").exists()).toBe(true));
     w.unmount();
   });
 
@@ -36,11 +37,11 @@ describe("QRCode", () => {
       props: { value: "https://example.com" },
       attachTo: document.body,
     });
-    // Wait for async QR generation
-    await new Promise((r) => setTimeout(r, 300));
-    const img = w.find("img");
-    expect(img.exists()).toBe(true);
-    expect(img.attributes("src")).toBeTruthy();
+    await vi.waitFor(() => {
+      const img = w.find("img");
+      expect(img.exists()).toBe(true);
+      expect(img.attributes("src")).toBeTruthy();
+    });
     w.unmount();
   });
 

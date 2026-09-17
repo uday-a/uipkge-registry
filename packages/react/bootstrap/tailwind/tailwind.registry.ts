@@ -27,7 +27,7 @@ export default defineRegistryItem({
   // canonical styles/tailwind.css). For Next.js App Router this lands at
   // app/globals.css — the consumer imports it from the root layout.
   files: [{ path: "tailwind.css", target: "~/app/globals.css" }],
-  dependencies: ["tailwindcss", "tw-animate-css"],
+  dependencies: [],
   cssVars: {
     theme: parseTokens(slurp("parts/theme.css")),
     light: parseTokens(slurp("parts/light.css")),

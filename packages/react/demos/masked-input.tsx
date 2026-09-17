@@ -134,6 +134,61 @@ export default function MaskedInputDemo() {
         </div>
       </Story>
 
+      <Story
+        title="Native Placeholder"
+        description="Shows standard placeholder when empty and unfocused, then guides with mask on focus."
+      >
+        <div className="max-w-sm">
+          <Label>Phone with Placeholder</Label>
+          <MaskedInput
+            mask="(###) ###-####"
+            placeholder="(555) 000-0000"
+            className="mt-1.5"
+          />
+        </div>
+      </Story>
+
+      <Story
+        title="Validation & Error State"
+        description="Shows validation error message and invalid styling when input is incomplete or fails a rule."
+      >
+        <div className="max-w-sm">
+          <Label>Required Phone Number</Label>
+          <MaskedInput
+            mask="(###) ###-####"
+            defaultValue="(555) 12"
+            invalid
+            errorMessage="Please enter a complete 10-digit phone number."
+            className="mt-1.5"
+          />
+        </div>
+      </Story>
+
+      <Story
+        title="Strict Character Blocking"
+        description="Letters are rejected in numeric slots (#) and numbers are rejected in letter slots (A)."
+      >
+        <div className="max-w-sm space-y-3">
+          <div>
+            <Label>Numeric Only (tries typing letters are blocked)</Label>
+            <MaskedInput
+              mask="###-###"
+              placeholder="123-456"
+              className="mt-1.5"
+            />
+          </div>
+          <div>
+            <Label>Letters Only (tries typing numbers are blocked)</Label>
+            <MaskedInput
+              mask="AAA-AAA"
+              replacement="A"
+              placeholder="ABC-DEF"
+              className="mt-1.5"
+            />
+          </div>
+        </div>
+      </Story>
+
       <Story title="Disabled & Readonly" description="Non-interactive states.">
         <div className="max-w-sm space-y-2">
           <MaskedInput

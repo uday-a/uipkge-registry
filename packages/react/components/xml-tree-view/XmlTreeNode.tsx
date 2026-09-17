@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { ChevronDown, ChevronRight, Copy, Check } from "lucide-react";
 import type { XmlNode } from "./types";

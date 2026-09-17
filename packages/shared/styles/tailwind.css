@@ -52,6 +52,11 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  /* Emphasized entrance: moves immediately, then settles quietly. Use on
+     surfaces that appear (overlays, reveals) where `ease-out` reads flat.
+     Tailwind's --ease-* namespace turns this into the `ease-emphasized`
+     utility; --ease-in/out/in-out below override Tailwind's defaults. */
+  --ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 :root {
@@ -61,10 +66,15 @@
   --ease-in: cubic-bezier(0.4, 0, 1, 1);
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* --ease-emphasized lives in @theme inline above so Tailwind emits the
+     `ease-emphasized` utility; it resolves here like the rest. */
   --dur-fast: 120ms; /* hover, focus ring, color shifts */
   --dur-base: 200ms; /* most state changes */
   --dur-slow: 300ms; /* modal/sheet enter, tab pill slide */
   --dur-page: 250ms; /* page transition */
+  /* Exits leave faster than entrances arrive — a surface that is going away
+     should not hold attention. Pair with --dur-base / --dur-slow enters. */
+  --dur-exit: 140ms;
 
   /* Official shadcn neutral theme (light + dark). Source: ui.shadcn.com/docs/theming */
   --radius: 0.5rem;
@@ -148,6 +158,11 @@
 }
 
 @layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
   * {
     @apply border-border outline-ring/50;
   }
@@ -157,6 +172,10 @@
     font-feature-settings:
       "rlig" 1,
       "calt" 1;
+    font-optical-sizing: auto;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   /* Tailwind v4 dropped `cursor: pointer` for buttons. Restore it for all
@@ -326,6 +345,34 @@ body::before {
   }
 }
 
+/* Theme reveal — the incoming theme wipes in as a circle growing from the
+   control that toggled it, via the View Transition API. Scoped to the
+   `data-uipkge-theme-reveal` attribute ThemeSwitch sets on <html> for the
+   duration of the swap, so it never hijacks a consumer's own view
+   transitions. Origin and radius come from the click position. Browsers
+   without startViewTransition just swap the class instantly.
+   Technique adapted from beUI (MIT, © 2026 Saurabh Chauhan); implemented
+   here in plain CSS with no motion library. */
+@keyframes uipkge-theme-reveal {
+  from {
+    clip-path: circle(
+      0% at var(--uipkge-theme-x, 50%) var(--uipkge-theme-y, 50%)
+    );
+  }
+  to {
+    clip-path: circle(
+      var(--uipkge-theme-r, 150%) at var(--uipkge-theme-x, 50%)
+        var(--uipkge-theme-y, 50%)
+    );
+  }
+}
+html[data-uipkge-theme-reveal]::view-transition-old(root) {
+  animation: none;
+}
+html[data-uipkge-theme-reveal]::view-transition-new(root) {
+  animation: uipkge-theme-reveal var(--dur-slow) var(--ease-emphasized);
+}
+
 /* Global reduced-motion safety net — collapses every animation/transition
    to near-instant. Component-specific @media reduce blocks override
    timings further when needed; this is the floor. */
@@ -339,6 +386,9 @@ body::before {
     scroll-behavior: auto !important;
   }
   .animate-shake {
+    animation: none;
+  }
+  html[data-uipkge-theme-reveal]::view-transition-new(root) {
     animation: none;
   }
 }

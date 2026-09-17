@@ -6,15 +6,20 @@ export default defineRegistryItem({
   categories: ["form"],
   framework: "vue",
   description:
-    "Textarea with trigger-character autocomplete. Type a configured trigger (default @) to open a filtered popover; pick to insert. Static or async options.",
+    "Textarea with trigger-character autocomplete and companion MentionTag with Twitter/X-style hover profile card popup.",
   files: [
     { path: "Mentions.vue", target: "components/ui/mentions/Mentions.vue" },
+    { path: "MentionTag.vue", target: "components/ui/mentions/MentionTag.vue" },
     {
       path: "caret-position.ts",
       target: "components/ui/mentions/caret-position.ts",
     },
     { path: "index.ts", target: "components/ui/mentions/index.ts" },
   ],
-  dependencies: [],
-  registryDependencies: ["https://uipkge.dev/r/popover.json"],
+  dependencies: ["lucide-vue-next"],
+  registryDependencies: [
+    "https://uipkge.dev/r/popover.json",
+    "https://uipkge.dev/r/hover-card.json",
+    "https://uipkge.dev/r/avatar.json",
+  ],
 });

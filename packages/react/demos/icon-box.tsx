@@ -156,7 +156,7 @@ export default function IconBoxDemo() {
           {tiles.map((t) => (
             <Card
               key={t.label}
-              className="cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md"
+              className="cursor-pointer transition-[box-shadow,translate] hover:-translate-y-0.5 hover:shadow-md"
             >
               <CardContent className="flex items-center gap-3 p-4">
                 <IconBox

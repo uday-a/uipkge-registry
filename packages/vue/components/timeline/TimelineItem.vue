@@ -53,7 +53,7 @@ const isCenter = computed(() => ctx?.align.value === "center");
 const verticalSpacing = computed(() => {
   if (isLast.value) return "";
   return {
-    compact: "[&>[data-slot=timeline-content]]:pb-2",
+    compact: "[&>[data-slot=timeline-content]]:pb-3",
     default: "[&>[data-slot=timeline-content]]:pb-6",
     comfortable: "[&>[data-slot=timeline-content]]:pb-10",
   }[density.value];
@@ -91,28 +91,24 @@ provide(TIMELINE_ITEM_CONTEXT, {
       cn(
         'timeline-item-enter relative',
         status === 'current' && 'timeline-item-current',
-        // start mode (default): simple flex
-        // No item padding — TimelineMedia's continuous line relies on items
-        // butting up edge-to-edge. Use TimelineContent's own padding for
-        // breathing room between rows/cards.
         !isCenter &&
           direction === 'vertical' && [
-            'flex gap-4',
+            'flex items-start gap-4',
             effectiveSide === 'right' && 'flex-row-reverse text-right',
             verticalSpacing,
           ],
         !isCenter &&
           direction === 'horizontal' && [
-            'flex flex-col gap-2',
+            'flex flex-col items-start gap-2',
             effectiveSide === 'bottom' && 'flex-col-reverse',
             horizontalSpacing,
           ],
-        // center alternating: 3-col / 3-row grid
         isCenter &&
           direction === 'vertical' && [
             'grid grid-cols-[1fr_auto_1fr] items-start gap-x-4',
-            '[&>[data-slot=timeline-media]]:col-start-2',
-            '[&>[data-slot=timeline-separator]]:col-start-2',
+            '[&>[data-slot=timeline-media]]:col-start-2 [&>[data-slot=timeline-media]]:row-start-1',
+            '[&>[data-slot=timeline-separator]]:col-start-2 [&>[data-slot=timeline-separator]]:row-start-1',
+            '[&>[data-slot=timeline-content]]:row-start-1',
             effectiveSide === 'left' &&
               '[&>[data-slot=timeline-content]]:col-start-1 [&>[data-slot=timeline-content]]:text-right',
             effectiveSide === 'right' &&
@@ -122,8 +118,9 @@ provide(TIMELINE_ITEM_CONTEXT, {
         isCenter &&
           direction === 'horizontal' && [
             'grid grid-rows-[1fr_auto_1fr] items-start gap-y-2',
-            '[&>[data-slot=timeline-media]]:row-start-2',
-            '[&>[data-slot=timeline-separator]]:row-start-2',
+            '[&>[data-slot=timeline-media]]:col-start-1 [&>[data-slot=timeline-media]]:row-start-2',
+            '[&>[data-slot=timeline-separator]]:col-start-1 [&>[data-slot=timeline-separator]]:row-start-2',
+            '[&>[data-slot=timeline-content]]:col-start-1',
             effectiveSide === 'top' &&
               '[&>[data-slot=timeline-content]]:row-start-1 [&>[data-slot=timeline-content]]:self-end',
             effectiveSide === 'bottom' &&

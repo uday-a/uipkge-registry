@@ -53,7 +53,7 @@ export const ControlChart = React.forwardRef<HTMLDivElement, ControlChartProps>(
       const ucl = uclProp ?? mean + 2 * sd;
       const lcl = lclProp ?? mean - 2 * sd;
       const line = theme.colors[0];
-      const bad = "#dc2626";
+      const bad = theme.dangerColor;
       const series = [
         {
           type: "line",

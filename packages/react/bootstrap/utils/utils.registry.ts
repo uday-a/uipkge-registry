@@ -6,6 +6,6 @@ export default defineRegistryItem({
   description:
     "Tailwind class merge helper: cn(). Combines clsx and tailwind-merge.",
   files: [{ path: "utils.ts", target: "lib/utils.ts" }],
-  dependencies: ["clsx", "tailwind-merge"],
+  dependencies: [],
   registryDependencies: [],
 });

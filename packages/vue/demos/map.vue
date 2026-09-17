@@ -1070,7 +1070,7 @@ const cameraBearing = ref(-20);
               v-for="s in scopeOptions"
               :key="s.id"
               type="button"
-              class="rounded-md px-2.5 py-1 text-xs font-medium transition-all"
+              class="rounded-md px-2.5 py-1 text-xs font-medium transition-colors"
               :class="
                 activeScope === s.id
                   ? 'bg-primary text-primary-foreground font-semibold shadow-xs'
@@ -1094,7 +1094,7 @@ const cameraBearing = ref(-20);
               v-for="opt in variantOptions"
               :key="opt.id"
               type="button"
-              class="rounded-md px-2.5 py-1 text-xs font-medium transition-all"
+              class="rounded-md px-2.5 py-1 text-xs font-medium transition-colors"
               :class="
                 activeVariant === opt.id
                   ? 'bg-foreground text-background font-semibold shadow-xs'
@@ -1651,7 +1651,7 @@ const cameraBearing = ref(-20);
     <div class="relative overflow-hidden rounded-lg border shadow-xs">
       <!-- Expandable Inline Overlay HUD (Top Left) -->
       <div
-        class="bg-background/90 border-border/80 pointer-events-auto absolute top-3 left-3 z-10 w-72 rounded-lg border p-3 shadow-md backdrop-blur-md transition-all duration-200"
+        class="bg-background/90 border-border/80 pointer-events-auto absolute top-3 left-3 z-10 w-72 rounded-lg border p-3 shadow-md backdrop-blur-md"
       >
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-1.5">
@@ -1750,7 +1750,7 @@ const cameraBearing = ref(-20);
     <div class="relative overflow-hidden rounded-lg border shadow-xs">
       <!-- Expandable Inline Overlay HUD (Top Left) -->
       <div
-        class="bg-background/90 border-border/80 pointer-events-auto absolute top-3 left-3 z-10 w-72 rounded-lg border p-3 shadow-md backdrop-blur-md transition-all duration-200"
+        class="bg-background/90 border-border/80 pointer-events-auto absolute top-3 left-3 z-10 w-72 rounded-lg border p-3 shadow-md backdrop-blur-md"
       >
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-1.5">

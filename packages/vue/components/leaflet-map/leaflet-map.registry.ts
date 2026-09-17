@@ -63,6 +63,6 @@ export default defineRegistryItem({
       target: "components/ui/leaflet-map/leaflet-map.css",
     },
   ],
-  dependencies: ["leaflet", "@types/leaflet", "class-variance-authority"],
+  dependencies: ["leaflet", "class-variance-authority"],
   registryDependencies: [],
 });

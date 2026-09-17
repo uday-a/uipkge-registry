@@ -134,6 +134,14 @@ export interface ChartTheme {
   tooltipBorder: string;
   tooltipText: string;
   bgColor: string;
+  /** The app's accent, for the one highlighted element on a chart or map —
+   *  a selected route, a focused bar. Category series keep using `colors`. */
+  accentColor: string;
+  /** Out-of-bounds / failure colour for charts that encode good vs bad
+   *  rather than a category — control limits, error series. CSS-level marks
+   *  can use `var(--destructive)` directly; this exists because ECharts needs
+   *  a resolved colour string on the canvas. */
+  dangerColor: string;
 }
 
 function resolveTheme(): ChartTheme {
@@ -148,6 +156,8 @@ function resolveTheme(): ChartTheme {
     tooltipBorder: resolveVar("--border", "#e5e5e5"),
     tooltipText: resolveVar("--popover-foreground", "#333333"),
     bgColor: resolveVar("--card", resolveVar("--background", "#ffffff")),
+    accentColor: resolveVar("--primary", "#38bdf8"),
+    dangerColor: resolveVar("--destructive", "#dc2626"),
   };
 }
 

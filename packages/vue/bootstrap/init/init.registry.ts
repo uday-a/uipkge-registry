@@ -16,7 +16,7 @@ export default defineRegistryItem({
   // total) crashes with "Failed to load TypeScript". Forcing it as a
   // bootstrap dep means every uipkge consumer has it before they install
   // their first component.
-  dependencies: ["typescript"],
+  dependencies: [],
   // Dep graph is a tree -- `init` -> {tailwind, utils, use-theme}; the
   // three sub-items all declare `registryDependencies: []`. shadcn-vue's
   // CLI prints a one-line "Circular dependency detected in registry

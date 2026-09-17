@@ -48,15 +48,15 @@ export default function Story({
     <>
       {isFullscreen && (
         <div
-          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150"
+          className="animate-in fade-in fixed inset-0 z-40 bg-black/60 backdrop-blur-xs duration-150"
           onClick={() => setIsFullscreen(false)}
         />
       )}
       <section
         id={title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}
-        className={`group overflow-hidden rounded-xl border border-border bg-card text-card-foreground shadow-xs transition-all duration-200 ${
+        className={`group border-border bg-card text-card-foreground overflow-hidden rounded-xl border shadow-xs transition-[border-color,box-shadow] duration-200 ${
           isFullscreen
-            ? "flex flex-col shadow-2xl bg-card border-border/80 animate-in zoom-in-95 duration-150"
+            ? "bg-card border-border/80 animate-in zoom-in-95 flex flex-col shadow-2xl duration-150"
             : "relative mb-8"
         }`}
         style={
@@ -73,33 +73,31 @@ export default function Story({
         }
       >
         {/* Header bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border bg-muted/20 px-4 py-3 sm:px-5 shrink-0">
-          <div className="flex flex-col gap-0.5 min-w-0 flex-1">
+        <div className="border-border bg-muted/20 flex shrink-0 flex-col justify-between gap-3 border-b px-4 py-3 sm:flex-row sm:items-center sm:px-5">
+          <div className="flex min-w-0 flex-1 flex-col gap-0.5">
             <div className="flex items-center gap-2">
-              <h3 className="text-sm font-semibold tracking-tight text-foreground">
+              <h3 className="text-foreground text-sm font-semibold tracking-tight">
                 {title}
               </h3>
               {isFullscreen && (
-                <span className="rounded bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary shrink-0">
+                <span className="bg-primary/10 text-primary shrink-0 rounded px-2 py-0.5 text-xs font-medium">
                   Focused View
                 </span>
               )}
             </div>
             {description && (
-              <p className="text-xs text-muted-foreground">
-                {description}
-              </p>
+              <p className="text-muted-foreground text-xs">{description}</p>
             )}
           </div>
 
-          <div className="flex items-center justify-between sm:justify-end gap-1.5 shrink-0 text-xs">
+          <div className="flex shrink-0 items-center justify-between gap-1.5 text-xs sm:justify-end">
             {/* Preview / Code tabs */}
-            <div className="flex items-center rounded-lg border border-border bg-background/80 p-0.5 shadow-xs">
+            <div className="border-border bg-background/80 flex items-center rounded-lg border p-0.5 shadow-xs">
               <button
                 type="button"
-                className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 font-medium transition-colors cursor-pointer ${
+                className={`flex cursor-pointer items-center gap-1.5 rounded-md px-2.5 py-1 font-medium transition-colors ${
                   activeTab === "preview"
-                    ? "bg-muted text-foreground shadow-xs font-semibold border border-border/80"
+                    ? "bg-muted text-foreground border-border/80 border font-semibold shadow-xs"
                     : "text-muted-foreground hover:text-foreground border border-transparent"
                 }`}
                 onClick={() => setActiveTab("preview")}
@@ -110,9 +108,9 @@ export default function Story({
 
               <button
                 type="button"
-                className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 font-medium transition-colors cursor-pointer ${
+                className={`flex cursor-pointer items-center gap-1.5 rounded-md px-2.5 py-1 font-medium transition-colors ${
                   activeTab === "code"
-                    ? "bg-muted text-foreground shadow-xs font-semibold border border-border/80"
+                    ? "bg-muted text-foreground border-border/80 border font-semibold shadow-xs"
                     : "text-muted-foreground hover:text-foreground border border-transparent"
                 }`}
                 onClick={() => setActiveTab("code")}
@@ -127,7 +125,7 @@ export default function Story({
               <button
                 type="button"
                 title={copied ? "Copied!" : "Copy source code"}
-                className="flex size-7 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs cursor-pointer"
+                className="border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted flex size-7 cursor-pointer items-center justify-center rounded-md border shadow-xs transition"
                 onClick={copyCode}
               >
                 {copied ? (
@@ -142,7 +140,7 @@ export default function Story({
             <button
               type="button"
               title={isFullscreen ? "Exit focus (Esc)" : "Focus story"}
-              className="flex size-7 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs cursor-pointer"
+              className="border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted flex size-7 cursor-pointer items-center justify-center rounded-md border shadow-xs transition"
               onClick={() => setIsFullscreen(!isFullscreen)}
             >
               {isFullscreen ? (
@@ -165,18 +163,18 @@ export default function Story({
 
         {/* Story Source Code View */}
         <div
-          className={`relative bg-muted/40 p-4 sm:p-5 ${
+          className={`bg-muted/40 relative p-4 sm:p-5 ${
             isFullscreen ? "flex-1 overflow-y-auto" : ""
           } ${activeTab === "code" ? "block" : "hidden"}`}
         >
           {sourceCode ? (
             <div className="relative">
-              <pre className="code-block rounded-lg border border-border bg-card p-4 text-xs font-mono text-foreground overflow-x-auto leading-relaxed">
+              <pre className="code-block border-border bg-card text-foreground overflow-x-auto rounded-lg border p-4 font-mono text-xs leading-relaxed">
                 <code>{sourceCode}</code>
               </pre>
             </div>
           ) : (
-            <div className="py-12 text-center text-xs font-mono text-muted-foreground">
+            <div className="text-muted-foreground py-12 text-center font-mono text-xs">
               Source code available in inspector tab below.
             </div>
           )}

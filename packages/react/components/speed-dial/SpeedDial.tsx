@@ -147,7 +147,7 @@ const SpeedDial = React.forwardRef<HTMLButtonElement, SpeedDialProps>(
               aria-expanded={open}
               aria-haspopup="menu"
               className={cn(
-                "transition-transform duration-200",
+                "transition-[color,background-color,box-shadow,transform,scale,translate,rotate] duration-200",
                 open && "rotate-45",
               )}
               onClick={

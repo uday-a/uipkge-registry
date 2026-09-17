@@ -110,6 +110,57 @@ const otp = ref("");
     </div>
   </Story>
 
+  <Story
+    title="Native Placeholder"
+    description="Shows standard placeholder when empty and unfocused, then guides with mask on focus."
+  >
+    <div class="max-w-sm">
+      <Label>Phone with Placeholder</Label>
+      <MaskedInput
+        mask="(###) ###-####"
+        placeholder="(555) 000-0000"
+        class="mt-1.5"
+      />
+    </div>
+  </Story>
+
+  <Story
+    title="Validation & Error State"
+    description="Shows validation error message and invalid styling when input is incomplete or fails a rule."
+  >
+    <div class="max-w-sm">
+      <Label>Required Phone Number</Label>
+      <MaskedInput
+        mask="(###) ###-####"
+        model-value="(555) 12"
+        invalid
+        error-message="Please enter a complete 10-digit phone number."
+        class="mt-1.5"
+      />
+    </div>
+  </Story>
+
+  <Story
+    title="Strict Character Blocking"
+    description="Letters are rejected in numeric slots (#) and numbers are rejected in letter slots (A)."
+  >
+    <div class="max-w-sm space-y-3">
+      <div>
+        <Label>Numeric Only (tries typing letters are blocked)</Label>
+        <MaskedInput mask="###-###" placeholder="123-456" class="mt-1.5" />
+      </div>
+      <div>
+        <Label>Letters Only (tries typing numbers are blocked)</Label>
+        <MaskedInput
+          mask="AAA-AAA"
+          replacement="A"
+          placeholder="ABC-DEF"
+          class="mt-1.5"
+        />
+      </div>
+    </div>
+  </Story>
+
   <Story title="Disabled & Readonly" description="Non-interactive states.">
     <div class="max-w-sm space-y-2">
       <MaskedInput

@@ -30,7 +30,7 @@ export interface UptimeTrackerChartProps {
 const COLORS: Record<DayStatus, string> = {
   up: "var(--chart-2)",
   degraded: "var(--chart-4)",
-  down: "#dc2626",
+  down: "var(--destructive)",
   unknown: "var(--border)",
 };
 

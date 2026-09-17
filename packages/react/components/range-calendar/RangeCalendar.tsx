@@ -87,7 +87,7 @@ function RangeCalendar({
         ),
         day_button: cn(
           buttonVariants({ variant: "ghost" }),
-          "h-8 w-8 cursor-pointer p-0 font-normal aria-selected:opacity-100",
+          "size-9 cursor-pointer p-0 font-normal aria-selected:opacity-100",
         ),
         today:
           "[&:not([aria-selected])]:bg-accent [&:not([aria-selected])]:text-accent-foreground",

@@ -95,7 +95,8 @@ const previewContainerRef = ref<HTMLElement | null>(null);
 // Theme & Canvas state
 const getInitialDark = () => {
   if (typeof window === "undefined") return false;
-  const saved = localStorage.getItem("uipkge-theme") || localStorage.getItem("uipkge_dark");
+  const saved =
+    localStorage.getItem("uipkge-theme") || localStorage.getItem("uipkge_dark");
   if (saved !== null) return saved === "dark" || saved === "true";
   return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
 };
@@ -292,7 +293,11 @@ const handlePopState = () => {
   if (typeof window === "undefined") return;
   const params = new URLSearchParams(window.location.search);
   const param = params.get("c") || params.get("component");
-  if (param && items.some((it) => it.id === param) && selectedId.value !== param) {
+  if (
+    param &&
+    items.some((it) => it.id === param) &&
+    selectedId.value !== param
+  ) {
     selectedId.value = param;
   }
 };
@@ -374,7 +379,11 @@ onMounted(() => {
     const url = new URL(window.location.href);
     if (!url.searchParams.has("c") && !url.searchParams.has("component")) {
       url.searchParams.set("c", selectedId.value);
-      window.history.replaceState({ component: selectedId.value }, "", url.toString());
+      window.history.replaceState(
+        { component: selectedId.value },
+        "",
+        url.toString(),
+      );
     }
   }
 
@@ -387,7 +396,12 @@ onMounted(() => {
     const a = (e.target as HTMLElement)?.closest("a");
     if (a) {
       const href = a.getAttribute("href");
-      if (!href || href === "#" || href.startsWith("#") || href === "javascript:void(0)") {
+      if (
+        !href ||
+        href === "#" ||
+        href.startsWith("#") ||
+        href === "javascript:void(0)"
+      ) {
         e.preventDefault();
       }
     }
@@ -427,7 +441,7 @@ const activeItemName = computed(() => {
 
 <template>
   <div
-    class="flex h-screen w-screen overflow-hidden bg-background text-foreground font-sans antialiased"
+    class="bg-background text-foreground flex h-screen w-screen overflow-hidden font-sans antialiased"
   >
     <!-- Left Navigation Sidebar -->
     <WorkbenchSidebar
@@ -439,7 +453,7 @@ const activeItemName = computed(() => {
     />
 
     <!-- Main Workspace -->
-    <div class="flex flex-1 flex-col overflow-hidden min-w-0">
+    <div class="flex min-w-0 flex-1 flex-col overflow-hidden">
       <!-- Top Craft Header Bar -->
       <WorkbenchHeader
         :component-id="selectedId"
@@ -467,7 +481,7 @@ const activeItemName = computed(() => {
       <!-- Middle: Canvas Preview Stage -->
       <main
         ref="previewContainerRef"
-        class="flex-1 overflow-y-auto overflow-x-auto p-6 sm:p-8 lg:p-10 transition-colors duration-200"
+        class="flex-1 overflow-x-auto overflow-y-auto p-6 transition-colors duration-200 sm:p-8 lg:p-10"
         :class="[
           canvasBg === 'dots' ? 'canvas-dots' : '',
           canvasBg === 'grid' ? 'canvas-grid' : '',
@@ -477,13 +491,13 @@ const activeItemName = computed(() => {
       >
         <!-- Responsive Device Viewport Frame -->
         <div
-          class="mx-auto transition-all duration-300"
+          class="mx-auto transition-[width] duration-300"
           :class="[
             activeViewport === 'fluid'
               ? 'w-full max-w-7xl'
               : activeViewport === 'mobile'
-                ? 'rounded-xl border border-border bg-card p-3 shadow-2xl ring-1 ring-border/50'
-                : 'rounded-xl border border-border bg-card p-6 sm:p-8 shadow-2xl ring-1 ring-border/50',
+                ? 'border-border bg-card ring-border/50 rounded-xl border p-3 shadow-2xl ring-1'
+                : 'border-border bg-card ring-border/50 rounded-xl border p-6 shadow-2xl ring-1 sm:p-8',
           ]"
           :style="
             activeViewport !== 'fluid'
@@ -504,12 +518,12 @@ const activeItemName = computed(() => {
           <!-- Frame Device Header indicator when constrained -->
           <div
             v-if="activeViewport !== 'fluid'"
-            class="mb-4 flex items-center justify-between border-b border-border pb-3 text-xs text-muted-foreground font-mono"
+            class="border-border text-muted-foreground mb-4 flex items-center justify-between border-b pb-3 font-mono text-xs"
           >
             <div class="flex items-center gap-2">
               <span class="size-2 rounded-full bg-emerald-500" />
               <span
-                class="font-semibold text-foreground uppercase tracking-wider text-[11px]"
+                class="text-foreground text-[11px] font-semibold tracking-wider uppercase"
                 >{{ activeViewport }} VIEWPORT</span
               >
             </div>
@@ -530,11 +544,11 @@ const activeItemName = computed(() => {
           <!-- Loading state -->
           <div
             v-if="loading"
-            class="flex items-center justify-center py-32 text-xs font-mono text-muted-foreground"
+            class="text-muted-foreground flex items-center justify-center py-32 font-mono text-xs"
           >
             <div class="flex flex-col items-center gap-3">
               <div
-                class="size-6 border-2 border-primary border-t-transparent rounded-full animate-spin"
+                class="border-primary size-6 animate-spin rounded-full border-2 border-t-transparent"
               />
               <span>Loading {{ activeItemName }}...</span>
             </div>
@@ -543,7 +557,7 @@ const activeItemName = computed(() => {
           <!-- Live Component Demo -->
           <div v-else :key="remountKey">
             <component :is="activeComponent" v-if="activeComponent" />
-            <div v-else class="py-24 text-center text-xs text-muted-foreground">
+            <div v-else class="text-muted-foreground py-24 text-center text-xs">
               Select a component to preview
             </div>
           </div>

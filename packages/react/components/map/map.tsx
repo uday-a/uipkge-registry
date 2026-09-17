@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import type mapboxgl from "mapbox-gl";
 import Map, {
@@ -293,9 +295,15 @@ const MapComponent = React.forwardRef<MapRef, MapProps>(
         setInView(true);
         return;
       }
+      // Latch: the observer only defers the first paint. Un-setting it on
+      // scroll would tear the WebGL map down and rebuild it (fresh style fetch,
+      // camera reset, markers re-laid-out against a stale canvas size) every
+      // time the block leaves the viewport.
       const io = new IntersectionObserver(
         ([entry]) => {
-          setInView(entry.isIntersecting);
+          if (!entry.isIntersecting) return;
+          setInView(true);
+          io.disconnect();
         },
         { rootMargin: "160px", threshold: 0.01 },
       );
@@ -314,6 +322,10 @@ const MapComponent = React.forwardRef<MapRef, MapProps>(
       setMapReady(true);
       const map = mapRef.current?.getMap();
       if (!map) return;
+      // The ResizeObserver's first callback runs before this instance exists,
+      // so a container that settled its height during mount would leave the
+      // canvas — and every marker laid out against it — at the stale size.
+      map.resize();
       try {
         (map as any).setProjection(projection);
       } catch {

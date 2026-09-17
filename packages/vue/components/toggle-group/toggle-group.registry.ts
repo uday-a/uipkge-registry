@@ -18,6 +18,6 @@ export default defineRegistryItem({
     },
     { path: "index.ts", target: "components/ui/toggle-group/index.ts" },
   ],
-  dependencies: ["@vueuse/core", "class-variance-authority", "reka-ui"],
+  dependencies: ["@vueuse/core", "reka-ui"],
   registryDependencies: ["https://uipkge.dev/r/toggle.json"],
 });

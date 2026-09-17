@@ -18,6 +18,6 @@ export default defineRegistryItem({
       target: "components/ui/charts/choropleth-map-chart/index.ts",
     },
   ],
-  dependencies: ["mapbox-gl", "@studiometa/vue-mapbox-gl", "lucide-vue-next"],
+  dependencies: ["lucide-vue-next"],
   registryDependencies: ["https://uipkge.dev/r/map.json"],
 });

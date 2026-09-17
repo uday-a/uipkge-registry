@@ -7,6 +7,7 @@ import { createReusableTemplate, reactiveOmit } from "@vueuse/core";
 import { CalendarRoot, useDateFormatter, useForwardPropsEmits } from "reka-ui";
 import { createYear, toDate } from "reka-ui/date";
 import { computed, ref, toRaw } from "vue";
+import { ChevronDown } from "lucide-vue-next";
 import { cn } from "@/lib/utils";
 import {
   CalendarCell,
@@ -93,52 +94,52 @@ function setYear(e: Event) {
 
 <template>
   <DefineMonthTemplate v-slot="{ date }">
-    <div class="**:data-[slot=native-select-icon]:right-1">
-      <div class="relative">
-        <div
-          class="pointer-events-none absolute inset-0 flex h-full items-center pl-2 text-sm"
+    <div class="relative inline-flex items-center">
+      <select
+        data-uipkge
+        data-slot="calendar-month-select"
+        class="border-input hover:bg-accent/60 text-foreground focus-visible:ring-ring h-8 cursor-pointer appearance-none rounded-md border bg-transparent pr-6 pl-2.5 text-xs font-medium transition-colors focus-visible:ring-1 focus-visible:outline-none"
+        :value="date.month"
+        @change="setMonth"
+      >
+        <option
+          v-for="month in createYear({ dateObj: date })"
+          :key="month.toString()"
+          :value="month.month"
+          :selected="date.month === month.month"
+          class="bg-popover text-popover-foreground"
         >
-          {{ formatter.custom(toDate(date), { month: "short" }) }}
-        </div>
-        <NativeSelect
-          class="relative h-8 pr-6 pl-2 text-xs text-transparent"
-          @change="setMonth"
-        >
-          <NativeSelectOption
-            v-for="month in createYear({ dateObj: date })"
-            :key="month.toString()"
-            :value="month.month"
-            :selected="date.month === month.month"
-          >
-            {{ formatter.custom(toDate(month), { month: "short" }) }}
-          </NativeSelectOption>
-        </NativeSelect>
-      </div>
+          {{ formatter.custom(toDate(month), { month: "short" }) }}
+        </option>
+      </select>
+      <ChevronDown
+        class="text-muted-foreground pointer-events-none absolute right-1.5 size-3.5 opacity-60"
+      />
     </div>
   </DefineMonthTemplate>
 
   <DefineYearTemplate v-slot="{ date }">
-    <div class="**:data-[slot=native-select-icon]:right-1">
-      <div class="relative">
-        <div
-          class="pointer-events-none absolute inset-0 flex h-full items-center pl-2 text-sm"
+    <div class="relative inline-flex items-center">
+      <select
+        data-uipkge
+        data-slot="calendar-year-select"
+        class="border-input hover:bg-accent/60 text-foreground focus-visible:ring-ring h-8 cursor-pointer appearance-none rounded-md border bg-transparent pr-6 pl-2.5 text-xs font-medium transition-colors focus-visible:ring-1 focus-visible:outline-none"
+        :value="date.year"
+        @change="setYear"
+      >
+        <option
+          v-for="year in yearRange"
+          :key="year.toString()"
+          :value="year.year"
+          :selected="date.year === year.year"
+          class="bg-popover text-popover-foreground"
         >
-          {{ formatter.custom(toDate(date), { year: "numeric" }) }}
-        </div>
-        <NativeSelect
-          class="relative h-8 pr-6 pl-2 text-xs text-transparent"
-          @change="setYear"
-        >
-          <NativeSelectOption
-            v-for="year in yearRange"
-            :key="year.toString()"
-            :value="year.year"
-            :selected="date.year === year.year"
-          >
-            {{ formatter.custom(toDate(year), { year: "numeric" }) }}
-          </NativeSelectOption>
-        </NativeSelect>
-      </div>
+          {{ formatter.custom(toDate(year), { year: "numeric" }) }}
+        </option>
+      </select>
+      <ChevronDown
+        class="text-muted-foreground pointer-events-none absolute right-1.5 size-3.5 opacity-60"
+      />
     </div>
   </DefineYearTemplate>
 

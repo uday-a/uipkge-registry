@@ -19,6 +19,5 @@ export default defineRegistryItem({
     "https://uipkge.dev/r/popover.json",
     "https://uipkge.dev/r/command.json",
     "https://uipkge.dev/r/badge.json",
-    "https://uipkge.dev/r/select.json",
   ],
 });

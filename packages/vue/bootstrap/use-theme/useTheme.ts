@@ -37,6 +37,33 @@ export function useTheme() {
     theme.value = next;
   }
 
+  /**
+   * A theme flip changes color, background, border and shadow on nearly every
+   * element at once. Anything carrying `transition-colors` — cards, buttons,
+   * nav items — then animates its own repaint, and the switch smears instead
+   * of snapping. Kill transitions for the swap, force a reflow so the browser
+   * commits the new colors with no transition in effect, then restore.
+   *
+   * The reflow read is required: without it the style element is added and
+   * removed inside one frame and never takes effect. Kept out of the first
+   * apply() (mount) since there is nothing to smear yet.
+   */
+  function withoutTransitions(swap: () => void) {
+    const style = document.createElement("style");
+    style.appendChild(
+      document.createTextNode(
+        "*,*::before,*::after{transition:none !important}",
+      ),
+    );
+    document.head.appendChild(style);
+    swap();
+    // Reading offsetHeight flushes pending style changes.
+    void document.body.offsetHeight;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => style.remove());
+    });
+  }
+
   function apply(next: Theme) {
     if (typeof window === "undefined") return;
     const isDark =
@@ -50,7 +77,7 @@ export function useTheme() {
     apply(theme.value);
     watch(theme, (next) => {
       writeCookie(next);
-      apply(next);
+      withoutTransitions(() => apply(next));
     });
   }
 

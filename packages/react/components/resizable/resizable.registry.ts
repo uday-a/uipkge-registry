@@ -12,10 +12,6 @@ export default defineRegistryItem({
   ],
   // Pinned to v2: v4 renamed the exports (Group/Panel/Separator); this code
   // uses the stable shadcn-standard v2 API (PanelGroup/Panel/PanelResizeHandle).
-  dependencies: [
-    "react-resizable-panels@^2.1.7",
-    "lucide-react",
-    "react-resizable-panels",
-  ],
+  dependencies: ["lucide-react", "react-resizable-panels"],
   registryDependencies: [],
 });

@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { Map, MapMarker, type MapVariant } from "@/components/ui/map";
 import { cn } from "@/lib/utils";
@@ -311,7 +313,7 @@ export function HexbinMap({
             >
               <button
                 type="button"
-                className="group/hex relative flex size-10 items-center justify-center font-mono transition-all"
+                className="group/hex relative flex size-10 items-center justify-center font-mono"
                 onClick={() => handleSelect(item)}
               >
                 <div

@@ -11,7 +11,7 @@ export default defineRegistryItem({
     { path: "SpeedDial.tsx", target: "components/ui/speed-dial/SpeedDial.tsx" },
     { path: "index.ts", target: "components/ui/speed-dial/index.ts" },
   ],
-  dependencies: ["lucide-react", "@radix-ui/react-popover"],
+  dependencies: ["lucide-react"],
   registryDependencies: [
     "https://uipkge.dev/r/fab.json",
     "https://uipkge.dev/r/popover.json",

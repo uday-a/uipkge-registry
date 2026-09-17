@@ -14,6 +14,6 @@ export default defineRegistryItem({
     },
     { path: "index.ts", target: "components/ui/bottom-navigation/index.ts" },
   ],
-  dependencies: ["lucide-vue-next"],
+  dependencies: [],
   registryDependencies: [],
 });

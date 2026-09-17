@@ -88,3 +88,16 @@ describe("Mentions", () => {
     expect(listbox).toBeFalsy();
   });
 });
+
+describe("MentionTag", () => {
+  it('renders with data-slot="mention-tag"', async () => {
+    const { MentionTag } = await import("../index");
+    const { container } = render(
+      <MentionTag name="Sarah Connor" handle="sarahc" trigger="@" />,
+    );
+    const el = container.querySelector('[data-slot="mention-tag"]');
+    expect(el).toBeTruthy();
+    expect(el?.textContent).toContain("@");
+    expect(el?.textContent).toContain("Sarah Connor");
+  });
+});

@@ -76,7 +76,10 @@ export const CategoryDistributionChart = React.forwardRef<
             <span
               className="text-xs font-semibold tabular-nums"
               style={{
-                color: trend.direction === "up" ? "var(--chart-2)" : "#dc2626",
+                color:
+                  trend.direction === "up"
+                    ? "var(--chart-2)"
+                    : "var(--destructive)",
               }}
             >
               {trend.direction === "up" ? "+" : "−"}

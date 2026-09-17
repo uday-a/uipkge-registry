@@ -10,13 +10,6 @@ export default defineRegistryItem({
     { path: "form.tsx", target: "components/ui/form/form.tsx" },
     { path: "index.ts", target: "components/ui/form/index.ts" },
   ],
-  dependencies: [
-    "react-hook-form",
-    "zod",
-    "@hookform/resolvers",
-    "@radix-ui/react-label",
-    "@radix-ui/react-slot",
-    "lucide-react",
-  ],
+  dependencies: ["react-hook-form", "@radix-ui/react-slot", "lucide-react"],
   registryDependencies: ["https://uipkge.dev/r/label.json"],
 });

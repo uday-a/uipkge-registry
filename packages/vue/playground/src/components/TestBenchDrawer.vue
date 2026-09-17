@@ -149,41 +149,41 @@ const parseDepName = (depUrl: string) => {
 
 <template>
   <div
-    class="flex flex-col border-t border-border bg-card transition-all duration-200 shadow-lg z-30"
+    class="border-border bg-card z-30 flex flex-col border-t shadow-lg transition-[height] duration-200"
     :class="[!isOpen ? 'h-11' : isMaximized ? 'h-[75vh]' : 'h-80 sm:h-88']"
   >
     <!-- Drawer Header Bar -->
     <div
-      class="flex h-11 shrink-0 items-center justify-between border-b border-border bg-muted/30 px-4 cursor-pointer select-none"
+      class="border-border bg-muted/30 flex h-11 shrink-0 cursor-pointer items-center justify-between border-b px-4 select-none"
       @click="emit('update:isOpen', !isOpen)"
     >
       <div class="flex items-center gap-3">
         <div class="flex items-center gap-2">
-          <Sliders class="size-4 text-primary" />
-          <span class="text-xs font-semibold tracking-tight text-foreground"
+          <Sliders class="text-primary size-4" />
+          <span class="text-foreground text-xs font-semibold tracking-tight"
             >Test Bench & Inspector</span
           >
         </div>
 
-        <div class="h-3 w-px bg-border" />
+        <div class="bg-border h-3 w-px" />
 
         <!-- Collapsed Summary Badges -->
         <div v-if="!isOpen" class="flex items-center gap-2">
           <span
             v-if="propsList.length"
-            class="rounded-md bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground"
+            class="bg-muted text-muted-foreground rounded-md px-2 py-0.5 font-mono text-xs"
           >
             {{ propsList.length }} props
           </span>
           <span
             v-if="files.length"
-            class="rounded-md bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground"
+            class="bg-muted text-muted-foreground rounded-md px-2 py-0.5 font-mono text-xs"
           >
             {{ files.length }} files
           </span>
           <span
             v-if="dependencies.length || registryDependencies.length"
-            class="rounded-md bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground"
+            class="bg-muted text-muted-foreground rounded-md px-2 py-0.5 font-mono text-xs"
           >
             {{ dependencies.length + registryDependencies.length }} deps
           </span>
@@ -205,7 +205,7 @@ const parseDepName = (depUrl: string) => {
             <span>Props & Workbench</span>
             <span
               v-if="propsList.length"
-              class="ml-1 rounded-full bg-muted px-1.5 py-0.5 font-mono text-xs"
+              class="bg-muted ml-1 rounded-full px-1.5 py-0.5 font-mono text-xs"
             >
               {{ propsList.length }}
             </span>
@@ -224,7 +224,7 @@ const parseDepName = (depUrl: string) => {
             <FileCode class="size-3.5" />
             <span>Source Files</span>
             <span
-              class="ml-1 rounded-full bg-muted px-1.5 py-0.5 font-mono text-xs"
+              class="bg-muted ml-1 rounded-full px-1.5 py-0.5 font-mono text-xs"
             >
               {{ files.length }}
             </span>
@@ -244,7 +244,7 @@ const parseDepName = (depUrl: string) => {
             <span>Dependencies</span>
             <span
               v-if="dependencies.length || registryDependencies.length"
-              class="ml-1 rounded-full bg-muted px-1.5 py-0.5 font-mono text-xs"
+              class="bg-muted ml-1 rounded-full px-1.5 py-0.5 font-mono text-xs"
             >
               {{ dependencies.length + registryDependencies.length }}
             </span>
@@ -264,7 +264,7 @@ const parseDepName = (depUrl: string) => {
             <span>Action Log</span>
             <span
               v-if="events.length"
-              class="ml-1 rounded-full bg-primary/10 text-primary px-1.5 py-0.5 font-mono text-xs"
+              class="bg-primary/10 text-primary ml-1 rounded-full px-1.5 py-0.5 font-mono text-xs"
             >
               {{ events.length }}
             </span>
@@ -277,7 +277,7 @@ const parseDepName = (depUrl: string) => {
         <button
           v-if="isOpen"
           type="button"
-          class="flex size-7 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-2xs"
+          class="border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted flex size-7 items-center justify-center rounded-md border shadow-2xs transition"
           @click="isMaximized = !isMaximized"
           :title="isMaximized ? 'Restore height' : 'Maximize test bench'"
         >
@@ -287,7 +287,7 @@ const parseDepName = (depUrl: string) => {
 
         <button
           type="button"
-          class="flex items-center gap-1 rounded-md px-2.5 py-1 text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition"
+          class="text-muted-foreground hover:text-foreground hover:bg-muted flex items-center gap-1 rounded-md px-2.5 py-1 text-xs transition"
           @click="emit('update:isOpen', !isOpen)"
         >
           <span>{{ isOpen ? "Collapse" : "Expand Inspector" }}</span>
@@ -298,11 +298,11 @@ const parseDepName = (depUrl: string) => {
     </div>
 
     <!-- Drawer Body -->
-    <div v-if="isOpen" class="flex-1 overflow-hidden bg-background">
+    <div v-if="isOpen" class="bg-background flex-1 overflow-hidden">
       <!-- 1. Props & Schema Tab -->
       <div
         v-if="activeTab === 'props'"
-        class="h-full overflow-y-auto p-4 sm:p-6 space-y-6"
+        class="h-full space-y-6 overflow-y-auto p-4 sm:p-6"
       >
         <!-- Interactive Workbench Control Card -->
         <div
@@ -311,20 +311,20 @@ const parseDepName = (depUrl: string) => {
               (p) => p.values?.length || p.type.includes('boolean'),
             )
           "
-          class="rounded-xl border border-border bg-card p-4 shadow-xs"
+          class="border-border bg-card rounded-xl border p-4 shadow-xs"
         >
           <div
-            class="flex items-center justify-between mb-3 border-b border-border pb-2"
+            class="border-border mb-3 flex items-center justify-between border-b pb-2"
           >
             <div class="flex items-center gap-2">
-              <Code2 class="size-4 text-primary" />
-              <h4 class="text-xs font-semibold text-foreground tracking-tight">
+              <Code2 class="text-primary size-4" />
+              <h4 class="text-foreground text-xs font-semibold tracking-tight">
                 Interactive Props Bench & Code Generator
               </h4>
             </div>
             <button
               type="button"
-              class="flex items-center gap-1.5 rounded-md border border-border bg-background px-2 py-1 text-xs font-mono text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs"
+              class="border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted flex items-center gap-1.5 rounded-md border px-2 py-1 font-mono text-xs shadow-xs transition"
               @click="copyGeneratedSnippet"
             >
               <Check v-if="copiedSnippet" class="size-3 text-emerald-500" />
@@ -334,7 +334,7 @@ const parseDepName = (depUrl: string) => {
           </div>
 
           <div
-            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4"
+            class="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4"
           >
             <!-- Render controls for each customizable prop -->
             <div
@@ -345,10 +345,10 @@ const parseDepName = (depUrl: string) => {
               class="space-y-1.5"
             >
               <label
-                class="text-xs font-mono font-medium text-foreground flex items-center justify-between"
+                class="text-foreground flex items-center justify-between font-mono text-xs font-medium"
               >
                 <span>{{ prop.name }}</span>
-                <span class="text-xs text-muted-foreground">{{
+                <span class="text-muted-foreground text-xs">{{
                   prop.required ? "required" : "optional"
                 }}</span>
               </label>
@@ -357,7 +357,7 @@ const parseDepName = (depUrl: string) => {
               <select
                 v-if="prop.values?.length"
                 v-model="interactiveValues[prop.name]"
-                class="w-full rounded-md border border-border bg-background px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary font-mono shadow-xs"
+                class="border-border bg-background text-foreground focus:ring-primary w-full rounded-md border px-2.5 py-1.5 font-mono text-xs shadow-xs focus:ring-1 focus:outline-none"
               >
                 <option v-for="val in prop.values" :key="val" :value="val">
                   {{ val }}
@@ -373,11 +373,11 @@ const parseDepName = (depUrl: string) => {
                   :id="`toggle-${prop.name}`"
                   v-model="interactiveValues[prop.name]"
                   type="checkbox"
-                  class="size-4 rounded border-border text-primary focus:ring-primary"
+                  class="border-border text-primary focus:ring-primary size-4 rounded"
                 />
                 <label
                   :for="`toggle-${prop.name}`"
-                  class="text-xs text-muted-foreground cursor-pointer select-none"
+                  class="text-muted-foreground cursor-pointer text-xs select-none"
                 >
                   {{ interactiveValues[prop.name] ? "Enabled" : "Disabled" }}
                 </label>
@@ -386,60 +386,60 @@ const parseDepName = (depUrl: string) => {
 
             <!-- Custom Slot Text input -->
             <div class="space-y-1.5">
-              <label class="text-xs font-mono font-medium text-foreground">
+              <label class="text-foreground font-mono text-xs font-medium">
                 Slot Children / Text
               </label>
               <input
                 v-model="customSlotText"
                 type="text"
                 placeholder="Button label..."
-                class="w-full rounded-md border border-border bg-background px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary shadow-xs"
+                class="border-border bg-background text-foreground focus:ring-primary w-full rounded-md border px-2.5 py-1.5 text-xs shadow-xs focus:ring-1 focus:outline-none"
               />
             </div>
           </div>
 
           <!-- Generated Code Preview -->
           <pre
-            class="code-block rounded-lg border border-border bg-muted/30 p-3 text-xs font-mono text-foreground overflow-x-auto leading-relaxed"
+            class="code-block border-border bg-muted/30 text-foreground overflow-x-auto rounded-lg border p-3 font-mono text-xs leading-relaxed"
           ><code>{{ generatedSnippet }}</code></pre>
         </div>
 
         <!-- Full Props Specification Table -->
         <div v-if="propsList.length > 0">
-          <div class="flex items-center justify-between mb-3">
-            <h4 class="text-xs font-semibold text-foreground tracking-tight">
+          <div class="mb-3 flex items-center justify-between">
+            <h4 class="text-foreground text-xs font-semibold tracking-tight">
               Component Props & Slots Specification
             </h4>
-            <span class="text-xs text-muted-foreground font-mono"
+            <span class="text-muted-foreground font-mono text-xs"
               >{{ propsList.length }} declared properties</span
             >
           </div>
 
-          <table class="w-full text-left text-xs border-collapse">
+          <table class="w-full border-collapse text-left text-xs">
             <thead>
-              <tr class="border-b border-border text-muted-foreground">
-                <th class="pb-2 font-medium font-mono">Prop</th>
-                <th class="pb-2 font-medium font-mono">Type</th>
-                <th class="pb-2 font-medium font-mono">Default</th>
-                <th class="pb-2 font-medium font-mono">Required</th>
+              <tr class="border-border text-muted-foreground border-b">
+                <th class="pb-2 font-mono font-medium">Prop</th>
+                <th class="pb-2 font-mono font-medium">Type</th>
+                <th class="pb-2 font-mono font-medium">Default</th>
+                <th class="pb-2 font-mono font-medium">Required</th>
                 <th class="pb-2 font-medium">Description</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-border/60">
+            <tbody class="divide-border/60 divide-y">
               <tr
                 v-for="prop in propsList"
                 :key="prop.name"
                 class="hover:bg-muted/20"
               >
-                <td class="py-2.5 font-mono font-medium text-foreground pr-3">
+                <td class="text-foreground py-2.5 pr-3 font-mono font-medium">
                   {{ prop.name }}
                 </td>
-                <td class="py-2.5 pr-3 font-mono text-muted-foreground">
-                  <span class="rounded bg-muted px-1.5 py-0.5 text-xs">
+                <td class="text-muted-foreground py-2.5 pr-3 font-mono">
+                  <span class="bg-muted rounded px-1.5 py-0.5 text-xs">
                     {{ prop.type }}
                   </span>
                 </td>
-                <td class="py-2.5 pr-3 font-mono text-muted-foreground">
+                <td class="text-muted-foreground py-2.5 pr-3 font-mono">
                   <span
                     v-if="prop.default"
                     class="text-foreground/80 font-medium"
@@ -449,12 +449,12 @@ const parseDepName = (depUrl: string) => {
                   <span v-else class="text-muted-foreground/40">—</span>
                 </td>
                 <td class="py-2.5 pr-3 font-mono text-xs">
-                  <span v-if="prop.required" class="text-rose-500 font-semibold"
+                  <span v-if="prop.required" class="font-semibold text-rose-500"
                     >Yes</span
                   >
                   <span v-else class="text-muted-foreground">No</span>
                 </td>
-                <td class="py-2.5 text-muted-foreground leading-relaxed">
+                <td class="text-muted-foreground py-2.5 leading-relaxed">
                   {{ prop.doc || "—" }}
                 </td>
               </tr>
@@ -462,7 +462,7 @@ const parseDepName = (depUrl: string) => {
           </table>
         </div>
 
-        <div v-else class="py-12 text-center text-xs text-muted-foreground">
+        <div v-else class="text-muted-foreground py-12 text-center text-xs">
           <p>No declared props extracted for this component.</p>
           <p class="mt-1 text-xs">
             This component may forward props directly to headless slots or
@@ -471,21 +471,21 @@ const parseDepName = (depUrl: string) => {
         </div>
 
         <!-- Exported Types / Schemas -->
-        <div v-if="typeDecls.length > 0" class="border-t border-border pt-4">
-          <h4 class="text-xs font-semibold text-foreground mb-3">
+        <div v-if="typeDecls.length > 0" class="border-border border-t pt-4">
+          <h4 class="text-foreground mb-3 text-xs font-semibold">
             Exported Types & Schemas
           </h4>
           <div class="space-y-3">
             <div
               v-for="decl in typeDecls"
               :key="decl.name"
-              class="rounded-lg border border-border bg-card p-3"
+              class="border-border bg-card rounded-lg border p-3"
             >
-              <div class="text-xs font-mono font-bold text-foreground mb-1.5">
+              <div class="text-foreground mb-1.5 font-mono text-xs font-bold">
                 {{ decl.name }}
               </div>
               <pre
-                class="code-block text-[11px] text-muted-foreground font-mono overflow-x-auto"
+                class="code-block text-muted-foreground overflow-x-auto font-mono text-[11px]"
               ><code>{{ decl.body }}</code></pre>
             </div>
           </div>
@@ -496,17 +496,17 @@ const parseDepName = (depUrl: string) => {
       <div v-else-if="activeTab === 'files'" class="flex h-full flex-col">
         <!-- File switcher pills -->
         <div
-          class="flex items-center justify-between border-b border-border bg-muted/20 px-4 py-2"
+          class="border-border bg-muted/20 flex items-center justify-between border-b px-4 py-2"
         >
           <div class="flex items-center gap-1.5 overflow-x-auto">
             <button
               v-for="(f, idx) in files"
               :key="f.path"
               type="button"
-              class="flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-mono transition"
+              class="flex items-center gap-1.5 rounded-md px-2.5 py-1 font-mono text-xs transition"
               :class="
                 selectedFileIdx === idx
-                  ? 'bg-card border border-border text-foreground shadow-xs font-medium'
+                  ? 'bg-card border-border text-foreground border font-medium shadow-xs'
                   : 'text-muted-foreground hover:text-foreground hover:bg-muted'
               "
               @click="selectedFileIdx = idx"
@@ -518,7 +518,7 @@ const parseDepName = (depUrl: string) => {
 
           <button
             type="button"
-            class="flex items-center gap-1.5 rounded-md border border-border bg-card px-2.5 py-1 text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs"
+            class="border-border bg-card text-muted-foreground hover:text-foreground hover:bg-muted flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs shadow-xs transition"
             @click="copyCurrentFile"
           >
             <Check v-if="copied" class="size-3 text-emerald-500" />
@@ -528,9 +528,9 @@ const parseDepName = (depUrl: string) => {
         </div>
 
         <!-- Code viewer -->
-        <div class="flex-1 overflow-y-auto p-4 bg-muted/10">
+        <div class="bg-muted/10 flex-1 overflow-y-auto p-4">
           <pre
-            class="code-block rounded-lg border border-border bg-card p-4 text-xs font-mono text-foreground overflow-x-auto leading-relaxed"
+            class="code-block border-border bg-card text-foreground overflow-x-auto rounded-lg border p-4 font-mono text-xs leading-relaxed"
           ><code>{{ currentFileContent || '// Content loading...' }}</code></pre>
         </div>
       </div>
@@ -540,16 +540,16 @@ const parseDepName = (depUrl: string) => {
         v-else-if="activeTab === 'manifest'"
         class="h-full overflow-y-auto p-5"
       >
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
           <!-- Left: Dependencies -->
           <div class="space-y-5">
             <div>
               <h4
-                class="text-xs font-semibold text-foreground mb-2 flex items-center gap-2"
+                class="text-foreground mb-2 flex items-center gap-2 text-xs font-semibold"
               >
                 <span>NPM Dependencies</span>
                 <span
-                  class="rounded bg-muted px-1.5 py-0.2 font-mono text-[10px]"
+                  class="bg-muted py-0.2 rounded px-1.5 font-mono text-[10px]"
                 >
                   {{ dependencies.length }}
                 </span>
@@ -561,23 +561,23 @@ const parseDepName = (depUrl: string) => {
                 <span
                   v-for="dep in dependencies"
                   :key="dep"
-                  class="rounded-md border border-border bg-card px-2 py-1 font-mono text-xs text-foreground"
+                  class="border-border bg-card text-foreground rounded-md border px-2 py-1 font-mono text-xs"
                 >
                   {{ dep }}
                 </span>
               </div>
-              <p v-else class="text-xs text-muted-foreground">
+              <p v-else class="text-muted-foreground text-xs">
                 No third-party npm packages required.
               </p>
             </div>
 
             <div>
               <h4
-                class="text-xs font-semibold text-foreground mb-2 flex items-center gap-2"
+                class="text-foreground mb-2 flex items-center gap-2 text-xs font-semibold"
               >
                 <span>Registry Dependencies</span>
                 <span
-                  class="rounded bg-muted px-1.5 py-0.2 font-mono text-[10px]"
+                  class="bg-muted py-0.2 rounded px-1.5 font-mono text-[10px]"
                 >
                   {{ registryDependencies.length }}
                 </span>
@@ -590,27 +590,27 @@ const parseDepName = (depUrl: string) => {
                   v-for="dep in registryDependencies"
                   :key="dep"
                   type="button"
-                  class="flex items-center gap-1 rounded-md border border-border bg-card px-2 py-1 font-mono text-xs text-foreground hover:bg-muted transition"
+                  class="border-border bg-card text-foreground hover:bg-muted flex items-center gap-1 rounded-md border px-2 py-1 font-mono text-xs transition"
                   @click="emit('selectComponent', parseDepName(dep))"
                 >
                   <span>@uipkge/{{ parseDepName(dep) }}</span>
                   <ExternalLink class="size-2.5 opacity-60" />
                 </button>
               </div>
-              <p v-else class="text-xs text-muted-foreground">
+              <p v-else class="text-muted-foreground text-xs">
                 No internal registry dependencies.
               </p>
             </div>
 
             <div>
-              <h4 class="text-xs font-semibold text-foreground mb-2">
+              <h4 class="text-foreground mb-2 text-xs font-semibold">
                 Target Installation Paths
               </h4>
               <div class="space-y-1">
                 <div
                   v-for="f in files"
                   :key="f.target"
-                  class="rounded border border-border/80 bg-muted/20 px-2.5 py-1.5 font-mono text-xs text-muted-foreground"
+                  class="border-border/80 bg-muted/20 text-muted-foreground rounded border px-2.5 py-1.5 font-mono text-xs"
                 >
                   {{ f.target }}
                 </div>
@@ -621,12 +621,12 @@ const parseDepName = (depUrl: string) => {
           <!-- Right: Manifest JSON Preview -->
           <div class="space-y-2">
             <div class="flex items-center justify-between">
-              <h4 class="text-xs font-semibold text-foreground">
+              <h4 class="text-foreground text-xs font-semibold">
                 Registry Item Manifest
               </h4>
               <button
                 type="button"
-                class="flex items-center gap-1 rounded-md border border-border bg-card px-2 py-0.5 text-[11px] text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs"
+                class="border-border bg-card text-muted-foreground hover:text-foreground hover:bg-muted flex items-center gap-1 rounded-md border px-2 py-0.5 text-[11px] shadow-xs transition"
                 @click="copyJsonManifest"
               >
                 <Check v-if="copied" class="size-3 text-emerald-500" />
@@ -635,7 +635,7 @@ const parseDepName = (depUrl: string) => {
               </button>
             </div>
             <pre
-              class="code-block rounded-lg border border-border bg-card p-3 text-[11px] font-mono text-foreground overflow-x-auto leading-relaxed"
+              class="code-block border-border bg-card text-foreground overflow-x-auto rounded-lg border p-3 font-mono text-[11px] leading-relaxed"
             ><code>{{ JSON.stringify({
   name: componentId,
   type: componentType,
@@ -650,15 +650,15 @@ const parseDepName = (depUrl: string) => {
       <!-- 4. Action & Event Logger Tab -->
       <div v-else-if="activeTab === 'events'" class="flex h-full flex-col">
         <div
-          class="flex items-center justify-between border-b border-border bg-muted/20 px-4 py-2"
+          class="border-border bg-muted/20 flex items-center justify-between border-b px-4 py-2"
         >
-          <div class="text-xs text-muted-foreground">
+          <div class="text-muted-foreground text-xs">
             Capturing user interactions dispatched from the live component
             canvas.
           </div>
           <button
             type="button"
-            class="flex items-center gap-1 rounded-md border border-border bg-card px-2 py-1 text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition shadow-xs"
+            class="border-border bg-card text-muted-foreground hover:text-foreground hover:bg-muted flex items-center gap-1 rounded-md border px-2 py-1 text-xs shadow-xs transition"
             @click="emit('clearEvents')"
           >
             <Trash2 class="size-3" />
@@ -666,18 +666,18 @@ const parseDepName = (depUrl: string) => {
           </button>
         </div>
 
-        <div class="flex-1 overflow-y-auto p-4 space-y-1.5 font-mono text-xs">
+        <div class="flex-1 space-y-1.5 overflow-y-auto p-4 font-mono text-xs">
           <div
             v-for="ev in events"
             :key="ev.id"
-            class="flex items-center justify-between rounded-md border border-border bg-card px-3 py-1.5"
+            class="border-border bg-card flex items-center justify-between rounded-md border px-3 py-1.5"
           >
             <div class="flex items-center gap-2.5">
               <span class="text-muted-foreground text-[11px]">{{
                 ev.timestamp
               }}</span>
               <span
-                class="rounded bg-primary/10 px-1.5 py-0.5 font-bold text-primary text-[10px] uppercase"
+                class="bg-primary/10 text-primary rounded px-1.5 py-0.5 text-[10px] font-bold uppercase"
               >
                 {{ ev.type }}
               </span>
@@ -685,7 +685,7 @@ const parseDepName = (depUrl: string) => {
             </div>
             <div
               v-if="ev.detail"
-              class="text-muted-foreground text-[11px] truncate max-w-xs"
+              class="text-muted-foreground max-w-xs truncate text-[11px]"
             >
               {{ ev.detail }}
             </div>
@@ -693,7 +693,7 @@ const parseDepName = (depUrl: string) => {
 
           <div
             v-if="events.length === 0"
-            class="py-12 text-center text-muted-foreground font-sans text-xs"
+            class="text-muted-foreground py-12 text-center font-sans text-xs"
           >
             No events logged yet. Interact with the component above (click,
             type, toggle) to see actions stream here!

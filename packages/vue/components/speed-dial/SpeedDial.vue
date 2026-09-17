@@ -133,7 +133,12 @@ const listClass = computed(() => {
           :aria-label="label || 'Quick actions'"
           :aria-expanded="open"
           aria-haspopup="menu"
-          :class="cn('transition-transform duration-200', open && 'rotate-45')"
+          :class="
+            cn(
+              'transition-[color,background-color,box-shadow,transform,scale,translate,rotate] duration-200',
+              open && 'rotate-45',
+            )
+          "
           @click="trigger === 'hover' ? $event.stopPropagation() : undefined"
         >
           <component :is="icon" v-if="icon" />

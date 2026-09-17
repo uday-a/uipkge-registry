@@ -11,6 +11,6 @@ export default defineRegistryItem({
     { path: "Clipboard.vue", target: "components/ui/clipboard/Clipboard.vue" },
     { path: "index.ts", target: "components/ui/clipboard/index.ts" },
   ],
-  dependencies: ["lucide-vue-next", "reka-ui"],
+  dependencies: ["lucide-vue-next"],
   registryDependencies: ["https://uipkge.dev/r/tooltip.json"],
 });

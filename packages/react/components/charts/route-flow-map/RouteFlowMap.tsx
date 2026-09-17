@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import {
   Map,
@@ -7,6 +9,7 @@ import {
   type MapVariant,
 } from "@/components/ui/map";
 import { cn } from "@/lib/utils";
+import { useChartTheme } from "../useChartTheme";
 import { Globe, Plane } from "lucide-react";
 
 export interface RouteHub {
@@ -72,6 +75,7 @@ export function RouteFlowMap({
     initialProjection,
   );
   const [hoveredHub, setHoveredHub] = React.useState<RouteHub | null>(null);
+  const theme = useChartTheme();
 
   const activeRouteId =
     controlledRoute !== undefined ? controlledRoute : internalRoute;
@@ -122,7 +126,7 @@ export function RouteFlowMap({
       "line-color": [
         "case",
         ["==", ["get", "id"], activeRouteId],
-        "#38bdf8",
+        theme.accentColor,
         ["get", "color"],
       ] as any,
       "line-width": [
@@ -133,7 +137,7 @@ export function RouteFlowMap({
       ] as any,
       "line-dasharray": [2, 2],
     }),
-    [activeRouteId],
+    [activeRouteId, theme.accentColor],
   );
 
   const activeRoute = React.useMemo(

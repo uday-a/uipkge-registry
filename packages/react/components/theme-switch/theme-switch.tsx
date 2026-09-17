@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { flushSync } from "react-dom";
 import { useTheme } from "next-themes";
 import {
   ChevronDown,
@@ -47,6 +48,65 @@ const VARIANT_OPTIONS: Record<Variant, Theme[]> = {
   switch: ["light", "dark"],
 };
 
+type ViewTransitionDocument = Document & {
+  startViewTransition?: (callback: () => unknown) => {
+    finished: Promise<void>;
+  };
+};
+
+/**
+ * Swap the theme inside a View Transition so the new theme wipes in as a
+ * circle growing from the control that was clicked. The keyframes live in
+ * tailwind.css behind `html[data-uipkge-theme-reveal]`, so this never
+ * hijacks a consumer's own view transitions.
+ *
+ * Falls back to a plain swap when `viewTransition` is off, the browser has no
+ * startViewTransition, or the user prefers reduced motion. The swap runs in
+ * flushSync because the API captures the DOM as soon as the callback returns.
+ */
+let revealing = false;
+
+async function withThemeReveal(
+  enabled: boolean,
+  event: React.MouseEvent | undefined,
+  swap: () => void,
+): Promise<void> {
+  const startViewTransition = (
+    document as ViewTransitionDocument
+  ).startViewTransition?.bind(document);
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+  if (!enabled || !startViewTransition || reduceMotion) {
+    swap();
+    return;
+  }
+  // The dropdown variant fires both onSelect and onClick; without this a
+  // second startViewTransition would abort the first mid-wipe.
+  if (revealing) return;
+  revealing = true;
+
+  const root = document.documentElement;
+  const x = event?.clientX ?? window.innerWidth / 2;
+  const y = event?.clientY ?? window.innerHeight / 2;
+  // Radius that still covers the farthest corner from the click.
+  const radius = Math.hypot(
+    Math.max(x, window.innerWidth - x),
+    Math.max(y, window.innerHeight - y),
+  );
+  root.style.setProperty("--uipkge-theme-x", `${x}px`);
+  root.style.setProperty("--uipkge-theme-y", `${y}px`);
+  root.style.setProperty("--uipkge-theme-r", `${radius}px`);
+  root.setAttribute("data-uipkge-theme-reveal", "");
+
+  try {
+    await startViewTransition(() => flushSync(swap)).finished;
+  } finally {
+    root.removeAttribute("data-uipkge-theme-reveal");
+    revealing = false;
+  }
+}
+
 export interface ThemeSwitchProps {
   /** Controlled value. When omitted, falls back to next-themes' `theme`. */
   value?: Theme;
@@ -54,12 +114,22 @@ export interface ThemeSwitchProps {
   variant?: Variant;
   title?: string;
   description?: string;
+  /** Wipe the new theme in from the clicked control. Ignored without View Transition support or with reduced motion. */
+  viewTransition?: boolean;
   className?: string;
 }
 
 const ThemeSwitch = React.forwardRef<HTMLDivElement, ThemeSwitchProps>(
   (
-    { value, onValueChange, variant = "cards", title, description, className },
+    {
+      value,
+      onValueChange,
+      variant = "cards",
+      title,
+      description,
+      viewTransition = true,
+      className,
+    },
     ref,
   ) => {
     const { theme, setTheme } = useTheme();
@@ -76,13 +146,15 @@ const ThemeSwitch = React.forwardRef<HTMLDivElement, ThemeSwitchProps>(
       transform: `translateX(calc(${activeIndex} * 100%))`,
     };
 
-    function set(t: Theme) {
-      if (onValueChange) onValueChange(t);
-      else setTheme(t);
+    function set(t: Theme, event?: React.MouseEvent) {
+      void withThemeReveal(viewTransition, event, () => {
+        if (onValueChange) onValueChange(t);
+        else setTheme(t);
+      });
     }
-    function cycle() {
+    function cycle(event?: React.MouseEvent) {
       const next = options[(activeIndex + 1) % options.length];
-      if (next) set(next);
+      if (next) set(next, event);
     }
 
     // Cards: full SectionCard with 3-button grid (default)
@@ -114,7 +186,7 @@ const ThemeSwitch = React.forwardRef<HTMLDivElement, ThemeSwitchProps>(
                       ? "border-primary ring-primary bg-primary/5 ring-1"
                       : "border-border hover:bg-muted/50",
                   ].join(" ")}
-                  onClick={() => set(t)}
+                  onClick={(e) => set(t, e)}
                 >
                   <Icon
                     className="text-muted-foreground mb-2 size-4"
@@ -158,7 +230,7 @@ const ThemeSwitch = React.forwardRef<HTMLDivElement, ThemeSwitchProps>(
                     ? "bg-primary text-primary-foreground"
                     : "text-muted-foreground hover:bg-muted hover:text-foreground",
                 ].join(" ")}
-                onClick={() => set(t)}
+                onClick={(e) => set(t, e)}
               >
                 <Icon className="size-4" aria-hidden="true" />
               </button>
@@ -216,7 +288,7 @@ const ThemeSwitch = React.forwardRef<HTMLDivElement, ThemeSwitchProps>(
                 <DropdownMenuItem
                   key={t}
                   onSelect={() => set(t)}
-                  onClick={() => set(t)}
+                  onClick={(e) => set(t, e)}
                 >
                   <Icon className="mr-2 size-4" aria-hidden="true" />
                   <span>{LABELS[t]}</span>
@@ -262,7 +334,7 @@ const ThemeSwitch = React.forwardRef<HTMLDivElement, ThemeSwitchProps>(
                     ? "text-primary-foreground"
                     : "text-muted-foreground hover:text-foreground",
                 ].join(" ")}
-                onClick={() => set(t)}
+                onClick={(e) => set(t, e)}
               >
                 <Icon className="size-3.5" aria-hidden="true" />
                 <span>{LABELS[t]}</span>
@@ -288,7 +360,7 @@ const ThemeSwitch = React.forwardRef<HTMLDivElement, ThemeSwitchProps>(
         ]
           .filter(Boolean)
           .join(" ")}
-        onClick={() => set(modelValue === "dark" ? "light" : "dark")}
+        onClick={(e) => set(modelValue === "dark" ? "light" : "dark", e)}
       >
         <Sun
           className={[

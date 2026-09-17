@@ -67,5 +67,5 @@ export default defineRegistryItem({
     { path: "index.ts", target: "components/ui/kanban/index.ts" },
   ],
   dependencies: ["class-variance-authority", "lucide-vue-next"],
-  registryDependencies: ["https://uipkge.dev/r/utils.json"],
+  registryDependencies: [],
 });

@@ -90,3 +90,18 @@ describe("Mentions", () => {
     w.unmount();
   });
 });
+
+describe("MentionTag", () => {
+  it('renders with data-slot="mention-tag"', async () => {
+    const { MentionTag } = await import("../index");
+    const w = mount(MentionTag, {
+      props: { name: "Sarah Connor", handle: "sarahc", trigger: "@" },
+      attachTo: document.body,
+    });
+    const el = w.find('[data-slot="mention-tag"]');
+    expect(el.exists()).toBe(true);
+    expect(el.text()).toContain("@");
+    expect(el.text()).toContain("Sarah Connor");
+    w.unmount();
+  });
+});

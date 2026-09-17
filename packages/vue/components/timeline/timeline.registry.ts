@@ -26,6 +26,10 @@ export default defineRegistryItem({
       target: "components/ui/timeline/TimelineContent.vue",
     },
     {
+      path: "TimelineHeader.vue",
+      target: "components/ui/timeline/TimelineHeader.vue",
+    },
+    {
       path: "TimelineTitle.vue",
       target: "components/ui/timeline/TimelineTitle.vue",
     },

@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
+import type { HTMLAttributes } from "vue";
+import { cn } from "@/lib/utils";
 
 interface Props {
-  class?: HTMLAttributes['class']
-  orientation?: 'horizontal' | 'vertical'
-  attached?: boolean
+  class?: HTMLAttributes["class"];
+  orientation?: "horizontal" | "vertical";
+  attached?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  orientation: 'horizontal',
+  orientation: "horizontal",
   attached: true,
-})
+});
 </script>
 
 <template>
@@ -34,9 +34,9 @@ const props = withDefaults(defineProps<Props>(), {
             '[&>[data-slot=button]:last-child]:rounded-r-md [&>button:last-child]:rounded-r-md',
             '[&>[data-slot=button]:only-child]:rounded-md [&>button:only-child]:rounded-md',
             '[&>[data-slot=button]:not(:first-child)]:-ml-px [&>button:not(:first-child)]:-ml-px',
-            '[&>[data-slot=button][data-variant=default]:not(:first-child)]:border-l [&>[data-slot=button][data-variant=default]:not(:first-child)]:border-primary-foreground/20',
-            '[&>[data-slot=button]:not([data-variant]):not(:first-child)]:border-l [&>[data-slot=button]:not([data-variant]):not(:first-child)]:border-primary-foreground/20',
-            '[&>[data-slot=button][data-variant=secondary]:not(:first-child)]:border-l [&>[data-slot=button][data-variant=secondary]:not(:first-child)]:border-border',
+            '[&>[data-slot=button][data-variant=default]:not(:first-child)]:border-primary-foreground/20 [&>[data-slot=button][data-variant=default]:not(:first-child)]:border-l',
+            '[&>[data-slot=button]:not([data-variant]):not(:first-child)]:border-primary-foreground/20 [&>[data-slot=button]:not([data-variant]):not(:first-child)]:border-l',
+            '[&>[data-slot=button][data-variant=secondary]:not(:first-child)]:border-border [&>[data-slot=button][data-variant=secondary]:not(:first-child)]:border-l',
             '[&>[data-slot=button][data-variant=destructive]:not(:first-child)]:border-l [&>[data-slot=button][data-variant=destructive]:not(:first-child)]:border-white/20',
           ],
           orientation === 'vertical' && [
@@ -45,9 +45,9 @@ const props = withDefaults(defineProps<Props>(), {
             '[&>[data-slot=button]:last-child]:rounded-b-md [&>button:last-child]:rounded-b-md',
             '[&>[data-slot=button]:only-child]:rounded-md [&>button:only-child]:rounded-md',
             '[&>[data-slot=button]:not(:first-child)]:-mt-px [&>button:not(:first-child)]:-mt-px',
-            '[&>[data-slot=button][data-variant=default]:not(:first-child)]:border-t [&>[data-slot=button][data-variant=default]:not(:first-child)]:border-primary-foreground/20',
-            '[&>[data-slot=button]:not([data-variant]):not(:first-child)]:border-t [&>[data-slot=button]:not([data-variant]):not(:first-child)]:border-primary-foreground/20',
-            '[&>[data-slot=button][data-variant=secondary]:not(:first-child)]:border-t [&>[data-slot=button][data-variant=secondary]:not(:first-child)]:border-border',
+            '[&>[data-slot=button][data-variant=default]:not(:first-child)]:border-primary-foreground/20 [&>[data-slot=button][data-variant=default]:not(:first-child)]:border-t',
+            '[&>[data-slot=button]:not([data-variant]):not(:first-child)]:border-primary-foreground/20 [&>[data-slot=button]:not([data-variant]):not(:first-child)]:border-t',
+            '[&>[data-slot=button][data-variant=secondary]:not(:first-child)]:border-border [&>[data-slot=button][data-variant=secondary]:not(:first-child)]:border-t',
             '[&>[data-slot=button][data-variant=destructive]:not(:first-child)]:border-t [&>[data-slot=button][data-variant=destructive]:not(:first-child)]:border-white/20',
           ],
         ],

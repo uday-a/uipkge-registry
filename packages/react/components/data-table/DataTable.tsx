@@ -1283,7 +1283,7 @@ function DataTableInner<TData, TValue>(
       {bulkActionPosition === "floating" && selectedRows.length > 0 && (
         <div
           data-slot="data-table-bulk-dock"
-          className="border-border/80 bg-background/95 text-foreground fixed bottom-4 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2.5 rounded-full border px-3.5 py-1.5 shadow-xl backdrop-blur-md transition-all select-none sm:absolute"
+          className="border-border/80 bg-background/95 text-foreground fixed bottom-4 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2.5 rounded-full border px-3.5 py-1.5 shadow-xl backdrop-blur-md select-none sm:absolute"
         >
           <span className="bg-primary/10 text-primary flex items-center gap-1 rounded-full px-2 py-0.5 font-mono text-xs font-semibold tabular-nums">
             {selectedRows.length} selected

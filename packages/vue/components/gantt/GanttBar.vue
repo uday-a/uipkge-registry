@@ -88,7 +88,7 @@ const progressColors: Record<string, string> = {
       :style="{ width: `${task.progress}%` }"
       :class="
         cn(
-          'absolute inset-y-0 left-0 transition-all',
+          'absolute inset-y-0 left-0 transition-[width]',
           progressColors[task.status ?? 'in-progress'],
         )
       "

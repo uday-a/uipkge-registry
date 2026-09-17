@@ -24,6 +24,8 @@ interface RegistryItemLike {
   description?: string;
   type: string;
   categories?: string[];
+  deprecated?: boolean | string;
+  replacedBy?: string;
   files: { path: string; target: string }[];
   dependencies?: string[];
   devDependencies?: string[];
@@ -67,6 +69,8 @@ interface BuiltItem {
   description?: string;
   type: string;
   categories?: string[];
+  deprecated?: boolean | string;
+  replacedBy?: string;
   files?: BuiltFile[];
   dependencies?: string[];
   devDependencies?: string[];
@@ -151,6 +155,10 @@ export async function buildRegistry(cfg: RegistryBuildConfig) {
     };
     if (item.description) out.description = item.description;
     if (item.categories?.length) out.categories = item.categories;
+    // Deprecation is informational only: the JSON keeps serving so existing
+    // install URLs never 404. The docs site badges these and links replacedBy.
+    if (item.deprecated !== undefined) out.deprecated = item.deprecated;
+    if (item.replacedBy) out.replacedBy = item.replacedBy;
     if (item.cssVars) out.cssVars = item.cssVars;
     if (item.css) out.css = item.css;
     if (item.tailwind) out.tailwind = item.tailwind;

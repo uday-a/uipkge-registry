@@ -1065,7 +1065,7 @@ export default function MapDemos() {
                   <button
                     key={s.id}
                     type="button"
-                    className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all ${
+                    className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
                       activeScope === s.id
                         ? "bg-primary text-primary-foreground font-semibold shadow-xs"
                         : "text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -1088,7 +1088,7 @@ export default function MapDemos() {
                   <button
                     key={opt.id}
                     type="button"
-                    className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all ${
+                    className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
                       activeVariant === opt.id
                         ? "bg-foreground text-background font-semibold shadow-xs"
                         : "text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -1621,7 +1621,7 @@ export default function MapDemos() {
       >
         <div className="relative overflow-hidden rounded-lg border shadow-xs">
           {/* Expandable Inline Overlay HUD (Top Left) */}
-          <div className="bg-background/90 border-border/80 pointer-events-auto absolute top-3 left-3 z-10 w-72 rounded-lg border p-3 shadow-md backdrop-blur-md transition-all duration-200">
+          <div className="bg-background/90 border-border/80 pointer-events-auto absolute top-3 left-3 z-10 w-72 rounded-lg border p-3 shadow-md backdrop-blur-md">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <Globe2 className="size-3.5 text-sky-500" />
@@ -1726,7 +1726,7 @@ export default function MapDemos() {
       >
         <div className="relative overflow-hidden rounded-lg border shadow-xs">
           {/* Expandable Inline Overlay HUD (Top Left) */}
-          <div className="bg-background/90 border-border/80 pointer-events-auto absolute top-3 left-3 z-10 w-72 rounded-lg border p-3 shadow-md backdrop-blur-md transition-all duration-200">
+          <div className="bg-background/90 border-border/80 pointer-events-auto absolute top-3 left-3 z-10 w-72 rounded-lg border p-3 shadow-md backdrop-blur-md">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <Boxes className="text-primary size-3.5" />

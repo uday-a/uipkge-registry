@@ -13,6 +13,6 @@ export default defineRegistryItem({
     },
     { path: "index.ts", target: "components/ui/toggle-group/index.ts" },
   ],
-  dependencies: ["class-variance-authority", "@radix-ui/react-toggle-group"],
-  registryDependencies: ["https://uipkge.dev/r/toggle.json"],
+  dependencies: ["@radix-ui/react-toggle-group"],
+  registryDependencies: [],
 });

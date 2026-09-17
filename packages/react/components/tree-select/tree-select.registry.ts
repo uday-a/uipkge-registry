@@ -22,11 +22,6 @@ export default defineRegistryItem({
     { path: "types.ts", target: "components/ui/tree-select/types.ts" },
     { path: "index.ts", target: "components/ui/tree-select/index.ts" },
   ],
-  dependencies: [
-    "lucide-react",
-    "@radix-ui/react-popover",
-    "@radix-ui/react-slot",
-    "class-variance-authority",
-  ],
+  dependencies: ["lucide-react", "class-variance-authority"],
   registryDependencies: ["https://uipkge.dev/r/popover.json"],
 });
