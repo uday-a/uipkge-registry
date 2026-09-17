@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Production & Dev builds
+dist/
+.vite/
+public/r/
+packages/*/public/r/
+registry.json
+packages/*/registry.json
+
+# Environment & Local overrides
+.env
+.env.local
+*.local
+
+# System files
+.DS_Store
+Thumbs.db

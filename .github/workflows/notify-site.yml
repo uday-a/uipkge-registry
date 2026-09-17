@@ -1,0 +1,23 @@
+name: Deploy Trigger
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  notify:
+    name: Notify Docs Site Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Cloudflare Pages / Site Webhook
+        env:
+          DEPLOY_HOOK: ${{ secrets.DEPLOY_HOOK_URL }}
+        run: |
+          if [ -n "$DEPLOY_HOOK" ]; then
+            echo "Triggering site deployment..."
+            curl -s -X POST "$DEPLOY_HOOK"
+            echo "Deployment webhook triggered successfully."
+          else
+            echo "DEPLOY_HOOK_URL secret is not set. Skipping webhook notification."
+          fi

@@ -1,0 +1,109 @@
+/* ══ Vertical (top-down) layout ══ */
+.org-v {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Vertical line from horizontal bar up to each child card */
+.org-v:not([data-root]) .org-v-card {
+  position: relative;
+  padding-top: 20px;
+}
+.org-v:not([data-root]) .org-v-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 20px;
+  background: var(--color-border, hsl(var(--border)));
+}
+
+.org-v-children {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Vertical line from parent down to the sibling bar */
+.org-v-line-down {
+  width: 1px;
+  height: 20px;
+  background: var(--color-border, hsl(var(--border)));
+}
+
+.org-v-children-row {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  position: relative;
+  padding-top: 20px;
+}
+
+/* Horizontal bar: spans from the center of the first child to the center
+   of the last child. We use a full-width bar with the first/last child
+   vertical lines connecting to it. The bar itself is positioned using
+   the half-width of the first and last cards (w-52 = 208px, half = 104px). */
+.org-v-line-across {
+  position: absolute;
+  top: 0;
+  left: 104px; /* half of w-52 (208px) — center of first child */
+  right: 104px; /* half of w-52 — center of last child */
+  height: 1px;
+  background: var(--color-border, hsl(var(--border)));
+}
+
+/* When single child, no horizontal bar needed — just the vertical line */
+.org-v-children-row[data-single] .org-v-line-across {
+  display: none;
+}
+
+/* ══ Horizontal (left-right) layout ══ */
+.org-h {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Horizontal line from parent to children column */
+.org-h-line-right {
+  width: 20px;
+  height: 1px;
+  background: var(--color-border, hsl(var(--border)));
+  margin-top: 40px;
+  flex-shrink: 0;
+}
+
+.org-h-children {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+}
+
+/* Vertical line connecting siblings in horizontal mode */
+.org-h-children::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 40px;
+  bottom: 40px;
+  width: 1px;
+  background: var(--color-border, hsl(var(--border)));
+}
+
+/* Horizontal line from vertical bar to each child */
+.org-h:not([data-root]) .org-h-card {
+  position: relative;
+  padding-left: 20px;
+}
+.org-h:not([data-root]) .org-h-card::before {
+  content: '';
+  position: absolute;
+  top: 40px;
+  left: 0;
+  width: 20px;
+  height: 1px;
+  background: var(--color-border, hsl(var(--border)));
+}

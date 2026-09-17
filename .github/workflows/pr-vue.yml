@@ -1,0 +1,40 @@
+name: Vue Checks
+
+on:
+  pull_request:
+    paths:
+      - 'packages/vue/**'
+      - 'packages/shared/**'
+      - 'package.json'
+  workflow_dispatch:
+
+concurrency:
+  group: pr-vue-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  vue-check:
+    name: Vue Registry Build, Verify & Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Build Vue registry
+        run: bun run build:vue
+
+      - name: Verify Vue registry
+        run: bun run verify:vue
+
+      - name: Test Vue
+        run: bun run test:vue

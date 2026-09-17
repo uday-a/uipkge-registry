@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/components/ui/*": ["components/*"],
+      "@/components/blocks/PaymentForm": ["blocks/payment-form/PaymentForm.tsx"],
+      "@/components/blocks/Sidebar05": ["blocks/sidebar-05/Sidebar05.tsx"],
+      "@/components/blocks/Sidebar06": ["blocks/sidebar-06/Sidebar06.tsx"],
+      "@/components/blocks/Sidebar07": ["blocks/sidebar-07/Sidebar07.tsx"],
+      "@/components/blocks/ThemeCustomize": ["blocks/theme-customize/ThemeCustomize.tsx"],
+      "@/components/blocks/*": ["blocks/*"],
+      "@/lib/utils": ["bootstrap/utils/utils.ts"],
+      "@/lib/use-kanban": ["bootstrap/use-kanban/useKanban.ts"],
+      "@/lib/use-board": ["bootstrap/use-board/useBoard.ts"],
+      "@/lib/use-month-grid": ["bootstrap/use-month-grid/useMonthGrid.ts"],
+      "@/lib/use-theme": ["bootstrap/use-theme/use-theme.ts"],
+      "@/lib/kanban-data": ["bootstrap/kanban-data/kanbanData.ts"],
+      "@/lib/*": ["bootstrap/*"],
+      "@/composables/*": ["bootstrap/*"],
+      "@/bootstrap/*": ["bootstrap/*"]
+    }
+  },
+  "include": ["components", "blocks", "bootstrap", "lib", "vitest.config.ts"],
+  // __tests__ are dev-only (vitest runs them); the typecheck gate covers
+  // shipped source that consumers copy into their projects.
+  "exclude": ["node_modules", "public", "**/__tests__"]
+}
