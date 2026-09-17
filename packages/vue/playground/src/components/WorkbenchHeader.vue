@@ -109,7 +109,7 @@ const copyCommand = async () => {
             Vue 3.5
           </span>
           <a
-            href="http://localhost:5174"
+            :href="'http://localhost:5174?c=' + componentId"
             target="_blank"
             class="hidden sm:inline-flex items-center rounded-md border border-border bg-muted/40 px-2 py-0.5 font-mono text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition"
             title="Open React 19 Playground on :5174"

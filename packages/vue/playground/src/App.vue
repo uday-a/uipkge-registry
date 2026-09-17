@@ -63,9 +63,27 @@ const items: SidebarItem[] = demoKeys
       categories: meta?.categories || [],
     };
   })
+  .filter(
+    (item) =>
+      item.type !== "registry:block" &&
+      item.category !== "Blocks" &&
+      !item.id.includes("dashboard-") &&
+      !item.id.includes("block-"),
+  )
   .sort((a, b) => a.name.localeCompare(b.name));
 
-const selectedId = ref("button");
+function getInitialComponent(): string {
+  if (typeof window !== "undefined") {
+    const params = new URLSearchParams(window.location.search);
+    const param = params.get("c") || params.get("component");
+    if (param && items.some((it) => it.id === param)) {
+      return param;
+    }
+  }
+  return items.some((it) => it.id === "button") ? "button" : items[0]?.id || "";
+}
+
+const selectedId = ref(getInitialComponent());
 const activeComponent = shallowRef<any>(null);
 const loading = ref(false);
 const remountKey = ref(0);
@@ -233,10 +251,27 @@ const loadComponent = async (id: string) => {
   }
 };
 
-// Watch selected component
+// Watch selected component & sync to URL query parameter
 watch(selectedId, (newId) => {
   loadComponent(newId);
+  if (typeof window !== "undefined") {
+    const url = new URL(window.location.href);
+    if (url.searchParams.get("c") !== newId) {
+      url.searchParams.set("c", newId);
+      url.searchParams.delete("component");
+      window.history.replaceState({ component: newId }, "", url.toString());
+    }
+  }
 });
+
+const handlePopState = () => {
+  if (typeof window === "undefined") return;
+  const params = new URLSearchParams(window.location.search);
+  const param = params.get("c") || params.get("component");
+  if (param && items.some((it) => it.id === param) && selectedId.value !== param) {
+    selectedId.value = param;
+  }
+};
 
 // Theme handlers
 const toggleTheme = () => {
@@ -293,12 +328,21 @@ const handleKeydown = (e: KeyboardEvent) => {
 
 // Event capture listeners on canvas
 onMounted(() => {
+  if (typeof window !== "undefined") {
+    const url = new URL(window.location.href);
+    if (!url.searchParams.has("c") && !url.searchParams.has("component")) {
+      url.searchParams.set("c", selectedId.value);
+      window.history.replaceState({ component: selectedId.value }, "", url.toString());
+    }
+  }
+
   if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
     isDark.value = true;
   }
   applyTheme();
   loadComponent(selectedId.value);
   window.addEventListener("keydown", handleKeydown);
+  window.addEventListener("popstate", handlePopState);
 
   const el = previewContainerRef.value;
   if (el) {
@@ -311,6 +355,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener("keydown", handleKeydown);
+  window.removeEventListener("popstate", handlePopState);
   const el = previewContainerRef.value;
   if (el) {
     el.removeEventListener("click", logEvent, { capture: true });
