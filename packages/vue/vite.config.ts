@@ -73,6 +73,15 @@ export default defineConfig({
         find: /^@\/bootstrap\/(.*)$/,
         replacement: path.join(root, 'bootstrap/$1'),
       },
+      // Demo compatibility aliases
+      {
+        find: /.*\/components\/story\/Story(\.vue)?$/,
+        replacement: path.join(root, 'playground/src/Story.vue'),
+      },
+      {
+        find: /^@vue-registry\/(.*)$/,
+        replacement: path.join(root, 'components/$1'),
+      },
     ],
   },
 })
