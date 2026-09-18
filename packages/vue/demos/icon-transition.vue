@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { Button } from "@/components/ui/button";
-import { IconTransition } from "@/components/ui/icon-transition";
+import { ref } from 'vue'
+import { Button } from '@/components/ui/button'
+import { IconTransition } from '@/components/ui/icon-transition'
 import {
   Bookmark,
   BookmarkCheck,
@@ -15,22 +15,20 @@ import {
   ThumbsUp,
   UserPlus,
   UserCheck,
-} from "lucide-vue-next";
+} from 'lucide-vue-next'
 
-const sampleUrl = "https://uipkge.dev/r/vue/button.json";
+const sampleUrl = 'https://uipkge.dev/r/vue/button.json'
 async function copySample() {
   try {
-    await navigator.clipboard?.writeText(sampleUrl);
-    return true;
+    await navigator.clipboard?.writeText(sampleUrl)
+    return true
   } catch {
-    return false;
+    return false
   }
 }
 
-const liked = ref(false);
-const bookmarkRef = ref<{ trigger: () => void; reset: () => void } | null>(
-  null,
-);
+const liked = ref(false)
+const bookmarkRef = ref<{ trigger: () => void; reset: () => void } | null>(null)
 </script>
 
 <template>
@@ -38,9 +36,7 @@ const bookmarkRef = ref<{ trigger: () => void; reset: () => void } | null>(
     title="Default — copy command"
     description="Standard copy button. Click runs the async action; on success the icon springs into the Check, then auto-reverts after 1.5s."
   >
-    <div
-      class="bg-muted/30 border-border flex items-center gap-3 rounded-lg border px-4 py-3 font-mono text-sm"
-    >
+    <div class="bg-muted/30 border-border flex items-center gap-3 rounded-lg border px-4 py-3 font-mono text-sm">
       <code class="min-w-0 flex-1 truncate">{{ sampleUrl }}</code>
       <IconTransition
         :default-icon="Copy"
@@ -58,11 +54,7 @@ const bookmarkRef = ref<{ trigger: () => void; reset: () => void } | null>(
     title="Externally controlled — like button"
     description="Pass `:active` to drive the icon swap from your own state, instead of using the built-in click handler. Useful when the parent already manages the toggle."
   >
-    <Button
-      variant="outline"
-      :class="liked ? 'text-rose-500' : ''"
-      @click="liked = !liked"
-    >
+    <Button variant="outline" :class="liked ? 'text-rose-500' : ''" @click="liked = !liked">
       <IconTransition
         as="span"
         :default-icon="Heart"
@@ -72,7 +64,7 @@ const bookmarkRef = ref<{ trigger: () => void; reset: () => void } | null>(
         icon-class="size-4"
         class="size-4"
       />
-      {{ liked ? "Liked" : "Like" }}
+      {{ liked ? 'Liked' : 'Like' }}
     </Button>
   </Story>
 
@@ -91,9 +83,7 @@ const bookmarkRef = ref<{ trigger: () => void; reset: () => void } | null>(
         active-label="Saved"
         class="border-border hover:bg-muted size-9 rounded-md border"
       />
-      <Button variant="ghost" size="sm" @click="bookmarkRef?.reset()"
-        >Reset</Button
-      >
+      <Button variant="ghost" size="sm" @click="bookmarkRef?.reset()">Reset</Button>
     </div>
   </Story>
 
@@ -160,9 +150,7 @@ const bookmarkRef = ref<{ trigger: () => void; reset: () => void } | null>(
         class="group bg-muted/30 border-border hover:border-primary/40 focus-visible:ring-ring inline-flex items-center gap-2 rounded-full border px-2.5 py-1.5 font-mono text-xs transition-colors focus-visible:ring-2 focus-visible:outline-none"
         @click="copySample"
       >
-        <span class="text-muted-foreground font-sans tracking-wider uppercase"
-          >add</span
-        >
+        <span class="text-muted-foreground font-sans tracking-wider uppercase">add</span>
         <span>{{ name }}</span>
         <IconTransition
           as="span"
@@ -174,8 +162,8 @@ const bookmarkRef = ref<{ trigger: () => void; reset: () => void } | null>(
       </button>
     </div>
     <p class="text-muted-foreground mt-2 text-xs">
-      Each chip is its own button; the IconTransition lives inside in
-      `as=&quot;span&quot;` mode and never receives clicks directly.
+      Each chip is its own button; the IconTransition lives inside in `as=&quot;span&quot;` mode and never receives
+      clicks directly.
     </p>
   </Story>
 </template>

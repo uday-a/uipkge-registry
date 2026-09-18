@@ -11,7 +11,7 @@
   padding-top: 20px;
 }
 .org-v:not([data-root]) .org-v-card::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 50%;
@@ -84,7 +84,7 @@
 
 /* Vertical line connecting siblings in horizontal mode */
 .org-h-children::before {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   top: 40px;
@@ -99,7 +99,7 @@
   padding-left: 20px;
 }
 .org-h:not([data-root]) .org-h-card::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 40px;
   left: 0;

@@ -1,5 +1,5 @@
-export { default as VerticalTabs } from "./VerticalTabs.vue";
-export { default as VerticalTabsList } from "./VerticalTabsList.vue";
-export { default as VerticalTabsSection } from "./VerticalTabsSection.vue";
-export { default as VerticalTabsTrigger } from "./VerticalTabsTrigger.vue";
-export { default as VerticalTabsContent } from "./VerticalTabsContent.vue";
+export { default as VerticalTabs } from './VerticalTabs.vue'
+export { default as VerticalTabsList } from './VerticalTabsList.vue'
+export { default as VerticalTabsSection } from './VerticalTabsSection.vue'
+export { default as VerticalTabsTrigger } from './VerticalTabsTrigger.vue'
+export { default as VerticalTabsContent } from './VerticalTabsContent.vue'

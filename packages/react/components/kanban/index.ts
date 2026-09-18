@@ -1,2 +1,2 @@
-export * from "./Kanban";
-export * from "./kanban.variants";
+export * from './Kanban'
+export * from './kanban.variants'

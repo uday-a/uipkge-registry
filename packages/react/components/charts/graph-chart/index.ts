@@ -1,1 +1,1 @@
-export { GraphChart, type GraphChartProps } from "./GraphChart";
+export { GraphChart, type GraphChartProps } from './GraphChart'

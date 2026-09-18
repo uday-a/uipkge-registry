@@ -1,1 +1,1 @@
-export { Watermark, type WatermarkProps } from "./Watermark";
+export { Watermark, type WatermarkProps } from './Watermark'

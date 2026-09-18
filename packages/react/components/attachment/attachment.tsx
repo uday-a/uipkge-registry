@@ -1,30 +1,17 @@
-import * as React from "react";
-import {
-  FileCode,
-  FileText,
-  Image as ImageIcon,
-  Loader2,
-  X,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
-import {
-  attachmentMediaVariants,
-  attachmentVariants,
-  type AttachmentVariants,
-} from "./attachment.variants";
+import * as React from 'react'
+import { FileCode, FileText, Image as ImageIcon, Loader2, X } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { attachmentMediaVariants, attachmentVariants, type AttachmentVariants } from './attachment.variants'
 
-export interface AttachmentProps
-  extends
-    Omit<React.HTMLAttributes<HTMLDivElement>, "title">,
-    AttachmentVariants {
-  title: string;
-  description?: string;
-  state?: "idle" | "uploading" | "processing" | "error" | "done";
-  media?: "file" | "image" | "code";
-  src?: string;
-  alt?: string;
-  removable?: boolean;
-  onRemove?: () => void;
+export interface AttachmentProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'>, AttachmentVariants {
+  title: string
+  description?: string
+  state?: 'idle' | 'uploading' | 'processing' | 'error' | 'done'
+  media?: 'file' | 'image' | 'code'
+  src?: string
+  alt?: string
+  removable?: boolean
+  onRemove?: () => void
 }
 
 const Attachment = React.forwardRef<HTMLDivElement, AttachmentProps>(
@@ -32,12 +19,12 @@ const Attachment = React.forwardRef<HTMLDivElement, AttachmentProps>(
     {
       title,
       description,
-      state = "done",
-      size = "default",
-      orientation = "horizontal",
-      media = "file",
+      state = 'done',
+      size = 'default',
+      orientation = 'horizontal',
+      media = 'file',
       src,
-      alt = "",
+      alt = '',
       removable = false,
       onRemove,
       className,
@@ -45,7 +32,7 @@ const Attachment = React.forwardRef<HTMLDivElement, AttachmentProps>(
     },
     ref,
   ) => {
-    const busy = state === "uploading" || state === "processing";
+    const busy = state === 'uploading' || state === 'processing'
     return (
       <div
         ref={ref}
@@ -57,44 +44,29 @@ const Attachment = React.forwardRef<HTMLDivElement, AttachmentProps>(
         className={cn(attachmentVariants({ size, orientation }), className)}
         {...props}
       >
-        <div
-          data-slot="attachment-media"
-          className={cn(attachmentMediaVariants({ size }))}
-        >
-          {src && media === "image" && !busy ? (
+        <div data-slot="attachment-media" className={cn(attachmentMediaVariants({ size }))}>
+          {src && media === 'image' && !busy ? (
             <img src={src} alt={alt} className="size-full object-cover" />
           ) : busy ? (
-            <Loader2
-              className="size-4 motion-safe:animate-spin"
-              aria-hidden="true"
-            />
-          ) : media === "code" ? (
+            <Loader2 className="size-4 motion-safe:animate-spin" aria-hidden="true" />
+          ) : media === 'code' ? (
             <FileCode aria-hidden="true" />
-          ) : media === "image" ? (
+          ) : media === 'image' ? (
             <ImageIcon aria-hidden="true" />
           ) : (
             <FileText aria-hidden="true" />
           )}
         </div>
-        <div
-          data-slot="attachment-content"
-          className="min-w-0 flex-1 leading-tight"
-        >
-          <span
-            data-slot="attachment-title"
-            className={cn(
-              "block truncate font-medium",
-              busy && "animate-pulse",
-            )}
-          >
+        <div data-slot="attachment-content" className="min-w-0 flex-1 leading-tight">
+          <span data-slot="attachment-title" className={cn('block truncate font-medium', busy && 'animate-pulse')}>
             {title}
           </span>
           {description ? (
             <span
               data-slot="attachment-description"
               className={cn(
-                "text-muted-foreground mt-0.5 block truncate text-xs",
-                state === "error" && "text-destructive/80",
+                'text-muted-foreground mt-0.5 block truncate text-xs',
+                state === 'error' && 'text-destructive/80',
               )}
             >
               {description}
@@ -113,9 +85,9 @@ const Attachment = React.forwardRef<HTMLDivElement, AttachmentProps>(
           </button>
         ) : null}
       </div>
-    );
+    )
   },
-);
-Attachment.displayName = "Attachment";
+)
+Attachment.displayName = 'Attachment'
 
-export { Attachment };
+export { Attachment }

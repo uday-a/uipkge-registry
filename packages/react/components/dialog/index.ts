@@ -9,4 +9,4 @@ export {
   DialogFooter,
   DialogTitle,
   DialogDescription,
-} from "./dialog";
+} from './dialog'

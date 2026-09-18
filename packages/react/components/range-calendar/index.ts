@@ -1,1 +1,1 @@
-export { RangeCalendar, type RangeCalendarProps } from "./RangeCalendar";
+export { RangeCalendar, type RangeCalendarProps } from './RangeCalendar'

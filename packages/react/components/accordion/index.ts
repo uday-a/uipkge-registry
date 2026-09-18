@@ -1,10 +1,4 @@
-export {
-  Accordion,
-  AccordionItem,
-  AccordionHeader,
-  AccordionTrigger,
-  AccordionContent,
-} from "./accordion";
+export { Accordion, AccordionItem, AccordionHeader, AccordionTrigger, AccordionContent } from './accordion'
 
 // Re-export variant API from the sibling file (kept separate to avoid an
 // import cycle and to give consumers a stable `accordionVariants` path).
@@ -15,4 +9,4 @@ export {
   type AccordionVariants,
   type AccordionItemVariants,
   type AccordionTriggerVariants,
-} from "./accordion.variants";
+} from './accordion.variants'

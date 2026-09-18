@@ -1,1 +1,1 @@
-export { default as ProgressRingChart } from "./ProgressRingChart.vue";
+export { default as ProgressRingChart } from './ProgressRingChart.vue'

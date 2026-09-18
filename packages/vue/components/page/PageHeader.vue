@@ -1,21 +1,16 @@
 <script setup lang="ts">
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils'
 
 defineProps<{
-  class?: string;
-}>();
+  class?: string
+}>()
 </script>
 
 <template>
   <div
     data-uipkge
     data-slot="page-header"
-    :class="
-      cn(
-        'flex flex-col justify-between gap-4 sm:flex-row sm:items-center',
-        $props.class,
-      )
-    "
+    :class="cn('flex flex-col justify-between gap-4 sm:flex-row sm:items-center', $props.class)"
   >
     <div class="flex-1">
       <slot />

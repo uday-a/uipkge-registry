@@ -1,1 +1,1 @@
-export { default as AreaChart } from "./AreaChart.vue";
+export { default as AreaChart } from './AreaChart.vue'

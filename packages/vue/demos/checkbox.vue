@@ -1,43 +1,37 @@
 <script setup lang="ts">
 // Astro's plain Vue has no Nuxt auto-import; pull reactivity APIs explicitly.
-import { ref, computed } from "vue";
+import { ref, computed } from 'vue'
 
-const checked = ref(true);
+const checked = ref(true)
 
 // Group with options
 const options = [
-  { label: "Apple", value: "apple" },
-  { label: "Pear", value: "pear" },
-  { label: "Orange", value: "orange", disabled: true },
-];
-const selectedOptions = ref<string[]>(["apple"]);
+  { label: 'Apple', value: 'apple' },
+  { label: 'Pear', value: 'pear' },
+  { label: 'Orange', value: 'orange', disabled: true },
+]
+const selectedOptions = ref<string[]>(['apple'])
 
 // Check all / Uncheck all
-const fruits = ["Apple", "Pear", "Orange"];
-const allFruits = fruits.map((f) => f.toLowerCase());
-const selectedFruits = ref<string[]>(["apple"]);
+const fruits = ['Apple', 'Pear', 'Orange']
+const allFruits = fruits.map((f) => f.toLowerCase())
+const selectedFruits = ref<string[]>(['apple'])
 
-const allChecked = computed(
-  () => selectedFruits.value.length === fruits.length,
-);
-const isIndeterminate = computed(
-  () =>
-    selectedFruits.value.length > 0 &&
-    selectedFruits.value.length < fruits.length,
-);
+const allChecked = computed(() => selectedFruits.value.length === fruits.length)
+const isIndeterminate = computed(() => selectedFruits.value.length > 0 && selectedFruits.value.length < fruits.length)
 
 function toggleAll() {
-  selectedFruits.value = allChecked.value ? [] : [...allFruits];
+  selectedFruits.value = allChecked.value ? [] : [...allFruits]
 }
 
 // Group disabled
-const disabledGroupValue = ref<string[]>(["b"]);
+const disabledGroupValue = ref<string[]>(['b'])
 
 // Group inline
-const inlineValue = ref<string[]>(["a", "c"]);
+const inlineValue = ref<string[]>(['a', 'c'])
 
 // Group with name
-const namedValue = ref<string[]>(["a"]);
+const namedValue = ref<string[]>(['a'])
 </script>
 
 <template>
@@ -82,21 +76,11 @@ const namedValue = ref<string[]>(["a"]);
     </div>
   </Story>
 
-  <Story
-    title="Group with options"
-    description="CheckboxGroup renders checkboxes from an options array."
-  >
-    <CheckboxGroup
-      v-model="selectedOptions"
-      :options="options"
-      label="Select fruits"
-    />
+  <Story title="Group with options" description="CheckboxGroup renders checkboxes from an options array.">
+    <CheckboxGroup v-model="selectedOptions" :options="options" label="Select fruits" />
   </Story>
 
-  <Story
-    title="Check all / Uncheck all"
-    description="Master checkbox controls all items with indeterminate state."
-  >
+  <Story title="Check all / Uncheck all" description="Master checkbox controls all items with indeterminate state.">
     <div class="space-y-2">
       <Checkbox
         :model-value="allChecked"
@@ -106,21 +90,13 @@ const namedValue = ref<string[]>(["a"]);
       />
       <div class="ml-6 space-y-2">
         <CheckboxGroup v-model="selectedFruits">
-          <Checkbox
-            v-for="fruit in fruits"
-            :key="fruit"
-            :value="fruit.toLowerCase()"
-            :label="fruit"
-          />
+          <Checkbox v-for="fruit in fruits" :key="fruit" :value="fruit.toLowerCase()" :label="fruit" />
         </CheckboxGroup>
       </div>
     </div>
   </Story>
 
-  <Story
-    title="Group disabled"
-    description="Disabled group prevents interaction with all checkboxes."
-  >
+  <Story title="Group disabled" description="Disabled group prevents interaction with all checkboxes.">
     <CheckboxGroup
       v-model="disabledGroupValue"
       disabled
@@ -133,10 +109,7 @@ const namedValue = ref<string[]>(["a"]);
     />
   </Story>
 
-  <Story
-    title="Group inline layout"
-    description="Horizontal arrangement with the inline prop."
-  >
+  <Story title="Group inline layout" description="Horizontal arrangement with the inline prop.">
     <CheckboxGroup
       v-model="inlineValue"
       inline
@@ -148,10 +121,7 @@ const namedValue = ref<string[]>(["a"]);
     />
   </Story>
 
-  <Story
-    title="Group with name"
-    description="Name attribute for form submission."
-  >
+  <Story title="Group with name" description="Name attribute for form submission.">
     <CheckboxGroup
       v-model="namedValue"
       name="my-checkbox-group"

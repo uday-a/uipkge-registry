@@ -1,23 +1,17 @@
-import { useState } from "react";
-import Story from "../../components/story/Story";
-import { PasswordInput } from "@react-registry/password-input";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@react-registry/card";
-import { Button } from "@react-registry/button";
+import { useState } from 'react'
+import Story from '../../components/story/Story'
+import { PasswordInput } from '@react-registry/password-input'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@react-registry/card'
+import { Button } from '@react-registry/button'
 
 export default function PasswordInputDemo() {
-  const [signupValue, setSignupValue] = useState("");
-  const [loginValue, setLoginValue] = useState("");
-  const [smValue, setSmValue] = useState("");
-  const [lgValue, setLgValue] = useState("");
-  const [filledValue, setFilledValue] = useState("");
-  const [borderlessValue, setBorderlessValue] = useState("");
-  const [readonlyValue, setReadonlyValue] = useState("s3cr3t-k3y");
+  const [signupValue, setSignupValue] = useState('')
+  const [loginValue, setLoginValue] = useState('')
+  const [smValue, setSmValue] = useState('')
+  const [lgValue, setLgValue] = useState('')
+  const [filledValue, setFilledValue] = useState('')
+  const [borderlessValue, setBorderlessValue] = useState('')
+  const [readonlyValue, setReadonlyValue] = useState('s3cr3t-k3y')
 
   return (
     <>
@@ -35,9 +29,7 @@ export default function PasswordInputDemo() {
             className="w-full"
           />
           <p className="text-muted-foreground text-xs">
-            {signupValue
-              ? `${signupValue.length} characters entered`
-              : "Start typing to see strength feedback"}
+            {signupValue ? `${signupValue.length} characters entered` : 'Start typing to see strength feedback'}
           </p>
         </div>
       </Story>
@@ -109,11 +101,7 @@ export default function PasswordInputDemo() {
         description="Hide the eye button for fields where revealing is not allowed, e.g. compliance-controlled inputs."
       >
         <div className="max-w-md">
-          <PasswordInput
-            showToggle={false}
-            placeholder="Enter password..."
-            className="w-full"
-          />
+          <PasswordInput showToggle={false} placeholder="Enter password..." className="w-full" />
         </div>
       </Story>
 
@@ -124,9 +112,7 @@ export default function PasswordInputDemo() {
         <Card className="max-w-md">
           <CardHeader>
             <CardTitle>Welcome back</CardTitle>
-            <CardDescription>
-              Enter your credentials to access your account.
-            </CardDescription>
+            <CardDescription>Enter your credentials to access your account.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
@@ -148,13 +134,11 @@ export default function PasswordInputDemo() {
             </div>
             <Button className="w-full">Sign in</Button>
             <p className="text-muted-foreground text-center text-xs">
-              {loginValue
-                ? `Password length: ${loginValue.length}`
-                : "No password entered"}
+              {loginValue ? `Password length: ${loginValue.length}` : 'No password entered'}
             </p>
           </CardContent>
         </Card>
       </Story>
     </>
-  );
+  )
 }

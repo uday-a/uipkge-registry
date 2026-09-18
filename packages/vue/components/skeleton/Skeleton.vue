@@ -1,46 +1,38 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import type { HTMLAttributes } from "vue";
-import { cn } from "@/lib/utils";
+import { computed } from 'vue'
+import type { HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils'
 
 interface Props {
-  class?: HTMLAttributes["class"];
-  variant?:
-    | "rectangular"
-    | "rounded"
-    | "circular"
-    | "text"
-    | "avatar"
-    | "image"
-    | "card"
-    | "table-row";
-  width?: string;
-  height?: string;
-  loading?: boolean;
+  class?: HTMLAttributes['class']
+  variant?: 'rectangular' | 'rounded' | 'circular' | 'text' | 'avatar' | 'image' | 'card' | 'table-row'
+  width?: string
+  height?: string
+  loading?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  variant: "rectangular",
+  variant: 'rectangular',
   loading: true,
-});
+})
 
 const variantClasses = {
-  rectangular: "",
-  rounded: "rounded-md",
-  circular: "rounded-full",
-  text: "rounded h-4 w-full",
-  avatar: "rounded-full size-10",
-  image: "rounded-lg size-24",
-  card: "rounded-xl size-full min-h-30",
-  "table-row": "rounded h-10 w-full",
-};
+  rectangular: '',
+  rounded: 'rounded-md',
+  circular: 'rounded-full',
+  text: 'rounded h-4 w-full',
+  avatar: 'rounded-full size-10',
+  image: 'rounded-lg size-24',
+  card: 'rounded-xl size-full min-h-30',
+  'table-row': 'rounded h-10 w-full',
+}
 
 const variantStyles = computed(() => {
-  const base: Record<string, string> = {};
-  if (props.width) base.width = props.width;
-  if (props.height) base.height = props.height;
-  return Object.keys(base).length > 0 ? base : undefined;
-});
+  const base: Record<string, string> = {}
+  if (props.width) base.width = props.width
+  if (props.height) base.height = props.height
+  return Object.keys(base).length > 0 ? base : undefined
+})
 </script>
 
 <template>
@@ -49,13 +41,7 @@ const variantStyles = computed(() => {
     data-uipkge
     data-slot="skeleton"
     aria-hidden="true"
-    :class="
-      cn(
-        'skeleton-shimmer',
-        variantClasses[variant || 'rectangular'],
-        props.class,
-      )
-    "
+    :class="cn('skeleton-shimmer', variantClasses[variant || 'rectangular'], props.class)"
     :style="variantStyles"
   />
   <slot v-else />

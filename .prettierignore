@@ -1,0 +1,22 @@
+node_modules
+dist
+.astro
+.output
+.nuxt
+.wrangler
+coverage
+.playwright-mcp
+bun.lock
+package-lock.json
+
+# generated registry artifacts — build output, not hand-formatted source
+**/public/r/**
+packages/registry-vue/registry.json
+packages/registry-react/registry.json
+
+# generated i18n catalog chunks keep their own canonical ordering
+src/i18n/locales/*/registry.json
+apps/astro-site/src/i18n/locales/*/registry.json
+
+*.png
+*.log

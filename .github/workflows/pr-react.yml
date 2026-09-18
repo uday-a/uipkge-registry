@@ -3,9 +3,9 @@ name: React Checks
 on:
   pull_request:
     paths:
-      - "packages/react/**"
-      - "packages/shared/**"
-      - "package.json"
+      - 'packages/react/**'
+      - 'packages/shared/**'
+      - 'package.json'
   workflow_dispatch:
 
 concurrency:

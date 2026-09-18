@@ -1,1 +1,1 @@
-export { default as HeikinAshiChart } from "./HeikinAshiChart.vue";
+export { default as HeikinAshiChart } from './HeikinAshiChart.vue'

@@ -1,76 +1,62 @@
-"use client";
+'use client'
 
-import * as React from "react";
-import {
-  Check,
-  ChevronDown,
-  ChevronRight,
-  Loader2,
-  Search,
-  X,
-} from "lucide-react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import type { CascadeOption } from "./types";
+import * as React from 'react'
+import { Check, ChevronDown, ChevronRight, Loader2, Search, X } from 'lucide-react'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { cn } from '@/lib/utils'
+import type { CascadeOption } from './types'
 
 export interface CascadeSelectProps {
-  value?: string[] | null;
-  defaultValue?: string[] | null;
-  onValueChange?: (value: string[] | null) => void;
-  onChange?: (value: string[] | null, path: CascadeOption[]) => void;
-  onClear?: () => void;
-  options: CascadeOption[];
-  placeholder?: string;
-  searchable?: boolean;
-  clearable?: boolean;
-  disabled?: boolean;
-  loading?: boolean;
-  size?: "sm" | "default" | "lg";
-  separator?: string;
-  searchPlaceholder?: string;
-  emptyText?: string;
-  className?: string;
+  value?: string[] | null
+  defaultValue?: string[] | null
+  onValueChange?: (value: string[] | null) => void
+  onChange?: (value: string[] | null, path: CascadeOption[]) => void
+  onClear?: () => void
+  options: CascadeOption[]
+  placeholder?: string
+  searchable?: boolean
+  clearable?: boolean
+  disabled?: boolean
+  loading?: boolean
+  size?: 'sm' | 'default' | 'lg'
+  separator?: string
+  searchPlaceholder?: string
+  emptyText?: string
+  className?: string
 }
 
 function findPathIndices(options: CascadeOption[], values: string[]): number[] {
-  const indices: number[] = [];
-  let current = options;
+  const indices: number[] = []
+  let current = options
   for (const val of values) {
-    const idx = current.findIndex((o) => o.value === val);
-    if (idx === -1) return indices;
-    indices.push(idx);
-    const next = current[idx].children;
-    if (!next?.length) break;
-    current = next;
+    const idx = current.findIndex((o) => o.value === val)
+    if (idx === -1) return indices
+    indices.push(idx)
+    const next = current[idx].children
+    if (!next?.length) break
+    current = next
   }
-  return indices;
+  return indices
 }
 
-function buildPathFromIndices(
-  options: CascadeOption[],
-  indices: number[],
-): CascadeOption[] {
-  const path: CascadeOption[] = [];
-  let current = options;
+function buildPathFromIndices(options: CascadeOption[], indices: number[]): CascadeOption[] {
+  const path: CascadeOption[] = []
+  let current = options
   for (const idx of indices) {
-    if (idx == null || !current[idx]) break;
-    const opt = current[idx];
-    path.push(opt);
-    if (!opt.children?.length) break;
-    current = opt.children;
+    if (idx == null || !current[idx]) break
+    const opt = current[idx]
+    path.push(opt)
+    if (!opt.children?.length) break
+    current = opt.children
   }
-  return path;
+  return path
 }
 
 const sizeClasses = {
-  sm: "h-8 text-xs px-2.5",
-  default: "h-9 text-sm px-3",
-  lg: "h-11 text-base px-4",
-};
+  sm: 'h-8 text-xs px-2.5',
+  default: 'h-9 text-sm px-3',
+  lg: 'h-11 text-base px-4',
+}
 
 const CascadeSelect = React.forwardRef<HTMLButtonElement, CascadeSelectProps>(
   (
@@ -81,163 +67,145 @@ const CascadeSelect = React.forwardRef<HTMLButtonElement, CascadeSelectProps>(
       onChange,
       onClear,
       options,
-      placeholder = "Select...",
+      placeholder = 'Select...',
       searchable = true,
       clearable = true,
       disabled = false,
       loading = false,
-      size = "default",
-      separator = " / ",
-      searchPlaceholder = "Search...",
-      emptyText = "No options.",
+      size = 'default',
+      separator = ' / ',
+      searchPlaceholder = 'Search...',
+      emptyText = 'No options.',
       className,
     },
     ref,
   ) => {
-    const isControlled = modelValue !== undefined;
-    const [internalValue, setInternalValue] = React.useState<string[] | null>(
-      defaultValue,
-    );
-    const currentValue = isControlled ? modelValue : internalValue;
+    const isControlled = modelValue !== undefined
+    const [internalValue, setInternalValue] = React.useState<string[] | null>(defaultValue)
+    const currentValue = isControlled ? modelValue : internalValue
 
-    const [isOpen, setIsOpen] = React.useState(false);
-    const [activePath, setActivePath] = React.useState<number[]>([]);
-    const [search, setSearch] = React.useState("");
+    const [isOpen, setIsOpen] = React.useState(false)
+    const [activePath, setActivePath] = React.useState<number[]>([])
+    const [search, setSearch] = React.useState('')
 
     // Sync active path with value when opened
     React.useEffect(() => {
       if (isOpen && currentValue?.length) {
-        setActivePath(findPathIndices(options, currentValue));
+        setActivePath(findPathIndices(options, currentValue))
       } else if (isOpen) {
-        setActivePath([]);
+        setActivePath([])
       }
-      if (!isOpen) setSearch("");
+      if (!isOpen) setSearch('')
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isOpen]);
+    }, [isOpen])
 
     function commitValue(values: string[] | null, path: CascadeOption[]) {
-      if (!isControlled) setInternalValue(values);
-      onValueChange?.(values);
-      onChange?.(values, path);
+      if (!isControlled) setInternalValue(values)
+      onValueChange?.(values)
+      onChange?.(values, path)
     }
 
     function getOptionsAtLevel(level: number): CascadeOption[] {
-      let current = options;
+      let current = options
       for (let i = 0; i < level; i++) {
-        const idx = activePath[i];
-        if (idx == null || !current[idx]?.children?.length) return [];
-        current = current[idx].children!;
+        const idx = activePath[i]
+        if (idx == null || !current[idx]?.children?.length) return []
+        current = current[idx].children!
       }
-      return current;
+      return current
     }
 
     function selectAtLevel(level: number, index: number) {
-      const option = getOptionsAtLevel(level)[index];
-      if (option?.disabled) return;
-      const next = [...activePath];
-      next[level] = index;
-      next.splice(level + 1);
-      setActivePath(next);
+      const option = getOptionsAtLevel(level)[index]
+      if (option?.disabled) return
+      const next = [...activePath]
+      next[level] = index
+      next.splice(level + 1)
+      setActivePath(next)
 
       // If leaf node, emit the value
       if (!option?.children?.length) {
-        const path = buildPathFromIndices(options, next);
-        const values = path.map((p) => p.value);
-        commitValue(values, path);
-        setIsOpen(false);
+        const path = buildPathFromIndices(options, next)
+        const values = path.map((p) => p.value)
+        commitValue(values, path)
+        setIsOpen(false)
       }
     }
 
     const selectedPath = React.useMemo<CascadeOption[]>(() => {
-      if (!currentValue?.length) return [];
-      return buildPathFromIndices(
-        options,
-        findPathIndices(options, currentValue),
-      );
-    }, [currentValue, options]);
+      if (!currentValue?.length) return []
+      return buildPathFromIndices(options, findPathIndices(options, currentValue))
+    }, [currentValue, options])
 
     const displayLabel = React.useMemo(() => {
-      if (selectedPath.length === 0) return placeholder;
-      return selectedPath.map((p) => p.label).join(separator);
-    }, [selectedPath, placeholder, separator]);
+      if (selectedPath.length === 0) return placeholder
+      return selectedPath.map((p) => p.label).join(separator)
+    }, [selectedPath, placeholder, separator])
 
-    const hasValue = selectedPath.length > 0;
+    const hasValue = selectedPath.length > 0
 
     function clearAll(event?: React.MouseEvent | React.KeyboardEvent) {
-      event?.stopPropagation();
-      if (disabled) return;
-      onClear?.();
-      commitValue(null, []);
-      setActivePath([]);
+      event?.stopPropagation()
+      if (disabled) return
+      onClear?.()
+      commitValue(null, [])
+      setActivePath([])
     }
 
     function onTriggerKeyDown(e: React.KeyboardEvent<HTMLButtonElement>) {
       // Escape clears when closed (open Escape is handled by Popover).
       // Replaces the old nested clear button for keyboard users.
-      if (e.key === "Escape" && !isOpen && clearable && hasValue && !disabled) {
-        e.preventDefault();
-        clearAll(e);
+      if (e.key === 'Escape' && !isOpen && clearable && hasValue && !disabled) {
+        e.preventDefault()
+        clearAll(e)
       }
     }
 
     // Search: flatten the tree and match
-    const searchResults = React.useMemo<
-      { path: CascadeOption[]; values: string[] }[] | null
-    >(() => {
-      const q = search.trim().toLowerCase();
-      if (!q) return null;
-      const results: { path: CascadeOption[]; values: string[] }[] = [];
-      const walk = (
-        opts: CascadeOption[],
-        path: CascadeOption[],
-        values: string[],
-      ) => {
+    const searchResults = React.useMemo<{ path: CascadeOption[]; values: string[] }[] | null>(() => {
+      const q = search.trim().toLowerCase()
+      if (!q) return null
+      const results: { path: CascadeOption[]; values: string[] }[] = []
+      const walk = (opts: CascadeOption[], path: CascadeOption[], values: string[]) => {
         for (const opt of opts) {
-          const newPath = [...path, opt];
-          const newValues = [...values, opt.value];
+          const newPath = [...path, opt]
+          const newValues = [...values, opt.value]
           if (opt.label.toLowerCase().includes(q) && !opt.children?.length) {
-            results.push({ path: newPath, values: newValues });
+            results.push({ path: newPath, values: newValues })
           }
           if (opt.children?.length) {
-            walk(opt.children, newPath, newValues);
+            walk(opt.children, newPath, newValues)
           }
         }
-      };
-      walk(options, [], []);
-      return results;
-    }, [search, options]);
+      }
+      walk(options, [], [])
+      return results
+    }, [search, options])
 
-    function selectSearchResult(result: {
-      path: CascadeOption[];
-      values: string[];
-    }) {
-      commitValue(result.values, result.path);
-      setIsOpen(false);
-      setSearch("");
+    function selectSearchResult(result: { path: CascadeOption[]; values: string[] }) {
+      commitValue(result.values, result.path)
+      setIsOpen(false)
+      setSearch('')
     }
 
-    const levels = React.useMemo<
-      { options: CascadeOption[]; level: number }[]
-    >(() => {
-      const result: { options: CascadeOption[]; level: number }[] = [
-        { options, level: 0 },
-      ];
+    const levels = React.useMemo<{ options: CascadeOption[]; level: number }[]>(() => {
+      const result: { options: CascadeOption[]; level: number }[] = [{ options, level: 0 }]
       for (let i = 0; i < activePath.length; i++) {
-        const idx = activePath[i];
-        const current = result[i].options;
-        if (idx == null || !current[idx]?.children?.length) break;
-        result.push({ options: current[idx].children!, level: i + 1 });
+        const idx = activePath[i]
+        const current = result[i].options
+        if (idx == null || !current[idx]?.children?.length) break
+        result.push({ options: current[idx].children!, level: i + 1 })
       }
-      return result;
-    }, [activePath, options]);
+      return result
+    }, [activePath, options])
 
     const triggerClasses = cn(
-      "flex w-full items-center justify-between gap-2 rounded-md border border-input bg-transparent text-sm shadow-xs transition-[color,box-shadow] outline-none",
-      "hover:border-ring/50 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
-      "disabled:cursor-not-allowed disabled:opacity-50",
+      'flex w-full items-center justify-between gap-2 rounded-md border border-input bg-transparent text-sm shadow-xs transition-[color,box-shadow] outline-none',
+      'hover:border-ring/50 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
+      'disabled:cursor-not-allowed disabled:opacity-50',
       sizeClasses[size],
       className,
-    );
+    )
 
     return (
       <Popover open={isOpen} onOpenChange={setIsOpen}>
@@ -254,12 +222,7 @@ const CascadeSelect = React.forwardRef<HTMLButtonElement, CascadeSelectProps>(
             className={triggerClasses}
             onKeyDown={onTriggerKeyDown}
           >
-            <span
-              className={cn(
-                "flex-1 truncate text-left",
-                hasValue ? "text-foreground" : "text-muted-foreground",
-              )}
-            >
+            <span className={cn('flex-1 truncate text-left', hasValue ? 'text-foreground' : 'text-muted-foreground')}>
               {displayLabel}
             </span>
             <span className="flex shrink-0 items-center gap-1">
@@ -278,8 +241,8 @@ const CascadeSelect = React.forwardRef<HTMLButtonElement, CascadeSelectProps>(
               ) : (
                 <ChevronDown
                   className={cn(
-                    "text-muted-foreground size-4 shrink-0 transition-transform duration-200",
-                    isOpen && "rotate-180",
+                    'text-muted-foreground size-4 shrink-0 transition-transform duration-200',
+                    isOpen && 'rotate-180',
                   )}
                 />
               )}
@@ -291,7 +254,7 @@ const CascadeSelect = React.forwardRef<HTMLButtonElement, CascadeSelectProps>(
           className="p-0"
           align="start"
           sideOffset={4}
-          style={{ width: "var(--radix-popover-trigger-width)" }}
+          style={{ width: 'var(--radix-popover-trigger-width)' }}
         >
           <div className="flex max-h-80 flex-col">
             {searchable && (
@@ -317,9 +280,7 @@ const CascadeSelect = React.forwardRef<HTMLButtonElement, CascadeSelectProps>(
             ) : searchResults ? (
               <div className="flex-1 overflow-y-auto p-1">
                 {searchResults.length === 0 ? (
-                  <div className="text-muted-foreground py-6 text-center text-sm">
-                    {emptyText}
-                  </div>
+                  <div className="text-muted-foreground py-6 text-center text-sm">{emptyText}</div>
                 ) : (
                   searchResults.map((result, i) => (
                     <button
@@ -328,9 +289,7 @@ const CascadeSelect = React.forwardRef<HTMLButtonElement, CascadeSelectProps>(
                       className="hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring/50 flex w-full items-center gap-1.5 rounded-sm px-2 py-1.5 text-left text-sm outline-none focus-visible:ring-2 focus-visible:outline-none"
                       onClick={() => selectSearchResult(result)}
                     >
-                      <span className="flex-1 truncate">
-                        {result.path.map((p) => p.label).join(separator)}
-                      </span>
+                      <span className="flex-1 truncate">{result.path.map((p) => p.label).join(separator)}</span>
                     </button>
                   ))
                 )}
@@ -348,17 +307,15 @@ const CascadeSelect = React.forwardRef<HTMLButtonElement, CascadeSelectProps>(
                         type="button"
                         disabled={opt.disabled}
                         className={cn(
-                          "flex w-full items-center justify-between gap-1.5 rounded-sm px-2 py-1.5 text-left text-sm outline-none",
-                          "hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring/50 focus-visible:ring-2 focus-visible:outline-none",
-                          "disabled:cursor-not-allowed disabled:opacity-50",
-                          activePath[lvl.level] === idx &&
-                            "bg-accent text-accent-foreground font-medium",
+                          'flex w-full items-center justify-between gap-1.5 rounded-sm px-2 py-1.5 text-left text-sm outline-none',
+                          'hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring/50 focus-visible:ring-2 focus-visible:outline-none',
+                          'disabled:cursor-not-allowed disabled:opacity-50',
+                          activePath[lvl.level] === idx && 'bg-accent text-accent-foreground font-medium',
                         )}
                         onClick={() => selectAtLevel(lvl.level, idx)}
                       >
                         <span className="flex-1 truncate">{opt.label}</span>
-                        {activePath[lvl.level] === idx &&
-                        !opt.children?.length ? (
+                        {activePath[lvl.level] === idx && !opt.children?.length ? (
                           <Check className="size-4 shrink-0" />
                         ) : opt.children?.length ? (
                           <ChevronRight className="text-muted-foreground size-3.5 shrink-0" />
@@ -372,9 +329,9 @@ const CascadeSelect = React.forwardRef<HTMLButtonElement, CascadeSelectProps>(
           </div>
         </PopoverContent>
       </Popover>
-    );
+    )
   },
-);
-CascadeSelect.displayName = "CascadeSelect";
+)
+CascadeSelect.displayName = 'CascadeSelect'
 
-export { CascadeSelect };
+export { CascadeSelect }

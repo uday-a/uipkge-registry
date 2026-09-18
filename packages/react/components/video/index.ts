@@ -1,1 +1,1 @@
-export { Video, type VideoProps } from "./Video";
+export { Video, type VideoProps } from './Video'

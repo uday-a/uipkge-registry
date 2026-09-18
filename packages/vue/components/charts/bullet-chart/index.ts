@@ -1,1 +1,1 @@
-export { default as BulletChart } from "./BulletChart.vue";
+export { default as BulletChart } from './BulletChart.vue'

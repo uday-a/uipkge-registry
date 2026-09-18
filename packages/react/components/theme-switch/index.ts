@@ -1,1 +1,1 @@
-export { ThemeSwitch, type ThemeSwitchProps } from "./theme-switch";
+export { ThemeSwitch, type ThemeSwitchProps } from './theme-switch'

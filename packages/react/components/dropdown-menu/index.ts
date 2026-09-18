@@ -14,4 +14,4 @@ export {
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
   DropdownMenuPortal,
-} from "./dropdown-menu";
+} from './dropdown-menu'

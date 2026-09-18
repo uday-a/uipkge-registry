@@ -1,40 +1,40 @@
-"use client";
+'use client'
 
-import * as React from "react";
-import ReactECharts from "echarts-for-react/esm/core";
-import { ChartFrame, EChart } from "../shared";
-import { useChartTheme, mergeOptionBlock } from "../useChartTheme";
+import * as React from 'react'
+import ReactECharts from 'echarts-for-react/esm/core'
+import { ChartFrame, EChart } from '../shared'
+import { useChartTheme, mergeOptionBlock } from '../useChartTheme'
 
 // BarChart
 // ─────────────────────────────────────────────────────────────────────────
 
 export interface BarChartProps {
-  data: Record<string, any>[];
-  xField?: string;
-  yField?: string | string[];
+  data: Record<string, any>[]
+  xField?: string
+  yField?: string | string[]
   /** Stack series on one baseline. Default false. */
-  stacked?: boolean;
+  stacked?: boolean
   /** Gap in px between stacked bar segments. Default 1. Set to 0 to disable. */
-  stackGap?: number;
+  stackGap?: number
   /** Color of the gap between stacked bar segments. Defaults to card background. */
-  stackGapColor?: string;
+  stackGapColor?: string
   /** Show value labels on top of each bar. Default false. */
-  valueLabels?: boolean;
+  valueLabels?: boolean
   /** Top corner rounding in px. Default 6. */
-  radius?: number;
-  height?: number | string;
-  option?: any;
-  className?: string;
+  radius?: number
+  height?: number | string
+  option?: any
+  className?: string
   /** Accessible name announced for the chart image. Defaults to "Chart". */
-  ariaLabel?: string;
+  ariaLabel?: string
 }
 
 export const BarChart = React.forwardRef<HTMLDivElement, BarChartProps>(
   (
     {
       data,
-      xField = "x",
-      yField = "y",
+      xField = 'x',
+      yField = 'y',
       stacked = false,
       stackGap = 1,
       stackGapColor,
@@ -47,13 +47,13 @@ export const BarChart = React.forwardRef<HTMLDivElement, BarChartProps>(
     },
     ref,
   ) => {
-    const theme = useChartTheme();
+    const theme = useChartTheme()
 
     const mergedOption = React.useMemo(() => {
-      const fields = Array.isArray(yField) ? yField : [yField];
-      const xData = data.map((d) => d[xField]);
+      const fields = Array.isArray(yField) ? yField : [yField]
+      const xData = data.map((d) => d[xField])
 
-      const userOption: any = option ?? {};
+      const userOption: any = option ?? {}
       const {
         series: userSeries,
         xAxis: userXAxis,
@@ -62,24 +62,21 @@ export const BarChart = React.forwardRef<HTMLDivElement, BarChartProps>(
         tooltip: userTooltip,
         legend: userLegend,
         ...userRest
-      } = userOption;
+      } = userOption
 
-      const isHorizontal =
-        userXAxis?.type === "value" || userYAxis?.type === "category";
-      const hasUserStack =
-        Array.isArray(userSeries) &&
-        userSeries.some((s: any) => Boolean(s?.stack));
-      const gapColor = stackGapColor ?? theme.bgColor;
-      const defaultRadius = [radius, radius, radius, radius];
+      const isHorizontal = userXAxis?.type === 'value' || userYAxis?.type === 'category'
+      const hasUserStack = Array.isArray(userSeries) && userSeries.some((s: any) => Boolean(s?.stack))
+      const gapColor = stackGapColor ?? theme.bgColor
+      const defaultRadius = [radius, radius, radius, radius]
 
       const series = fields.map((field, i) => {
-        const u = Array.isArray(userSeries) ? (userSeries[i] ?? {}) : {};
-        const isSeriesStacked = Boolean(stacked || u?.stack || hasUserStack);
+        const u = Array.isArray(userSeries) ? (userSeries[i] ?? {}) : {}
+        const isSeriesStacked = Boolean(stacked || u?.stack || hasUserStack)
 
         return {
           name: field,
-          type: "bar",
-          stack: stacked ? "bars" : undefined,
+          type: 'bar',
+          stack: stacked ? 'bars' : undefined,
           barMaxWidth: 32,
           itemStyle: {
             color: theme.colors[i % theme.colors.length],
@@ -91,35 +88,23 @@ export const BarChart = React.forwardRef<HTMLDivElement, BarChartProps>(
                 }
               : {}),
           },
-          label: valueLabels
-            ? {
-                show: true,
-                position: "top",
-                color: theme.textColor,
-                fontSize: 11,
-              }
-            : undefined,
+          label: valueLabels ? { show: true, position: 'top', color: theme.textColor, fontSize: 11 } : undefined,
           data: data.map((d) => d[field]),
-        };
-      });
+        }
+      })
 
-      const count = Math.max(
-        fields.length,
-        Array.isArray(userSeries) ? userSeries.length : 0,
-      );
+      const count = Math.max(fields.length, Array.isArray(userSeries) ? userSeries.length : 0)
       const mergedSeries = Array.isArray(userSeries)
         ? Array.from({ length: count }, (_, i) => {
             const s = series[i] ?? {
-              type: "bar",
+              type: 'bar',
               barMaxWidth: 32,
               itemStyle: {
                 color: theme.colors[i % theme.colors.length],
               },
-            };
-            const u = userSeries[i] ?? {};
-            const isSeriesStacked = Boolean(
-              stacked || s.stack || u?.stack || hasUserStack,
-            );
+            }
+            const u = userSeries[i] ?? {}
+            const isSeriesStacked = Boolean(stacked || s.stack || u?.stack || hasUserStack)
 
             return {
               ...s,
@@ -135,49 +120,40 @@ export const BarChart = React.forwardRef<HTMLDivElement, BarChartProps>(
                   : {}),
                 ...(u.itemStyle ?? {}),
               },
-            };
+            }
           })
-        : series;
+        : series
 
       const baseLegend: any =
         fields.length > 1
           ? {
               bottom: 0,
-              icon: "circle",
+              icon: 'circle',
               itemWidth: 8,
               itemHeight: 8,
               textStyle: { fontSize: 11, color: theme.textColor },
             }
-          : { show: false };
+          : { show: false }
 
       return {
         color: theme.colors,
         grid: mergeOptionBlock(
-          {
-            left: 16,
-            right: 16,
-            top: 24,
-            bottom: fields.length > 1 ? 32 : 24,
-            containLabel: true,
-          },
+          { left: 16, right: 16, top: 24, bottom: fields.length > 1 ? 32 : 24, containLabel: true },
           userGrid,
         ),
         tooltip: mergeOptionBlock(
           {
-            trigger: "axis",
+            trigger: 'axis',
             backgroundColor: theme.tooltipBg,
             borderColor: theme.tooltipBorder,
             textStyle: { color: theme.tooltipText, fontSize: 12 },
           },
           userTooltip,
         ),
-        legend:
-          userLegend?.show === false
-            ? undefined
-            : mergeOptionBlock(baseLegend, userLegend),
+        legend: userLegend?.show === false ? undefined : mergeOptionBlock(baseLegend, userLegend),
         xAxis: mergeOptionBlock(
           {
-            type: "category",
+            type: 'category',
             data: xData,
             axisLine: { lineStyle: { color: theme.axisColor } },
             axisLabel: { color: theme.textColor, fontSize: 11 },
@@ -187,7 +163,7 @@ export const BarChart = React.forwardRef<HTMLDivElement, BarChartProps>(
         ),
         yAxis: mergeOptionBlock(
           {
-            type: "value",
+            type: 'value',
             splitLine: { lineStyle: { color: theme.splitLineColor } },
             axisLabel: { color: theme.textColor, fontSize: 11 },
             axisLine: { show: false },
@@ -197,19 +173,14 @@ export const BarChart = React.forwardRef<HTMLDivElement, BarChartProps>(
         ),
         series: mergedSeries,
         ...userRest,
-      };
-    }, [data, xField, yField, stacked, valueLabels, radius, option, theme]);
+      }
+    }, [data, xField, yField, stacked, valueLabels, radius, option, theme])
 
     return (
-      <ChartFrame
-        ref={ref}
-        height={height}
-        className={className}
-        ariaLabel={ariaLabel}
-      >
+      <ChartFrame ref={ref} height={height} className={className} ariaLabel={ariaLabel}>
         <EChart option={mergedOption} />
       </ChartFrame>
-    );
+    )
   },
-);
-BarChart.displayName = "BarChart";
+)
+BarChart.displayName = 'BarChart'

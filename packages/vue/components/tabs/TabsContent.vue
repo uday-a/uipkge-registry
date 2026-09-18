@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue";
-import { TabsContent } from "reka-ui";
-import { cn } from "@/lib/utils";
+import type { HTMLAttributes } from 'vue'
+import { TabsContent } from 'reka-ui'
+import { cn } from '@/lib/utils'
 
 interface Props {
-  class?: HTMLAttributes["class"];
-  value: string;
-  forceMount?: boolean;
+  class?: HTMLAttributes['class']
+  value: string
+  forceMount?: boolean
 }
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 </script>
 
 <template>

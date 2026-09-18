@@ -1,41 +1,26 @@
 <script setup lang="ts">
-import {
-  Maximize,
-  Minimize,
-  Pause,
-  Play,
-  RotateCcw,
-  RotateCw,
-  Volume2,
-  VolumeX,
-} from "lucide-vue-next";
-import {
-  onBeforeUnmount,
-  onMounted,
-  ref,
-  watch,
-  type HTMLAttributes,
-} from "vue";
-import { cn } from "@/lib/utils";
+import { Maximize, Minimize, Pause, Play, RotateCcw, RotateCw, Volume2, VolumeX } from 'lucide-vue-next'
+import { onBeforeUnmount, onMounted, ref, watch, type HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils'
 
 interface Props {
   /** Video source URL. */
-  src: string;
+  src: string
   /** Poster image shown before playback. */
-  poster?: string;
+  poster?: string
   /** Autoplay on mount. Note: browsers may block autoplay with sound. */
-  autoplay?: boolean;
+  autoplay?: boolean
   /** Loop playback. */
-  loop?: boolean;
+  loop?: boolean
   /** Muted audio. */
-  muted?: boolean;
+  muted?: boolean
   /** Use native browser controls instead of the custom overlay. Default false. */
-  nativeControls?: boolean;
+  nativeControls?: boolean
   /** Initial playback rate. Default 1. */
-  playbackRate?: number;
+  playbackRate?: number
   /** Aspect ratio class or inline style value. Default '16/9'. */
-  aspectRatio?: string;
-  class?: HTMLAttributes["class"];
+  aspectRatio?: string
+  class?: HTMLAttributes['class']
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -44,204 +29,196 @@ const props = withDefaults(defineProps<Props>(), {
   muted: false,
   nativeControls: false,
   playbackRate: 1,
-  aspectRatio: "16/9",
-});
+  aspectRatio: '16/9',
+})
 
-const videoRef = ref<HTMLVideoElement | null>(null);
-const containerRef = ref<HTMLElement | null>(null);
+const videoRef = ref<HTMLVideoElement | null>(null)
+const containerRef = ref<HTMLElement | null>(null)
 
-const playing = ref(false);
-const playbackFailed = ref(false);
-const current = ref(0);
-const duration = ref(0);
-const volume = ref(props.muted ? 0 : 1);
-const isMuted = ref(props.muted);
-const isFullscreen = ref(false);
-const showControls = ref(true);
-let hideTimer: ReturnType<typeof setTimeout> | null = null;
+const playing = ref(false)
+const playbackFailed = ref(false)
+const current = ref(0)
+const duration = ref(0)
+const volume = ref(props.muted ? 0 : 1)
+const isMuted = ref(props.muted)
+const isFullscreen = ref(false)
+const showControls = ref(true)
+let hideTimer: ReturnType<typeof setTimeout> | null = null
 
 function togglePlay() {
-  const v = videoRef.value;
-  if (!v) return;
+  const v = videoRef.value
+  if (!v) return
   if (v.paused) {
     void v.play().catch(() => {
-      playing.value = false;
-      playbackFailed.value = true;
-    });
-  } else v.pause();
+      playing.value = false
+      playbackFailed.value = true
+    })
+  } else v.pause()
 }
 
 function adjustVolume(delta: number) {
-  const v = videoRef.value;
-  if (!v) return;
-  const next = Math.min(1, Math.max(0, (v.muted ? 0 : v.volume) + delta));
-  v.volume = next;
-  v.muted = next === 0;
+  const v = videoRef.value
+  if (!v) return
+  const next = Math.min(1, Math.max(0, (v.muted ? 0 : v.volume) + delta))
+  v.volume = next
+  v.muted = next === 0
 }
 
 /** Keyboard shortcuts when the player (or its controls) is focused. */
 function onKeydown(e: KeyboardEvent) {
-  if (props.nativeControls) return;
-  const target = e.target as HTMLElement | null;
+  if (props.nativeControls) return
+  const target = e.target as HTMLElement | null
   // Don't steal Space/Enter from native button activation.
-  if ((e.key === " " || e.key === "Enter") && target?.closest("button")) return;
+  if ((e.key === ' ' || e.key === 'Enter') && target?.closest('button')) return
   // Let range inputs handle their own arrow keys.
-  if (
-    target instanceof HTMLInputElement &&
-    target.type === "range" &&
-    e.key.startsWith("Arrow")
-  )
-    return;
+  if (target instanceof HTMLInputElement && target.type === 'range' && e.key.startsWith('Arrow')) return
 
-  const key = e.key;
-  if (key === " " || key === "k" || key === "K") {
-    e.preventDefault();
-    togglePlay();
-    return;
+  const key = e.key
+  if (key === ' ' || key === 'k' || key === 'K') {
+    e.preventDefault()
+    togglePlay()
+    return
   }
-  if (key === "m" || key === "M") {
-    e.preventDefault();
-    toggleMute();
-    return;
+  if (key === 'm' || key === 'M') {
+    e.preventDefault()
+    toggleMute()
+    return
   }
-  if (key === "f" || key === "F") {
-    e.preventDefault();
-    toggleFullscreen();
-    return;
+  if (key === 'f' || key === 'F') {
+    e.preventDefault()
+    toggleFullscreen()
+    return
   }
-  if (key === "ArrowLeft") {
-    e.preventDefault();
-    skip(-5);
-    return;
+  if (key === 'ArrowLeft') {
+    e.preventDefault()
+    skip(-5)
+    return
   }
-  if (key === "ArrowRight") {
-    e.preventDefault();
-    skip(5);
-    return;
+  if (key === 'ArrowRight') {
+    e.preventDefault()
+    skip(5)
+    return
   }
-  if (key === "ArrowUp") {
-    e.preventDefault();
-    adjustVolume(0.05);
-    return;
+  if (key === 'ArrowUp') {
+    e.preventDefault()
+    adjustVolume(0.05)
+    return
   }
-  if (key === "ArrowDown") {
-    e.preventDefault();
-    adjustVolume(-0.05);
+  if (key === 'ArrowDown') {
+    e.preventDefault()
+    adjustVolume(-0.05)
   }
 }
 
 function onPlay() {
-  playbackFailed.value = false;
-  playing.value = true;
+  playbackFailed.value = false
+  playing.value = true
 }
 function onPause() {
-  playing.value = false;
+  playing.value = false
 }
 function onTimeUpdate() {
-  const v = videoRef.value;
-  if (!v) return;
-  current.value = v.currentTime;
+  const v = videoRef.value
+  if (!v) return
+  current.value = v.currentTime
 }
 function onLoadedMetadata() {
-  const v = videoRef.value;
-  if (!v) return;
-  duration.value = v.duration || 0;
-  v.playbackRate = props.playbackRate;
-  v.volume = volume.value;
+  const v = videoRef.value
+  if (!v) return
+  duration.value = v.duration || 0
+  v.playbackRate = props.playbackRate
+  v.volume = volume.value
 }
 function onVolumeChange() {
-  const v = videoRef.value;
-  if (!v) return;
-  volume.value = v.volume;
-  isMuted.value = v.muted;
+  const v = videoRef.value
+  if (!v) return
+  volume.value = v.volume
+  isMuted.value = v.muted
 }
 
 function seek(e: Event) {
-  const v = videoRef.value;
-  if (!v) return;
-  const target = e.target as HTMLInputElement;
-  v.currentTime = Number(target.value);
+  const v = videoRef.value
+  if (!v) return
+  const target = e.target as HTMLInputElement
+  v.currentTime = Number(target.value)
 }
 
 function setVolume(e: Event) {
-  const v = videoRef.value;
-  if (!v) return;
-  const target = e.target as HTMLInputElement;
-  v.volume = Number(target.value);
-  v.muted = Number(target.value) === 0;
+  const v = videoRef.value
+  if (!v) return
+  const target = e.target as HTMLInputElement
+  v.volume = Number(target.value)
+  v.muted = Number(target.value) === 0
 }
 
 function toggleMute() {
-  const v = videoRef.value;
-  if (!v) return;
-  v.muted = !v.muted;
+  const v = videoRef.value
+  if (!v) return
+  v.muted = !v.muted
 }
 
 function skip(seconds: number) {
-  const v = videoRef.value;
-  if (!v) return;
-  v.currentTime = Math.min(
-    Math.max(v.currentTime + seconds, 0),
-    v.duration || 0,
-  );
+  const v = videoRef.value
+  if (!v) return
+  v.currentTime = Math.min(Math.max(v.currentTime + seconds, 0), v.duration || 0)
 }
 
 function toggleFullscreen() {
-  const el = containerRef.value;
-  if (!el) return;
+  const el = containerRef.value
+  if (!el) return
   if (document.fullscreenElement) {
-    document.exitFullscreen();
+    document.exitFullscreen()
   } else {
-    el.requestFullscreen();
+    el.requestFullscreen()
   }
 }
 
 function onFullscreenChange() {
-  isFullscreen.value = !!document.fullscreenElement;
+  isFullscreen.value = !!document.fullscreenElement
 }
 
 function onMouseMove() {
-  showControls.value = true;
-  if (hideTimer) clearTimeout(hideTimer);
+  showControls.value = true
+  if (hideTimer) clearTimeout(hideTimer)
   hideTimer = setTimeout(() => {
-    if (playing.value) showControls.value = false;
-  }, 2500);
+    if (playing.value) showControls.value = false
+  }, 2500)
 }
 
 function onMouseLeave() {
-  if (hideTimer) clearTimeout(hideTimer);
-  if (playing.value) showControls.value = false;
+  if (hideTimer) clearTimeout(hideTimer)
+  if (playing.value) showControls.value = false
 }
 
 function formatTime(s: number): string {
-  if (!s || !isFinite(s)) return "0:00";
-  const m = Math.floor(s / 60);
-  const sec = Math.floor(s % 60);
-  return `${m}:${sec.toString().padStart(2, "0")}`;
+  if (!s || !isFinite(s)) return '0:00'
+  const m = Math.floor(s / 60)
+  const sec = Math.floor(s % 60)
+  return `${m}:${sec.toString().padStart(2, '0')}`
 }
 
 watch(
   () => props.playbackRate,
   (rate) => {
-    if (videoRef.value) videoRef.value.playbackRate = rate;
+    if (videoRef.value) videoRef.value.playbackRate = rate
   },
-);
+)
 
 watch(
   () => props.muted,
   (m) => {
-    if (videoRef.value) videoRef.value.muted = m;
+    if (videoRef.value) videoRef.value.muted = m
   },
-);
+)
 
 onMounted(() => {
-  document.addEventListener("fullscreenchange", onFullscreenChange);
-});
+  document.addEventListener('fullscreenchange', onFullscreenChange)
+})
 
 onBeforeUnmount(() => {
-  document.removeEventListener("fullscreenchange", onFullscreenChange);
-  if (hideTimer) clearTimeout(hideTimer);
-});
+  document.removeEventListener('fullscreenchange', onFullscreenChange)
+  if (hideTimer) clearTimeout(hideTimer)
+})
 </script>
 
 <template>
@@ -299,9 +276,7 @@ onBeforeUnmount(() => {
       :class="
         cn(
           'absolute inset-0 flex flex-col justify-between transition-opacity duration-200 motion-reduce:transition-none',
-          showControls || !playing
-            ? 'opacity-100'
-            : 'pointer-events-none opacity-0',
+          showControls || !playing ? 'opacity-100' : 'pointer-events-none opacity-0',
         )
       "
     >
@@ -312,9 +287,7 @@ onBeforeUnmount(() => {
       <div class="bg-gradient-to-t from-black/80 to-transparent px-3 pt-6 pb-2">
         <!-- Progress bar -->
         <div class="mb-2 flex items-center gap-2">
-          <span class="text-xs text-white/80 tabular-nums">{{
-            formatTime(current)
-          }}</span>
+          <span class="text-xs text-white/80 tabular-nums">{{ formatTime(current) }}</span>
           <input
             type="range"
             min="0"
@@ -325,9 +298,7 @@ onBeforeUnmount(() => {
             class="accent-primary [&::-webkit-slider-thumb]:bg-primary h-1 flex-1 cursor-pointer appearance-none rounded-full bg-white/30 [&::-webkit-slider-thumb]:size-3 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full"
             @input="seek"
           />
-          <span class="text-xs text-white/80 tabular-nums">{{
-            formatTime(duration)
-          }}</span>
+          <span class="text-xs text-white/80 tabular-nums">{{ formatTime(duration) }}</span>
         </div>
 
         <!-- Buttons row -->
@@ -365,10 +336,7 @@ onBeforeUnmount(() => {
               :aria-label="isMuted ? 'Unmute' : 'Mute'"
               @click="toggleMute"
             >
-              <component
-                :is="isMuted || volume === 0 ? VolumeX : Volume2"
-                class="size-4"
-              />
+              <component :is="isMuted || volume === 0 ? VolumeX : Volume2" class="size-4" />
             </button>
             <input
               type="range"
@@ -390,10 +358,7 @@ onBeforeUnmount(() => {
             :aria-label="isFullscreen ? 'Exit fullscreen' : 'Fullscreen'"
             @click="toggleFullscreen"
           >
-            <component
-              :is="isFullscreen ? Minimize : Maximize"
-              class="size-4"
-            />
+            <component :is="isFullscreen ? Minimize : Maximize" class="size-4" />
           </button>
         </div>
       </div>

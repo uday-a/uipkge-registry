@@ -1,67 +1,62 @@
 <script setup lang="ts">
-import { computed, provide, toRef } from "vue";
-import type { HTMLAttributes } from "vue";
-import { cn } from "@/lib/utils";
-import {
-  STEPPER_CONTEXT,
-  type StepperOrientation,
-  type StepperSize,
-  type StepperStatus,
-} from "./context";
-import type { StepperStep } from "./types";
+import { computed, provide, toRef } from 'vue'
+import type { HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils'
+import { STEPPER_CONTEXT, type StepperOrientation, type StepperSize, type StepperStatus } from './context'
+import type { StepperStep } from './types'
 
 interface Props {
-  steps?: StepperStep[];
-  modelValue?: number;
-  orientation?: StepperOrientation;
-  size?: StepperSize;
-  class?: HTMLAttributes["class"];
+  steps?: StepperStep[]
+  modelValue?: number
+  orientation?: StepperOrientation
+  size?: StepperSize
+  class?: HTMLAttributes['class']
 }
 
 const props = withDefaults(defineProps<Props>(), {
   steps: () => [],
   modelValue: 1,
-  orientation: "horizontal",
-  size: "default",
-});
+  orientation: 'horizontal',
+  size: 'default',
+})
 
 const emit = defineEmits<{
-  "update:modelValue": [value: number];
-}>();
+  'update:modelValue': [value: number]
+}>()
 
-const activeStep = computed(() => props.modelValue);
-const stepsRef = computed(() => props.steps);
+const activeStep = computed(() => props.modelValue)
+const stepsRef = computed(() => props.steps)
 
 function getStatus(index: number): StepperStatus {
-  const step = props.steps[index];
-  if (step?.error) return "error";
-  if (index + 1 === activeStep.value) return "active";
-  if (index + 1 < activeStep.value) return "completed";
-  return "pending";
+  const step = props.steps[index]
+  if (step?.error) return 'error'
+  if (index + 1 === activeStep.value) return 'active'
+  if (index + 1 < activeStep.value) return 'completed'
+  return 'pending'
 }
 
 function isClickable(index: number): boolean {
-  return index + 1 < activeStep.value;
+  return index + 1 < activeStep.value
 }
 
 function goToStep(stepIndex: number) {
-  if (stepIndex < 1 || stepIndex > props.steps.length) return;
-  const step = props.steps[stepIndex - 1];
-  if (step?.disabled) return;
-  emit("update:modelValue", stepIndex);
+  if (stepIndex < 1 || stepIndex > props.steps.length) return
+  const step = props.steps[stepIndex - 1]
+  if (step?.disabled) return
+  emit('update:modelValue', stepIndex)
 }
 
 provide(STEPPER_CONTEXT, {
-  orientation: toRef(props, "orientation"),
-  size: toRef(props, "size"),
+  orientation: toRef(props, 'orientation'),
+  size: toRef(props, 'size'),
   activeStep,
   steps: stepsRef,
   goToStep,
   isClickable,
   getStatus,
-});
+})
 
-defineExpose({ goToStep });
+defineExpose({ goToStep })
 </script>
 
 <template>
@@ -75,21 +70,9 @@ defineExpose({ goToStep });
     <slot name="steps">
       <ol
         v-if="steps.length > 0"
-        :class="
-          cn(
-            'flex',
-            orientation === 'horizontal'
-              ? 'flex-row items-start'
-              : 'flex-col items-stretch',
-          )
-        "
+        :class="cn('flex', orientation === 'horizontal' ? 'flex-row items-start' : 'flex-col items-stretch')"
       >
-        <StepperItem
-          v-for="(step, index) in steps"
-          :key="step.id"
-          :step="step"
-          :index="index"
-        />
+        <StepperItem v-for="(step, index) in steps" :key="step.id" :step="step" :index="index" />
       </ol>
     </slot>
 

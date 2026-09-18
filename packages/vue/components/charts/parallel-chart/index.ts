@@ -1,1 +1,1 @@
-export { default as ParallelChart } from "./ParallelChart.vue";
+export { default as ParallelChart } from './ParallelChart.vue'

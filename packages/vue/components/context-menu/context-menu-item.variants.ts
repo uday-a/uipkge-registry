@@ -1,5 +1,5 @@
-import type { VariantProps } from "class-variance-authority";
-import { cva } from "class-variance-authority";
+import type { VariantProps } from 'class-variance-authority'
+import { cva } from 'class-variance-authority'
 
 /**
  * Variant definitions live in their own file (rather than the package
@@ -12,22 +12,20 @@ export const contextMenuItemVariants = cva(
   {
     variants: {
       variant: {
-        default: "",
+        default: '',
         destructive:
-          "data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/40 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:!text-destructive",
+          'data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/40 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:!text-destructive',
       },
       inset: {
-        true: "data-[inset]:pl-8",
-        false: "",
+        true: 'data-[inset]:pl-8',
+        false: '',
       },
     },
     defaultVariants: {
-      variant: "default",
+      variant: 'default',
       inset: false,
     },
   },
-);
+)
 
-export type ContextMenuItemVariants = VariantProps<
-  typeof contextMenuItemVariants
->;
+export type ContextMenuItemVariants = VariantProps<typeof contextMenuItemVariants>

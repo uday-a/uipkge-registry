@@ -1,40 +1,34 @@
-import { useState } from "react";
-import Story from "../../components/story/Story";
-import { BlockUi } from "@react-registry/block-ui";
-import { Button } from "@react-registry/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@react-registry/card";
-import { Input } from "@react-registry/input";
-import { Label } from "@react-registry/label";
-import { CloudUpload, Database, ShieldCheck, RefreshCw } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { useState } from 'react'
+import Story from '../../components/story/Story'
+import { BlockUi } from '@react-registry/block-ui'
+import { Button } from '@react-registry/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@react-registry/card'
+import { Input } from '@react-registry/input'
+import { Label } from '@react-registry/label'
+import { CloudUpload, Database, ShieldCheck, RefreshCw } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 export default function BlockUiDemo() {
-  const [saving, setSaving] = useState(false);
-  const [fetching, setFetching] = useState(false);
-  const [syncing, setSyncing] = useState(false);
+  const [saving, setSaving] = useState(false)
+  const [fetching, setFetching] = useState(false)
+  const [syncing, setSyncing] = useState(false)
 
   async function saveSettings() {
-    setSaving(true);
-    await new Promise((r) => setTimeout(r, 2200));
-    setSaving(false);
+    setSaving(true)
+    await new Promise((r) => setTimeout(r, 2200))
+    setSaving(false)
   }
 
   async function fetchReport() {
-    setFetching(true);
-    await new Promise((r) => setTimeout(r, 2500));
-    setFetching(false);
+    setFetching(true)
+    await new Promise((r) => setTimeout(r, 2500))
+    setFetching(false)
   }
 
   async function syncData() {
-    setSyncing(true);
-    await new Promise((r) => setTimeout(r, 3000));
-    setSyncing(false);
+    setSyncing(true)
+    await new Promise((r) => setTimeout(r, 3000))
+    setSyncing(false)
   }
 
   return (
@@ -48,9 +42,7 @@ export default function BlockUiDemo() {
             <Card>
               <CardHeader>
                 <CardTitle className="text-base">Project settings</CardTitle>
-                <CardDescription>
-                  Changes apply to all team members.
-                </CardDescription>
+                <CardDescription>Changes apply to all team members.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-1.5">
@@ -61,12 +53,8 @@ export default function BlockUiDemo() {
                   <Label>Owner</Label>
                   <Input defaultValue="sarah.johnson@acme.com" />
                 </div>
-                <Button
-                  className="w-full"
-                  disabled={saving}
-                  onClick={saveSettings}
-                >
-                  {saving ? "Saving…" : "Save changes"}
+                <Button className="w-full" disabled={saving} onClick={saveSettings}>
+                  {saving ? 'Saving…' : 'Save changes'}
                 </Button>
               </CardContent>
             </Card>
@@ -79,15 +67,8 @@ export default function BlockUiDemo() {
         description="Blur the stale content while fresh data loads — signals that what's behind the overlay is about to change."
       >
         <div className="flex max-w-md flex-col gap-3">
-          <Button
-            variant="outline"
-            className="w-fit"
-            disabled={fetching}
-            onClick={fetchReport}
-          >
-            <RefreshCw
-              className={cn("mr-2 size-4", fetching ? "animate-spin" : "")}
-            />
+          <Button variant="outline" className="w-fit" disabled={fetching} onClick={fetchReport}>
+            <RefreshCw className={cn('mr-2 size-4', fetching ? 'animate-spin' : '')} />
             Refresh report
           </Button>
           <BlockUi blocking={fetching} blur message="Loading report…">
@@ -119,14 +100,9 @@ export default function BlockUiDemo() {
         description="Swap the spinner for a context-relevant icon — here a cloud upload glyph during a file sync."
       >
         <div className="flex max-w-md flex-col gap-3">
-          <Button
-            variant="outline"
-            className="w-fit"
-            disabled={syncing}
-            onClick={syncData}
-          >
+          <Button variant="outline" className="w-fit" disabled={syncing} onClick={syncData}>
             <CloudUpload className="mr-2 size-4" />
-            {syncing ? "Syncing…" : "Sync to cloud"}
+            {syncing ? 'Syncing…' : 'Sync to cloud'}
           </Button>
           <BlockUi
             blocking={syncing}
@@ -137,9 +113,7 @@ export default function BlockUiDemo() {
             <Card>
               <CardContent className="p-5">
                 <p className="text-sm font-medium">Cloud storage</p>
-                <p className="text-muted-foreground mt-1 text-xs">
-                  3.2 GB of 10 GB used · 14 files pending
-                </p>
+                <p className="text-muted-foreground mt-1 text-xs">3.2 GB of 10 GB used · 14 files pending</p>
               </CardContent>
             </Card>
           </BlockUi>
@@ -158,18 +132,14 @@ export default function BlockUiDemo() {
           messageSlot={
             <div className="text-center">
               <p className="text-sm font-medium">Auditing schema</p>
-              <p className="text-muted-foreground text-xs">
-                This usually takes a few seconds
-              </p>
+              <p className="text-muted-foreground text-xs">This usually takes a few seconds</p>
             </div>
           }
         >
           <Card>
             <CardContent className="p-6">
               <p className="text-sm font-medium">Compliance check</p>
-              <p className="text-muted-foreground mt-1 text-xs">
-                Running 42 rules against the current schema…
-              </p>
+              <p className="text-muted-foreground mt-1 text-xs">Running 42 rules against the current schema…</p>
             </CardContent>
           </Card>
         </BlockUi>
@@ -180,34 +150,19 @@ export default function BlockUiDemo() {
         description="Tune opacity and overlay color — a lower opacity keeps content visible, a dark tint reads as a hard block."
       >
         <div className="grid max-w-md gap-4 sm:grid-cols-2">
-          <BlockUi
-            blocking
-            opacity={0.3}
-            message="Light veil"
-            showSpinner={false}
-          >
+          <BlockUi blocking opacity={0.3} message="Light veil" showSpinner={false}>
             <Card>
               <CardContent className="p-5">
                 <p className="text-sm">30% opacity</p>
-                <p className="text-muted-foreground text-xs">
-                  Subtle — content stays readable.
-                </p>
+                <p className="text-muted-foreground text-xs">Subtle — content stays readable.</p>
               </CardContent>
             </Card>
           </BlockUi>
-          <BlockUi
-            blocking
-            overlayColor="#0a0a0a"
-            opacity={0.7}
-            message="Hard block"
-            showSpinner={false}
-          >
+          <BlockUi blocking overlayColor="#0a0a0a" opacity={0.7} message="Hard block" showSpinner={false}>
             <Card>
               <CardContent className="p-5">
                 <p className="text-sm">Dark overlay</p>
-                <p className="text-muted-foreground text-xs">
-                  Opaque — focus is forced to the message.
-                </p>
+                <p className="text-muted-foreground text-xs">Opaque — focus is forced to the message.</p>
               </CardContent>
             </Card>
           </BlockUi>
@@ -218,36 +173,24 @@ export default function BlockUiDemo() {
         title="Database migration panel"
         description="A realistic always-blocked state — the kind you show while a long-running migration is in progress."
       >
-        <BlockUi
-          blocking
-          message="Running migration 0042…"
-          className="max-w-md"
-        >
+        <BlockUi blocking message="Running migration 0042…" className="max-w-md">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-base">
                 <Database className="size-4" />
                 Database migrations
               </CardTitle>
-              <CardDescription>
-                Applied migrations are listed below.
-              </CardDescription>
+              <CardDescription>Applied migrations are listed below.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-1.5">
-              <p className="text-muted-foreground text-xs">
-                0039 · add_users_table · ✓
-              </p>
-              <p className="text-muted-foreground text-xs">
-                0040 · add_audit_log · ✓
-              </p>
-              <p className="text-muted-foreground text-xs">
-                0041 · index_trails · ✓
-              </p>
+              <p className="text-muted-foreground text-xs">0039 · add_users_table · ✓</p>
+              <p className="text-muted-foreground text-xs">0040 · add_audit_log · ✓</p>
+              <p className="text-muted-foreground text-xs">0041 · index_trails · ✓</p>
               <p className="text-xs">0042 · split_orgs · running…</p>
             </CardContent>
           </Card>
         </BlockUi>
       </Story>
     </>
-  );
+  )
 }

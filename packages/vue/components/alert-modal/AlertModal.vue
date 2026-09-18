@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
-import type { Component, HTMLAttributes } from "vue";
-import { CircleAlert, CircleCheck, Info, TriangleAlert } from "lucide-vue-next";
+import { computed, ref, watch } from 'vue'
+import type { Component, HTMLAttributes } from 'vue'
+import { CircleAlert, CircleCheck, Info, TriangleAlert } from 'lucide-vue-next'
 import {
   AlertDialogAction,
   AlertDialogCancel,
@@ -12,67 +12,67 @@ import {
   AlertDialogRoot,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "reka-ui";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+} from 'reka-ui'
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
 
-type AlertIcon = "info" | "warning" | "error" | "success";
+type AlertIcon = 'info' | 'warning' | 'error' | 'success'
 
 const props = withDefaults(
   defineProps<{
     /** Controlled open state. Pair with v-model:open. */
-    open?: boolean;
+    open?: boolean
     /** Title rendered in the header. Override with #title slot. */
-    title?: string;
+    title?: string
     /** Description rendered under the title. Override with #description slot. */
-    description?: string;
+    description?: string
     /** Label for the primary action button. */
-    actionLabel?: string;
+    actionLabel?: string
     /** Label for the cancel button. Pass null to hide. */
-    cancelLabel?: string | null;
+    cancelLabel?: string | null
     /** Visual tone — colors the icon and action button. */
-    tone?: "default" | "destructive" | "success" | "warning";
+    tone?: 'default' | 'destructive' | 'success' | 'warning'
     /** Quick icon shortcut. Override with #icon slot. */
-    icon?: AlertIcon | Component | null;
+    icon?: AlertIcon | Component | null
     /** Show a spinner on the action button and disable both buttons. */
-    loading?: boolean;
+    loading?: boolean
     /** Disable the primary action without a spinner. */
-    actionDisabled?: boolean;
-    class?: HTMLAttributes["class"];
+    actionDisabled?: boolean
+    class?: HTMLAttributes['class']
   }>(),
   {
-    title: "",
-    description: "",
-    actionLabel: "Continue",
-    cancelLabel: "Cancel",
-    tone: "default",
+    title: '',
+    description: '',
+    actionLabel: 'Continue',
+    cancelLabel: 'Cancel',
+    tone: 'default',
     loading: false,
     actionDisabled: false,
   },
-);
+)
 
 const emit = defineEmits<{
-  "update:open": [value: boolean];
-  action: [event: MouseEvent];
-  cancel: [event: MouseEvent];
-}>();
+  'update:open': [value: boolean]
+  action: [event: MouseEvent]
+  cancel: [event: MouseEvent]
+}>()
 
 // Sync internal ref with v-model:open and emit changes back out so the
 // component works in both controlled and uncontrolled modes.
-const internalOpen = ref(props.open ?? false);
+const internalOpen = ref(props.open ?? false)
 
 watch(
   () => props.open,
   (v) => {
-    if (v !== undefined && v !== internalOpen.value) internalOpen.value = v;
+    if (v !== undefined && v !== internalOpen.value) internalOpen.value = v
   },
-);
+)
 
 function setOpen(v: boolean) {
   // Keep the dialog open while an async action is in flight.
-  if (!v && props.loading) return;
-  internalOpen.value = v;
-  emit("update:open", v);
+  if (!v && props.loading) return
+  internalOpen.value = v
+  emit('update:open', v)
 }
 
 const builtInIcons: Record<AlertIcon, Component> = {
@@ -80,50 +80,50 @@ const builtInIcons: Record<AlertIcon, Component> = {
   success: CircleCheck,
   warning: TriangleAlert,
   error: CircleAlert,
-};
+}
 
 const ResolvedIcon = computed<Component | null>(() => {
-  if (!props.icon) return null;
-  if (typeof props.icon === "string") return builtInIcons[props.icon] ?? null;
-  return props.icon;
-});
+  if (!props.icon) return null
+  if (typeof props.icon === 'string') return builtInIcons[props.icon] ?? null
+  return props.icon
+})
 
 const iconColorClass = computed(() => {
   switch (props.tone) {
-    case "destructive":
-      return "text-destructive";
-    case "success":
-      return "text-success";
-    case "warning":
-      return "text-warning";
+    case 'destructive':
+      return 'text-destructive'
+    case 'success':
+      return 'text-success'
+    case 'warning':
+      return 'text-warning'
     default:
-      return "text-muted-foreground";
+      return 'text-muted-foreground'
   }
-});
+})
 
 const actionToneClass = computed(() => {
   switch (props.tone) {
-    case "destructive":
-      return "bg-destructive text-destructive-foreground hover:bg-destructive/90";
-    case "success":
-      return "bg-success text-success-foreground hover:bg-success/90";
-    case "warning":
-      return "bg-warning text-warning-foreground hover:bg-warning/90";
+    case 'destructive':
+      return 'bg-destructive text-destructive-foreground hover:bg-destructive/90'
+    case 'success':
+      return 'bg-success text-success-foreground hover:bg-success/90'
+    case 'warning':
+      return 'bg-warning text-warning-foreground hover:bg-warning/90'
     default:
-      return "";
+      return ''
   }
-});
+})
 
 function handleAction(e: MouseEvent) {
   if (props.loading || props.actionDisabled) {
-    e.preventDefault();
-    return;
+    e.preventDefault()
+    return
   }
-  emit("action", e);
+  emit('action', e)
 }
 
 function handleCancel(e: MouseEvent) {
-  emit("cancel", e);
+  emit('cancel', e)
 }
 </script>
 
@@ -148,28 +148,16 @@ function handleCancel(e: MouseEvent) {
         <div class="flex flex-col gap-2 text-center sm:text-left">
           <div
             v-if="$slots.icon || ResolvedIcon"
-            :class="
-              cn(
-                'bg-muted mb-2 flex size-10 items-center justify-center rounded-full',
-                iconColorClass,
-              )
-            "
+            :class="cn('bg-muted mb-2 flex size-10 items-center justify-center rounded-full', iconColorClass)"
           >
             <slot name="icon">
-              <component
-                :is="ResolvedIcon"
-                v-if="ResolvedIcon"
-                class="size-5"
-              />
+              <component :is="ResolvedIcon" v-if="ResolvedIcon" class="size-5" />
             </slot>
           </div>
           <AlertDialogTitle class="text-lg font-semibold">
             <slot name="title">{{ title }}</slot>
           </AlertDialogTitle>
-          <AlertDialogDescription
-            v-if="description || $slots.description"
-            class="text-muted-foreground text-sm"
-          >
+          <AlertDialogDescription v-if="description || $slots.description" class="text-muted-foreground text-sm">
             <slot name="description">{{ description }}</slot>
           </AlertDialogDescription>
         </div>
@@ -181,11 +169,7 @@ function handleCancel(e: MouseEvent) {
         <div class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
           <slot name="actions">
             <AlertDialogCancel v-if="cancelLabel" as-child>
-              <Button
-                variant="outline"
-                :disabled="loading"
-                @click="handleCancel"
-              >
+              <Button variant="outline" :disabled="loading" @click="handleCancel">
                 {{ cancelLabel }}
               </Button>
             </AlertDialogCancel>

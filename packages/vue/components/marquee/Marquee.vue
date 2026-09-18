@@ -1,63 +1,55 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import type { HTMLAttributes } from "vue";
-import { cn } from "@/lib/utils";
+import { computed } from 'vue'
+import type { HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils'
 
 const props = withDefaults(
   defineProps<{
     /** Scroll axis. */
-    orientation?: "horizontal" | "vertical";
+    orientation?: 'horizontal' | 'vertical'
     /** Travel direction. */
-    direction?: "left" | "right" | "up" | "down";
+    direction?: 'left' | 'right' | 'up' | 'down'
     /** Animation duration in seconds. Lower = faster. */
-    speed?: number;
+    speed?: number
     /** Pause the animation on hover. */
-    pauseOnHover?: boolean;
+    pauseOnHover?: boolean
     /** Gap between repeated content groups (px). */
-    gap?: number;
+    gap?: number
     /** Number of times the slot content is duplicated for a seamless loop. */
-    repeat?: number;
+    repeat?: number
     /** Hard pause the animation. */
-    paused?: boolean;
-    class?: HTMLAttributes["class"];
+    paused?: boolean
+    class?: HTMLAttributes['class']
   }>(),
   {
-    orientation: "horizontal",
-    direction: "left",
+    orientation: 'horizontal',
+    direction: 'left',
     speed: 20,
     pauseOnHover: false,
     gap: 16,
     repeat: 2,
     paused: false,
   },
-);
+)
 
-const isVertical = computed(() => props.orientation === "vertical");
-const reverse = computed(
-  () => props.direction === "right" || props.direction === "down",
-);
+const isVertical = computed(() => props.orientation === 'vertical')
+const reverse = computed(() => props.direction === 'right' || props.direction === 'down')
 
-const durationStyle = computed(() => `${props.speed}s`);
-const gapStyle = computed(() => `${props.gap}px`);
+const durationStyle = computed(() => `${props.speed}s`)
+const gapStyle = computed(() => `${props.gap}px`)
 
 const containerClass = computed(() =>
   cn(
-    "group flex overflow-hidden",
-    isVertical.value ? "flex-col" : "flex-row",
-    props.pauseOnHover
-      ? "hover:[&>[data-slot=marquee-track]]:[animation-play-state:paused]"
-      : "",
+    'group flex overflow-hidden',
+    isVertical.value ? 'flex-col' : 'flex-row',
+    props.pauseOnHover ? 'hover:[&>[data-slot=marquee-track]]:[animation-play-state:paused]' : '',
     props.class,
   ),
-);
+)
 
 const trackClass = computed(() =>
-  cn(
-    "flex shrink-0",
-    isVertical.value ? "flex-col" : "flex-row",
-    props.paused ? "![animation-play-state:paused]" : "",
-  ),
-);
+  cn('flex shrink-0', isVertical.value ? 'flex-col' : 'flex-row', props.paused ? '![animation-play-state:paused]' : ''),
+)
 </script>
 
 <template>
@@ -114,7 +106,7 @@ const trackClass = computed(() =>
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [data-slot="marquee-track"] {
+  [data-slot='marquee-track'] {
     animation: none !important;
   }
 }

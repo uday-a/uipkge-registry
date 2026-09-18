@@ -1,13 +1,13 @@
-import { defineRegistryItem } from "../../lib/define-registry";
+import { defineRegistryItem } from '../../lib/define-registry'
 
-const REGISTRY_URL = process.env.REGISTRY_URL ?? "https://uipkge.dev/r";
+const REGISTRY_URL = process.env.REGISTRY_URL ?? 'https://uipkge.dev/r'
 
 export default defineRegistryItem({
-  name: "init",
-  type: "registry:lib",
+  name: 'init',
+  type: 'registry:lib',
   description:
-    "One-shot bootstrap. Pulls tailwind tokens, the cn() helper, and the useTheme composable in a single command. Run this first when starting a new app.",
-  framework: "vue",
+    'One-shot bootstrap. Pulls tailwind tokens, the cn() helper, and the useTheme composable in a single command. Run this first when starting a new app.',
+  framework: 'vue',
   files: [],
   // `typescript` is listed even though we have no .ts file in this manifest.
   // Vue 3.5+ SFC compiler delegates `defineProps<ExternalProps>()` resolution
@@ -28,4 +28,4 @@ export default defineRegistryItem({
     `${REGISTRY_URL}/utils.json`,
     `${REGISTRY_URL}/use-theme.json`,
   ],
-});
+})

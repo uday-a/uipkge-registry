@@ -1,48 +1,23 @@
 <script setup lang="ts">
-import { TextReveal } from "@/components/ui/text-reveal";
-import { GradientText } from "@/components/ui/gradient-text";
-import { SectionCard } from "@/components/ui/section-card";
+import { TextReveal } from '@/components/ui/text-reveal'
+import { GradientText } from '@/components/ui/gradient-text'
+import { SectionCard } from '@/components/ui/section-card'
 </script>
 
 <template>
-  <Story
-    title="Default"
-    description="Word-by-word reveal on a heading. Scroll it into view to trigger."
-  >
-    <TextReveal
-      as="h2"
-      text="Compose interfaces from source you own"
-      class="text-3xl font-bold tracking-tight"
-    />
+  <Story title="Default" description="Word-by-word reveal on a heading. Scroll it into view to trigger.">
+    <TextReveal as="h2" text="Compose interfaces from source you own" class="text-3xl font-bold tracking-tight" />
   </Story>
 
-  <Story
-    title="Character mode"
-    description="Per-character stagger on a short word."
-  >
-    <TextReveal
-      text="Registry"
-      mode="chars"
-      :stagger="35"
-      class="text-3xl font-bold tracking-tight"
-    />
+  <Story title="Character mode" description="Per-character stagger on a short word.">
+    <TextReveal text="Registry" mode="chars" :stagger="35" class="text-3xl font-bold tracking-tight" />
   </Story>
 
-  <Story
-    title="No blur"
-    description="Fade and rise only — blur disabled for small sizes where blur reads as smudge."
-  >
-    <TextReveal
-      text="Crisp entrance without the blur pass"
-      :blur="false"
-      class="text-lg font-medium"
-    />
+  <Story title="No blur" description="Fade and rise only — blur disabled for small sizes where blur reads as smudge.">
+    <TextReveal text="Crisp entrance without the blur pass" :blur="false" class="text-lg font-medium" />
   </Story>
 
-  <Story
-    title="Slow cinematic"
-    description="Long duration and wide stagger for hero moments."
-  >
+  <Story title="Slow cinematic" description="Long duration and wide stagger for hero moments.">
     <TextReveal
       text="Design engineering, distilled"
       :duration="900"
@@ -51,69 +26,39 @@ import { SectionCard } from "@/components/ui/section-card";
     />
   </Story>
 
-  <Story
-    title="Snappy"
-    description="Fast duration and tight stagger for UI chrome."
-  >
-    <TextReveal
-      text="Instant, tactile, precise"
-      :duration="300"
-      :stagger="20"
-      class="text-base font-medium"
-    />
+  <Story title="Snappy" description="Fast duration and tight stagger for UI chrome.">
+    <TextReveal text="Instant, tactile, precise" :duration="300" :stagger="20" class="text-base font-medium" />
   </Story>
 
-  <Story
-    title="Paragraph"
-    description="Longer body copy reveals word by word at reading size."
-  >
+  <Story title="Paragraph" description="Longer body copy reveals word by word at reading size.">
     <TextReveal
       text="Every component ships as source code you copy into your project. No runtime dependency, no version lock — edit anything after installing."
       class="text-muted-foreground max-w-prose text-sm leading-relaxed"
     />
   </Story>
 
-  <Story
-    title="With GradientText"
-    description="Composed with the gradient-text primitive for a branded headline."
-  >
+  <Story title="With GradientText" description="Composed with the gradient-text primitive for a branded headline.">
     <h2 class="text-3xl font-bold tracking-tight">
       <TextReveal text="Ship your ideas at" :stagger="50" />
       &nbsp;<GradientText preset="sunset">lightspeed.</GradientText>
     </h2>
   </Story>
 
-  <Story
-    title="Replayable"
-    description="once=false re-hides when scrolled out — scroll away and back to replay."
-  >
+  <Story title="Replayable" description="once=false re-hides when scrolled out — scroll away and back to replay.">
     <div class="bg-card max-h-48 overflow-y-auto rounded-lg border p-6">
       <div class="h-24"></div>
-      <TextReveal
-        text="Scroll me out of view, then back in"
-        :once="false"
-        class="text-xl font-semibold"
-      />
+      <TextReveal text="Scroll me out of view, then back in" :once="false" class="text-xl font-semibold" />
       <div class="h-24"></div>
     </div>
   </Story>
 
-  <Story
-    title="Inside a card"
-    description="Section header reveal within a SectionCard."
-  >
+  <Story title="Inside a card" description="Section header reveal within a SectionCard.">
     <SectionCard title="Quarterly report" description="Revealed on scroll">
-      <TextReveal
-        text="Revenue grew forty percent year over year"
-        class="text-lg font-medium"
-      />
+      <TextReveal text="Revenue grew forty percent year over year" class="text-lg font-medium" />
     </SectionCard>
   </Story>
 
-  <Story
-    title="Display size"
-    description="Large display heading with tight tracking."
-  >
+  <Story title="Display size" description="Large display heading with tight tracking.">
     <TextReveal
       as="h1"
       text="The component registry for Vue and React"
@@ -122,10 +67,7 @@ import { SectionCard } from "@/components/ui/section-card";
     />
   </Story>
 
-  <Story
-    title="Caption / meta"
-    description="Small uppercase meta text with a gentle stagger."
-  >
+  <Story title="Caption / meta" description="Small uppercase meta text with a gentle stagger.">
     <TextReveal
       text="Trusted by design engineers everywhere"
       :stagger="25"

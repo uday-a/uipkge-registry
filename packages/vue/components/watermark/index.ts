@@ -1,1 +1,1 @@
-export { default as Watermark } from "./Watermark.vue";
+export { default as Watermark } from './Watermark.vue'

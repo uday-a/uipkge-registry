@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { Spinner } from "@/components/ui/spinner";
+import { Spinner } from '@/components/ui/spinner'
 </script>
 
 <template>
-  <Story
-    title="Sizes"
-    description="Use size-* and text-* utilities to scale and tint."
-  >
+  <Story title="Sizes" description="Use size-* and text-* utilities to scale and tint.">
     <div class="flex items-center gap-6">
       <Spinner />
       <Spinner class="size-6" />
@@ -15,12 +12,7 @@ import { Spinner } from "@/components/ui/spinner";
     </div>
   </Story>
 
-  <Story
-    title="Inline"
-    description="Place inside a button or label for inline loading."
-  >
-    <div class="flex items-center gap-2 text-sm">
-      <Spinner class="size-4" /> Loading…
-    </div>
+  <Story title="Inline" description="Place inside a button or label for inline loading.">
+    <div class="flex items-center gap-2 text-sm"><Spinner class="size-4" /> Loading…</div>
   </Story>
 </template>

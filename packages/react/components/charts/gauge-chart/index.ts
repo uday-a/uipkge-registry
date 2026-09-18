@@ -1,1 +1,1 @@
-export { GaugeChart, type GaugeChartProps } from "./GaugeChart";
+export { GaugeChart, type GaugeChartProps } from './GaugeChart'

@@ -1,1 +1,1 @@
-export { default as IconTransition } from "./IconTransition.vue";
+export { default as IconTransition } from './IconTransition.vue'

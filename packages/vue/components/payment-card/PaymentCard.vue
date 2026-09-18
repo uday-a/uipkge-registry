@@ -1,244 +1,240 @@
 <script setup lang="ts">
-import { computed, onUnmounted, ref, watch } from "vue";
-import { cn } from "@/lib/utils";
+import { computed, onUnmounted, ref, watch } from 'vue'
+import { cn } from '@/lib/utils'
 
-export type CardBrand = "visa" | "mastercard" | "amex" | "discover" | "unknown";
+export type CardBrand = 'visa' | 'mastercard' | 'amex' | 'discover' | 'unknown'
 
 const props = withDefaults(
   defineProps<{
-    number?: string;
-    name?: string;
-    expiry?: string;
-    cvc?: string;
-    brand?: CardBrand | "auto";
-    flipped?: boolean;
-    variant?: "default" | "compact";
-    tilt?: boolean;
-    shimmer?: boolean;
-    flip?: boolean;
-    size?: "sm" | "md" | "lg";
-    class?: string;
+    number?: string
+    name?: string
+    expiry?: string
+    cvc?: string
+    brand?: CardBrand | 'auto'
+    flipped?: boolean
+    variant?: 'default' | 'compact'
+    tilt?: boolean
+    shimmer?: boolean
+    flip?: boolean
+    size?: 'sm' | 'md' | 'lg'
+    class?: string
   }>(),
   {
-    number: "",
-    name: "",
-    expiry: "",
-    cvc: "",
-    brand: "auto",
+    number: '',
+    name: '',
+    expiry: '',
+    cvc: '',
+    brand: 'auto',
     flipped: false,
-    variant: "default",
+    variant: 'default',
     tilt: false,
     shimmer: false,
     flip: true,
-    size: "md",
+    size: 'md',
   },
-);
+)
 
 function detectBrand(raw: string): CardBrand {
-  const n = raw.replace(/\D/g, "");
-  if (!n) return "unknown";
-  if (/^4/.test(n)) return "visa";
-  if (/^(5[1-5]|2[2-7])/.test(n)) return "mastercard";
-  if (/^3[47]/.test(n)) return "amex";
-  if (/^(6011|65|64[4-9])/.test(n)) return "discover";
-  return "unknown";
+  const n = raw.replace(/\D/g, '')
+  if (!n) return 'unknown'
+  if (/^4/.test(n)) return 'visa'
+  if (/^(5[1-5]|2[2-7])/.test(n)) return 'mastercard'
+  if (/^3[47]/.test(n)) return 'amex'
+  if (/^(6011|65|64[4-9])/.test(n)) return 'discover'
+  return 'unknown'
 }
 
 const detectedBrand = computed<CardBrand>(() => {
-  if (props.brand && props.brand !== "auto") return props.brand;
-  return detectBrand(props.number);
-});
+  if (props.brand && props.brand !== 'auto') return props.brand
+  return detectBrand(props.number)
+})
 
 function formatMasked(raw: string, brand: CardBrand): string {
-  const digits = raw.replace(/\D/g, "").slice(0, brand === "amex" ? 15 : 16);
-  const groups = brand === "amex" ? [4, 6, 5] : [4, 4, 4, 4];
-  const total = groups.reduce((a, b) => a + b, 0);
-  const padded = (digits + "••••••••••••••••").slice(0, total);
-  let i = 0;
+  const digits = raw.replace(/\D/g, '').slice(0, brand === 'amex' ? 15 : 16)
+  const groups = brand === 'amex' ? [4, 6, 5] : [4, 4, 4, 4]
+  const total = groups.reduce((a, b) => a + b, 0)
+  const padded = (digits + '••••••••••••••••').slice(0, total)
+  let i = 0
   return groups
     .map((g) => {
-      const slice = padded.slice(i, i + g);
-      i += g;
-      return slice;
+      const slice = padded.slice(i, i + g)
+      i += g
+      return slice
     })
-    .join(" ");
+    .join(' ')
 }
 
-const displayNumber = computed(() =>
-  formatMasked(props.number, detectedBrand.value),
-);
-const displayName = computed(() =>
-  (props.name.trim() || "CARDHOLDER NAME").toUpperCase(),
-);
+const displayNumber = computed(() => formatMasked(props.number, detectedBrand.value))
+const displayName = computed(() => (props.name.trim() || 'CARDHOLDER NAME').toUpperCase())
 const displayExpiry = computed(() => {
-  const raw = props.expiry.replace(/\D/g, "").slice(0, 4);
-  if (!raw) return "MM/YY";
-  if (raw.length <= 2) return raw + "/YY";
-  return `${raw.slice(0, 2)}/${raw.slice(2, 4)}`;
-});
+  const raw = props.expiry.replace(/\D/g, '').slice(0, 4)
+  if (!raw) return 'MM/YY'
+  if (raw.length <= 2) return raw + '/YY'
+  return `${raw.slice(0, 2)}/${raw.slice(2, 4)}`
+})
 const displayCvc = computed(() => {
-  const max = detectedBrand.value === "amex" ? 4 : 3;
-  const digits = props.cvc.replace(/\D/g, "").slice(0, max);
-  return digits || "•••";
-});
+  const max = detectedBrand.value === 'amex' ? 4 : 3
+  const digits = props.cvc.replace(/\D/g, '').slice(0, max)
+  return digits || '•••'
+})
 
-const displayChars = computed(() => displayNumber.value.split(""));
+const displayChars = computed(() => displayNumber.value.split(''))
 
 // Character pop-in animation tracking
-const prevDigits = ref("");
-const poppedIndexes = ref<Set<number>>(new Set());
-let popClearTimer: ReturnType<typeof setTimeout> | null = null;
+const prevDigits = ref('')
+const poppedIndexes = ref<Set<number>>(new Set())
+let popClearTimer: ReturnType<typeof setTimeout> | null = null
 
 watch(
   () => props.number,
   (next) => {
-    const nextDigits = next.replace(/\D/g, "");
-    const prev = prevDigits.value;
+    const nextDigits = next.replace(/\D/g, '')
+    const prev = prevDigits.value
     if (nextDigits.length > prev.length) {
-      const newIdx = nextDigits.length - 1;
-      poppedIndexes.value.add(newIdx);
-      if (popClearTimer) clearTimeout(popClearTimer);
+      const newIdx = nextDigits.length - 1
+      poppedIndexes.value.add(newIdx)
+      if (popClearTimer) clearTimeout(popClearTimer)
       popClearTimer = setTimeout(() => {
-        poppedIndexes.value.clear();
-      }, 400);
+        poppedIndexes.value.clear()
+      }, 400)
     }
-    prevDigits.value = nextDigits;
+    prevDigits.value = nextDigits
   },
-);
+)
 
 onUnmounted(() => {
-  if (popClearTimer) clearTimeout(popClearTimer);
-});
+  if (popClearTimer) clearTimeout(popClearTimer)
+})
 
 function charKey(i: number, ch: string) {
-  return `${i}-${ch}`;
+  return `${i}-${ch}`
 }
 
 function shouldPop(charIndex: number, ch: string): boolean {
-  if (ch === "•" || ch === " ") return false;
-  const strUpTo = displayNumber.value.slice(0, charIndex + 1);
-  const digitCount = (strUpTo.match(/\d/g) || []).length;
-  return poppedIndexes.value.has(digitCount - 1);
+  if (ch === '•' || ch === ' ') return false
+  const strUpTo = displayNumber.value.slice(0, charIndex + 1)
+  const digitCount = (strUpTo.match(/\d/g) || []).length
+  return poppedIndexes.value.has(digitCount - 1)
 }
 
 // 3D Parallax Tilt
-const cardRef = ref<HTMLElement | null>(null);
-const tiltX = ref(0);
-const tiltY = ref(0);
-const isHovering = ref(false);
+const cardRef = ref<HTMLElement | null>(null)
+const tiltX = ref(0)
+const tiltY = ref(0)
+const isHovering = ref(false)
 
 function onMove(e: MouseEvent) {
-  if (!props.tilt || !cardRef.value) return;
-  const rect = cardRef.value.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-  const px = (x / rect.width - 0.5) * 2;
-  const py = (y / rect.height - 0.5) * 2;
-  tiltX.value = -py * 10;
-  tiltY.value = px * 12;
-  isHovering.value = true;
+  if (!props.tilt || !cardRef.value) return
+  const rect = cardRef.value.getBoundingClientRect()
+  const x = e.clientX - rect.left
+  const y = e.clientY - rect.top
+  const px = (x / rect.width - 0.5) * 2
+  const py = (y / rect.height - 0.5) * 2
+  tiltX.value = -py * 10
+  tiltY.value = px * 12
+  isHovering.value = true
 }
 
 function onLeave() {
-  if (!props.tilt) return;
-  tiltX.value = 0;
-  tiltY.value = 0;
-  isHovering.value = false;
+  if (!props.tilt) return
+  tiltX.value = 0
+  tiltY.value = 0
+  isHovering.value = false
 }
 
 const innerTransform = computed(() => {
-  const flipDeg = props.flipped ? 180 : 0;
+  const flipDeg = props.flipped ? 180 : 0
   if (props.tilt && isHovering.value) {
-    return `perspective(1200px) rotateX(${tiltX.value}deg) rotateY(${tiltY.value + flipDeg}deg) scale3d(1.02, 1.02, 1.02)`;
+    return `perspective(1200px) rotateX(${tiltX.value}deg) rotateY(${tiltY.value + flipDeg}deg) scale3d(1.02, 1.02, 1.02)`
   }
-  return `perspective(1200px) rotateY(${flipDeg}deg)`;
-});
+  return `perspective(1200px) rotateY(${flipDeg}deg)`
+})
 
 // Sizing
 const sizeClass = computed(() => {
-  if (props.variant === "compact") return "w-[120px]";
+  if (props.variant === 'compact') return 'w-[120px]'
   switch (props.size) {
-    case "sm":
-      return "w-[280px]";
-    case "lg":
-      return "w-[420px]";
-    case "md":
+    case 'sm':
+      return 'w-[280px]'
+    case 'lg':
+      return 'w-[420px]'
+    case 'md':
     default:
-      return "w-[360px]";
+      return 'w-[360px]'
   }
-});
+})
 
 // Brand Themes (Materials & Aesthetics)
 interface BrandVisual {
-  cardClass: string;
-  accentGlow: string;
-  foilSheen: string;
-  guillocheColor: string;
-  textColor: string;
-  subtextColor: string;
-  embossStyle: string;
-  chipType: "gold" | "silver";
+  cardClass: string
+  accentGlow: string
+  foilSheen: string
+  guillocheColor: string
+  textColor: string
+  subtextColor: string
+  embossStyle: string
+  chipType: 'gold' | 'silver'
 }
 
 const BRAND_VISUALS: Record<CardBrand, BrandVisual> = {
   visa: {
     cardClass:
-      "bg-[radial-gradient(ellipse_at_top_right,#1e3a8a_0%,#0f2252_45%,#08122c_85%,#040a18_100%)] text-white shadow-[0_22px_45px_-12px_rgba(15,34,82,0.65),0_8px_16px_-8px_rgba(0,0,0,0.5)]",
-    accentGlow: "from-blue-400/20 via-indigo-500/10 to-transparent",
-    foilSheen: "from-white/20 via-blue-200/5 to-transparent",
-    guillocheColor: "rgba(96, 165, 250, 0.12)",
-    textColor: "text-white",
-    subtextColor: "text-blue-200/60",
-    embossStyle: "text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.8)]",
-    chipType: "gold",
+      'bg-[radial-gradient(ellipse_at_top_right,#1e3a8a_0%,#0f2252_45%,#08122c_85%,#040a18_100%)] text-white shadow-[0_22px_45px_-12px_rgba(15,34,82,0.65),0_8px_16px_-8px_rgba(0,0,0,0.5)]',
+    accentGlow: 'from-blue-400/20 via-indigo-500/10 to-transparent',
+    foilSheen: 'from-white/20 via-blue-200/5 to-transparent',
+    guillocheColor: 'rgba(96, 165, 250, 0.12)',
+    textColor: 'text-white',
+    subtextColor: 'text-blue-200/60',
+    embossStyle: 'text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.8)]',
+    chipType: 'gold',
   },
   mastercard: {
     cardClass:
-      "bg-[radial-gradient(ellipse_at_top_right,#2a0808_0%,#180608_35%,#0f0506_70%,#09090b_100%)] text-white shadow-[0_22px_45px_-12px_rgba(220,38,38,0.35),0_8px_16px_-8px_rgba(0,0,0,0.6)]",
-    accentGlow: "from-red-500/25 via-amber-500/15 to-transparent",
-    foilSheen: "from-white/20 via-orange-300/10 to-transparent",
-    guillocheColor: "rgba(239, 68, 68, 0.1)",
-    textColor: "text-white",
-    subtextColor: "text-zinc-400",
-    embossStyle: "text-zinc-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]",
-    chipType: "gold",
+      'bg-[radial-gradient(ellipse_at_top_right,#2a0808_0%,#180608_35%,#0f0506_70%,#09090b_100%)] text-white shadow-[0_22px_45px_-12px_rgba(220,38,38,0.35),0_8px_16px_-8px_rgba(0,0,0,0.6)]',
+    accentGlow: 'from-red-500/25 via-amber-500/15 to-transparent',
+    foilSheen: 'from-white/20 via-orange-300/10 to-transparent',
+    guillocheColor: 'rgba(239, 68, 68, 0.1)',
+    textColor: 'text-white',
+    subtextColor: 'text-zinc-400',
+    embossStyle: 'text-zinc-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]',
+    chipType: 'gold',
   },
   amex: {
     cardClass:
-      "bg-[radial-gradient(ellipse_at_top_right,#1e293b_0%,#0f172a_40%,#090d16_80%,#020617_100%)] text-slate-100 shadow-[0_22px_45px_-12px_rgba(15,23,42,0.7),0_8px_16px_-8px_rgba(0,0,0,0.6)]",
-    accentGlow: "from-slate-300/20 via-teal-500/10 to-transparent",
-    foilSheen: "from-white/25 via-cyan-100/10 to-transparent",
-    guillocheColor: "rgba(148, 163, 184, 0.12)",
-    textColor: "text-slate-100",
-    subtextColor: "text-slate-400",
-    embossStyle: "text-slate-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]",
-    chipType: "silver",
+      'bg-[radial-gradient(ellipse_at_top_right,#1e293b_0%,#0f172a_40%,#090d16_80%,#020617_100%)] text-slate-100 shadow-[0_22px_45px_-12px_rgba(15,23,42,0.7),0_8px_16px_-8px_rgba(0,0,0,0.6)]',
+    accentGlow: 'from-slate-300/20 via-teal-500/10 to-transparent',
+    foilSheen: 'from-white/25 via-cyan-100/10 to-transparent',
+    guillocheColor: 'rgba(148, 163, 184, 0.12)',
+    textColor: 'text-slate-100',
+    subtextColor: 'text-slate-400',
+    embossStyle: 'text-slate-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]',
+    chipType: 'silver',
   },
   discover: {
     cardClass:
-      "bg-[radial-gradient(ellipse_at_top_right,#431407_0%,#270d04_45%,#1c0903_80%,#0c0401_100%)] text-white shadow-[0_22px_45px_-12px_rgba(194,65,12,0.45),0_8px_16px_-8px_rgba(0,0,0,0.6)]",
-    accentGlow: "from-orange-400/25 via-amber-600/15 to-transparent",
-    foilSheen: "from-white/20 via-amber-200/10 to-transparent",
-    guillocheColor: "rgba(251, 146, 60, 0.12)",
-    textColor: "text-white",
-    subtextColor: "text-amber-200/60",
-    embossStyle: "text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]",
-    chipType: "gold",
+      'bg-[radial-gradient(ellipse_at_top_right,#431407_0%,#270d04_45%,#1c0903_80%,#0c0401_100%)] text-white shadow-[0_22px_45px_-12px_rgba(194,65,12,0.45),0_8px_16px_-8px_rgba(0,0,0,0.6)]',
+    accentGlow: 'from-orange-400/25 via-amber-600/15 to-transparent',
+    foilSheen: 'from-white/20 via-amber-200/10 to-transparent',
+    guillocheColor: 'rgba(251, 146, 60, 0.12)',
+    textColor: 'text-white',
+    subtextColor: 'text-amber-200/60',
+    embossStyle: 'text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]',
+    chipType: 'gold',
   },
   unknown: {
     cardClass:
-      "bg-[radial-gradient(ellipse_at_top_right,#27272a_0%,#18181b_40%,#09090b_85%,#000000_100%)] text-white shadow-[0_22px_45px_-12px_rgba(0,0,0,0.7),0_8px_16px_-8px_rgba(0,0,0,0.5)]",
-    accentGlow: "from-zinc-400/15 via-zinc-600/10 to-transparent",
-    foilSheen: "from-white/18 via-zinc-300/5 to-transparent",
-    guillocheColor: "rgba(255, 255, 255, 0.06)",
-    textColor: "text-white",
-    subtextColor: "text-zinc-400",
-    embossStyle: "text-zinc-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]",
-    chipType: "silver",
+      'bg-[radial-gradient(ellipse_at_top_right,#27272a_0%,#18181b_40%,#09090b_85%,#000000_100%)] text-white shadow-[0_22px_45px_-12px_rgba(0,0,0,0.7),0_8px_16px_-8px_rgba(0,0,0,0.5)]',
+    accentGlow: 'from-zinc-400/15 via-zinc-600/10 to-transparent',
+    foilSheen: 'from-white/18 via-zinc-300/5 to-transparent',
+    guillocheColor: 'rgba(255, 255, 255, 0.06)',
+    textColor: 'text-white',
+    subtextColor: 'text-zinc-400',
+    embossStyle: 'text-zinc-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]',
+    chipType: 'silver',
   },
-};
+}
 
-const theme = computed(() => BRAND_VISUALS[detectedBrand.value]);
+const theme = computed(() => BRAND_VISUALS[detectedBrand.value])
 </script>
 
 <template>
@@ -248,23 +244,13 @@ const theme = computed(() => BRAND_VISUALS[detectedBrand.value]);
     data-slot="payment-card"
     role="img"
     :aria-label="`${detectedBrand === 'unknown' ? 'Card' : detectedBrand} ending ${displayNumber.replace(/[•\s]/g, '').slice(-4) || '••••'}, ${displayName}, expires ${displayExpiry}`"
-    :class="
-      cn(
-        'group relative inline-block select-none [perspective:1200px]',
-        sizeClass,
-        props.class,
-      )
-    "
+    :class="cn('group relative inline-block select-none [perspective:1200px]', sizeClass, props.class)"
     @mousemove="onMove"
     @mouseleave="onLeave"
   >
     <div
       class="relative aspect-[85.6/53.98] w-full transition-transform [transform-style:preserve-3d]"
-      :class="
-        flip
-          ? 'duration-[650ms] ease-[cubic-bezier(0.22,1,0.36,1)]'
-          : 'duration-300'
-      "
+      :class="flip ? 'duration-[650ms] ease-[cubic-bezier(0.22,1,0.36,1)]' : 'duration-300'"
       :style="{ transform: innerTransform }"
     >
       <!-- ================================= FRONT FACE ================================= -->
@@ -284,31 +270,15 @@ const theme = computed(() => BRAND_VISUALS[detectedBrand.value]);
           fill="none"
           aria-hidden="true"
         >
-          <g
-            :stroke="theme.guillocheColor"
-            stroke-width="0.75"
-            stroke-opacity="0.7"
-          >
+          <g :stroke="theme.guillocheColor" stroke-width="0.75" stroke-opacity="0.7">
             <path d="M-40 40 C 60 180, 180 -40, 400 120" />
             <path d="M-40 55 C 60 195, 180 -25, 400 135" />
             <path d="M-40 70 C 60 210, 180 -10, 400 150" />
             <path d="M-40 85 C 60 225, 180 5, 400 165" />
             <path d="M-40 100 C 60 240, 180 20, 400 180" />
             <path d="M-40 115 C 60 255, 180 35, 400 195" />
-            <circle
-              cx="280"
-              cy="80"
-              r="90"
-              stroke-width="0.5"
-              stroke-dasharray="2 3"
-            />
-            <circle
-              cx="280"
-              cy="80"
-              r="60"
-              stroke-width="0.5"
-              stroke-dasharray="1 2"
-            />
+            <circle cx="280" cy="80" r="90" stroke-width="0.5" stroke-dasharray="2 3" />
+            <circle cx="280" cy="80" r="60" stroke-width="0.5" stroke-dasharray="1 2" />
           </g>
         </svg>
 
@@ -325,9 +295,7 @@ const theme = computed(() => BRAND_VISUALS[detectedBrand.value]);
           class="pointer-events-none absolute -top-12 -right-12 h-44 w-44 rounded-full bg-gradient-to-br blur-2xl"
           :class="theme.accentGlow"
         />
-        <div
-          class="pointer-events-none absolute -bottom-10 -left-10 h-36 w-36 rounded-full bg-black/40 blur-2xl"
-        />
+        <div class="pointer-events-none absolute -bottom-10 -left-10 h-36 w-36 rounded-full bg-black/40 blur-2xl" />
 
         <!-- Outer Bevel Perimeter Ring -->
         <div
@@ -342,14 +310,7 @@ const theme = computed(() => BRAND_VISUALS[detectedBrand.value]);
         />
 
         <!-- Content Structure -->
-        <div
-          :class="
-            cn(
-              'absolute inset-0 flex flex-col justify-between',
-              variant === 'compact' ? 'p-2' : 'p-5',
-            )
-          "
-        >
+        <div :class="cn('absolute inset-0 flex flex-col justify-between', variant === 'compact' ? 'p-2' : 'p-5')">
           <!-- TOP ROW: Bank Watermark / Card Tier & Brand Logo -->
           <div class="flex items-center justify-between">
             <!-- Left: Card Tier / Bank label -->
@@ -359,33 +320,17 @@ const theme = computed(() => BRAND_VISUALS[detectedBrand.value]);
                 class="font-mono text-xs font-semibold tracking-[0.25em] text-white/70 uppercase"
               >
                 {{
-                  detectedBrand === "amex"
-                    ? "PLATINUM"
-                    : detectedBrand === "mastercard"
-                      ? "WORLD ELITE"
-                      : "SIGNATURE"
+                  detectedBrand === 'amex' ? 'PLATINUM' : detectedBrand === 'mastercard' ? 'WORLD ELITE' : 'SIGNATURE'
                 }}
               </span>
-              <span
-                v-else
-                class="font-mono text-xs font-bold tracking-widest text-white/70 uppercase"
-              >
-                CARD
-              </span>
+              <span v-else class="font-mono text-xs font-bold tracking-widest text-white/70 uppercase"> CARD </span>
             </div>
 
             <!-- Right: Authentic Brand Logo -->
-            <div
-              class="flex items-center justify-end"
-              style="perspective: 600px"
-            >
+            <div class="flex items-center justify-end" style="perspective: 600px">
               <Transition name="brand-pop" mode="out-in">
                 <!-- VISA -->
-                <div
-                  v-if="detectedBrand === 'visa'"
-                  key="visa"
-                  class="flex items-center"
-                >
+                <div v-if="detectedBrand === 'visa'" key="visa" class="flex items-center">
                   <svg
                     :class="variant === 'compact' ? 'h-3 w-auto' : 'h-6 w-auto'"
                     viewBox="0 0 78 24"
@@ -405,28 +350,16 @@ const theme = computed(() => BRAND_VISUALS[detectedBrand.value]);
                 </div>
 
                 <!-- MASTERCARD -->
-                <div
-                  v-else-if="detectedBrand === 'mastercard'"
-                  key="mastercard"
-                  class="flex items-center gap-1.5"
-                >
+                <div v-else-if="detectedBrand === 'mastercard'" key="mastercard" class="flex items-center gap-1.5">
                   <svg
-                    :class="
-                      variant === 'compact' ? 'h-3.5 w-auto' : 'h-7 w-auto'
-                    "
+                    :class="variant === 'compact' ? 'h-3.5 w-auto' : 'h-7 w-auto'"
                     viewBox="0 0 48 30"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                     aria-label="Mastercard"
                   >
                     <circle cx="15" cy="15" r="15" fill="#EB001B" />
-                    <circle
-                      cx="33"
-                      cy="15"
-                      r="15"
-                      fill="#F79E1B"
-                      fill-opacity="0.92"
-                    />
+                    <circle cx="33" cy="15" r="15" fill="#F79E1B" fill-opacity="0.92" />
                     <path
                       d="M24 4.5C27.5 7.1 29.8 11.2 29.8 16C29.8 20.8 27.5 24.9 24 27.5C20.5 24.9 18.2 20.8 18.2 16C18.2 11.2 20.5 7.1 24 4.5Z"
                       fill="#FF5F00"
@@ -442,18 +375,12 @@ const theme = computed(() => BRAND_VISUALS[detectedBrand.value]);
                 </div>
 
                 <!-- AMEX -->
-                <div
-                  v-else-if="detectedBrand === 'amex'"
-                  key="amex"
-                  class="flex items-center"
-                >
+                <div v-else-if="detectedBrand === 'amex'" key="amex" class="flex items-center">
                   <div
                     :class="
                       cn(
                         'flex items-center justify-center rounded-sm bg-[#006fcf] font-sans font-bold tracking-tighter text-white shadow-xs',
-                        variant === 'compact'
-                          ? 'px-1 py-0.5 text-xs'
-                          : 'px-2 py-1 text-xs',
+                        variant === 'compact' ? 'px-1 py-0.5 text-xs' : 'px-2 py-1 text-xs',
                       )
                     "
                   >
@@ -477,11 +404,7 @@ const theme = computed(() => BRAND_VISUALS[detectedBrand.value]);
                 </div>
 
                 <!-- UNKNOWN / SLEEK DEFAULT -->
-                <div
-                  v-else
-                  key="unknown"
-                  class="flex items-center gap-1 opacity-80"
-                >
+                <div v-else key="unknown" class="flex items-center gap-1 opacity-80">
                   <div class="size-2 rounded-full bg-white/60" />
                   <div class="size-2 rounded-full bg-white/30" />
                   <span
@@ -511,12 +434,8 @@ const theme = computed(() => BRAND_VISUALS[detectedBrand.value]);
                 "
               >
                 <!-- Authentic Chip Circuit Etching Lines -->
-                <div
-                  class="absolute inset-[2px] rounded-[3px] border border-black/25"
-                />
-                <div
-                  class="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-black/30"
-                />
+                <div class="absolute inset-[2px] rounded-[3px] border border-black/25" />
+                <div class="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-black/30" />
                 <div class="absolute inset-y-0 left-1/3 w-px bg-black/30" />
                 <div class="absolute inset-y-0 right-1/3 w-px bg-black/30" />
                 <div
@@ -546,10 +465,7 @@ const theme = computed(() => BRAND_VISUALS[detectedBrand.value]);
             </div>
 
             <!-- Holographic Security Stamp (Optional realistic detail) -->
-            <div
-              v-if="variant !== 'compact'"
-              class="pay-card-holo h-7 w-9 rounded-[4px] opacity-75 shadow-xs"
-            />
+            <div v-if="variant !== 'compact'" class="pay-card-holo h-7 w-9 rounded-[4px] opacity-75 shadow-xs" />
           </div>
 
           <!-- CARD NUMBER (Authentic Embossed Raised Digits) -->
@@ -558,9 +474,7 @@ const theme = computed(() => BRAND_VISUALS[detectedBrand.value]);
               cn(
                 'flex flex-nowrap items-center font-mono font-bold tracking-[0.18em] tabular-nums',
                 theme.embossStyle,
-                variant === 'compact'
-                  ? 'my-0.5 text-xs'
-                  : 'my-1 text-base sm:text-lg',
+                variant === 'compact' ? 'my-0.5 text-xs' : 'my-1 text-base sm:text-lg',
               )
             "
           >
@@ -577,7 +491,7 @@ const theme = computed(() => BRAND_VISUALS[detectedBrand.value]);
               "
               aria-hidden="true"
             >
-              {{ ch === " " ? "\u00A0" : ch }}
+              {{ ch === ' ' ? '\u00A0' : ch }}
             </span>
           </div>
 
@@ -655,23 +569,9 @@ const theme = computed(() => BRAND_VISUALS[detectedBrand.value]);
           "
         />
 
-        <div
-          :class="
-            cn(
-              'relative flex flex-col justify-between',
-              variant === 'compact' ? 'p-2' : 'p-4',
-            )
-          "
-        >
+        <div :class="cn('relative flex flex-col justify-between', variant === 'compact' ? 'p-2' : 'p-4')">
           <!-- Signature Panel + CVV Code -->
-          <div
-            :class="
-              cn(
-                'flex items-stretch gap-2',
-                variant === 'compact' ? 'mt-1' : 'mt-2',
-              )
-            "
-          >
+          <div :class="cn('flex items-stretch gap-2', variant === 'compact' ? 'mt-1' : 'mt-2')">
             <!-- White Security Hatched Signature Strip -->
             <div
               :class="
@@ -707,31 +607,24 @@ const theme = computed(() => BRAND_VISUALS[detectedBrand.value]);
                 )
               "
             >
-              <span
-                v-if="variant !== 'compact'"
-                class="text-[6px] font-bold tracking-widest text-slate-400 uppercase"
-              >
+              <span v-if="variant !== 'compact'" class="text-[6px] font-bold tracking-widest text-slate-400 uppercase">
                 CVV
               </span>
-              <span class="leading-none tracking-widest italic">{{
-                displayCvc
-              }}</span>
+              <span class="leading-none tracking-widest italic">{{ displayCvc }}</span>
             </div>
           </div>
 
           <!-- Microtext Disclaimer & Regulatory Compliance Marks -->
           <div v-if="variant !== 'compact'" class="mt-3 space-y-1.5">
             <p class="text-[7.5px] leading-snug text-white/50">
-              This card is property of the issuing bank and must be returned
-              upon request. Use is subject to the cardholder agreement.
+              This card is property of the issuing bank and must be returned upon request. Use is subject to the
+              cardholder agreement.
             </p>
             <div
               class="flex items-center justify-between border-t border-white/10 pt-2 text-xs font-medium text-white/60"
             >
               <span>24/7 Support: 1-800-555-0199</span>
-              <span class="font-mono font-bold tracking-wider text-white/75"
-                >CIRRUS · PLUS · STAR</span
-              >
+              <span class="font-mono font-bold tracking-wider text-white/75">CIRRUS · PLUS · STAR</span>
             </div>
           </div>
         </div>
@@ -803,10 +696,10 @@ const theme = computed(() => BRAND_VISUALS[detectedBrand.value]);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [data-slot="payment-card"] [class*="transition-"] {
+  [data-slot='payment-card'] [class*='transition-'] {
     transition-duration: 0ms !important;
   }
-  [data-slot="payment-card"] [style*="payment-card-shimmer"] {
+  [data-slot='payment-card'] [style*='payment-card-shimmer'] {
     animation: none !important;
   }
   .pay-char-pop {

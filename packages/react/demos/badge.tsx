@@ -1,7 +1,7 @@
-import Story from "../../components/story/Story";
-import { Badge } from "@react-registry/badge";
-import { Button } from "@react-registry/button";
-import { Bell, Check, Clock, Inbox, Mail, X, Zap } from "lucide-react";
+import Story from '../../components/story/Story'
+import { Badge } from '@react-registry/badge'
+import { Button } from '@react-registry/button'
+import { Bell, Check, Clock, Inbox, Mail, X, Zap } from 'lucide-react'
 
 export default function BadgeDemo() {
   return (
@@ -21,10 +21,7 @@ export default function BadgeDemo() {
         </div>
       </Story>
 
-      <Story
-        title="With icon"
-        description="Combine with lucide icons for status pills."
-      >
+      <Story title="With icon" description="Combine with lucide icons for status pills.">
         <div className="flex flex-wrap gap-2">
           <Badge variant="success">
             <Check className="size-3" /> Verified
@@ -41,10 +38,7 @@ export default function BadgeDemo() {
         </div>
       </Story>
 
-      <Story
-        title="In context"
-        description="Inline with text and counts — the most common badge usage."
-      >
+      <Story title="In context" description="Inline with text and counts — the most common badge usage.">
         <div className="flex flex-wrap items-center gap-3 text-sm">
           <span>Notifications</span>
           <Badge>3 new</Badge>
@@ -66,10 +60,7 @@ export default function BadgeDemo() {
             <Button variant="ghost" size="icon" aria-label="Notifications">
               <Bell />
             </Button>
-            <Badge
-              variant="destructive"
-              className="absolute -top-1 -right-1 size-4 rounded-full p-0 text-xs"
-            >
+            <Badge variant="destructive" className="absolute -top-1 -right-1 size-4 rounded-full p-0 text-xs">
               5
             </Badge>
           </div>
@@ -89,9 +80,7 @@ export default function BadgeDemo() {
             <Button variant="ghost" size="icon" aria-label="Mail">
               <Mail />
             </Button>
-            <Badge className="absolute -top-1 -right-1 h-4 min-w-4 rounded-full px-1 text-xs">
-              99+
-            </Badge>
+            <Badge className="absolute -top-1 -right-1 h-4 min-w-4 rounded-full px-1 text-xs">99+</Badge>
           </div>
         </div>
       </Story>
@@ -102,14 +91,10 @@ export default function BadgeDemo() {
       >
         <div className="flex flex-wrap items-center gap-2">
           <Badge variant="outline">
-            <span className="max-w-40 truncate">
-              production-eu-west-1-cluster
-            </span>
+            <span className="max-w-40 truncate">production-eu-west-1-cluster</span>
           </Badge>
           <Badge variant="secondary">
-            <span className="max-w-32 truncate">
-              kubernetes-deployment-status
-            </span>
+            <span className="max-w-32 truncate">kubernetes-deployment-status</span>
           </Badge>
         </div>
       </Story>
@@ -140,5 +125,5 @@ export default function BadgeDemo() {
         </div>
       </Story>
     </>
-  );
+  )
 }

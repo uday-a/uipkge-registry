@@ -1,1 +1,1 @@
-export { default as DumbbellChart } from "./DumbbellChart.vue";
+export { default as DumbbellChart } from './DumbbellChart.vue'

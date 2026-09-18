@@ -1,1 +1,1 @@
-export { default as FloatLabel } from "./FloatLabel.vue";
+export { default as FloatLabel } from './FloatLabel.vue'

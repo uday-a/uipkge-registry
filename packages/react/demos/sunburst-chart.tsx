@@ -1,110 +1,110 @@
-import Story from "../../components/story/Story";
-import { SunburstChart } from "@react-registry/charts";
+import Story from '../../components/story/Story'
+import { SunburstChart } from '@react-registry/charts'
 
 const revenue = [
   {
-    name: "Revenue",
+    name: 'Revenue',
     children: [
       {
-        name: "Subscription",
+        name: 'Subscription',
         value: 64,
         children: [
-          { name: "Pro", value: 38 },
-          { name: "Team", value: 18 },
-          { name: "Enterprise", value: 8 },
+          { name: 'Pro', value: 38 },
+          { name: 'Team', value: 18 },
+          { name: 'Enterprise', value: 8 },
         ],
       },
       {
-        name: "Usage",
+        name: 'Usage',
         value: 22,
         children: [
-          { name: "API", value: 14 },
-          { name: "Storage", value: 8 },
+          { name: 'API', value: 14 },
+          { name: 'Storage', value: 8 },
         ],
       },
       {
-        name: "Services",
+        name: 'Services',
         value: 14,
         children: [
-          { name: "Onboarding", value: 9 },
-          { name: "Training", value: 5 },
+          { name: 'Onboarding', value: 9 },
+          { name: 'Training', value: 5 },
         ],
       },
     ],
   },
-];
+]
 
 // Air cargo network: region, then airport, sized by weekly tonnage.
 const cargoNetwork = [
   {
-    name: "Air cargo",
+    name: 'Air cargo',
     children: [
       {
-        name: "Transpacific",
+        name: 'Transpacific',
         children: [
-          { name: "PVG", value: 520 },
-          { name: "ICN", value: 410 },
-          { name: "NRT", value: 350 },
+          { name: 'PVG', value: 520 },
+          { name: 'ICN', value: 410 },
+          { name: 'NRT', value: 350 },
         ],
       },
       {
-        name: "Intra-Asia",
+        name: 'Intra-Asia',
         children: [
-          { name: "SIN", value: 570 },
-          { name: "HKG", value: 290 },
+          { name: 'SIN', value: 570 },
+          { name: 'HKG', value: 290 },
         ],
       },
       {
-        name: "Europe & ME",
+        name: 'Europe & ME',
         children: [
-          { name: "FRA", value: 360 },
-          { name: "DXB", value: 280 },
+          { name: 'FRA', value: 360 },
+          { name: 'DXB', value: 280 },
         ],
       },
     ],
   },
-];
+]
 
 const orgChart = [
   {
-    name: "Company",
+    name: 'Company',
     children: [
       {
-        name: "Engineering",
+        name: 'Engineering',
         children: [
-          { name: "Backend", value: 22 },
-          { name: "Frontend", value: 18 },
-          { name: "Mobile", value: 8 },
-          { name: "Infra", value: 8 },
+          { name: 'Backend', value: 22 },
+          { name: 'Frontend', value: 18 },
+          { name: 'Mobile', value: 8 },
+          { name: 'Infra', value: 8 },
         ],
       },
       {
-        name: "GTM",
+        name: 'GTM',
         children: [
-          { name: "Sales", value: 16 },
-          { name: "Marketing", value: 10 },
-          { name: "CS", value: 8 },
+          { name: 'Sales', value: 16 },
+          { name: 'Marketing', value: 10 },
+          { name: 'CS', value: 8 },
         ],
       },
-      { name: "Ops", value: 12 },
+      { name: 'Ops', value: 12 },
     ],
   },
-];
+]
 
 // Polar / tangential label layout for the small inner rings.
 const tangentialOption = {
   series: [
     {
-      label: { rotate: "tangential" as const },
+      label: { rotate: 'tangential' as const },
       levels: [
         {},
-        { r0: "12%", r: "40%", label: { rotate: "tangential" as const } },
-        { r0: "40%", r: "70%", label: { align: "right" as const } },
-        { r0: "70%", r: "90%", label: { position: "outside" as const } },
+        { r0: '12%', r: '40%', label: { rotate: 'tangential' as const } },
+        { r0: '40%', r: '70%', label: { align: 'right' as const } },
+        { r0: '70%', r: '90%', label: { position: 'outside' as const } },
       ],
     },
   ],
-};
+}
 
 // Drop rotation entirely — labels read left-to-right on every ring.
 // Lifts the cognitive load when the audience is non-technical.
@@ -114,7 +114,7 @@ const horizontalLabelsOption = {
       label: { rotate: 0 as const, fontSize: 10 },
     },
   ],
-};
+}
 
 export default function SunburstChartDemo() {
   return (
@@ -144,18 +144,14 @@ export default function SunburstChartDemo() {
         title="Horizontal labels"
         description="Drop the radial rotation. Labels read left-to-right on every ring — easier for non-technical audiences when the values aren't extreme."
       >
-        <SunburstChart
-          data={revenue}
-          option={horizontalLabelsOption}
-          height={400}
-        />
+        <SunburstChart data={revenue} option={horizontalLabelsOption} height={400} />
       </Story>
 
       <Story
         title="Solid (pie-style)"
         description="Use radius starting at 0 to close the centre hole. Reads more like a stacked pie than a donut — useful when there's no headline KPI to anchor the middle."
       >
-        <SunburstChart data={revenue} radius={["0%", "90%"]} height={320} />
+        <SunburstChart data={revenue} radius={['0%', '90%']} height={320} />
       </Story>
 
       <Story
@@ -165,5 +161,5 @@ export default function SunburstChartDemo() {
         <SunburstChart data={cargoNetwork} height={380} />
       </Story>
     </>
-  );
+  )
 }

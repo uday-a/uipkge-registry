@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { ref } from 'vue'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogClose,
@@ -12,37 +12,28 @@ import {
   DialogScrollContent,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  CreditCard,
-  GitBranch,
-  Globe,
-  Image,
-  Link2,
-  Lock,
-  Sparkles,
-  Users,
-} from "lucide-vue-next";
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Switch } from '@/components/ui/switch'
+import { Textarea } from '@/components/ui/textarea'
+import { CreditCard, GitBranch, Globe, Image, Link2, Lock, Sparkles, Users } from 'lucide-vue-next'
 
-const shareUrl = ref("https://uipkge.dev/r/vue/button.json");
-const copied = ref(false);
+const shareUrl = ref('https://uipkge.dev/r/vue/button.json')
+const copied = ref(false)
 async function copyShare() {
   try {
-    await navigator.clipboard.writeText(shareUrl.value);
-    copied.value = true;
-    setTimeout(() => (copied.value = false), 1400);
+    await navigator.clipboard.writeText(shareUrl.value)
+    copied.value = true
+    setTimeout(() => (copied.value = false), 1400)
   } catch {
     /* clipboard blocked */
   }
 }
 
-const newProjectOpen = ref(false);
+const newProjectOpen = ref(false)
 function createProject() {
-  newProjectOpen.value = false;
+  newProjectOpen.value = false
 }
 </script>
 
@@ -58,9 +49,7 @@ function createProject() {
       <DialogContent class="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Edit profile</DialogTitle>
-          <DialogDescription
-            >Make changes to your profile and save.</DialogDescription
-          >
+          <DialogDescription>Make changes to your profile and save.</DialogDescription>
         </DialogHeader>
         <div class="grid gap-4 py-2">
           <div class="grid gap-2">
@@ -73,11 +62,7 @@ function createProject() {
           </div>
           <div class="grid gap-2">
             <Label for="dlg-bio">Bio</Label>
-            <Textarea
-              id="dlg-bio"
-              model-value="Open-source UI for Vue & Nuxt."
-              :rows="3"
-            />
+            <Textarea id="dlg-bio" model-value="Open-source UI for Vue & Nuxt." :rows="3" />
           </div>
         </div>
         <DialogFooter>
@@ -104,15 +89,11 @@ function createProject() {
       <DialogContent class="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Share registry item</DialogTitle>
-          <DialogDescription
-            >Anyone with this link can install the component.</DialogDescription
-          >
+          <DialogDescription>Anyone with this link can install the component.</DialogDescription>
         </DialogHeader>
         <div class="flex items-center gap-2">
           <Input v-model="shareUrl" readonly />
-          <Button size="sm" @click="copyShare">{{
-            copied ? "Copied" : "Copy"
-          }}</Button>
+          <Button size="sm" @click="copyShare">{{ copied ? 'Copied' : 'Copy' }}</Button>
         </div>
         <DialogFooter class="sm:justify-start">
           <DialogClose as-child>
@@ -135,8 +116,7 @@ function createProject() {
         <DialogHeader>
           <DialogTitle>New project</DialogTitle>
           <DialogDescription>
-            Spin up a fresh project with sensible defaults. You can change
-            everything later.
+            Spin up a fresh project with sensible defaults. You can change everything later.
           </DialogDescription>
         </DialogHeader>
         <div class="grid gap-4">
@@ -158,9 +138,7 @@ function createProject() {
               <Input id="proj-tier" model-value="Starter" />
             </div>
           </div>
-          <div
-            class="bg-muted/30 flex items-center justify-between rounded-md border px-3 py-2 text-sm"
-          >
+          <div class="bg-muted/30 flex items-center justify-between rounded-md border px-3 py-2 text-sm">
             <div class="flex items-center gap-2">
               <Lock class="text-muted-foreground size-4" />
               Private repository
@@ -191,15 +169,12 @@ function createProject() {
       </DialogTrigger>
       <DialogContent class="sm:max-w-md">
         <DialogHeader class="items-center text-center">
-          <div
-            class="bg-primary/10 text-primary mb-2 flex size-12 items-center justify-center rounded-full"
-          >
+          <div class="bg-primary/10 text-primary mb-2 flex size-12 items-center justify-center rounded-full">
             <Sparkles class="size-6" />
           </div>
           <DialogTitle>v2 is live</DialogTitle>
           <DialogDescription>
-            Theme tokens, vertical tabs, and a brand-new timeline. Check the
-            changelog for the full list.
+            Theme tokens, vertical tabs, and a brand-new timeline. Check the changelog for the full list.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter class="sm:justify-center">
@@ -225,10 +200,7 @@ function createProject() {
       <DialogContent class="sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle>Choose a plan</DialogTitle>
-          <DialogDescription
-            >Cancel anytime. All plans include unlimited
-            components.</DialogDescription
-          >
+          <DialogDescription>Cancel anytime. All plans include unlimited components.</DialogDescription>
         </DialogHeader>
         <div class="grid gap-3 sm:grid-cols-3">
           <div class="space-y-1 rounded-lg border p-4">
@@ -236,24 +208,16 @@ function createProject() {
             <p class="text-2xl font-semibold">$0</p>
             <p class="text-muted-foreground text-xs">Solo · 1 project</p>
           </div>
-          <div
-            class="border-primary relative space-y-1 rounded-lg border-2 p-4"
-          >
-            <Badge variant="info" class="absolute top-3 right-3"
-              >Recommended</Badge
-            >
+          <div class="border-primary relative space-y-1 rounded-lg border-2 p-4">
+            <Badge variant="info" class="absolute top-3 right-3">Recommended</Badge>
             <p class="font-medium">Pro</p>
             <p class="text-2xl font-semibold">$12</p>
-            <p class="text-muted-foreground text-xs">
-              Per editor · unlimited projects
-            </p>
+            <p class="text-muted-foreground text-xs">Per editor · unlimited projects</p>
           </div>
           <div class="space-y-1 rounded-lg border p-4">
             <p class="font-medium">Team</p>
             <p class="text-2xl font-semibold">$24</p>
-            <p class="text-muted-foreground text-xs">
-              SSO · audit logs · priority support
-            </p>
+            <p class="text-muted-foreground text-xs">SSO · audit logs · priority support</p>
           </div>
         </div>
         <DialogFooter>
@@ -280,9 +244,7 @@ function createProject() {
       <DialogContent class="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Connect a service</DialogTitle>
-          <DialogDescription
-            >Pick where to mirror your registry events.</DialogDescription
-          >
+          <DialogDescription>Pick where to mirror your registry events.</DialogDescription>
         </DialogHeader>
         <div class="space-y-1">
           <DialogClose as-child>
@@ -292,9 +254,7 @@ function createProject() {
               <GitBranch class="text-muted-foreground size-5" />
               <div class="flex-1">
                 <p class="text-sm font-medium">GitHub</p>
-                <p class="text-muted-foreground text-xs">
-                  Push registry updates as commits.
-                </p>
+                <p class="text-muted-foreground text-xs">Push registry updates as commits.</p>
               </div>
             </button>
           </DialogClose>
@@ -305,9 +265,7 @@ function createProject() {
               <Image class="text-muted-foreground size-5" />
               <div class="flex-1">
                 <p class="text-sm font-medium">Figma</p>
-                <p class="text-muted-foreground text-xs">
-                  Mirror tokens to a Figma library.
-                </p>
+                <p class="text-muted-foreground text-xs">Mirror tokens to a Figma library.</p>
               </div>
             </button>
           </DialogClose>
@@ -318,9 +276,7 @@ function createProject() {
               <Users class="text-muted-foreground size-5" />
               <div class="flex-1">
                 <p class="text-sm font-medium">Slack</p>
-                <p class="text-muted-foreground text-xs">
-                  Post component changes to a channel.
-                </p>
+                <p class="text-muted-foreground text-xs">Post component changes to a channel.</p>
               </div>
             </button>
           </DialogClose>
@@ -344,10 +300,9 @@ function createProject() {
         </DialogHeader>
         <div class="text-muted-foreground space-y-3 text-sm leading-relaxed">
           <p v-for="i in 8" :key="i">
-            §{{ i }} — Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-            nisi ut aliquip ex ea commodo consequat.
+            §{{ i }} — Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
+            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat.
           </p>
         </div>
         <DialogFooter>

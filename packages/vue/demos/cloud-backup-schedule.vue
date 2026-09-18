@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import CloudBackupSchedule from "@/components/blocks/cloud-backup-schedule/CloudBackupSchedule.vue";
+import CloudBackupSchedule from '@/components/blocks/cloud-backup-schedule/CloudBackupSchedule.vue'
 </script>
 
 <template>

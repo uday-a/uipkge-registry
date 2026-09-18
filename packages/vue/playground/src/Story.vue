@@ -1,53 +1,53 @@
 <script setup lang="ts">
-import { ref, computed, inject, onMounted, onUnmounted, type Ref } from "vue";
-import { Check, Copy, Code2, Eye, Maximize2, Minimize2 } from "lucide-vue-next";
+import { ref, computed, inject, onMounted, onUnmounted, type Ref } from 'vue'
+import { Check, Copy, Code2, Eye, Maximize2, Minimize2 } from 'lucide-vue-next'
 
 const props = defineProps<{
-  title: string;
-  description?: string;
-  code?: string;
-}>();
+  title: string
+  description?: string
+  code?: string
+}>()
 
-const codeMap = inject<Ref<Record<string, string>>>("story:codeMap", ref({}));
-const activeTab = ref<"preview" | "code">("preview");
-const isFullscreen = ref(false);
-const copied = ref(false);
+const codeMap = inject<Ref<Record<string, string>>>('story:codeMap', ref({}))
+const activeTab = ref<'preview' | 'code'>('preview')
+const isFullscreen = ref(false)
+const copied = ref(false)
 
 const sourceCode = computed(() => {
-  if (props.code) return props.code;
-  return codeMap.value[props.title] || "";
-});
+  if (props.code) return props.code
+  return codeMap.value[props.title] || ''
+})
 
 const copyCode = async () => {
-  if (!sourceCode.value) return;
+  if (!sourceCode.value) return
   try {
-    await navigator.clipboard.writeText(sourceCode.value);
-    copied.value = true;
+    await navigator.clipboard.writeText(sourceCode.value)
+    copied.value = true
     setTimeout(() => {
-      copied.value = false;
-    }, 1500);
+      copied.value = false
+    }, 1500)
   } catch (err) {
-    console.error("Failed to copy code:", err);
+    console.error('Failed to copy code:', err)
   }
-};
+}
 
 const toggleFullscreen = () => {
-  isFullscreen.value = !isFullscreen.value;
-};
+  isFullscreen.value = !isFullscreen.value
+}
 
 const handleKeyDown = (e: KeyboardEvent) => {
-  if (e.key === "Escape" && isFullscreen.value) {
-    isFullscreen.value = false;
+  if (e.key === 'Escape' && isFullscreen.value) {
+    isFullscreen.value = false
   }
-};
+}
 
 onMounted(() => {
-  window.addEventListener("keydown", handleKeyDown);
-});
+  window.addEventListener('keydown', handleKeyDown)
+})
 
 onUnmounted(() => {
-  window.removeEventListener("keydown", handleKeyDown);
-});
+  window.removeEventListener('keydown', handleKeyDown)
+})
 </script>
 
 <template>
@@ -62,11 +62,7 @@ onUnmounted(() => {
     <section
       :id="title.toLowerCase().replace(/[^a-z0-9]+/g, '-')"
       class="group border-border bg-card text-card-foreground overflow-hidden rounded-xl border shadow-xs transition-[border-color,box-shadow] duration-200"
-      :class="[
-        isFullscreen
-          ? 'bg-card border-border/80 flex flex-col shadow-2xl'
-          : 'relative mb-8',
-      ]"
+      :class="[isFullscreen ? 'bg-card border-border/80 flex flex-col shadow-2xl' : 'relative mb-8']"
       :style="
         isFullscreen
           ? {
@@ -102,13 +98,9 @@ onUnmounted(() => {
         </div>
 
         <!-- Action Controls -->
-        <div
-          class="flex shrink-0 items-center justify-between gap-1.5 sm:justify-end"
-        >
+        <div class="flex shrink-0 items-center justify-between gap-1.5 sm:justify-end">
           <!-- Preview / Code Tab Switcher -->
-          <div
-            class="border-border bg-background/80 flex items-center rounded-lg border p-0.5 text-xs shadow-xs"
-          >
+          <div class="border-border bg-background/80 flex items-center rounded-lg border p-0.5 text-xs shadow-xs">
             <button
               type="button"
               class="flex cursor-pointer items-center gap-1.5 rounded-md px-2.5 py-1 font-medium transition-colors"
@@ -182,10 +174,7 @@ onUnmounted(() => {
             class="code-block border-border bg-card text-foreground overflow-x-auto rounded-lg border p-4 font-mono text-xs leading-relaxed"
           ><code>{{ sourceCode }}</code></pre>
         </div>
-        <div
-          v-else
-          class="text-muted-foreground py-12 text-center font-mono text-xs"
-        >
+        <div v-else class="text-muted-foreground py-12 text-center font-mono text-xs">
           Source code available in inspector tab below.
         </div>
       </div>

@@ -1,1 +1,1 @@
-export { default as CloudBackupSchedule } from "./CloudBackupSchedule.vue";
+export { default as CloudBackupSchedule } from './CloudBackupSchedule.vue'

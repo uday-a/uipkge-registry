@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { CodeBlock } from "@/components/ui/code-block";
+import { CodeBlock } from '@/components/ui/code-block'
 const vueSnippet = `<template>
   <Button variant="primary">Click me</Button>
 </template>
 
 <script setup>
 import { Button } from '@/components/ui/button'
-<\/script>`;
+<\/script>`
 
 const bashSnippet = `# Install one component
 npx shadcn-vue@latest add @uipkge/button -y
 
 # Or install a block
-npx shadcn-vue@latest add @uipkge/inbox -y`;
+npx shadcn-vue@latest add @uipkge/inbox -y`
 
 const tsSnippet = `interface User {
   id: string
@@ -22,7 +22,7 @@ const tsSnippet = `interface User {
 
 export function isAdmin(u: User): boolean {
   return u.role === 'admin'
-}`;
+}`
 
 const longSnippet = `// A longer file — line numbers really pay off here.
 import { computed, onMounted, onUnmounted, ref } from 'vue'
@@ -53,7 +53,7 @@ export function useActiveTab(tabs: readonly string[]) {
   }
 
   return { active: computed(() => active.value), setActive }
-}`;
+}`
 </script>
 
 <template>

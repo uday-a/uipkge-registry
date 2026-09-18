@@ -1,5 +1,5 @@
-import { describe, it, expect, vi } from "vitest";
-import { mount, flushPromises } from "@vue/test-utils";
+import { describe, it, expect, vi } from 'vitest'
+import { mount, flushPromises } from '@vue/test-utils'
 
 const fakeLayer = () => ({
   addTo: vi.fn().mockReturnThis(),
@@ -21,9 +21,9 @@ const fakeLayer = () => ({
   clearLayers: vi.fn(),
   addData: vi.fn(),
   getElement: vi.fn(() => null),
-});
+})
 
-vi.mock("leaflet", () => ({
+vi.mock('leaflet', () => ({
   map: vi.fn(() => ({
     addLayer: vi.fn(),
     removeLayer: vi.fn(),
@@ -56,11 +56,7 @@ vi.mock("leaflet", () => ({
     setContent: vi.fn().mockReturnThis(),
     openOn: vi.fn(),
   })),
-  tooltip: vi.fn(() => ({
-    ...fakeLayer(),
-    setLatLng: vi.fn().mockReturnThis(),
-    setContent: vi.fn().mockReturnThis(),
-  })),
+  tooltip: vi.fn(() => ({ ...fakeLayer(), setLatLng: vi.fn().mockReturnThis(), setContent: vi.fn().mockReturnThis() })),
   divIcon: vi.fn((opts: any) => opts),
   latLngBounds: vi.fn((a: any, b: any) => [a, b]),
   control: {
@@ -68,79 +64,61 @@ vi.mock("leaflet", () => ({
     attribution: vi.fn(() => ({ addTo: vi.fn(), remove: vi.fn() })),
   },
   Icon: { Default: { mergeOptions: vi.fn() } },
-}));
+}))
 
-import { LeafletMap } from "../index";
+import { LeafletMap } from '../index'
 
-describe("LeafletMap", () => {
+describe('LeafletMap', () => {
   it('renders container with data-slot="leaflet-map"', () => {
-    const w = mount(LeafletMap, { attachTo: document.body });
-    expect(w.find('[data-slot="leaflet-map"]').exists()).toBe(true);
-    w.unmount();
-  });
+    const w = mount(LeafletMap, { attachTo: document.body })
+    expect(w.find('[data-slot="leaflet-map"]').exists()).toBe(true)
+    w.unmount()
+  })
 
-  it("has data-uipkge on container", () => {
-    const w = mount(LeafletMap, { attachTo: document.body });
-    expect(
-      w.find('[data-slot="leaflet-map"]').attributes("data-uipkge"),
-    ).toBeDefined();
-    w.unmount();
-  });
+  it('has data-uipkge on container', () => {
+    const w = mount(LeafletMap, { attachTo: document.body })
+    expect(w.find('[data-slot="leaflet-map"]').attributes('data-uipkge')).toBeDefined()
+    w.unmount()
+  })
 
-  it("applies custom class", () => {
-    const w = mount(LeafletMap, {
-      props: { class: "h-96" },
-      attachTo: document.body,
-    });
-    expect(w.find('[data-slot="leaflet-map"]').classes()).toContain("h-96");
-    w.unmount();
-  });
+  it('applies custom class', () => {
+    const w = mount(LeafletMap, { props: { class: 'h-96' }, attachTo: document.body })
+    expect(w.find('[data-slot="leaflet-map"]').classes()).toContain('h-96')
+    w.unmount()
+  })
 
-  it("renders as a div", () => {
-    const w = mount(LeafletMap, { attachTo: document.body });
-    expect(w.find('div[data-slot="leaflet-map"]').exists()).toBe(true);
-    w.unmount();
-  });
+  it('renders as a div', () => {
+    const w = mount(LeafletMap, { attachTo: document.body })
+    expect(w.find('div[data-slot="leaflet-map"]').exists()).toBe(true)
+    w.unmount()
+  })
 
-  it("has bg-muted class by default", () => {
-    const w = mount(LeafletMap, { attachTo: document.body });
-    expect(w.find('[data-slot="leaflet-map"]').classes()).toContain("bg-muted");
-    w.unmount();
-  });
+  it('has bg-muted class by default', () => {
+    const w = mount(LeafletMap, { attachTo: document.body })
+    expect(w.find('[data-slot="leaflet-map"]').classes()).toContain('bg-muted')
+    w.unmount()
+  })
 
-  it("sets data-variant from the variant prop", () => {
-    const w = mount(LeafletMap, {
-      props: { variant: "satellite" },
-      attachTo: document.body,
-    });
-    expect(w.find('[data-slot="leaflet-map"]').attributes("data-variant")).toBe(
-      "satellite",
-    );
-    w.unmount();
-  });
+  it('sets data-variant from the variant prop', () => {
+    const w = mount(LeafletMap, { props: { variant: 'satellite' }, attachTo: document.body })
+    expect(w.find('[data-slot="leaflet-map"]').attributes('data-variant')).toBe('satellite')
+    w.unmount()
+  })
 
-  it("marks data-muted for the muted variant", () => {
-    const w = mount(LeafletMap, {
-      props: { variant: "muted" },
-      attachTo: document.body,
-    });
-    expect(w.find('[data-slot="leaflet-map"]').attributes("data-muted")).toBe(
-      "true",
-    );
-    w.unmount();
-  });
+  it('marks data-muted for the muted variant', () => {
+    const w = mount(LeafletMap, { props: { variant: 'muted' }, attachTo: document.body })
+    expect(w.find('[data-slot="leaflet-map"]').attributes('data-muted')).toBe('true')
+    w.unmount()
+  })
 
-  it("shows a fullscreen button only when fullscreen is set", async () => {
-    const off = mount(LeafletMap, { attachTo: document.body });
-    await flushPromises();
-    expect(off.find('[aria-label="Toggle fullscreen"]').exists()).toBe(false);
-    off.unmount();
-    const on = mount(LeafletMap, {
-      props: { fullscreen: true },
-      attachTo: document.body,
-    });
-    await flushPromises();
-    expect(on.find('[aria-label="Toggle fullscreen"]').exists()).toBe(true);
-    on.unmount();
-  });
-});
+  it('shows a fullscreen button only when fullscreen is set', async () => {
+    const off = mount(LeafletMap, { attachTo: document.body })
+    await flushPromises()
+    expect(off.find('[aria-label="Toggle fullscreen"]').exists()).toBe(false)
+    off.unmount()
+    const on = mount(LeafletMap, { props: { fullscreen: true }, attachTo: document.body })
+    await flushPromises()
+    expect(on.find('[aria-label="Toggle fullscreen"]').exists()).toBe(true)
+    on.unmount()
+  })
+})

@@ -1,1 +1,1 @@
-export { default as LiquidFillChart } from "./LiquidFillChart.vue";
+export { default as LiquidFillChart } from './LiquidFillChart.vue'

@@ -1,1 +1,1 @@
-export { RangeSlider, type RangeSliderProps } from "./RangeSlider";
+export { RangeSlider, type RangeSliderProps } from './RangeSlider'

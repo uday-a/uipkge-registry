@@ -17,7 +17,7 @@ import {
   SidebarProvider,
   SidebarRail,
   SidebarTrigger,
-} from "@/components/ui/sidebar";
+} from '@/components/ui/sidebar'
 import {
   Bell,
   Calendar,
@@ -31,21 +31,17 @@ import {
   Settings,
   Star,
   Users,
-} from "lucide-vue-next";
+} from 'lucide-vue-next'
 
 // Each Story wraps its SidebarProvider in `style="transform: translate(0)"` so
 // the Sidebar component's internal `position: fixed` anchors to the demo
 // container rather than the page viewport. Without this it leaks into the
 // registry-site layout.
-const containBlock =
-  "min-h-0 h-[400px] [transform:translate(0)] rounded-lg border overflow-hidden";
+const containBlock = 'min-h-0 h-[400px] [transform:translate(0)] rounded-lg border overflow-hidden'
 </script>
 
 <template>
-  <Story
-    title="Default"
-    description="Collapsible sidebar with header, group label, and menu items."
-  >
+  <Story title="Default" description="Collapsible sidebar with header, group label, and menu items.">
     <SidebarProvider :class="containBlock">
       <Sidebar collapsible="none" class="border-r">
         <SidebarHeader>
@@ -58,19 +54,13 @@ const containBlock =
             <SidebarGroupLabel>Platform</SidebarGroupLabel>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton>
-                  <Home class="size-4" /> <span>Home</span>
-                </SidebarMenuButton>
+                <SidebarMenuButton> <Home class="size-4" /> <span>Home</span> </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton>
-                  <Compass class="size-4" /> <span>Explore</span>
-                </SidebarMenuButton>
+                <SidebarMenuButton> <Compass class="size-4" /> <span>Explore</span> </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton>
-                  <Settings class="size-4" /> <span>Settings</span>
-                </SidebarMenuButton>
+                <SidebarMenuButton> <Settings class="size-4" /> <span>Settings</span> </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroup>
@@ -92,10 +82,7 @@ const containBlock =
         <SidebarHeader>
           <div class="flex items-center gap-2 px-4 py-3">
             <Star class="size-4" />
-            <span
-              class="text-sm font-semibold group-data-[collapsible=icon]:hidden"
-              >Workspace</span
-            >
+            <span class="text-sm font-semibold group-data-[collapsible=icon]:hidden">Workspace</span>
           </div>
         </SidebarHeader>
         <SidebarContent>
@@ -103,9 +90,7 @@ const containBlock =
             <SidebarGroupLabel>Navigate</SidebarGroupLabel>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton tooltip="Inbox">
-                  <Inbox class="size-4" /> <span>Inbox</span>
-                </SidebarMenuButton>
+                <SidebarMenuButton tooltip="Inbox"> <Inbox class="size-4" /> <span>Inbox</span> </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton tooltip="Calendar">
@@ -113,9 +98,7 @@ const containBlock =
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton tooltip="Search">
-                  <Search class="size-4" /> <span>Search</span>
-                </SidebarMenuButton>
+                <SidebarMenuButton tooltip="Search"> <Search class="size-4" /> <span>Search</span> </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroup>
@@ -124,9 +107,7 @@ const containBlock =
       </Sidebar>
       <main class="flex-1 p-4">
         <SidebarTrigger />
-        <p class="text-muted-foreground mt-4 text-sm">
-          Toggle the trigger to collapse the sidebar to icons.
-        </p>
+        <p class="text-muted-foreground mt-4 text-sm">Toggle the trigger to collapse the sidebar to icons.</p>
       </main>
     </SidebarProvider>
   </Story>
@@ -146,23 +127,17 @@ const containBlock =
           <SidebarGroup>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton>
-                  <Home class="size-4" /> <span>Home</span>
-                </SidebarMenuButton>
+                <SidebarMenuButton> <Home class="size-4" /> <span>Home</span> </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton>
-                  <Users class="size-4" /> <span>Team</span>
-                </SidebarMenuButton>
+                <SidebarMenuButton> <Users class="size-4" /> <span>Team</span> </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroup>
         </SidebarContent>
       </Sidebar>
       <main class="flex-1 p-4">
-        <p class="text-muted-foreground text-sm">
-          Floating sidebar with rounded corners.
-        </p>
+        <p class="text-muted-foreground text-sm">Floating sidebar with rounded corners.</p>
       </main>
     </SidebarProvider>
   </Story>
@@ -182,25 +157,17 @@ const containBlock =
           <SidebarGroup>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton
-                  ><Home class="size-4" />
-                  <span>Dashboard</span></SidebarMenuButton
-                >
+                <SidebarMenuButton><Home class="size-4" /> <span>Dashboard</span></SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton
-                  ><Bell class="size-4" />
-                  <span>Notifications</span></SidebarMenuButton
-                >
+                <SidebarMenuButton><Bell class="size-4" /> <span>Notifications</span></SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroup>
         </SidebarContent>
       </Sidebar>
       <SidebarInset>
-        <p class="text-muted-foreground p-4 text-sm">
-          Main content sits inside a rounded inset card.
-        </p>
+        <p class="text-muted-foreground p-4 text-sm">Main content sits inside a rounded inset card.</p>
       </SidebarInset>
     </SidebarProvider>
   </Story>
@@ -219,22 +186,16 @@ const containBlock =
             <SidebarGroupLabel>Library</SidebarGroupLabel>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton>
-                  <Home class="size-4" /> <span>Getting started</span>
-                </SidebarMenuButton>
+                <SidebarMenuButton> <Home class="size-4" /> <span>Getting started</span> </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton>
-                  <ChevronDown class="size-4" /> <span>Components</span>
-                </SidebarMenuButton>
+                <SidebarMenuButton> <ChevronDown class="size-4" /> <span>Components</span> </SidebarMenuButton>
                 <SidebarMenuSub>
                   <SidebarMenuSubItem>
                     <SidebarMenuSubButton href="#">Button</SidebarMenuSubButton>
                   </SidebarMenuSubItem>
                   <SidebarMenuSubItem>
-                    <SidebarMenuSubButton href="#" is-active
-                      >Card</SidebarMenuSubButton
-                    >
+                    <SidebarMenuSubButton href="#" is-active>Card</SidebarMenuSubButton>
                   </SidebarMenuSubItem>
                   <SidebarMenuSubItem>
                     <SidebarMenuSubButton href="#">Dialog</SidebarMenuSubButton>
@@ -242,9 +203,7 @@ const containBlock =
                 </SidebarMenuSub>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton>
-                  <Settings class="size-4" /> <span>Settings</span>
-                </SidebarMenuButton>
+                <SidebarMenuButton> <Settings class="size-4" /> <span>Settings</span> </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroup>
@@ -270,29 +229,21 @@ const containBlock =
             <SidebarGroupLabel>Folders</SidebarGroupLabel>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton>
-                  <Inbox class="size-4" /> <span>Inbox</span>
-                </SidebarMenuButton>
+                <SidebarMenuButton> <Inbox class="size-4" /> <span>Inbox</span> </SidebarMenuButton>
                 <SidebarMenuBadge>24</SidebarMenuBadge>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton>
-                  <Star class="size-4" /> <span>Starred</span>
-                </SidebarMenuButton>
+                <SidebarMenuButton> <Star class="size-4" /> <span>Starred</span> </SidebarMenuButton>
                 <SidebarMenuBadge>3</SidebarMenuBadge>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton>
-                  <Bell class="size-4" /> <span>Updates</span>
-                </SidebarMenuButton>
+                <SidebarMenuButton> <Bell class="size-4" /> <span>Updates</span> </SidebarMenuButton>
                 <SidebarMenuAction show-on-hover>
                   <MoreHorizontal class="size-4" />
                 </SidebarMenuAction>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton>
-                  <Plus class="size-4" /> <span>New folder</span>
-                </SidebarMenuButton>
+                <SidebarMenuButton> <Plus class="size-4" /> <span>New folder</span> </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroup>
@@ -300,9 +251,7 @@ const containBlock =
       </Sidebar>
       <main class="flex-1 p-4">
         <SidebarTrigger />
-        <p class="text-muted-foreground mt-4 text-sm">
-          Hover the Updates row to reveal its action.
-        </p>
+        <p class="text-muted-foreground mt-4 text-sm">Hover the Updates row to reveal its action.</p>
       </main>
     </SidebarProvider>
   </Story>

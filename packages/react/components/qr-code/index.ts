@@ -1,7 +1,1 @@
-export {
-  QrCode,
-  type QrCodeProps,
-  type QRCodeType,
-  type QRCodeStatus,
-  type QRCodeErrorLevel,
-} from "./QrCode";
+export { QrCode, type QrCodeProps, type QRCodeType, type QRCodeStatus, type QRCodeErrorLevel } from './QrCode'

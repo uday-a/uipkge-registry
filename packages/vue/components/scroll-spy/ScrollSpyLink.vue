@@ -1,72 +1,59 @@
 <script setup lang="ts">
-import { computed, inject, ref } from "vue";
-import type { HTMLAttributes } from "vue";
-import { cn } from "@/lib/utils";
-import {
-  SCROLL_SPY_CONTEXT_KEY,
-  SCROLL_SPY_ITEM_DEPTH_KEY,
-  resolveScrollSpyColor,
-} from "./context";
+import { computed, inject, ref } from 'vue'
+import type { HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils'
+import { SCROLL_SPY_CONTEXT_KEY, SCROLL_SPY_ITEM_DEPTH_KEY, resolveScrollSpyColor } from './context'
 
 const props = defineProps<{
-  href: string;
-  title?: string;
-  depth?: number;
-  class?: HTMLAttributes["class"];
-}>();
+  href: string
+  title?: string
+  depth?: number
+  class?: HTMLAttributes['class']
+}>()
 
-const ctx = inject(SCROLL_SPY_CONTEXT_KEY, null);
-const itemDepth = inject(SCROLL_SPY_ITEM_DEPTH_KEY, ref(1));
-const selfDepth = computed(() => props.depth ?? itemDepth.value);
+const ctx = inject(SCROLL_SPY_CONTEXT_KEY, null)
+const itemDepth = inject(SCROLL_SPY_ITEM_DEPTH_KEY, ref(1))
+const selfDepth = computed(() => props.depth ?? itemDepth.value)
 
 const isActive = computed(() => {
-  if (!ctx) return false;
-  return ctx.isItemActive(props.href);
-});
+  if (!ctx) return false
+  return ctx.isItemActive(props.href)
+})
 
 const isParentActive = computed(() => {
-  if (!ctx) return false;
-  return ctx.isItemParentActive(props.href);
-});
+  if (!ctx) return false
+  return ctx.isItemParentActive(props.href)
+})
 
 const isScrolled = computed(() => {
-  if (!ctx) return false;
-  return ctx.isItemScrolled(props.href);
-});
+  if (!ctx) return false
+  return ctx.isItemScrolled(props.href)
+})
 
-const isCircuit = computed(() => ctx?.turn.value !== "straight");
-const isLeftWithRightRail = computed(
-  () => ctx?.position.value === "left" && ctx?.railPosition.value === "right",
-);
+const isCircuit = computed(() => ctx?.turn.value !== 'straight')
+const isLeftWithRightRail = computed(() => ctx?.position.value === 'left' && ctx?.railPosition.value === 'right')
 const hasIndicatorBar = computed(
-  () =>
-    ctx?.turn.value === "straight" &&
-    (ctx?.indicator.value !== "segment" || ctx?.keepScrolled.value),
-);
+  () => ctx?.turn.value === 'straight' && (ctx?.indicator.value !== 'segment' || ctx?.keepScrolled.value),
+)
 
-const handleColor = computed(() =>
-  resolveScrollSpyColor(ctx?.color.value ?? "primary"),
-);
+const handleColor = computed(() => resolveScrollSpyColor(ctx?.color.value ?? 'primary'))
 
 const borderActiveClass = computed(() => {
   if (hasIndicatorBar.value) {
-    if (isActive.value || isParentActive.value)
-      return "text-foreground font-medium";
-    if (isScrolled.value) return "text-foreground/85";
-    return "text-muted-foreground hover:text-foreground";
+    if (isActive.value || isParentActive.value) return 'text-foreground font-medium'
+    if (isScrolled.value) return 'text-foreground/85'
+    return 'text-muted-foreground hover:text-foreground'
   }
-  if (isActive.value)
-    return cn(handleColor.value.borderClass, "text-foreground font-medium");
-  if (isParentActive.value)
-    return "border-border/50 text-foreground font-medium";
-  if (isScrolled.value) return "border-border/70 text-foreground/85";
-  return "text-muted-foreground hover:border-foreground/40 hover:text-foreground";
-});
+  if (isActive.value) return cn(handleColor.value.borderClass, 'text-foreground font-medium')
+  if (isParentActive.value) return 'border-border/50 text-foreground font-medium'
+  if (isScrolled.value) return 'border-border/70 text-foreground/85'
+  return 'text-muted-foreground hover:border-foreground/40 hover:text-foreground'
+})
 
 function onClick(e: MouseEvent) {
-  e.preventDefault();
-  if (!ctx) return;
-  ctx.scrollToHref(props.href);
+  e.preventDefault()
+  if (!ctx) return
+  ctx.scrollToHref(props.href)
 }
 </script>
 
@@ -80,22 +67,12 @@ function onClick(e: MouseEvent) {
     :data-scrolled="isScrolled ? 'true' : 'false'"
     :data-depth="selfDepth"
     :style="
-      !isCircuit &&
-      !hasIndicatorBar &&
-      (isActive || isParentActive || isScrolled)
+      !isCircuit && !hasIndicatorBar && (isActive || isParentActive || isScrolled)
         ? {
-            borderLeftWidth: isLeftWithRightRail
-              ? undefined
-              : `${ctx?.resolvedLineWidth.value ?? 2.5}px`,
-            borderRightWidth: isLeftWithRightRail
-              ? `${ctx?.resolvedLineWidth.value ?? 2.5}px`
-              : undefined,
-            marginLeft: isLeftWithRightRail
-              ? undefined
-              : `-${ctx?.resolvedLineWidth.value ?? 2.5}px`,
-            marginRight: isLeftWithRightRail
-              ? `-${ctx?.resolvedLineWidth.value ?? 2.5}px`
-              : undefined,
+            borderLeftWidth: isLeftWithRightRail ? undefined : `${ctx?.resolvedLineWidth.value ?? 2.5}px`,
+            borderRightWidth: isLeftWithRightRail ? `${ctx?.resolvedLineWidth.value ?? 2.5}px` : undefined,
+            marginLeft: isLeftWithRightRail ? undefined : `-${ctx?.resolvedLineWidth.value ?? 2.5}px`,
+            marginRight: isLeftWithRightRail ? `-${ctx?.resolvedLineWidth.value ?? 2.5}px` : undefined,
             borderColor: isActive ? handleColor.customColor : undefined,
           }
         : undefined

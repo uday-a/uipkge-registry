@@ -1,1 +1,1 @@
-export { BoxplotChart, type BoxplotChartProps } from "./BoxplotChart";
+export { BoxplotChart, type BoxplotChartProps } from './BoxplotChart'

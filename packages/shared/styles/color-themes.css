@@ -14,7 +14,7 @@
  */
 
 /* ─── Blue — Google Blue #1A73E8 ─────────────────────────────────────────── */
-:root[data-color-theme="blue"] {
+:root[data-color-theme='blue'] {
   --primary: oklch(0.574 0.195 257.9);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.955 0.025 257.9);
@@ -35,7 +35,7 @@
   --accent-tint: oklch(0.574 0.195 257.9);
   --accent-tint-soft: oklch(0.955 0.025 257.9);
 }
-:root.dark[data-color-theme="blue"] {
+:root.dark[data-color-theme='blue'] {
   --primary: oklch(0.7 0.16 257.9);
   --primary-foreground: oklch(0.2 0.04 257.9);
   --secondary: oklch(0.269 0.02 257.9);
@@ -58,7 +58,7 @@
 }
 
 /* ─── Indigo — Material Indigo 500 #3F51B5 ───────────────────────────────── */
-:root[data-color-theme="indigo"] {
+:root[data-color-theme='indigo'] {
   --primary: oklch(0.478 0.159 271.4);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.955 0.025 271.4);
@@ -79,7 +79,7 @@
   --accent-tint: oklch(0.478 0.159 271.4);
   --accent-tint-soft: oklch(0.955 0.025 271.4);
 }
-:root.dark[data-color-theme="indigo"] {
+:root.dark[data-color-theme='indigo'] {
   --primary: oklch(0.72 0.14 271.4);
   --primary-foreground: oklch(0.22 0.05 271.4);
   --secondary: oklch(0.269 0.02 271.4);
@@ -102,7 +102,7 @@
 }
 
 /* ─── Violet — Material Deep Purple family #7C3AED ───────────────────────── */
-:root[data-color-theme="violet"] {
+:root[data-color-theme='violet'] {
   --primary: oklch(0.541 0.247 293);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.955 0.03 293);
@@ -123,7 +123,7 @@
   --accent-tint: oklch(0.541 0.247 293);
   --accent-tint-soft: oklch(0.955 0.03 293);
 }
-:root.dark[data-color-theme="violet"] {
+:root.dark[data-color-theme='violet'] {
   --primary: oklch(0.72 0.18 293);
   --primary-foreground: oklch(0.22 0.06 293);
   --secondary: oklch(0.269 0.03 293);
@@ -146,7 +146,7 @@
 }
 
 /* ─── Purple — Material Purple 500 #9C27B0 ───────────────────────────────── */
-:root[data-color-theme="purple"] {
+:root[data-color-theme='purple'] {
   --primary: oklch(0.517 0.215 321.2);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.955 0.028 321.2);
@@ -167,7 +167,7 @@
   --accent-tint: oklch(0.517 0.215 321.2);
   --accent-tint-soft: oklch(0.955 0.028 321.2);
 }
-:root.dark[data-color-theme="purple"] {
+:root.dark[data-color-theme='purple'] {
   --primary: oklch(0.74 0.16 321.2);
   --primary-foreground: oklch(0.22 0.05 321.2);
   --secondary: oklch(0.269 0.025 321.2);
@@ -190,7 +190,7 @@
 }
 
 /* ─── Rose — product rose #E11D48 ────────────────────────────────────────── */
-:root[data-color-theme="rose"] {
+:root[data-color-theme='rose'] {
   --primary: oklch(0.586 0.222 17.6);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.955 0.03 17.6);
@@ -211,7 +211,7 @@
   --accent-tint: oklch(0.586 0.222 17.6);
   --accent-tint-soft: oklch(0.955 0.03 17.6);
 }
-:root.dark[data-color-theme="rose"] {
+:root.dark[data-color-theme='rose'] {
   --primary: oklch(0.72 0.17 17.6);
   --primary-foreground: oklch(0.22 0.05 17.6);
   --secondary: oklch(0.269 0.03 17.6);
@@ -234,7 +234,7 @@
 }
 
 /* ─── Orange — Material Orange family #EA580C ────────────────────────────── */
-:root[data-color-theme="orange"] {
+:root[data-color-theme='orange'] {
   --primary: oklch(0.646 0.194 41.1);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.955 0.03 41.1);
@@ -255,7 +255,7 @@
   --accent-tint: oklch(0.646 0.194 41.1);
   --accent-tint-soft: oklch(0.955 0.03 41.1);
 }
-:root.dark[data-color-theme="orange"] {
+:root.dark[data-color-theme='orange'] {
   --primary: oklch(0.75 0.16 41.1);
   --primary-foreground: oklch(0.24 0.05 41.1);
   --secondary: oklch(0.269 0.03 41.1);
@@ -278,7 +278,7 @@
 }
 
 /* ─── Amber — Material Amber family #D97706 ──────────────────────────────── */
-:root[data-color-theme="amber"] {
+:root[data-color-theme='amber'] {
   --primary: oklch(0.666 0.157 58.3);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.96 0.03 58.3);
@@ -299,7 +299,7 @@
   --accent-tint: oklch(0.666 0.157 58.3);
   --accent-tint-soft: oklch(0.96 0.03 58.3);
 }
-:root.dark[data-color-theme="amber"] {
+:root.dark[data-color-theme='amber'] {
   --primary: oklch(0.78 0.14 58.3);
   --primary-foreground: oklch(0.26 0.05 58.3);
   --secondary: oklch(0.269 0.025 58.3);
@@ -322,7 +322,7 @@
 }
 
 /* ─── Emerald — Material Green family #059669 ────────────────────────────── */
-:root[data-color-theme="emerald"] {
+:root[data-color-theme='emerald'] {
   --primary: oklch(0.596 0.127 163.2);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.955 0.025 163.2);
@@ -343,7 +343,7 @@
   --accent-tint: oklch(0.596 0.127 163.2);
   --accent-tint-soft: oklch(0.955 0.025 163.2);
 }
-:root.dark[data-color-theme="emerald"] {
+:root.dark[data-color-theme='emerald'] {
   --primary: oklch(0.74 0.12 163.2);
   --primary-foreground: oklch(0.22 0.04 163.2);
   --secondary: oklch(0.269 0.02 163.2);
@@ -366,7 +366,7 @@
 }
 
 /* ─── Teal — Material Teal #0D9488 ───────────────────────────────────────── */
-:root[data-color-theme="teal"] {
+:root[data-color-theme='teal'] {
   --primary: oklch(0.6 0.104 184.7);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.955 0.022 184.7);
@@ -387,7 +387,7 @@
   --accent-tint: oklch(0.6 0.104 184.7);
   --accent-tint-soft: oklch(0.955 0.022 184.7);
 }
-:root.dark[data-color-theme="teal"] {
+:root.dark[data-color-theme='teal'] {
   --primary: oklch(0.75 0.1 184.7);
   --primary-foreground: oklch(0.22 0.04 184.7);
   --secondary: oklch(0.269 0.02 184.7);
@@ -410,7 +410,7 @@
 }
 
 /* ─── Cyan — Material Cyan #0891B2 ───────────────────────────────────────── */
-:root[data-color-theme="cyan"] {
+:root[data-color-theme='cyan'] {
   --primary: oklch(0.609 0.111 221.7);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.955 0.022 221.7);
@@ -431,7 +431,7 @@
   --accent-tint: oklch(0.609 0.111 221.7);
   --accent-tint-soft: oklch(0.955 0.022 221.7);
 }
-:root.dark[data-color-theme="cyan"] {
+:root.dark[data-color-theme='cyan'] {
   --primary: oklch(0.75 0.11 221.7);
   --primary-foreground: oklch(0.22 0.04 221.7);
   --secondary: oklch(0.269 0.02 221.7);
@@ -454,7 +454,7 @@
 }
 
 /* ─── Sky — Material Light Blue #0284C7 ──────────────────────────────────── */
-:root[data-color-theme="sky"] {
+:root[data-color-theme='sky'] {
   --primary: oklch(0.588 0.139 242);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.955 0.025 242);
@@ -475,7 +475,7 @@
   --accent-tint: oklch(0.588 0.139 242);
   --accent-tint-soft: oklch(0.955 0.025 242);
 }
-:root.dark[data-color-theme="sky"] {
+:root.dark[data-color-theme='sky'] {
   --primary: oklch(0.74 0.12 242);
   --primary-foreground: oklch(0.22 0.04 242);
   --secondary: oklch(0.269 0.02 242);
@@ -498,7 +498,7 @@
 }
 
 /* ─── Slate — cool gray brand #475569 ────────────────────────────────────── */
-:root[data-color-theme="slate"] {
+:root[data-color-theme='slate'] {
   --primary: oklch(0.446 0.037 257.3);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.96 0.01 257.3);
@@ -519,7 +519,7 @@
   --accent-tint: oklch(0.446 0.037 257.3);
   --accent-tint-soft: oklch(0.96 0.01 257.3);
 }
-:root.dark[data-color-theme="slate"] {
+:root.dark[data-color-theme='slate'] {
   --primary: oklch(0.75 0.02 257.3);
   --primary-foreground: oklch(0.22 0.01 257.3);
   --secondary: oklch(0.269 0.01 257.3);

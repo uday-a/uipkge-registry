@@ -1,8 +1,8 @@
-export { default as Gantt } from "./Gantt.vue";
-export { default as GanttHeader } from "./GanttHeader.vue";
-export { default as GanttTree } from "./GanttTree.vue";
-export { default as GanttTimeline } from "./GanttTimeline.vue";
-export { default as GanttBar } from "./GanttBar.vue";
-export { default as GanttMilestone } from "./GanttMilestone.vue";
-export { default as GanttContextMenu } from "./GanttContextMenu.vue";
-export * from "./types";
+export { default as Gantt } from './Gantt.vue'
+export { default as GanttHeader } from './GanttHeader.vue'
+export { default as GanttTree } from './GanttTree.vue'
+export { default as GanttTimeline } from './GanttTimeline.vue'
+export { default as GanttBar } from './GanttBar.vue'
+export { default as GanttMilestone } from './GanttMilestone.vue'
+export { default as GanttContextMenu } from './GanttContextMenu.vue'
+export * from './types'

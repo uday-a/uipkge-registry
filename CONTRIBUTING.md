@@ -62,7 +62,7 @@ Add or update your demo in `packages/vue/demos/<name>.vue`:
 
 ```vue
 <script setup lang="ts">
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button'
 </script>
 
 <template>
@@ -114,15 +114,15 @@ packages/react/components/button/
 Add or update your demo in `packages/react/demos/<name>.tsx`:
 
 ```tsx
-import Story from "../../playground/src/Story";
-import { Button } from "@/components/ui/button";
+import Story from '../../playground/src/Story'
+import { Button } from '@/components/ui/button'
 
 export default function ButtonDemo() {
   return (
     <Story title="Default" description="Standard button preview">
       <Button>Click me</Button>
     </Story>
-  );
+  )
 }
 ```
 

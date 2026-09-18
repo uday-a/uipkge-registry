@@ -1,122 +1,82 @@
-import Story from "../../components/story/Story";
-import { useState } from "react";
-import { Button } from "@react-registry/button";
-import { Tour, type TourStep } from "@react-registry/tour";
+import Story from '../../components/story/Story'
+import { useState } from 'react'
+import { Button } from '@react-registry/button'
+import { Tour, type TourStep } from '@react-registry/tour'
 
 const steps1: TourStep[] = [
-  {
-    target: "#tour-target-a",
-    title: "Welcome",
-    description: "This is the first stop.",
-  },
-  {
-    target: "#tour-target-b",
-    title: "Search bar",
-    description: "Find anything from here.",
-  },
-  {
-    target: "#tour-target-c",
-    title: "Settings",
-    description: "Configure your account.",
-  },
-  {
-    target: "#tour-target-d",
-    title: "Done!",
-    description: "You finished the tour.",
-  },
-];
+  { target: '#tour-target-a', title: 'Welcome', description: 'This is the first stop.' },
+  { target: '#tour-target-b', title: 'Search bar', description: 'Find anything from here.' },
+  { target: '#tour-target-c', title: 'Settings', description: 'Configure your account.' },
+  { target: '#tour-target-d', title: 'Done!', description: 'You finished the tour.' },
+]
 
 const steps2: TourStep[] = [
   {
-    target: "#tour-target-cover-a",
-    title: "Cover image",
-    description: "A short marketing intro to a feature.",
-    cover: "https://placehold.co/600x180/0ea5e9/white?text=Cover",
+    target: '#tour-target-cover-a',
+    title: 'Cover image',
+    description: 'A short marketing intro to a feature.',
+    cover: 'https://placehold.co/600x180/0ea5e9/white?text=Cover',
   },
   {
-    target: "#tour-target-cover-b",
-    title: "Try it",
-    description: "Use this control to begin.",
+    target: '#tour-target-cover-b',
+    title: 'Try it',
+    description: 'Use this control to begin.',
   },
-];
+]
 
 const steps3: TourStep[] = [
-  {
-    title: "Welcome",
-    description: "A centered intro step (no target).",
-    mask: true,
-  },
-  {
-    target: "#tour-target-centered",
-    title: "Then a real target",
-    description: "Now we anchor.",
-  },
-];
+  { title: 'Welcome', description: 'A centered intro step (no target).', mask: true },
+  { target: '#tour-target-centered', title: 'Then a real target', description: 'Now we anchor.' },
+]
 
 const steps4: TourStep[] = [
   {
-    target: "#tour-long-a",
-    title: "Step 1 of 6",
-    description:
-      "A longer tour with six stops, useful for full onboarding flows.",
+    target: '#tour-long-a',
+    title: 'Step 1 of 6',
+    description: 'A longer tour with six stops, useful for full onboarding flows.',
+  },
+  { target: '#tour-long-b', title: 'Step 2 of 6', description: 'Each step can reference any selector on the page.' },
+  {
+    target: '#tour-long-c',
+    title: 'Step 3 of 6',
+    description: 'Mid-tour stops can re-anchor the user to a new area of the UI.',
   },
   {
-    target: "#tour-long-b",
-    title: "Step 2 of 6",
-    description: "Each step can reference any selector on the page.",
+    target: '#tour-long-d',
+    title: 'Step 4 of 6',
+    description: 'Use longer descriptions for steps that introduce new concepts.',
   },
-  {
-    target: "#tour-long-c",
-    title: "Step 3 of 6",
-    description:
-      "Mid-tour stops can re-anchor the user to a new area of the UI.",
-  },
-  {
-    target: "#tour-long-d",
-    title: "Step 4 of 6",
-    description:
-      "Use longer descriptions for steps that introduce new concepts.",
-  },
-  {
-    target: "#tour-long-e",
-    title: "Step 5 of 6",
-    description: "Nearly there — one more checkpoint.",
-  },
-  {
-    target: "#tour-long-f",
-    title: "Done",
-    description: "Six stops in, the user has seen the whole surface.",
-  },
-];
+  { target: '#tour-long-e', title: 'Step 5 of 6', description: 'Nearly there — one more checkpoint.' },
+  { target: '#tour-long-f', title: 'Done', description: 'Six stops in, the user has seen the whole surface.' },
+]
 
 const steps5: TourStep[] = [
   {
-    target: "#tour-mask-a",
-    title: "Masked target",
-    description:
-      "The mask cuts out a hole around the target so the rest of the page is dimmed.",
+    target: '#tour-mask-a',
+    title: 'Masked target',
+    description: 'The mask cuts out a hole around the target so the rest of the page is dimmed.',
     mask: true,
   },
   {
-    target: "#tour-mask-b",
-    title: "No mask",
+    target: '#tour-mask-b',
+    title: 'No mask',
     description:
-      "mask=false leaves the page un-dimmed for this step — useful when the surrounding context still matters.",
+      'mask=false leaves the page un-dimmed for this step — useful when the surrounding context still matters.',
     mask: false,
   },
-];
+]
 
 export default function TourDemo() {
-  const [open1, setOpen1] = useState(false);
-  const [step1, setStep1] = useState(0);
-  const [open2, setOpen2] = useState(false);
-  const [step2, setStep2] = useState(0);
-  const [open3, setOpen3] = useState(false);
-  const [step3, setStep3] = useState(0);
-  const [open4, setOpen4] = useState(false);
-  const [step4, setStep4] = useState(0);
-  const [open5, setOpen5] = useState(false);
-  const [step5, setStep5] = useState(0);
+  const [open1, setOpen1] = useState(false)
+  const [step1, setStep1] = useState(0)
+  const [open2, setOpen2] = useState(false)
+  const [step2, setStep2] = useState(0)
+  const [open3, setOpen3] = useState(false)
+  const [step3, setStep3] = useState(0)
+  const [open4, setOpen4] = useState(false)
+  const [step4, setStep4] = useState(0)
+  const [open5, setOpen5] = useState(false)
+  const [step5, setStep5] = useState(0)
 
   return (
     <>
@@ -139,19 +99,13 @@ export default function TourDemo() {
           </div>
           <Button
             onClick={() => {
-              setOpen1(true);
-              setStep1(0);
+              setOpen1(true)
+              setStep1(0)
             }}
           >
             Start tour
           </Button>
-          <Tour
-            open={open1}
-            current={step1}
-            steps={steps1}
-            onOpenChange={setOpen1}
-            onCurrentChange={setStep1}
-          />
+          <Tour open={open1} current={step1} steps={steps1} onOpenChange={setOpen1} onCurrentChange={setStep1} />
         </div>
       </Story>
 
@@ -168,8 +122,8 @@ export default function TourDemo() {
           </div>
           <Button
             onClick={() => {
-              setOpen2(true);
-              setStep2(0);
+              setOpen2(true)
+              setStep2(0)
             }}
           >
             Start tour
@@ -195,19 +149,13 @@ export default function TourDemo() {
           </Button>
           <Button
             onClick={() => {
-              setOpen3(true);
-              setStep3(0);
+              setOpen3(true)
+              setStep3(0)
             }}
           >
             Start tour
           </Button>
-          <Tour
-            open={open3}
-            current={step3}
-            steps={steps3}
-            onOpenChange={setOpen3}
-            onCurrentChange={setStep3}
-          />
+          <Tour open={open3} current={step3} steps={steps3} onOpenChange={setOpen3} onCurrentChange={setStep3} />
         </div>
       </Story>
 
@@ -234,19 +182,13 @@ export default function TourDemo() {
           </div>
           <Button
             onClick={() => {
-              setOpen4(true);
-              setStep4(0);
+              setOpen4(true)
+              setStep4(0)
             }}
           >
             Start 6-step tour
           </Button>
-          <Tour
-            open={open4}
-            current={step4}
-            steps={steps4}
-            onOpenChange={setOpen4}
-            onCurrentChange={setStep4}
-          />
+          <Tour open={open4} current={step4} steps={steps4} onOpenChange={setOpen4} onCurrentChange={setStep4} />
         </div>
       </Story>
 
@@ -263,21 +205,15 @@ export default function TourDemo() {
           </div>
           <Button
             onClick={() => {
-              setOpen5(true);
-              setStep5(0);
+              setOpen5(true)
+              setStep5(0)
             }}
           >
             Start tour
           </Button>
-          <Tour
-            open={open5}
-            current={step5}
-            steps={steps5}
-            onOpenChange={setOpen5}
-            onCurrentChange={setStep5}
-          />
+          <Tour open={open5} current={step5} steps={steps5} onOpenChange={setOpen5} onCurrentChange={setStep5} />
         </div>
       </Story>
     </>
-  );
+  )
 }

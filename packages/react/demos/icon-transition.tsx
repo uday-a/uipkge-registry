@@ -1,9 +1,6 @@
-import Story from "../../components/story/Story";
-import { Button } from "@react-registry/button";
-import {
-  IconTransition,
-  type IconTransitionHandle,
-} from "@react-registry/icon-transition";
+import Story from '../../components/story/Story'
+import { Button } from '@react-registry/button'
+import { IconTransition, type IconTransitionHandle } from '@react-registry/icon-transition'
 import {
   Bookmark,
   BookmarkCheck,
@@ -17,21 +14,21 @@ import {
   ThumbsUp,
   UserPlus,
   UserCheck,
-} from "lucide-react";
-import { useRef, useState } from "react";
+} from 'lucide-react'
+import { useRef, useState } from 'react'
 
-const sampleUrl = "https://uipkge.dev/r/vue/button.json";
+const sampleUrl = 'https://uipkge.dev/r/vue/button.json'
 
 export default function IconTransitionDemo() {
-  const [liked, setLiked] = useState(false);
-  const bookmarkRef = useRef<IconTransitionHandle>(null);
+  const [liked, setLiked] = useState(false)
+  const bookmarkRef = useRef<IconTransitionHandle>(null)
 
   async function copySample() {
     try {
-      await navigator.clipboard?.writeText(sampleUrl);
-      return true;
+      await navigator.clipboard?.writeText(sampleUrl)
+      return true
     } catch {
-      return false;
+      return false
     }
   }
 
@@ -59,11 +56,7 @@ export default function IconTransitionDemo() {
         title="Externally controlled — like button"
         description="Pass `:active` to drive the icon swap from your own state, instead of using the built-in click handler. Useful when the parent already manages the toggle."
       >
-        <Button
-          variant="outline"
-          className={liked ? "text-rose-500" : ""}
-          onClick={() => setLiked(!liked)}
-        >
+        <Button variant="outline" className={liked ? 'text-rose-500' : ''} onClick={() => setLiked(!liked)}>
           <IconTransition
             as="span"
             defaultIcon={Heart}
@@ -73,7 +66,7 @@ export default function IconTransitionDemo() {
             iconClass="size-4"
             className="size-4"
           />
-          {liked ? "Liked" : "Like"}
+          {liked ? 'Liked' : 'Like'}
         </Button>
       </Story>
 
@@ -92,11 +85,7 @@ export default function IconTransitionDemo() {
             activeLabel="Saved"
             className="border-border hover:bg-muted size-9 rounded-md border"
           />
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => bookmarkRef.current?.reset()}
-          >
+          <Button variant="ghost" size="sm" onClick={() => bookmarkRef.current?.reset()}>
             Reset
           </Button>
         </div>
@@ -158,16 +147,14 @@ export default function IconTransitionDemo() {
         description='Use `as="span"` and `:active` to make the icon a passive child of an outer button. The chip handles the click and tracks state — the icon just animates.'
       >
         <div className="flex flex-wrap gap-1.5">
-          {["button", "data-table", "dialog", "sonner"].map((name) => (
+          {['button', 'data-table', 'dialog', 'sonner'].map((name) => (
             <button
               key={name}
               type="button"
               className="group bg-muted/30 border-border hover:border-primary/40 focus-visible:ring-ring inline-flex items-center gap-2 rounded-full border px-2.5 py-1.5 font-mono text-xs transition-colors focus-visible:ring-2 focus-visible:outline-none"
               onClick={copySample}
             >
-              <span className="text-muted-foreground font-sans tracking-wider uppercase">
-                add
-              </span>
+              <span className="text-muted-foreground font-sans tracking-wider uppercase">add</span>
               <span>{name}</span>
               <IconTransition
                 as="span"
@@ -180,10 +167,10 @@ export default function IconTransitionDemo() {
           ))}
         </div>
         <p className="text-muted-foreground mt-2 text-xs">
-          Each chip is its own button; the IconTransition lives inside in
-          `as="span"` mode and never receives clicks directly.
+          Each chip is its own button; the IconTransition lives inside in `as="span"` mode and never receives clicks
+          directly.
         </p>
       </Story>
     </>
-  );
+  )
 }

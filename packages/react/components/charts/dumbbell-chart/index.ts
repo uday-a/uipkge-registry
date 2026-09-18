@@ -1,1 +1,1 @@
-export { DumbbellChart, type DumbbellChartProps } from "./DumbbellChart";
+export { DumbbellChart, type DumbbellChartProps } from './DumbbellChart'

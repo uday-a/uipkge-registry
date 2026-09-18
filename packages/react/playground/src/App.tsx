@@ -1,167 +1,149 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
-import WorkbenchHeader from "./components/WorkbenchHeader";
-import WorkbenchSidebar, {
-  type SidebarItem,
-} from "./components/WorkbenchSidebar";
-import TestBenchDrawer, {
-  type LoggedEvent,
-} from "./components/TestBenchDrawer";
-import { StoryCodeContext } from "./StoryContext";
-import { extractProps, type PropMeta } from "./lib/extract-props";
-import { extractTypeDecls, type TypeDecl } from "./lib/extract-meta";
-import { extractStories } from "./lib/extract-stories";
-import {
-  COLOR_THEMES,
-  RADIUS_PRESETS,
-  VIEWPORT_PRESETS,
-  type CanvasBackground,
-} from "./theme";
-import registryManifest from "../../registry.json";
+import React, { useState, useEffect, useRef, useMemo } from 'react'
+import WorkbenchHeader from './components/WorkbenchHeader'
+import WorkbenchSidebar, { type SidebarItem } from './components/WorkbenchSidebar'
+import TestBenchDrawer, { type LoggedEvent } from './components/TestBenchDrawer'
+import { StoryCodeContext } from './StoryContext'
+import { extractProps, type PropMeta } from './lib/extract-props'
+import { extractTypeDecls, type TypeDecl } from './lib/extract-meta'
+import { extractStories } from './lib/extract-stories'
+import { COLOR_THEMES, RADIUS_PRESETS, VIEWPORT_PRESETS, type CanvasBackground } from './theme'
+import registryManifest from '../../registry.json'
 
 // Vite globs for React demos and raw source
-const demoModules = import.meta.glob("../../demos/*.tsx");
-const demoRawModules = import.meta.glob("../../demos/*.tsx", {
-  query: "?raw",
-  import: "default",
-});
+const demoModules = import.meta.glob('../../demos/*.tsx')
+const demoRawModules = import.meta.glob('../../demos/*.tsx', {
+  query: '?raw',
+  import: 'default',
+})
 
-const manifestMap = new Map(
-  (registryManifest.items as any[]).map((it) => [it.name, it]),
-);
+const manifestMap = new Map((registryManifest.items as any[]).map((it) => [it.name, it]))
 
 // Build catalog items from demos and enrich with registry.json
-const demoKeys = Object.keys(demoModules);
+const demoKeys = Object.keys(demoModules)
 const items: SidebarItem[] = demoKeys
   .map((p) => {
-    const filename = p.split("/").pop()?.replace(".tsx", "") || "";
-    const meta = manifestMap.get(filename);
-    let category = "UI";
-    if (meta?.type === "registry:block") {
-      category = "Blocks";
+    const filename = p.split('/').pop()?.replace('.tsx', '') || ''
+    const meta = manifestMap.get(filename)
+    let category = 'UI'
+    if (meta?.type === 'registry:block') {
+      category = 'Blocks'
     } else if (
-      filename.includes("chart") ||
-      meta?.categories?.includes("chart") ||
-      meta?.categories?.includes("data-visualization")
+      filename.includes('chart') ||
+      meta?.categories?.includes('chart') ||
+      meta?.categories?.includes('data-visualization')
     ) {
-      category = "Charts";
+      category = 'Charts'
     } else if (meta?.categories?.[0]) {
-      category =
-        meta.categories[0].charAt(0).toUpperCase() +
-        meta.categories[0].slice(1);
+      category = meta.categories[0].charAt(0).toUpperCase() + meta.categories[0].slice(1)
     }
 
     return {
       id: filename,
       name: filename
-        .split("-")
+        .split('-')
         .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-        .join(" "),
-      type: (meta?.type || "registry:ui") as any,
+        .join(' '),
+      type: (meta?.type || 'registry:ui') as any,
       category,
       categories: meta?.categories || [],
-    };
+    }
   })
   .filter(
     (item) =>
-      item.id === "cloud-backup-schedule" ||
-      (item.type !== "registry:block" &&
-        item.category !== "Blocks" &&
-        !item.id.includes("dashboard-") &&
-        !item.id.includes("block-")),
+      item.id === 'cloud-backup-schedule' ||
+      (item.type !== 'registry:block' &&
+        item.category !== 'Blocks' &&
+        !item.id.includes('dashboard-') &&
+        !item.id.includes('block-')),
   )
-  .sort((a, b) => a.name.localeCompare(b.name));
+  .sort((a, b) => a.name.localeCompare(b.name))
 
 const getInitialDark = () => {
-  if (typeof window === "undefined") return false;
-  const saved =
-    localStorage.getItem("uipkge-theme") || localStorage.getItem("uipkge_dark");
-  if (saved !== null) return saved === "dark" || saved === "true";
-  return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
-};
+  if (typeof window === 'undefined') return false
+  const saved = localStorage.getItem('uipkge-theme') || localStorage.getItem('uipkge_dark')
+  if (saved !== null) return saved === 'dark' || saved === 'true'
+  return window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false
+}
 
 const getInitialColorTheme = () => {
-  if (typeof window === "undefined") return "default";
-  return localStorage.getItem("uipkge-color-theme") || "default";
-};
+  if (typeof window === 'undefined') return 'default'
+  return localStorage.getItem('uipkge-color-theme') || 'default'
+}
 
 const getInitialRadius = () => {
-  if (typeof window === "undefined") return "0.5rem";
-  return localStorage.getItem("uipkge-radius") || "0.5rem";
-};
+  if (typeof window === 'undefined') return '0.5rem'
+  return localStorage.getItem('uipkge-radius') || '0.5rem'
+}
 
 export default function App() {
   const [selectedId, setSelectedId] = useState(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      const param = params.get("c") || params.get("component");
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      const param = params.get('c') || params.get('component')
       if (param && items.some((it) => it.id === param)) {
-        return param;
+        return param
       }
     }
-    return items.some((it) => it.id === "button")
-      ? "button"
-      : items[0]?.id || "";
-  });
-  const [ActiveComponent, setActiveComponent] =
-    useState<React.ComponentType | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [remountKey, setRemountKey] = useState(0);
-  const previewContainerRef = useRef<HTMLDivElement | null>(null);
+    return items.some((it) => it.id === 'button') ? 'button' : items[0]?.id || ''
+  })
+  const [ActiveComponent, setActiveComponent] = useState<React.ComponentType | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [remountKey, setRemountKey] = useState(0)
+  const previewContainerRef = useRef<HTMLDivElement | null>(null)
 
   // Theme & Canvas state
-  const [isDark, setIsDark] = useState(getInitialDark);
-  const [activeColorTheme, setActiveColorTheme] =
-    useState(getInitialColorTheme);
-  const [activeRadius, setActiveRadius] = useState(getInitialRadius);
-  const [activeViewport, setActiveViewport] = useState("fluid");
-  const [canvasBg, setCanvasBg] = useState<CanvasBackground>("dots");
-  const [isInspectorOpen, setIsInspectorOpen] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isDark, setIsDark] = useState(getInitialDark)
+  const [activeColorTheme, setActiveColorTheme] = useState(getInitialColorTheme)
+  const [activeRadius, setActiveRadius] = useState(getInitialRadius)
+  const [activeViewport, setActiveViewport] = useState('fluid')
+  const [canvasBg, setCanvasBg] = useState<CanvasBackground>('dots')
+  const [isInspectorOpen, setIsInspectorOpen] = useState(false)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
 
   // Component Metadata
   const [currentMeta, setCurrentMeta] = useState<{
-    type: string;
-    description?: string;
-    categories: string[];
-    dependencies: string[];
-    registryDependencies: string[];
-    files: Array<{ path: string; target: string; content?: string }>;
+    type: string
+    description?: string
+    categories: string[]
+    dependencies: string[]
+    registryDependencies: string[]
+    files: Array<{ path: string; target: string; content?: string }>
   }>({
-    type: "registry:ui",
+    type: 'registry:ui',
     categories: [],
     dependencies: [],
     registryDependencies: [],
     files: [],
-  });
+  })
 
   // Props & Types
-  const [propsList, setPropsList] = useState<PropMeta[]>([]);
-  const [typeDecls, setTypeDecls] = useState<TypeDecl[]>([]);
-  const [storyCodeMap, setStoryCodeMap] = useState<Record<string, string>>({});
+  const [propsList, setPropsList] = useState<PropMeta[]>([])
+  const [typeDecls, setTypeDecls] = useState<TypeDecl[]>([])
+  const [storyCodeMap, setStoryCodeMap] = useState<Record<string, string>>({})
 
   // Event Logger
-  const [loggedEvents, setLoggedEvents] = useState<LoggedEvent[]>([]);
+  const [loggedEvents, setLoggedEvents] = useState<LoggedEvent[]>([])
 
   const logEvent = (ev: Event) => {
-    const target = ev.target as HTMLElement | null;
-    const tagName = target?.tagName?.toLowerCase() || "unknown";
-    const slot = target?.getAttribute("data-slot") || "";
-    const targetDesc = slot ? `${tagName}[data-slot=${slot}]` : tagName;
+    const target = ev.target as HTMLElement | null
+    const tagName = target?.tagName?.toLowerCase() || 'unknown'
+    const slot = target?.getAttribute('data-slot') || ''
+    const targetDesc = slot ? `${tagName}[data-slot=${slot}]` : tagName
 
-    const id = `${Date.now()}-${Math.random().toString(36).substr(2, 4)}`;
-    const now = new Date();
-    const timestamp = `${now.getHours().toString().padStart(2, "0")}:${now
+    const id = `${Date.now()}-${Math.random().toString(36).substr(2, 4)}`
+    const now = new Date()
+    const timestamp = `${now.getHours().toString().padStart(2, '0')}:${now
       .getMinutes()
       .toString()
-      .padStart(2, "0")}:${now.getSeconds().toString().padStart(2, "0")}.${now
+      .padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}.${now
       .getMilliseconds()
       .toString()
-      .padStart(3, "0")}`;
+      .padStart(3, '0')}`
 
-    let detail: string | undefined;
-    if (ev.type === "input" || ev.type === "change") {
-      const val = (target as HTMLInputElement)?.value;
-      if (val !== undefined) detail = `value: "${val}"`;
+    let detail: string | undefined
+    if (ev.type === 'input' || ev.type === 'change') {
+      const val = (target as HTMLInputElement)?.value
+      if (val !== undefined) detail = `value: "${val}"`
     }
 
     setLoggedEvents((prev) => [
@@ -173,259 +155,233 @@ export default function App() {
         detail,
       },
       ...prev.slice(0, 49),
-    ]);
-  };
+    ])
+  }
 
   useEffect(() => {
-    const el = previewContainerRef.current;
-    if (!el) return;
+    const el = previewContainerRef.current
+    if (!el) return
     const clickHandler = (e: MouseEvent) => {
-      const a = (e.target as HTMLElement)?.closest("a");
+      const a = (e.target as HTMLElement)?.closest('a')
       if (a) {
-        const href = a.getAttribute("href");
-        if (
-          !href ||
-          href === "#" ||
-          href.startsWith("#") ||
-          href === "javascript:void(0)"
-        ) {
-          e.preventDefault();
+        const href = a.getAttribute('href')
+        if (!href || href === '#' || href.startsWith('#') || href === 'javascript:void(0)') {
+          e.preventDefault()
         }
       }
-      logEvent(e);
-    };
+      logEvent(e)
+    }
     const submitHandler = (e: SubmitEvent) => {
-      e.preventDefault();
-      logEvent(e);
-    };
+      e.preventDefault()
+      logEvent(e)
+    }
 
-    el.addEventListener("click", clickHandler as any, { capture: true });
-    el.addEventListener("submit", submitHandler as any, { capture: true });
-    el.addEventListener("input", logEvent as any, {
-      capture: true,
-      passive: true,
-    });
-    el.addEventListener("change", logEvent as any, {
-      capture: true,
-      passive: true,
-    });
+    el.addEventListener('click', clickHandler as any, { capture: true })
+    el.addEventListener('submit', submitHandler as any, { capture: true })
+    el.addEventListener('input', logEvent as any, { capture: true, passive: true })
+    el.addEventListener('change', logEvent as any, { capture: true, passive: true })
 
     return () => {
-      el.removeEventListener("click", clickHandler as any, { capture: true });
-      el.removeEventListener("submit", submitHandler as any, { capture: true });
-      el.removeEventListener("input", logEvent as any, { capture: true });
-      el.removeEventListener("change", logEvent as any, { capture: true });
-    };
-  }, [remountKey, ActiveComponent]);
+      el.removeEventListener('click', clickHandler as any, { capture: true })
+      el.removeEventListener('submit', submitHandler as any, { capture: true })
+      el.removeEventListener('input', logEvent as any, { capture: true })
+      el.removeEventListener('change', logEvent as any, { capture: true })
+    }
+  }, [remountKey, ActiveComponent])
 
   // Sync selectedId to URL query param (?c=<id>)
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const url = new URL(window.location.href);
-      if (url.searchParams.get("c") !== selectedId) {
-        url.searchParams.set("c", selectedId);
-        url.searchParams.delete("component");
-        window.history.pushState({ component: selectedId }, "", url.toString());
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href)
+      if (url.searchParams.get('c') !== selectedId) {
+        url.searchParams.set('c', selectedId)
+        url.searchParams.delete('component')
+        window.history.pushState({ component: selectedId }, '', url.toString())
       }
     }
-  }, [selectedId]);
+  }, [selectedId])
 
   // Handle browser back/forward buttons
   useEffect(() => {
     const handlePopState = () => {
-      if (typeof window === "undefined") return;
-      const params = new URLSearchParams(window.location.search);
-      const param = params.get("c") || params.get("component");
+      if (typeof window === 'undefined') return
+      const params = new URLSearchParams(window.location.search)
+      const param = params.get('c') || params.get('component')
       if (param && items.some((it) => it.id === param)) {
-        setSelectedId(param);
+        setSelectedId(param)
       }
-    };
-    window.addEventListener("popstate", handlePopState);
-    return () => window.removeEventListener("popstate", handlePopState);
-  }, []);
+    }
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [])
 
   // Load Component
   useEffect(() => {
-    let isCancelled = false;
+    let isCancelled = false
 
     const loadComponent = async (id: string) => {
-      setLoading(true);
-      const demoPath = `../../demos/${id}.tsx`;
-      const compLoader = demoModules[demoPath];
+      setLoading(true)
+      const demoPath = `../../demos/${id}.tsx`
+      const compLoader = demoModules[demoPath]
 
       if (compLoader) {
         try {
-          const mod: any = await compLoader();
+          const mod: any = await compLoader()
           if (!isCancelled) {
-            setActiveComponent(() => mod.default);
+            setActiveComponent(() => mod.default)
           }
         } catch (err) {
-          console.error(`Failed to load component ${id}:`, err);
+          console.error(`Failed to load component ${id}:`, err)
         }
       }
 
       // Load raw demo source for story snippets
-      const rawLoader = demoRawModules[demoPath];
+      const rawLoader = demoRawModules[demoPath]
       if (rawLoader) {
         try {
-          const rawCode: any = await rawLoader();
-          if (typeof rawCode === "string" && !isCancelled) {
-            setStoryCodeMap(extractStories(rawCode));
+          const rawCode: any = await rawLoader()
+          if (typeof rawCode === 'string' && !isCancelled) {
+            setStoryCodeMap(extractStories(rawCode))
           }
         } catch (err) {
-          console.error("Failed to load raw demo source:", err);
+          console.error('Failed to load raw demo source:', err)
         }
       }
 
       // Pre-populate from manifestMap immediately
-      const localMeta = manifestMap.get(id);
+      const localMeta = manifestMap.get(id)
       if (localMeta && !isCancelled) {
         setCurrentMeta({
-          type: localMeta.type || "registry:ui",
+          type: localMeta.type || 'registry:ui',
           description: localMeta.description,
           categories: localMeta.categories || [],
           dependencies: localMeta.dependencies || [],
           registryDependencies: localMeta.registryDependencies || [],
           files: localMeta.files || [],
-        });
+        })
 
-        const mainTsx = localMeta.files?.find(
-          (f: any) => f.path?.endsWith(".tsx") || f.path?.endsWith(".ts"),
-        );
-        const variantFile = localMeta.files?.find((f: any) =>
-          f.path?.includes(".variants."),
-        );
+        const mainTsx = localMeta.files?.find((f: any) => f.path?.endsWith('.tsx') || f.path?.endsWith('.ts'))
+        const variantFile = localMeta.files?.find((f: any) => f.path?.includes('.variants.'))
         if (mainTsx && mainTsx.content) {
-          setPropsList(
-            extractProps(mainTsx.content, variantFile?.content).props,
-          );
+          setPropsList(extractProps(mainTsx.content, variantFile?.content).props)
         }
         if (localMeta.files?.length) {
-          setTypeDecls(extractTypeDecls(localMeta.files));
+          setTypeDecls(extractTypeDecls(localMeta.files))
         }
       }
 
       // Refine from item JSON manifest if available
       try {
-        const res = await fetch(`/r/react/${id}.json`);
+        const res = await fetch(`/r/react/${id}.json`)
         if (res.ok && !isCancelled) {
-          const json = await res.json();
+          const json = await res.json()
           setCurrentMeta({
-            type: json.type || "registry:ui",
+            type: json.type || 'registry:ui',
             description: json.description,
             categories: json.categories || [],
             dependencies: json.dependencies || [],
             registryDependencies: json.registryDependencies || [],
             files: json.files || [],
-          });
+          })
 
-          const mainTsxFile = json.files?.find(
-            (f: any) => f.path.endsWith(".tsx") || f.path.endsWith(".ts"),
-          );
-          const varFile = json.files?.find((f: any) =>
-            f.path.includes(".variants."),
-          );
+          const mainTsxFile = json.files?.find((f: any) => f.path.endsWith('.tsx') || f.path.endsWith('.ts'))
+          const varFile = json.files?.find((f: any) => f.path.includes('.variants.'))
           if (mainTsxFile && mainTsxFile.content) {
-            setPropsList(
-              extractProps(mainTsxFile.content, varFile?.content).props,
-            );
+            setPropsList(extractProps(mainTsxFile.content, varFile?.content).props)
           }
           if (json.files?.length) {
-            setTypeDecls(extractTypeDecls(json.files));
+            setTypeDecls(extractTypeDecls(json.files))
           }
         }
       } catch (err) {
         // Fallback already provided by localMeta
       } finally {
-        if (!isCancelled) setLoading(false);
+        if (!isCancelled) setLoading(false)
       }
-    };
+    }
 
-    loadComponent(selectedId);
+    loadComponent(selectedId)
 
     return () => {
-      isCancelled = true;
-    };
-  }, [selectedId, remountKey]);
+      isCancelled = true
+    }
+  }, [selectedId, remountKey])
 
   const handleToggleDark = () => {
     setIsDark((prev) => {
-      const next = !prev;
+      const next = !prev
       try {
-        localStorage.setItem("uipkge_dark", String(next));
-        localStorage.setItem("uipkge-theme", next ? "dark" : "light");
+        localStorage.setItem('uipkge_dark', String(next))
+        localStorage.setItem('uipkge-theme', next ? 'dark' : 'light')
       } catch {}
-      return next;
-    });
-  };
+      return next
+    })
+  }
 
   // Sync dark class on document element
   useEffect(() => {
     if (isDark) {
-      document.documentElement.classList.add("dark");
+      document.documentElement.classList.add('dark')
     } else {
-      document.documentElement.classList.remove("dark");
+      document.documentElement.classList.remove('dark')
     }
-  }, [isDark]);
+  }, [isDark])
 
   // Sync color theme on document element
   useEffect(() => {
-    if (activeColorTheme === "default") {
-      document.documentElement.removeAttribute("data-color-theme");
+    if (activeColorTheme === 'default') {
+      document.documentElement.removeAttribute('data-color-theme')
     } else {
-      document.documentElement.setAttribute(
-        "data-color-theme",
-        activeColorTheme,
-      );
+      document.documentElement.setAttribute('data-color-theme', activeColorTheme)
     }
     try {
-      localStorage.setItem("uipkge-color-theme", activeColorTheme);
+      localStorage.setItem('uipkge-color-theme', activeColorTheme)
     } catch {}
-  }, [activeColorTheme]);
+  }, [activeColorTheme])
 
   // Sync radius on document element
   useEffect(() => {
-    document.documentElement.style.setProperty("--radius", activeRadius);
+    document.documentElement.style.setProperty('--radius', activeRadius)
     try {
-      localStorage.setItem("uipkge-radius", activeRadius);
+      localStorage.setItem('uipkge-radius', activeRadius)
     } catch {}
-  }, [activeRadius]);
+  }, [activeRadius])
 
   // Global hotkeys: ⌘B / Ctrl+B for sidebar, ⌘J / Ctrl+J for inspector
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
-      const modKey = isMac ? e.metaKey : e.ctrlKey;
+      const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0
+      const modKey = isMac ? e.metaKey : e.ctrlKey
 
-      if (modKey && e.key.toLowerCase() === "b") {
-        e.preventDefault();
-        setIsSidebarOpen((prev) => !prev);
+      if (modKey && e.key.toLowerCase() === 'b') {
+        e.preventDefault()
+        setIsSidebarOpen((prev) => !prev)
       }
-      if (modKey && e.key.toLowerCase() === "j") {
-        e.preventDefault();
-        setIsInspectorOpen((prev) => !prev);
+      if (modKey && e.key.toLowerCase() === 'j') {
+        e.preventDefault()
+        setIsInspectorOpen((prev) => !prev)
       }
-    };
+    }
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
 
   const selectedItemName = useMemo(() => {
-    const item = items.find((i) => i.id === selectedId);
-    return item ? item.name : selectedId;
-  }, [selectedId]);
+    const item = items.find((i) => i.id === selectedId)
+    return item ? item.name : selectedId
+  }, [selectedId])
 
   const viewportStyle = useMemo(() => {
-    const vp = VIEWPORT_PRESETS.find((v) => v.id === activeViewport);
-    if (!vp || vp.width === "100%") return { width: "100%" };
+    const vp = VIEWPORT_PRESETS.find((v) => v.id === activeViewport)
+    if (!vp || vp.width === '100%') return { width: '100%' }
     return {
       width: vp.width,
       flexShrink: 0,
-      margin: "0 auto",
-      transition: "width 200ms ease-out",
-    };
-  }, [activeViewport]);
+      margin: '0 auto',
+      transition: 'width 200ms ease-out',
+    }
+  }, [activeViewport])
 
   return (
     <div className="bg-background text-foreground flex h-screen w-screen overflow-hidden font-sans antialiased">
@@ -466,41 +422,30 @@ export default function App() {
         {/* Canvas Preview Area */}
         <main
           className={`relative flex-1 overflow-y-auto p-6 sm:p-8 lg:p-10 ${
-            canvasBg === "dots"
-              ? "canvas-dots"
-              : canvasBg === "grid"
-                ? "canvas-grid"
-                : "canvas-solid"
+            canvasBg === 'dots' ? 'canvas-dots' : canvasBg === 'grid' ? 'canvas-grid' : 'canvas-solid'
           }`}
         >
           <div
             ref={previewContainerRef}
             style={viewportStyle}
             className={`transition-[width] duration-200 ${
-              activeViewport === "mobile"
-                ? "border-border/80 bg-background/95 my-4 rounded-2xl border p-3 shadow-2xl ring-1 ring-black/5 backdrop-blur-xs dark:ring-white/10"
-                : activeViewport !== "fluid"
-                  ? "border-border/80 bg-background/95 my-4 rounded-2xl border p-4 shadow-2xl ring-1 ring-black/5 backdrop-blur-xs sm:p-6 dark:ring-white/10"
-                  : "mx-auto max-w-7xl"
+              activeViewport === 'mobile'
+                ? 'border-border/80 bg-background/95 my-4 rounded-2xl border p-3 shadow-2xl ring-1 ring-black/5 backdrop-blur-xs dark:ring-white/10'
+                : activeViewport !== 'fluid'
+                  ? 'border-border/80 bg-background/95 my-4 rounded-2xl border p-4 shadow-2xl ring-1 ring-black/5 backdrop-blur-xs sm:p-6 dark:ring-white/10'
+                  : 'mx-auto max-w-7xl'
             }`}
           >
             {/* Viewport Frame Header badge if simulated */}
-            {activeViewport !== "fluid" && (
+            {activeViewport !== 'fluid' && (
               <div className="border-border/60 text-muted-foreground mb-4 flex items-center justify-between border-b pb-2.5 font-mono text-xs">
                 <div className="text-foreground flex items-center gap-1.5 font-medium">
                   <span className="size-2 animate-pulse rounded-full bg-emerald-500" />
                   <span className="tracking-wider uppercase">
-                    {
-                      VIEWPORT_PRESETS.find((v) => v.id === activeViewport)
-                        ?.name
-                    }{" "}
-                    VIEWPORT
+                    {VIEWPORT_PRESETS.find((v) => v.id === activeViewport)?.name} VIEWPORT
                   </span>
                 </div>
-                <span>
-                  {VIEWPORT_PRESETS.find((v) => v.id === activeViewport)?.width}{" "}
-                  &times; auto
-                </span>
+                <span>{VIEWPORT_PRESETS.find((v) => v.id === activeViewport)?.width} &times; auto</span>
               </div>
             )}
 
@@ -542,5 +487,5 @@ export default function App() {
         />
       </div>
     </div>
-  );
+  )
 }

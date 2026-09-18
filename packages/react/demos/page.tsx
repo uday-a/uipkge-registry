@@ -1,4 +1,4 @@
-import Story from "../../components/story/Story";
+import Story from '../../components/story/Story'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -6,22 +6,11 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@react-registry/breadcrumb";
-import { Button } from "@react-registry/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@react-registry/card";
-import {
-  Page,
-  PageBody,
-  PageHeader,
-  PageHeaderHeading,
-} from "@react-registry/page";
-import { Download, Filter, Plus } from "lucide-react";
+} from '@react-registry/breadcrumb'
+import { Button } from '@react-registry/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@react-registry/card'
+import { Page, PageBody, PageHeader, PageHeaderHeading } from '@react-registry/page'
+import { Download, Filter, Plus } from 'lucide-react'
 
 export default function PageDemo() {
   return (
@@ -50,8 +39,7 @@ export default function PageDemo() {
           <PageBody>
             <Card>
               <CardContent className="text-muted-foreground py-8 text-center text-sm">
-                Page body content goes here. Use SectionCard, blocks, or your
-                own grid layout below the header.
+                Page body content goes here. Use SectionCard, blocks, or your own grid layout below the header.
               </CardContent>
             </Card>
           </PageBody>
@@ -78,53 +66,38 @@ export default function PageDemo() {
               </>
             }
           >
-            <PageHeaderHeading
-              title="Reports"
-              description="Sales performance across all channels."
-            />
+            <PageHeaderHeading title="Reports" description="Sales performance across all channels." />
           </PageHeader>
 
           <PageBody>
             <Card>
               <CardContent className="text-muted-foreground py-8 text-center text-sm">
-                {" "}
-                Reports table goes here.{" "}
+                {' '}
+                Reports table goes here.{' '}
               </CardContent>
             </Card>
           </PageBody>
         </Page>
       </Story>
 
-      <Story
-        title="Body with grid"
-        description="PageBody is a plain region — drop your own grid of cards inside."
-      >
+      <Story title="Body with grid" description="PageBody is a plain region — drop your own grid of cards inside.">
         <Page>
           <PageHeader>
-            <PageHeaderHeading
-              title="Dashboard"
-              description="Key metrics and recent activity."
-            />
+            <PageHeaderHeading title="Dashboard" description="Key metrics and recent activity." />
           </PageHeader>
 
           <PageBody>
             <div className="grid gap-4 sm:grid-cols-3">
-              {["Revenue", "Active users", "Conversion"].map((kpi) => (
+              {['Revenue', 'Active users', 'Conversion'].map((kpi) => (
                 <Card key={kpi}>
                   <CardHeader className="pb-2">
                     <CardDescription>{kpi}</CardDescription>
                     <CardTitle className="text-2xl">
-                      {kpi === "Revenue"
-                        ? "$48.2k"
-                        : kpi === "Active users"
-                          ? "12,310"
-                          : "3.4%"}
+                      {kpi === 'Revenue' ? '$48.2k' : kpi === 'Active users' ? '12,310' : '3.4%'}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-muted-foreground text-xs">
-                      vs. previous period
-                    </p>
+                    <p className="text-muted-foreground text-xs">vs. previous period</p>
                   </CardContent>
                 </Card>
               ))}
@@ -133,10 +106,7 @@ export default function PageDemo() {
         </Page>
       </Story>
 
-      <Story
-        title="Title only"
-        description="Description is optional — drop it for compact pages."
-      >
+      <Story title="Title only" description="Description is optional — drop it for compact pages.">
         <Page>
           <PageHeader actions={<Button size="sm">Save changes</Button>}>
             <PageHeaderHeading title="Settings" />
@@ -145,8 +115,8 @@ export default function PageDemo() {
           <PageBody>
             <Card>
               <CardContent className="text-muted-foreground py-8 text-center text-sm">
-                {" "}
-                Settings form goes here.{" "}
+                {' '}
+                Settings form goes here.{' '}
               </CardContent>
             </Card>
           </PageBody>
@@ -184,23 +154,20 @@ export default function PageDemo() {
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>
-              <PageHeaderHeading
-                title="Acme website"
-                description="Customer-facing marketing site."
-              />
+              <PageHeaderHeading title="Acme website" description="Customer-facing marketing site." />
             </div>
           </PageHeader>
 
           <PageBody>
             <Card>
               <CardContent className="text-muted-foreground py-8 text-center text-sm">
-                {" "}
-                Project details go here.{" "}
+                {' '}
+                Project details go here.{' '}
               </CardContent>
             </Card>
           </PageBody>
         </Page>
       </Story>
     </>
-  );
+  )
 }

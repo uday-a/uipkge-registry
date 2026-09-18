@@ -1,1 +1,1 @@
-export { ThemeRiver, type ThemeRiverProps } from "./ThemeRiver";
+export { ThemeRiver, type ThemeRiverProps } from './ThemeRiver'

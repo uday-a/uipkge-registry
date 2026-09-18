@@ -1,1 +1,1 @@
-export { default as UptimeTrackerChart } from "./UptimeTrackerChart.vue";
+export { default as UptimeTrackerChart } from './UptimeTrackerChart.vue'

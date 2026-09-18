@@ -1,26 +1,23 @@
 <script setup lang="ts">
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { LabeledValue } from "@/components/ui/labeled-value";
-import { Copy, Check, Mail } from "lucide-vue-next";
-import { ref } from "vue";
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { LabeledValue } from '@/components/ui/labeled-value'
+import { Copy, Check, Mail } from 'lucide-vue-next'
+import { ref } from 'vue'
 
-const apiKey = "mock_key_8f3a92c1d4e5b6a7f8e9d0c1b2a3";
-const copied = ref(false);
+const apiKey = 'mock_key_8f3a92c1d4e5b6a7f8e9d0c1b2a3'
+const copied = ref(false)
 function copy() {
-  navigator.clipboard?.writeText(apiKey);
-  copied.value = true;
-  setTimeout(() => (copied.value = false), 1500);
+  navigator.clipboard?.writeText(apiKey)
+  copied.value = true
+  setTimeout(() => (copied.value = false), 1500)
 }
 </script>
 
 <template>
-  <Story
-    title="Default grid"
-    description="Horizontal label/value pairs arranged in a responsive three-column grid."
-  >
+  <Story title="Default grid" description="Horizontal label/value pairs arranged in a responsive three-column grid.">
     <div class="grid max-w-2xl gap-3 sm:grid-cols-3">
       <LabeledValue label="Status" value="Active" />
       <LabeledValue label="Plan" value="Pro · Annual" />
@@ -31,10 +28,7 @@ function copy() {
     </div>
   </Story>
 
-  <Story
-    title="Vertical stack"
-    description="Single-column layout suitable for narrow detail panels and sidebars."
-  >
+  <Story title="Vertical stack" description="Single-column layout suitable for narrow detail panels and sidebars.">
     <Card class="max-w-xs">
       <CardContent class="space-y-3 p-6">
         <LabeledValue label="Account ID" value="acc_92f8a1b4" />
@@ -54,9 +48,7 @@ function copy() {
         <Badge>Active</Badge>
       </LabeledValue>
       <LabeledValue label="Health">
-        <Badge class="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400"
-          >Healthy</Badge
-        >
+        <Badge class="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400">Healthy</Badge>
       </LabeledValue>
       <LabeledValue label="Owner">
         <div class="flex items-center gap-2">
@@ -75,10 +67,7 @@ function copy() {
     </div>
   </Story>
 
-  <Story
-    title="Truncated long values"
-    description="Long text gets truncated to keep the row aligned in tight layouts."
-  >
+  <Story title="Truncated long values" description="Long text gets truncated to keep the row aligned in tight layouts.">
     <Card class="max-w-md">
       <CardContent class="space-y-3 p-6">
         <LabeledValue label="Webhook URL">
@@ -88,8 +77,7 @@ function copy() {
         </LabeledValue>
         <LabeledValue label="User agent">
           <span class="max-w-[60%] truncate text-sm font-medium"
-            >Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4)
-            AppleWebKit/605.1.15</span
+            >Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4) AppleWebKit/605.1.15</span
           >
         </LabeledValue>
       </CardContent>
@@ -104,24 +92,16 @@ function copy() {
       <CardContent class="space-y-3 p-6">
         <LabeledValue label="API key">
           <div class="flex items-center gap-2">
-            <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-xs"
-              >{{ apiKey.slice(0, 12) }}…</code
-            >
+            <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-xs">{{ apiKey.slice(0, 12) }}…</code>
             <Button variant="ghost" size="icon" class="size-7" @click="copy">
-              <Check
-                v-if="copied"
-                class="size-3.5 text-emerald-600"
-                aria-hidden="true"
-              />
+              <Check v-if="copied" class="size-3.5 text-emerald-600" aria-hidden="true" />
               <Copy v-else class="size-3.5" aria-hidden="true" />
             </Button>
           </div>
         </LabeledValue>
         <LabeledValue label="Project ID">
           <div class="flex items-center gap-2">
-            <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-xs"
-              >prj_4a2b9c8d</code
-            >
+            <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-xs">prj_4a2b9c8d</code>
             <Button variant="ghost" size="icon" class="size-7">
               <Copy class="size-3.5" aria-hidden="true" />
             </Button>

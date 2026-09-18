@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import type { HTMLAttributes } from "vue";
-import { TabsContent } from "reka-ui";
-import { cn } from "@/lib/utils";
+import { computed } from 'vue'
+import type { HTMLAttributes } from 'vue'
+import { TabsContent } from 'reka-ui'
+import { cn } from '@/lib/utils'
 
 interface Props {
-  class?: HTMLAttributes["class"];
-  value: string;
-  forceMount?: boolean;
+  class?: HTMLAttributes['class']
+  value: string
+  forceMount?: boolean
 }
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 
 const delegated = computed(() => {
-  const { class: _, ...rest } = props;
-  return rest;
-});
+  const { class: _, ...rest } = props
+  return rest
+})
 </script>
 
 <template>

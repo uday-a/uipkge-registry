@@ -1,113 +1,109 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue";
-import { onBeforeUnmount, onMounted, ref, watch } from "vue";
-import { cn } from "@/lib/utils";
+import type { HTMLAttributes } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { cn } from '@/lib/utils'
 
 const props = withDefaults(
   defineProps<{
-    class?: HTMLAttributes["class"];
+    class?: HTMLAttributes['class']
     /** Bar thickness in pixels. */
-    height?: number;
+    height?: number
     /** Any CSS color or gradient — applied to `background` verbatim. */
-    color?: string;
+    color?: string
     /** `fixed` pins to the viewport; `absolute` fills a positioned scrollable parent. */
-    position?: "fixed" | "absolute";
+    position?: 'fixed' | 'absolute'
     /** Scrollable element to measure. Defaults to the window/document. */
-    container?: HTMLElement | null;
+    container?: HTMLElement | null
     /** Lerp-smooth the displayed value toward the real progress each frame. */
-    smooth?: boolean;
+    smooth?: boolean
   }>(),
   {
     height: 3,
-    color: "var(--primary)",
-    position: "fixed",
+    color: 'var(--primary)',
+    position: 'fixed',
     container: null,
     smooth: true,
   },
-);
+)
 
-const progress = ref(0);
+const progress = ref(0)
 
-let display = 0;
-let target = 0;
-let rafId: number | null = null;
-let boundTarget: EventTarget | null = null;
+let display = 0
+let target = 0
+let rafId: number | null = null
+let boundTarget: EventTarget | null = null
 
 function clamp01(value: number): number {
-  return Math.min(1, Math.max(0, value));
+  return Math.min(1, Math.max(0, value))
 }
 
 function prefersReducedMotion(): boolean {
-  return (
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  );
+  return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 }
 
 function readProgress(): number {
   if (props.container) {
-    const max = props.container.scrollHeight - props.container.clientHeight;
-    return max > 0 ? clamp01(props.container.scrollTop / max) : 0;
+    const max = props.container.scrollHeight - props.container.clientHeight
+    return max > 0 ? clamp01(props.container.scrollTop / max) : 0
   }
-  const doc = document.documentElement;
-  const scrollTop =
-    window.scrollY || doc.scrollTop || document.body.scrollTop || 0;
-  const max = doc.scrollHeight - doc.clientHeight;
-  return max > 0 ? clamp01(scrollTop / max) : 0;
+  const doc = document.documentElement
+  const scrollTop = window.scrollY || doc.scrollTop || document.body.scrollTop || 0
+  const max = doc.scrollHeight - doc.clientHeight
+  return max > 0 ? clamp01(scrollTop / max) : 0
 }
 
 function stopLoop() {
   if (rafId !== null) {
-    cancelAnimationFrame(rafId);
-    rafId = null;
+    cancelAnimationFrame(rafId)
+    rafId = null
   }
 }
 
 function tick() {
-  display += (target - display) * 0.18;
-  progress.value = display;
+  display += (target - display) * 0.18
+  progress.value = display
   if (Math.abs(target - display) < 0.001) {
-    display = target;
-    progress.value = target;
-    rafId = null;
-    return;
+    display = target
+    progress.value = target
+    rafId = null
+    return
   }
-  rafId = requestAnimationFrame(tick);
+  rafId = requestAnimationFrame(tick)
 }
 
 function sync() {
-  target = readProgress();
+  target = readProgress()
   if (!props.smooth || prefersReducedMotion()) {
-    stopLoop();
-    display = target;
-    progress.value = target;
-    return;
+    stopLoop()
+    display = target
+    progress.value = target
+    return
   }
-  if (rafId === null) rafId = requestAnimationFrame(tick);
+  if (rafId === null) rafId = requestAnimationFrame(tick)
 }
 
 function detach() {
-  if (boundTarget) boundTarget.removeEventListener("scroll", sync);
-  boundTarget = null;
-  if (typeof window !== "undefined") window.removeEventListener("resize", sync);
-  stopLoop();
+  if (boundTarget) boundTarget.removeEventListener('scroll', sync)
+  boundTarget = null
+  if (typeof window !== 'undefined') window.removeEventListener('resize', sync)
+  stopLoop()
 }
 
 function attach() {
-  if (typeof window === "undefined") return;
-  detach();
-  boundTarget = props.container ?? window;
-  boundTarget.addEventListener("scroll", sync, { passive: true });
-  window.addEventListener("resize", sync);
+  if (typeof window === 'undefined') return
+  detach()
+  boundTarget = props.container ?? window
+  boundTarget.addEventListener('scroll', sync, { passive: true })
+  window.addEventListener('resize', sync)
   // Sync instantly on mount / container swap so the bar never animates up from zero.
-  target = readProgress();
-  display = target;
-  progress.value = target;
+  target = readProgress()
+  display = target
+  progress.value = target
 }
 
-watch(() => props.container, attach);
-onMounted(attach);
-onBeforeUnmount(detach);
+watch(() => props.container, attach)
+onMounted(attach)
+onBeforeUnmount(detach)
 </script>
 
 <template>
@@ -124,11 +120,6 @@ onBeforeUnmount(detach);
         props.class,
       )
     "
-    :style="{
-      height: `${height}px`,
-      background: color,
-      transform: `scaleX(${progress})`,
-      willChange: 'transform',
-    }"
+    :style="{ height: `${height}px`, background: color, transform: `scaleX(${progress})`, willChange: 'transform' }"
   />
 </template>

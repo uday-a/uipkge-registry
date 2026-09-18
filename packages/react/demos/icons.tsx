@@ -1,14 +1,11 @@
-import Story from "../../components/story/Story";
-import { Icon } from "@react-registry/icons";
-import { Home, Settings, User } from "lucide-react";
+import Story from '../../components/story/Story'
+import { Icon } from '@react-registry/icons'
+import { Home, Settings, User } from 'lucide-react'
 
 export default function IconsDemo() {
   return (
     <>
-      <Story
-        title="Sizes"
-        description="Icon component in different sizes using Lucide icons via slot."
-      >
+      <Story title="Sizes" description="Icon component in different sizes using Lucide icons via slot.">
         <div className="flex items-center gap-4">
           <Icon size="xs">
             <Home className="size-3" aria-hidden="true" />
@@ -28,10 +25,7 @@ export default function IconsDemo() {
         </div>
       </Story>
 
-      <Story
-        title="Color & rotation"
-        description="Custom color and rotation applied to the icon wrapper."
-      >
+      <Story title="Color & rotation" description="Custom color and rotation applied to the icon wrapper.">
         <div className="flex items-center gap-4">
           <Icon color="var(--destructive)" rotation={0}>
             <Settings className="size-5" aria-hidden="true" />
@@ -45,10 +39,7 @@ export default function IconsDemo() {
         </div>
       </Story>
 
-      <Story
-        title="Flip"
-        description="Horizontal and vertical flip transformations."
-      >
+      <Story title="Flip" description="Horizontal and vertical flip transformations.">
         <div className="flex items-center gap-4">
           <Icon>
             <User className="size-5" aria-hidden="true" />
@@ -62,5 +53,5 @@ export default function IconsDemo() {
         </div>
       </Story>
     </>
-  );
+  )
 }

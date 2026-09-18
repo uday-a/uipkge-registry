@@ -1,1 +1,1 @@
-export { default as SunburstChart } from "./SunburstChart.vue";
+export { default as SunburstChart } from './SunburstChart.vue'

@@ -1,97 +1,71 @@
-import { useState } from "react";
-import Story from "../../components/story/Story";
-import {
-  Questionnaire,
-  type QuestionnaireAnswers,
-  type QuestionnaireItemDef,
-} from "@react-registry/questionnaire";
+import { useState } from 'react'
+import Story from '../../components/story/Story'
+import { Questionnaire, type QuestionnaireAnswers, type QuestionnaireItemDef } from '@react-registry/questionnaire'
 
 const agentItems: QuestionnaireItemDef[] = [
   {
-    name: "direction",
-    prompt: "What should we build next?",
-    description: "Choose a direction or write your own.",
+    name: 'direction',
+    prompt: 'What should we build next?',
+    description: 'Choose a direction or write your own.',
     required: true,
     choices: [
-      {
-        value: "attach",
-        label: "Attachment chip",
-        description: "File, image, or code with upload states.",
-      },
-      {
-        value: "crop",
-        label: "Image cropper",
-        description: "Zoom, pan, aspect ratio.",
-      },
-      { value: "both", label: "Both together" },
+      { value: 'attach', label: 'Attachment chip', description: 'File, image, or code with upload states.' },
+      { value: 'crop', label: 'Image cropper', description: 'Zoom, pan, aspect ratio.' },
+      { value: 'both', label: 'Both together' },
     ],
-    input: { placeholder: "Describe another task…" },
+    input: { placeholder: 'Describe another task…' },
   },
   {
-    name: "scope",
-    prompt: "Who is this for?",
+    name: 'scope',
+    prompt: 'Who is this for?',
     required: true,
     choices: [
-      { value: "agents", label: "AI agents" },
-      { value: "support", label: "Support inbox" },
-      { value: "onboarding", label: "Onboarding" },
+      { value: 'agents', label: 'AI agents' },
+      { value: 'support', label: 'Support inbox' },
+      { value: 'onboarding', label: 'Onboarding' },
     ],
   },
   {
-    name: "notes",
-    prompt: "Anything else?",
-    description: "Optional. Skip if you have nothing to add.",
-    choices: [{ value: "none", label: "Nothing else" }],
-    input: { placeholder: "Extra context" },
+    name: 'notes',
+    prompt: 'Anything else?',
+    description: 'Optional. Skip if you have nothing to add.',
+    choices: [{ value: 'none', label: 'Nothing else' }],
+    input: { placeholder: 'Extra context' },
   },
-];
+]
 
 const multiItems: QuestionnaireItemDef[] = [
   {
-    name: "stack",
-    prompt: "Which stacks should we support?",
+    name: 'stack',
+    prompt: 'Which stacks should we support?',
     multiple: true,
     required: true,
     choices: [
-      { value: "vue", label: "Vue" },
-      { value: "react", label: "React" },
-      { value: "svelte", label: "Svelte", disabled: true },
+      { value: 'vue', label: 'Vue' },
+      { value: 'react', label: 'React' },
+      { value: 'svelte', label: 'Svelte', disabled: true },
     ],
   },
-];
+]
 
 export default function QuestionnaireDemo() {
-  const [lastSubmit, setLastSubmit] = useState<QuestionnaireAnswers | null>(
-    null,
-  );
+  const [lastSubmit, setLastSubmit] = useState<QuestionnaireAnswers | null>(null)
 
   return (
     <>
-      <Story
-        title="Default"
-        description="Pass items. Progress, next, skip, and submit come from those props."
-      >
+      <Story title="Default" description="Pass items. Progress, next, skip, and submit come from those props.">
         <Questionnaire items={agentItems} />
       </Story>
 
-      <Story
-        title="Letter shortcuts"
-        description="shortcuts=letters assigns A, B, C to choices."
-      >
+      <Story title="Letter shortcuts" description="shortcuts=letters assigns A, B, C to choices.">
         <Questionnaire items={agentItems} shortcuts="letters" />
       </Story>
 
-      <Story
-        title="Number shortcuts"
-        description="shortcuts=numbers assigns 1–9."
-      >
+      <Story title="Number shortcuts" description="shortcuts=numbers assigns 1–9.">
         <Questionnaire items={agentItems.slice(0, 1)} shortcuts="numbers" />
       </Story>
 
-      <Story
-        title="Multiple"
-        description="Set multiple on an item to collect checkboxes."
-      >
+      <Story title="Multiple" description="Set multiple on an item to collect checkboxes.">
         <Questionnaire items={multiItems} />
       </Story>
 
@@ -100,74 +74,44 @@ export default function QuestionnaireDemo() {
         description="An item with input and no choices. Skip is available when required is false."
       >
         <Questionnaire
-          items={[
-            {
-              name: "why",
-              prompt: "Why now?",
-              description: "Optional.",
-              input: { placeholder: "Optional" },
-            },
-          ]}
+          items={[{ name: 'why', prompt: 'Why now?', description: 'Optional.', input: { placeholder: 'Optional' } }]}
         />
       </Story>
 
-      <Story
-        title="Required validation"
-        description="Next on an empty required item shows requiredMessage."
-      >
-        <Questionnaire
-          items={agentItems.slice(0, 1)}
-          requiredMessage="Pick a direction before continuing."
-        />
+      <Story title="Required validation" description="Next on an empty required item shows requiredMessage.">
+        <Questionnaire items={agentItems.slice(0, 1)} requiredMessage="Pick a direction before continuing." />
       </Story>
 
-      <Story
-        title="Hide progress"
-        description="showProgress=false removes the bar."
-      >
+      <Story title="Hide progress" description="showProgress=false removes the bar.">
         <Questionnaire items={agentItems.slice(0, 1)} showProgress={false} />
       </Story>
 
-      <Story
-        title="Disabled choice"
-        description="A choice can set disabled: true in the items array."
-      >
+      <Story title="Disabled choice" description="A choice can set disabled: true in the items array.">
         <Questionnaire items={multiItems} />
       </Story>
 
-      <Story
-        title="Single question"
-        description="One required item — Submit shows immediately."
-      >
+      <Story title="Single question" description="One required item — Submit shows immediately.">
         <Questionnaire
           items={[
             {
-              name: "ok",
-              prompt: "Ship it?",
+              name: 'ok',
+              prompt: 'Ship it?',
               required: true,
               choices: [
-                { value: "yes", label: "Yes" },
-                { value: "later", label: "Later" },
+                { value: 'yes', label: 'Yes' },
+                { value: 'later', label: 'Later' },
               ],
             },
           ]}
         />
       </Story>
 
-      <Story
-        title="Submit payload"
-        description="Listen for onSubmit to read the answers map."
-      >
-        <Questionnaire
-          items={agentItems.slice(0, 1)}
-          onSubmit={setLastSubmit}
-        />
+      <Story title="Submit payload" description="Listen for onSubmit to read the answers map.">
+        <Questionnaire items={agentItems.slice(0, 1)} onSubmit={setLastSubmit} />
         {lastSubmit ? (
-          <p className="text-muted-foreground mt-3 font-mono text-xs">
-            {JSON.stringify(lastSubmit)}
-          </p>
+          <p className="text-muted-foreground mt-3 font-mono text-xs">{JSON.stringify(lastSubmit)}</p>
         ) : null}
       </Story>
     </>
-  );
+  )
 }

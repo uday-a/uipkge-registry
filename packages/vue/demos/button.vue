@@ -1,16 +1,6 @@
 <script setup lang="ts">
-import {
-  ChevronRight,
-  Loader2,
-  Mail,
-  Plus,
-  Trash2,
-  ChevronDown,
-  Copy,
-  Share2,
-  Download,
-} from "lucide-vue-next";
-import { Button, ButtonGroup } from "@/components/ui/button";
+import { ChevronRight, Loader2, Mail, Plus, Trash2, ChevronDown, Copy, Share2, Download } from 'lucide-vue-next'
+import { Button, ButtonGroup } from '@/components/ui/button'
 </script>
 
 <template>
@@ -37,10 +27,7 @@ import { Button, ButtonGroup } from "@/components/ui/button";
     </div>
   </Story>
 
-  <Story
-    title="Icon-only"
-    description="Square icon buttons in three sizes. Use aria-label for accessibility."
-  >
+  <Story title="Icon-only" description="Square icon buttons in three sizes. Use aria-label for accessibility.">
     <div class="flex flex-wrap items-center gap-2">
       <Button size="icon-sm" aria-label="icon"><Mail /></Button>
       <Button size="icon" aria-label="icon"><Mail /></Button>
@@ -48,10 +35,7 @@ import { Button, ButtonGroup } from "@/components/ui/button";
     </div>
   </Story>
 
-  <Story
-    title="With icon"
-    description="Place icons before or after the label. Auto-spaced."
-  >
+  <Story title="With icon" description="Place icons before or after the label. Auto-spaced.">
     <div class="flex flex-wrap gap-2">
       <Button><Mail /> Email me</Button>
       <Button>Continue <ChevronRight /></Button>
@@ -60,10 +44,7 @@ import { Button, ButtonGroup } from "@/components/ui/button";
     </div>
   </Story>
 
-  <Story
-    title="States"
-    description="Disabled keeps the variant style. Add a spinner for loading."
-  >
+  <Story title="States" description="Disabled keeps the variant style. Add a spinner for loading.">
     <div class="flex flex-wrap gap-2">
       <Button disabled>Disabled</Button>
       <Button variant="outline" disabled>Outline disabled</Button>
@@ -90,15 +71,9 @@ import { Button, ButtonGroup } from "@/components/ui/button";
       </ButtonGroup>
 
       <ButtonGroup>
-        <Button variant="secondary" size="xs"
-          ><Copy class="size-3" /> Copy</Button
-        >
-        <Button variant="secondary" size="xs"
-          ><Share2 class="size-3" /> Share</Button
-        >
-        <Button variant="secondary" size="xs"
-          ><Download class="size-3" /> Export</Button
-        >
+        <Button variant="secondary" size="xs"><Copy class="size-3" /> Copy</Button>
+        <Button variant="secondary" size="xs"><Share2 class="size-3" /> Share</Button>
+        <Button variant="secondary" size="xs"><Download class="size-3" /> Export</Button>
       </ButtonGroup>
     </div>
   </Story>

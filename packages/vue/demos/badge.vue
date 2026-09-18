@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Bell, Check, Clock, Inbox, Mail, X, Zap } from "lucide-vue-next";
+import { Bell, Check, Clock, Inbox, Mail, X, Zap } from 'lucide-vue-next'
 </script>
 
 <template>
@@ -18,10 +18,7 @@ import { Bell, Check, Clock, Inbox, Mail, X, Zap } from "lucide-vue-next";
     </div>
   </Story>
 
-  <Story
-    title="With icon"
-    description="Combine with lucide icons for status pills."
-  >
+  <Story title="With icon" description="Combine with lucide icons for status pills.">
     <div class="flex flex-wrap gap-2">
       <Badge variant="success"><Check class="size-3" /> Verified</Badge>
       <Badge variant="warning"><Clock class="size-3" /> Pending</Badge>
@@ -30,10 +27,7 @@ import { Bell, Check, Clock, Inbox, Mail, X, Zap } from "lucide-vue-next";
     </div>
   </Story>
 
-  <Story
-    title="In context"
-    description="Inline with text and counts — the most common badge usage."
-  >
+  <Story title="In context" description="Inline with text and counts — the most common badge usage.">
     <div class="flex flex-wrap items-center gap-3 text-sm">
       <span>Notifications</span>
       <Badge>3 new</Badge>
@@ -55,32 +49,21 @@ import { Bell, Check, Clock, Inbox, Mail, X, Zap } from "lucide-vue-next";
         <Button variant="ghost" size="icon" aria-label="Notifications">
           <Bell />
         </Button>
-        <Badge
-          variant="destructive"
-          class="absolute -top-1 -right-1 size-4 rounded-full p-0 text-xs"
-          >5</Badge
-        >
+        <Badge variant="destructive" class="absolute -top-1 -right-1 size-4 rounded-full p-0 text-xs">5</Badge>
       </div>
 
       <div class="relative">
         <Button variant="ghost" size="icon" aria-label="Inbox">
           <Inbox />
         </Button>
-        <Badge
-          variant="success"
-          class="absolute -top-1 -right-1 size-2.5 rounded-full p-0"
-          aria-hidden="true"
-        />
+        <Badge variant="success" class="absolute -top-1 -right-1 size-2.5 rounded-full p-0" aria-hidden="true" />
       </div>
 
       <div class="relative">
         <Button variant="ghost" size="icon" aria-label="Mail">
           <Mail />
         </Button>
-        <Badge
-          class="absolute -top-1 -right-1 h-4 min-w-4 rounded-full px-1 text-xs"
-          >99+</Badge
-        >
+        <Badge class="absolute -top-1 -right-1 h-4 min-w-4 rounded-full px-1 text-xs">99+</Badge>
       </div>
     </div>
   </Story>
@@ -90,16 +73,8 @@ import { Bell, Check, Clock, Inbox, Mail, X, Zap } from "lucide-vue-next";
     description="Badges clip long labels. For an ellipsis, wrap the label in a span with truncate — the badge lets it shrink."
   >
     <div class="flex flex-wrap items-center gap-2">
-      <Badge variant="outline"
-        ><span class="max-w-40 truncate"
-          >production-eu-west-1-cluster</span
-        ></Badge
-      >
-      <Badge variant="secondary"
-        ><span class="max-w-32 truncate"
-          >kubernetes-deployment-status</span
-        ></Badge
-      >
+      <Badge variant="outline"><span class="max-w-40 truncate">production-eu-west-1-cluster</span></Badge>
+      <Badge variant="secondary"><span class="max-w-32 truncate">kubernetes-deployment-status</span></Badge>
     </div>
   </Story>
 
@@ -108,12 +83,8 @@ import { Bell, Check, Clock, Inbox, Mail, X, Zap } from "lucide-vue-next";
     description="Use wrap to let long labels flow onto multiple lines instead of clipping. Geometry switches to rounded-lg so the pill stays readable."
   >
     <div class="max-w-xs space-y-2">
-      <Badge variant="warning" wrap
-        >Deployment paused — pending approval from the platform team</Badge
-      >
-      <Badge variant="success" wrap
-        >All 14 checks passed across build, test, and security gates</Badge
-      >
+      <Badge variant="warning" wrap>Deployment paused — pending approval from the platform team</Badge>
+      <Badge variant="success" wrap>All 14 checks passed across build, test, and security gates</Badge>
     </div>
   </Story>
 

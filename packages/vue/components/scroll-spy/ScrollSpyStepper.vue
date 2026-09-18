@@ -1,56 +1,52 @@
 <script setup lang="ts">
-import { computed, inject } from "vue";
-import type { HTMLAttributes } from "vue";
-import { cn } from "@/lib/utils";
-import { SCROLL_SPY_CONTEXT_KEY } from "./context";
+import { computed, inject } from 'vue'
+import type { HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils'
+import { SCROLL_SPY_CONTEXT_KEY } from './context'
 
 const props = defineProps<{
-  class?: HTMLAttributes["class"];
-}>();
+  class?: HTMLAttributes['class']
+}>()
 
-const ctx = inject(SCROLL_SPY_CONTEXT_KEY, null);
-if (!ctx) throw new Error("ScrollSpyStepper must be used inside <ScrollSpy>.");
+const ctx = inject(SCROLL_SPY_CONTEXT_KEY, null)
+if (!ctx) throw new Error('ScrollSpyStepper must be used inside <ScrollSpy>.')
 
-const items = computed(() => ctx.items.value);
-const activeValue = computed(() => ctx.activeValue.value);
-const scrollProgress = computed(() => ctx.scrollProgress.value);
-const position = computed(() => ctx.position.value);
+const items = computed(() => ctx.items.value)
+const activeValue = computed(() => ctx.activeValue.value)
+const scrollProgress = computed(() => ctx.scrollProgress.value)
+const position = computed(() => ctx.position.value)
 
 const activeIndex = computed(() => {
-  const list = items.value;
-  const active = activeValue.value;
-  const idx = list.findIndex(
-    (i) =>
-      i.value === active ||
-      i.value.replace(/^#/, "") === active.replace(/^#/, ""),
-  );
-  return idx >= 0 ? idx : 0;
-});
+  const list = items.value
+  const active = activeValue.value
+  const idx = list.findIndex((i) => i.value === active || i.value.replace(/^#/, '') === active.replace(/^#/, ''))
+  return idx >= 0 ? idx : 0
+})
 
-const activeItem = computed(() => items.value[activeIndex.value]);
+const activeItem = computed(() => items.value[activeIndex.value])
 const activeTitle = computed(() => {
-  if (!activeItem.value) return "";
+  if (!activeItem.value) return ''
   return (
     activeItem.value.title ||
     activeItem.value.value
-      .replace(/^#/, "")
-      .replace(/[-_]/g, " ")
+      .replace(/^#/, '')
+      .replace(/[-_]/g, ' ')
       .replace(/\b\w/g, (c) => c.toUpperCase())
-  );
-});
+  )
+})
 
-const isTop = computed(() => position.value === "top");
-const isBottom = computed(() => position.value === "bottom");
-const variant = computed(() => ctx.variant.value);
-const indicator = computed(() => ctx.indicator.value);
+const isTop = computed(() => position.value === 'top')
+const isBottom = computed(() => position.value === 'bottom')
+const variant = computed(() => ctx.variant.value)
+const indicator = computed(() => ctx.indicator.value)
 const isScrollSpy = computed(
   () =>
-    variant.value === "scrollspy" ||
-    variant.value === "tabs" ||
-    variant.value === "pills" ||
-    indicator.value === "pill" ||
-    indicator.value === "dot",
-);
+    variant.value === 'scrollspy' ||
+    variant.value === 'tabs' ||
+    variant.value === 'pills' ||
+    indicator.value === 'pill' ||
+    indicator.value === 'dot',
+)
 </script>
 
 <template>
@@ -82,26 +78,21 @@ const isScrollSpy = computed(
       @click="ctx.scrollToHref(item.value)"
     >
       <!-- Active Dot Indicator -->
-      <span
-        v-if="idx === activeIndex"
-        class="bg-primary size-1.5 shrink-0 rounded-full"
-      />
+      <span v-if="idx === activeIndex" class="bg-primary size-1.5 shrink-0 rounded-full" />
       <!-- Section Title -->
       <span class="truncate">
         {{
           item.title ||
           item.value
-            .replace(/^#/, "")
-            .replace(/[-_]/g, " ")
+            .replace(/^#/, '')
+            .replace(/[-_]/g, ' ')
             .replace(/\b\w/g, (c) => c.toUpperCase())
         }}
       </span>
     </button>
 
     <!-- Slim Bottom Reading Progress Line -->
-    <div
-      class="bg-border/20 absolute inset-x-0 bottom-0 h-0.5 overflow-hidden rounded-b-xl"
-    >
+    <div class="bg-border/20 absolute inset-x-0 bottom-0 h-0.5 overflow-hidden rounded-b-xl">
       <div
         class="bg-primary h-full transition-[width] duration-150 ease-out"
         :style="{ width: `${Math.round(scrollProgress * 100)}%` }"
@@ -158,11 +149,7 @@ const isScrollSpy = computed(
             viewBox="0 0 24 24"
             stroke="currentColor"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M4.5 12.75l6 6 9-13.5"
-            />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
           </svg>
           <span v-else>{{ idx + 1 }}</span>
         </span>
@@ -172,8 +159,8 @@ const isScrollSpy = computed(
           {{
             item.title ||
             item.value
-              .replace(/^#/, "")
-              .replace(/[-_]/g, " ")
+              .replace(/^#/, '')
+              .replace(/[-_]/g, ' ')
               .replace(/\b\w/g, (c) => c.toUpperCase())
           }}
         </span>
@@ -207,18 +194,8 @@ const isScrollSpy = computed(
       class="text-muted-foreground hover:bg-muted/80 hover:text-foreground flex size-7 items-center justify-center rounded-full transition-all active:scale-95 disabled:pointer-events-none disabled:opacity-25"
       @click="ctx.goToPrev"
     >
-      <svg
-        class="size-4"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M15.75 19.5L8.25 12l7.5-7.5"
-        />
+      <svg class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
       </svg>
     </button>
 
@@ -245,14 +222,10 @@ const isScrollSpy = computed(
 
     <!-- Active Section Name -->
     <div class="border-border/60 flex items-center gap-2 border-l pl-2">
-      <span
-        class="text-foreground max-w-[130px] truncate text-xs font-medium tracking-tight"
-      >
+      <span class="text-foreground max-w-[130px] truncate text-xs font-medium tracking-tight">
         {{ activeTitle }}
       </span>
-      <span
-        class="bg-muted text-muted-foreground rounded-md px-1.5 py-0.5 font-mono text-[10px] tabular-nums"
-      >
+      <span class="bg-muted text-muted-foreground rounded-md px-1.5 py-0.5 font-mono text-[10px] tabular-nums">
         {{ Math.round(scrollProgress * 100) }}%
       </span>
     </div>
@@ -265,18 +238,8 @@ const isScrollSpy = computed(
       class="text-muted-foreground hover:bg-muted/80 hover:text-foreground flex size-7 items-center justify-center rounded-full transition-all active:scale-95 disabled:pointer-events-none disabled:opacity-25"
       @click="ctx.goToNext"
     >
-      <svg
-        class="size-4"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M8.25 4.5l7.5 7.5-7.5 7.5"
-        />
+      <svg class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
       </svg>
     </button>
   </div>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import type { HTMLAttributes } from "vue";
-import { cn } from "@/lib/utils";
+import { computed } from 'vue'
+import type { HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils'
 
 /**
  * Universal Icon component supporting multiple icon libraries:
@@ -14,53 +14,51 @@ import { cn } from "@/lib/utils";
 const props = withDefaults(
   defineProps<{
     // Size
-    size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "inherit";
+    size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'inherit'
     // Color
-    color?: string;
+    color?: string
     // Custom class for icon libraries (fa-, mdi-, etc.)
-    class?: HTMLAttributes["class"];
+    class?: HTMLAttributes['class']
     // For img-based icons
-    src?: string;
-    alt?: string;
+    src?: string
+    alt?: string
     // Rotation/flip
-    rotation?: number | string;
-    flip?: "horizontal" | "vertical" | "both";
+    rotation?: number | string
+    flip?: 'horizontal' | 'vertical' | 'both'
     // A11y
-    label?: string;
-    ariaLabel?: string;
+    label?: string
+    ariaLabel?: string
     // Style
-    inline?: boolean;
+    inline?: boolean
   }>(),
   {
-    size: "md",
+    size: 'md',
     inline: true,
   },
-);
+)
 
 const sizeClasses = {
-  xs: "size-3",
-  sm: "size-4",
-  md: "size-5",
-  lg: "size-6",
-  xl: "size-8",
-  "2xl": "size-12",
-  inherit: "size-full",
-};
+  xs: 'size-3',
+  sm: 'size-4',
+  md: 'size-5',
+  lg: 'size-6',
+  xl: 'size-8',
+  '2xl': 'size-12',
+  inherit: 'size-full',
+}
 
 const rotationDeg = computed(() => {
-  if (!props.rotation) return undefined;
-  return typeof props.rotation === "string"
-    ? parseInt(props.rotation)
-    : props.rotation;
-});
+  if (!props.rotation) return undefined
+  return typeof props.rotation === 'string' ? parseInt(props.rotation) : props.rotation
+})
 
 const flipClasses = computed(() => {
-  if (!props.flip) return "";
-  if (props.flip === "horizontal") return "-scale-x-100";
-  if (props.flip === "vertical") return "-scale-y-100";
-  if (props.flip === "both") return "-scale-x-100 -scale-y-100";
-  return "";
-});
+  if (!props.flip) return ''
+  if (props.flip === 'horizontal') return '-scale-x-100'
+  if (props.flip === 'vertical') return '-scale-y-100'
+  if (props.flip === 'both') return '-scale-x-100 -scale-y-100'
+  return ''
+})
 </script>
 
 <template>

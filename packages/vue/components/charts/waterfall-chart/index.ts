@@ -1,1 +1,1 @@
-export { default as WaterfallChart } from "./WaterfallChart.vue";
+export { default as WaterfallChart } from './WaterfallChart.vue'

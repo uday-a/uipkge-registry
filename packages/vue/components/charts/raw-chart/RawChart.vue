@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { use } from "echarts/core";
-import { CanvasRenderer } from "echarts/renderers";
-import VChart from "vue-echarts";
-import { cn } from "@/lib/utils";
+import { use } from 'echarts/core'
+import { CanvasRenderer } from 'echarts/renderers'
+import VChart from 'vue-echarts'
+import { cn } from '@/lib/utils'
 
 // Raw escape hatch. The opinionated wrappers (AreaChart, BarChart,
 // FunnelChart, ...) cover the common cases with sensible defaults +
@@ -32,20 +32,20 @@ import { cn } from "@/lib/utils";
 // your option for visual consistency with the rest of the registry's
 // charts.
 
-use([CanvasRenderer]);
+use([CanvasRenderer])
 
 withDefaults(
   defineProps<{
-    option: any;
-    height?: number | string;
+    option: any
+    height?: number | string
     /** Auto-resize on container width change. Default true. */
-    autoresize?: boolean;
-    class?: string;
+    autoresize?: boolean
+    class?: string
     /** Accessible name announced for the chart image. Defaults to "Chart". */
-    ariaLabel?: string;
+    ariaLabel?: string
   }>(),
   { height: 300, autoresize: true },
-);
+)
 </script>
 
 <template>
@@ -53,15 +53,8 @@ withDefaults(
     role="img"
     tabindex="0"
     :aria-label="ariaLabel || 'Chart'"
-    :style="{
-      height: /^\d+$/.test(String(height)) ? `${height}px` : String(height),
-    }"
-    :class="
-      cn(
-        'focus-visible:ring-ring w-full focus-visible:ring-2 focus-visible:outline-none',
-        $props.class,
-      )
-    "
+    :style="{ height: /^\d+$/.test(String(height)) ? `${height}px` : String(height) }"
+    :class="cn('focus-visible:ring-ring w-full focus-visible:ring-2 focus-visible:outline-none', $props.class)"
   >
     <VChart :option="option" :autoresize="autoresize" class="size-full" />
   </div>

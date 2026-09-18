@@ -7,4 +7,4 @@ export {
   BreadcrumbSeparator,
   BreadcrumbEllipsis,
   type BreadcrumbLinkProps,
-} from "./breadcrumb";
+} from './breadcrumb'

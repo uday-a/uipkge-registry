@@ -1,20 +1,20 @@
-import Story from "../../components/story/Story";
-import { Avatar, AvatarFallback } from "@react-registry/avatar";
-import { Badge } from "@react-registry/badge";
-import { Button } from "@react-registry/button";
-import { Card, CardContent } from "@react-registry/card";
-import { LabeledValue } from "@react-registry/labeled-value";
-import { Copy, Check, Mail } from "lucide-react";
-import { useState } from "react";
+import Story from '../../components/story/Story'
+import { Avatar, AvatarFallback } from '@react-registry/avatar'
+import { Badge } from '@react-registry/badge'
+import { Button } from '@react-registry/button'
+import { Card, CardContent } from '@react-registry/card'
+import { LabeledValue } from '@react-registry/labeled-value'
+import { Copy, Check, Mail } from 'lucide-react'
+import { useState } from 'react'
 
-const apiKey = "mock_key_8f3a92c1d4e5b6a7f8e9d0c1b2a3";
+const apiKey = 'mock_key_8f3a92c1d4e5b6a7f8e9d0c1b2a3'
 
 export default function LabeledValueDemo() {
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState(false)
   function copy() {
-    navigator.clipboard?.writeText(apiKey);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
+    navigator.clipboard?.writeText(apiKey)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1500)
   }
 
   return (
@@ -33,10 +33,7 @@ export default function LabeledValueDemo() {
         </div>
       </Story>
 
-      <Story
-        title="Vertical stack"
-        description="Single-column layout suitable for narrow detail panels and sidebars."
-      >
+      <Story title="Vertical stack" description="Single-column layout suitable for narrow detail panels and sidebars.">
         <Card className="max-w-xs">
           <CardContent className="space-y-3 p-6">
             <LabeledValue label="Account ID" value="acc_92f8a1b4" />
@@ -56,9 +53,7 @@ export default function LabeledValueDemo() {
             <Badge>Active</Badge>
           </LabeledValue>
           <LabeledValue label="Health">
-            <Badge className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400">
-              Healthy
-            </Badge>
+            <Badge className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400">Healthy</Badge>
           </LabeledValue>
           <LabeledValue label="Owner">
             <div className="flex items-center gap-2">
@@ -70,10 +65,7 @@ export default function LabeledValueDemo() {
           </LabeledValue>
           <LabeledValue label="Contact">
             <div className="flex items-center gap-1.5">
-              <Mail
-                className="text-muted-foreground size-3.5"
-                aria-hidden="true"
-              />
+              <Mail className="text-muted-foreground size-3.5" aria-hidden="true" />
               <span className="text-sm font-medium">team@acme.dev</span>
             </div>
           </LabeledValue>
@@ -93,8 +85,7 @@ export default function LabeledValueDemo() {
             </LabeledValue>
             <LabeledValue label="User agent">
               <span className="max-w-[60%] truncate text-sm font-medium">
-                Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4)
-                AppleWebKit/605.1.15
+                Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4) AppleWebKit/605.1.15
               </span>
             </LabeledValue>
           </CardContent>
@@ -109,20 +100,10 @@ export default function LabeledValueDemo() {
           <CardContent className="space-y-3 p-6">
             <LabeledValue label="API key">
               <div className="flex items-center gap-2">
-                <code className="bg-muted rounded px-1.5 py-0.5 font-mono text-xs">
-                  {apiKey.slice(0, 12)}…
-                </code>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="size-7"
-                  onClick={copy}
-                >
+                <code className="bg-muted rounded px-1.5 py-0.5 font-mono text-xs">{apiKey.slice(0, 12)}…</code>
+                <Button variant="ghost" size="icon" className="size-7" onClick={copy}>
                   {copied ? (
-                    <Check
-                      className="size-3.5 text-emerald-600"
-                      aria-hidden="true"
-                    />
+                    <Check className="size-3.5 text-emerald-600" aria-hidden="true" />
                   ) : (
                     <Copy className="size-3.5" aria-hidden="true" />
                   )}
@@ -131,9 +112,7 @@ export default function LabeledValueDemo() {
             </LabeledValue>
             <LabeledValue label="Project ID">
               <div className="flex items-center gap-2">
-                <code className="bg-muted rounded px-1.5 py-0.5 font-mono text-xs">
-                  prj_4a2b9c8d
-                </code>
+                <code className="bg-muted rounded px-1.5 py-0.5 font-mono text-xs">prj_4a2b9c8d</code>
                 <Button variant="ghost" size="icon" className="size-7">
                   <Copy className="size-3.5" aria-hidden="true" />
                 </Button>
@@ -143,5 +122,5 @@ export default function LabeledValueDemo() {
         </Card>
       </Story>
     </>
-  );
+  )
 }

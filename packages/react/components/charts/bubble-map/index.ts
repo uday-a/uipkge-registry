@@ -5,5 +5,5 @@ export {
   type BubbleMapProps,
   projectPoint,
   CONTINENT_LANDMASSES,
-} from "./BubbleMap";
-export { default } from "./BubbleMap";
+} from './BubbleMap'
+export { default } from './BubbleMap'

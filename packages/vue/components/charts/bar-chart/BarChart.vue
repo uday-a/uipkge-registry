@@ -1,16 +1,11 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { use } from "echarts/core";
-import { CanvasRenderer } from "echarts/renderers";
-import { BarChart as EChartsBarChart } from "echarts/charts";
-import {
-  GridComponent,
-  TooltipComponent,
-  LegendComponent,
-  MarkAreaComponent,
-} from "echarts/components";
-import VChart from "vue-echarts";
-import { cn } from "@/lib/utils";
+import { computed } from 'vue'
+import { use } from 'echarts/core'
+import { CanvasRenderer } from 'echarts/renderers'
+import { BarChart as EChartsBarChart } from 'echarts/charts'
+import { GridComponent, TooltipComponent, LegendComponent, MarkAreaComponent } from 'echarts/components'
+import VChart from 'vue-echarts'
+import { cn } from '@/lib/utils'
 import {
   chartColors,
   chartTextColor,
@@ -21,53 +16,46 @@ import {
   chartTooltipText,
   chartBgColor,
   mergeOptionBlock,
-} from "../useChartTheme";
+} from '../useChartTheme'
 
-use([
-  CanvasRenderer,
-  EChartsBarChart,
-  GridComponent,
-  TooltipComponent,
-  LegendComponent,
-  MarkAreaComponent,
-]);
+use([CanvasRenderer, EChartsBarChart, GridComponent, TooltipComponent, LegendComponent, MarkAreaComponent])
 
 interface Props {
-  data: Record<string, any>[];
-  xField?: string;
-  yField?: string | string[];
+  data: Record<string, any>[]
+  xField?: string
+  yField?: string | string[]
   /** Stack series on one baseline. Default false. */
-  stacked?: boolean;
+  stacked?: boolean
   /** Gap in px between stacked bar segments. Default 1. Set to 0 to disable. */
-  stackGap?: number;
+  stackGap?: number
   /** Color of the gap between stacked bar segments. Defaults to card background. */
-  stackGapColor?: string;
+  stackGapColor?: string
   /** Show value labels on top of each bar. Default false. */
-  valueLabels?: boolean;
+  valueLabels?: boolean
   /** Top corner rounding in px. Default 6. */
-  radius?: number;
-  height?: number | string;
-  option?: any;
-  class?: string;
+  radius?: number
+  height?: number | string
+  option?: any
+  class?: string
   /** Accessible name announced for the chart image. Defaults to "Chart". */
-  ariaLabel?: string;
+  ariaLabel?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  xField: "x",
-  yField: "y",
+  xField: 'x',
+  yField: 'y',
   stacked: false,
   stackGap: 1,
   valueLabels: false,
   radius: 6,
   height: 300,
-});
+})
 
 const mergedOption = computed(() => {
-  const fields = Array.isArray(props.yField) ? props.yField : [props.yField];
-  const xData = props.data.map((d) => d[props.xField!]);
+  const fields = Array.isArray(props.yField) ? props.yField : [props.yField]
+  const xData = props.data.map((d) => d[props.xField!])
 
-  const userOption: any = props.option ?? {};
+  const userOption: any = props.option ?? {}
   const {
     series: userSeries,
     xAxis: userXAxis,
@@ -76,30 +64,23 @@ const mergedOption = computed(() => {
     tooltip: userTooltip,
     legend: userLegend,
     ...userRest
-  } = userOption;
+  } = userOption
 
-  const isHorizontal =
-    userXAxis?.type === "value" || userYAxis?.type === "category";
-  const hasUserStack =
-    Array.isArray(userSeries) && userSeries.some((s: any) => Boolean(s?.stack));
-  const stackGap = props.stackGap;
-  const stackGapColor = props.stackGapColor ?? chartBgColor.value;
+  const isHorizontal = userXAxis?.type === 'value' || userYAxis?.type === 'category'
+  const hasUserStack = Array.isArray(userSeries) && userSeries.some((s: any) => Boolean(s?.stack))
+  const stackGap = props.stackGap
+  const stackGapColor = props.stackGapColor ?? chartBgColor.value
 
-  const defaultRadius = [
-    props.radius,
-    props.radius,
-    props.radius,
-    props.radius,
-  ];
+  const defaultRadius = [props.radius, props.radius, props.radius, props.radius]
 
   const series = fields.map((field, i) => {
-    const u = Array.isArray(userSeries) ? (userSeries[i] ?? {}) : {};
-    const isStacked = Boolean(props.stacked || u?.stack || hasUserStack);
+    const u = Array.isArray(userSeries) ? (userSeries[i] ?? {}) : {}
+    const isStacked = Boolean(props.stacked || u?.stack || hasUserStack)
 
     return {
       name: field,
-      type: "bar",
-      stack: props.stacked ? "bars" : undefined,
+      type: 'bar',
+      stack: props.stacked ? 'bars' : undefined,
       barMaxWidth: 32,
       itemStyle: {
         color: chartColors.value[i % chartColors.value.length],
@@ -111,38 +92,26 @@ const mergedOption = computed(() => {
             }
           : {}),
       },
-      label: props.valueLabels
-        ? {
-            show: true,
-            position: "top",
-            color: chartTextColor.value,
-            fontSize: 11,
-          }
-        : undefined,
+      label: props.valueLabels ? { show: true, position: 'top', color: chartTextColor.value, fontSize: 11 } : undefined,
       data: props.data.map((d) => d[field]),
-    };
-  });
+    }
+  })
 
   // Per-index series merge + 2-level deep merge for axis/grid/tooltip
   // blocks (see AreaChart for the rule). Lets consumers tweak axisLabel
   // font size without losing the wrapper's `data` / colors.
-  const count = Math.max(
-    fields.length,
-    Array.isArray(userSeries) ? userSeries.length : 0,
-  );
+  const count = Math.max(fields.length, Array.isArray(userSeries) ? userSeries.length : 0)
   const mergedSeries = Array.isArray(userSeries)
     ? Array.from({ length: count }, (_, i) => {
         const s = series[i] ?? {
-          type: "bar",
+          type: 'bar',
           barMaxWidth: 32,
           itemStyle: {
             color: chartColors.value[i % chartColors.value.length],
           },
-        };
-        const u = userSeries[i] ?? {};
-        const isStacked = Boolean(
-          props.stacked || s.stack || u?.stack || hasUserStack,
-        );
+        }
+        const u = userSeries[i] ?? {}
+        const isStacked = Boolean(props.stacked || s.stack || u?.stack || hasUserStack)
 
         return {
           ...s,
@@ -158,9 +127,9 @@ const mergedOption = computed(() => {
               : {}),
             ...(u.itemStyle ?? {}),
           },
-        };
+        }
       })
-    : series;
+    : series
 
   // Single-series charts hide the legend explicitly so ECharts' default
   // doesn't dump the y-field name onto the chart canvas.
@@ -168,41 +137,32 @@ const mergedOption = computed(() => {
     fields.length > 1
       ? {
           bottom: 0,
-          icon: "circle",
+          icon: 'circle',
           itemWidth: 8,
           itemHeight: 8,
           textStyle: { fontSize: 11, color: chartTextColor.value },
         }
-      : { show: false };
+      : { show: false }
 
   return {
     color: chartColors.value,
     grid: mergeOptionBlock(
-      {
-        left: 16,
-        right: 16,
-        top: 24,
-        bottom: fields.length > 1 ? 32 : 24,
-        containLabel: true,
-      },
+      { left: 16, right: 16, top: 24, bottom: fields.length > 1 ? 32 : 24, containLabel: true },
       userGrid,
     ),
     tooltip: mergeOptionBlock(
       {
-        trigger: "axis",
+        trigger: 'axis',
         backgroundColor: chartTooltipBg.value,
         borderColor: chartTooltipBorder.value,
         textStyle: { color: chartTooltipText.value, fontSize: 12 },
       },
       userTooltip,
     ),
-    legend:
-      userLegend?.show === false
-        ? undefined
-        : mergeOptionBlock(baseLegend, userLegend),
+    legend: userLegend?.show === false ? undefined : mergeOptionBlock(baseLegend, userLegend),
     xAxis: mergeOptionBlock(
       {
-        type: "category",
+        type: 'category',
         data: xData,
         axisLine: { lineStyle: { color: chartAxisColor.value } },
         axisLabel: { color: chartTextColor.value, fontSize: 11 },
@@ -212,7 +172,7 @@ const mergedOption = computed(() => {
     ),
     yAxis: mergeOptionBlock(
       {
-        type: "value",
+        type: 'value',
         splitLine: { lineStyle: { color: chartSplitLineColor.value } },
         axisLabel: { color: chartTextColor.value, fontSize: 11 },
         axisLine: { show: false },
@@ -222,8 +182,8 @@ const mergedOption = computed(() => {
     ),
     series: mergedSeries,
     ...userRest,
-  };
-});
+  }
+})
 </script>
 
 <template>
@@ -231,15 +191,8 @@ const mergedOption = computed(() => {
     role="img"
     tabindex="0"
     :aria-label="ariaLabel || 'Chart'"
-    :style="{
-      height: /^\d+$/.test(String(height)) ? `${height}px` : String(height),
-    }"
-    :class="
-      cn(
-        'focus-visible:ring-ring w-full focus-visible:ring-2 focus-visible:outline-none',
-        props.class,
-      )
-    "
+    :style="{ height: /^\d+$/.test(String(height)) ? `${height}px` : String(height) }"
+    :class="cn('focus-visible:ring-ring w-full focus-visible:ring-2 focus-visible:outline-none', props.class)"
   >
     <VChart :option="mergedOption" :autoresize="true" class="size-full" />
   </div>

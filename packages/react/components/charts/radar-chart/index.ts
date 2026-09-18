@@ -1,1 +1,1 @@
-export { RadarChart, type RadarChartProps } from "./RadarChart";
+export { RadarChart, type RadarChartProps } from './RadarChart'

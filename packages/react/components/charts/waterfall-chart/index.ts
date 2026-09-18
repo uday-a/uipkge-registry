@@ -1,5 +1,1 @@
-export {
-  WaterfallChart,
-  type WaterfallChartProps,
-  type WaterfallDatum,
-} from "./WaterfallChart";
+export { WaterfallChart, type WaterfallChartProps, type WaterfallDatum } from './WaterfallChart'

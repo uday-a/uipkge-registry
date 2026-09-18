@@ -2,4 +2,4 @@ export {
   CategoryDistributionChart,
   type CategoryDistributionChartProps,
   type DistributionSlice,
-} from "./CategoryDistributionChart";
+} from './CategoryDistributionChart'

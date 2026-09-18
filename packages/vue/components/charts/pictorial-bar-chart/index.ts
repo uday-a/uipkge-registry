@@ -1,1 +1,1 @@
-export { default as PictorialBarChart } from "./PictorialBarChart.vue";
+export { default as PictorialBarChart } from './PictorialBarChart.vue'

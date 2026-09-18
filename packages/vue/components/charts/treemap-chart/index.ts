@@ -1,1 +1,1 @@
-export { default as TreemapChart } from "./TreemapChart.vue";
+export { default as TreemapChart } from './TreemapChart.vue'

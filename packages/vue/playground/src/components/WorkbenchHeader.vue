@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref } from 'vue'
 import {
   Sun,
   Moon,
@@ -21,114 +21,107 @@ import {
   PanelLeftClose,
   PanelLeft,
   ExternalLink,
-} from "lucide-vue-next";
-import {
-  COLOR_THEMES,
-  RADIUS_PRESETS,
-  VIEWPORT_PRESETS,
-  type CanvasBackground,
-} from "../theme";
+} from 'lucide-vue-next'
+import { COLOR_THEMES, RADIUS_PRESETS, VIEWPORT_PRESETS, type CanvasBackground } from '../theme'
 
 const props = withDefaults(
   defineProps<{
-    componentId: string;
-    componentName: string;
-    componentType: string;
-    categories: string[];
-    isDark: boolean;
-    activeColorTheme: string;
-    activeRadius: string;
-    activeViewport: string;
-    canvasBg: CanvasBackground;
-    isInspectorOpen: boolean;
-    isSidebarOpen?: boolean;
+    componentId: string
+    componentName: string
+    componentType: string
+    categories: string[]
+    isDark: boolean
+    activeColorTheme: string
+    activeRadius: string
+    activeViewport: string
+    canvasBg: CanvasBackground
+    isInspectorOpen: boolean
+    isSidebarOpen?: boolean
   }>(),
   {
     isSidebarOpen: true,
   },
-);
+)
 
 const emit = defineEmits<{
-  (e: "toggleTheme"): void;
-  (e: "toggle-theme"): void;
-  (e: "toggleSidebar"): void;
-  (e: "toggle-sidebar"): void;
-  (e: "update:isSidebarOpen", open: boolean): void;
-  (e: "update:is-sidebar-open", open: boolean): void;
-  (e: "update:activeColorTheme", theme: string): void;
-  (e: "update:active-color-theme", theme: string): void;
-  (e: "update:activeRadius", radius: string): void;
-  (e: "update:active-radius", radius: string): void;
-  (e: "update:activeViewport", viewport: string): void;
-  (e: "update:active-viewport", viewport: string): void;
-  (e: "update:canvasBg", bg: CanvasBackground): void;
-  (e: "update:canvas-bg", bg: CanvasBackground): void;
-  (e: "update:isInspectorOpen", open: boolean): void;
-  (e: "update:is-inspector-open", open: boolean): void;
-  (e: "remount"): void;
-}>();
+  (e: 'toggleTheme'): void
+  (e: 'toggle-theme'): void
+  (e: 'toggleSidebar'): void
+  (e: 'toggle-sidebar'): void
+  (e: 'update:isSidebarOpen', open: boolean): void
+  (e: 'update:is-sidebar-open', open: boolean): void
+  (e: 'update:activeColorTheme', theme: string): void
+  (e: 'update:active-color-theme', theme: string): void
+  (e: 'update:activeRadius', radius: string): void
+  (e: 'update:active-radius', radius: string): void
+  (e: 'update:activeViewport', viewport: string): void
+  (e: 'update:active-viewport', viewport: string): void
+  (e: 'update:canvasBg', bg: CanvasBackground): void
+  (e: 'update:canvas-bg', bg: CanvasBackground): void
+  (e: 'update:isInspectorOpen', open: boolean): void
+  (e: 'update:is-inspector-open', open: boolean): void
+  (e: 'remount'): void
+}>()
 
-const copied = ref(false);
-const showThemeMenu = ref(false);
+const copied = ref(false)
+const showThemeMenu = ref(false)
 
 const setViewport = (vp: string) => {
-  emit("update:activeViewport", vp);
-  emit("update:active-viewport", vp);
-};
+  emit('update:activeViewport', vp)
+  emit('update:active-viewport', vp)
+}
 
 const setCanvas = (bg: CanvasBackground) => {
-  emit("update:canvasBg", bg);
-  emit("update:canvas-bg", bg);
-};
+  emit('update:canvasBg', bg)
+  emit('update:canvas-bg', bg)
+}
 
 const setColorTheme = (theme: string) => {
-  emit("update:activeColorTheme", theme);
-  emit("update:active-color-theme", theme);
-};
+  emit('update:activeColorTheme', theme)
+  emit('update:active-color-theme', theme)
+}
 
 const setRadius = (rad: string) => {
-  emit("update:activeRadius", rad);
-  emit("update:active-radius", rad);
-};
+  emit('update:activeRadius', rad)
+  emit('update:active-radius', rad)
+}
 
 const resetTheme = () => {
-  setColorTheme("default");
-  setRadius("0.5rem");
-};
+  setColorTheme('default')
+  setRadius('0.5rem')
+}
 
 const toggleSidebarAction = () => {
-  emit("toggleSidebar");
-  emit("update:isSidebarOpen", !props.isSidebarOpen);
-};
+  emit('toggleSidebar')
+  emit('update:isSidebarOpen', !props.isSidebarOpen)
+}
 
 const toggleThemeAction = () => {
-  emit("toggleTheme");
-};
+  emit('toggleTheme')
+}
 
 const setDark = (dark: boolean) => {
   if (props.isDark !== dark) {
-    toggleThemeAction();
+    toggleThemeAction()
   }
-};
+}
 
 const toggleInspectorAction = () => {
-  emit("update:isInspectorOpen", !props.isInspectorOpen);
-  emit("update:is-inspector-open", !props.isInspectorOpen);
-};
+  emit('update:isInspectorOpen', !props.isInspectorOpen)
+  emit('update:is-inspector-open', !props.isInspectorOpen)
+}
 
 const copyCommand = async () => {
   try {
-    await navigator.clipboard.writeText(
-      `npx shadcn-vue add @uipkge/${props.componentId}`,
-    );
-    copied.value = true;
+    await navigator.clipboard.writeText(`npx shadcn-vue add @uipkge/${props.componentId}`)
+    copied.value = true
     setTimeout(() => {
-      copied.value = false;
-    }, 1500);
+      copied.value = false
+    }, 1500)
   } catch (err) {
-    console.error("Failed to copy install command:", err);
+    console.error('Failed to copy install command:', err)
   }
-};
+}
 </script>
 
 <template>
@@ -154,47 +147,12 @@ const copyCommand = async () => {
         class="border-border bg-card flex size-8 shrink-0 items-center justify-center rounded-lg border shadow-xs select-none"
         title="UIPKGE Dev Workbench"
       >
-        <svg
-          width="22"
-          height="22"
-          viewBox="0 0 32 32"
-          class="shrink-0"
-          aria-hidden="true"
-        >
-          <rect
-            x="0.5"
-            y="0.5"
-            width="31"
-            height="31"
-            rx="7"
-            class="fill-card stroke-border"
-            stroke-width="1"
-          />
-          <rect
-            x="6"
-            y="6"
-            width="8"
-            height="8"
-            rx="1.6"
-            class="fill-foreground"
-          />
-          <rect
-            x="18"
-            y="6"
-            width="8"
-            height="8"
-            rx="1.6"
-            class="fill-primary"
-          />
+        <svg width="22" height="22" viewBox="0 0 32 32" class="shrink-0" aria-hidden="true">
+          <rect x="0.5" y="0.5" width="31" height="31" rx="7" class="fill-card stroke-border" stroke-width="1" />
+          <rect x="6" y="6" width="8" height="8" rx="1.6" class="fill-foreground" />
+          <rect x="18" y="6" width="8" height="8" rx="1.6" class="fill-primary" />
           <rect x="6" y="18" width="8" height="8" rx="1.6" class="fill-muted" />
-          <rect
-            x="18"
-            y="18"
-            width="8"
-            height="8"
-            rx="1.6"
-            class="fill-foreground"
-          />
+          <rect x="18" y="18" width="8" height="8" rx="1.6" class="fill-foreground" />
         </svg>
       </div>
 
@@ -245,9 +203,7 @@ const copyCommand = async () => {
       >
         <Check v-if="copied" class="size-3 shrink-0 text-emerald-500" />
         <Copy v-else class="size-3 shrink-0" />
-        <span class="max-w-[180px] truncate whitespace-nowrap"
-          >add @uipkge/{{ componentId }}</span
-        >
+        <span class="max-w-[180px] truncate whitespace-nowrap">add @uipkge/{{ componentId }}</span>
       </button>
       <button
         type="button"
@@ -261,9 +217,7 @@ const copyCommand = async () => {
     </div>
 
     <!-- Center Section: Viewport Switcher Toolbar (Visible on lg+) -->
-    <div
-      class="border-border bg-muted/40 hidden shrink-0 items-center rounded-lg border p-0.5 shadow-xs lg:flex"
-    >
+    <div class="border-border bg-muted/40 hidden shrink-0 items-center rounded-lg border p-0.5 shadow-xs lg:flex">
       <button
         type="button"
         class="flex shrink-0 cursor-pointer items-center gap-1 rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap transition"
@@ -343,9 +297,7 @@ const copyCommand = async () => {
     <!-- Right Section: Canvas Controls & Theme -->
     <div class="flex shrink-0 items-center gap-1.5 sm:gap-2">
       <!-- Canvas Background Selector -->
-      <div
-        class="border-border bg-muted/40 hidden shrink-0 items-center rounded-lg border p-0.5 shadow-xs lg:flex"
-      >
+      <div class="border-border bg-muted/40 hidden shrink-0 items-center rounded-lg border p-0.5 shadow-xs lg:flex">
         <button
           type="button"
           class="flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md transition"
@@ -409,11 +361,7 @@ const copyCommand = async () => {
         </button>
 
         <!-- Click outside backdrop -->
-        <div
-          v-if="showThemeMenu"
-          class="fixed inset-0 z-40"
-          @click="showThemeMenu = false"
-        />
+        <div v-if="showThemeMenu" class="fixed inset-0 z-40" @click="showThemeMenu = false" />
 
         <!-- Dropdown Popover -->
         <div
@@ -421,9 +369,7 @@ const copyCommand = async () => {
           class="border-border bg-popover/95 text-popover-foreground animate-in fade-in zoom-in-95 absolute top-11 right-0 z-50 w-80 rounded-[14px] border p-4 shadow-2xl backdrop-blur-md duration-150"
         >
           <!-- Header -->
-          <div
-            class="border-border mb-3.5 flex items-center justify-between border-b pb-3"
-          >
+          <div class="border-border mb-3.5 flex items-center justify-between border-b pb-3">
             <div class="flex items-center gap-2">
               <div
                 class="border-border bg-muted/50 text-foreground flex size-7 items-center justify-center rounded-[8px] border shadow-2xs"
@@ -432,20 +378,14 @@ const copyCommand = async () => {
               </div>
               <div>
                 <div class="flex items-center gap-1.5">
-                  <h4
-                    class="text-foreground text-xs font-semibold tracking-tight"
-                  >
-                    Theme Customizer
-                  </h4>
+                  <h4 class="text-foreground text-xs font-semibold tracking-tight">Theme Customizer</h4>
                   <span
                     class="bg-muted text-muted-foreground rounded-[4px] px-1.5 py-0.5 font-mono text-[10px] font-medium uppercase"
                   >
                     OKLCH
                   </span>
                 </div>
-                <p class="text-muted-foreground text-[11px]">
-                  Tokens & preview settings
-                </p>
+                <p class="text-muted-foreground text-[11px]">Tokens & preview settings</p>
               </div>
             </div>
             <button
@@ -461,12 +401,8 @@ const copyCommand = async () => {
 
           <!-- Appearance / Color Mode -->
           <div class="mb-3.5 space-y-1.5">
-            <label class="text-muted-foreground text-xs font-medium"
-              >Appearance</label
-            >
-            <div
-              class="border-border/60 bg-muted/40 grid grid-cols-2 gap-1 rounded-[8px] border p-1"
-            >
+            <label class="text-muted-foreground text-xs font-medium">Appearance</label>
+            <div class="border-border/60 bg-muted/40 grid grid-cols-2 gap-1 rounded-[8px] border p-1">
               <button
                 type="button"
                 @click="setDark(false)"
@@ -499,12 +435,8 @@ const copyCommand = async () => {
           <!-- Accent Color -->
           <div class="mb-3.5 space-y-1.5">
             <div class="flex items-center justify-between">
-              <label class="text-muted-foreground text-xs font-medium"
-                >Accent Color</label
-              >
-              <span
-                class="text-muted-foreground flex items-center gap-1.5 font-mono text-[11px] capitalize"
-              >
+              <label class="text-muted-foreground text-xs font-medium">Accent Color</label>
+              <span class="text-muted-foreground flex items-center gap-1.5 font-mono text-[11px] capitalize">
                 <span
                   class="size-2 rounded-full border border-black/10 dark:border-white/20"
                   :style="{
@@ -513,14 +445,10 @@ const copyCommand = async () => {
                         ? isDark
                           ? '#fafafa'
                           : '#18181b'
-                        : COLOR_THEMES.find((t) => t.id === activeColorTheme)
-                            ?.swatch || '#18181b',
+                        : COLOR_THEMES.find((t) => t.id === activeColorTheme)?.swatch || '#18181b',
                   }"
                 />
-                {{
-                  COLOR_THEMES.find((t) => t.id === activeColorTheme)?.name ||
-                  "Neutral"
-                }}
+                {{ COLOR_THEMES.find((t) => t.id === activeColorTheme)?.name || 'Neutral' }}
               </span>
             </div>
             <div class="grid grid-cols-3 gap-1.5">
@@ -540,12 +468,7 @@ const copyCommand = async () => {
                 <span
                   class="relative flex size-3.5 shrink-0 items-center justify-center rounded-full border border-black/10 shadow-2xs transition-transform group-hover:scale-110 dark:border-white/20"
                   :style="{
-                    backgroundColor:
-                      color.id === 'default'
-                        ? isDark
-                          ? '#fafafa'
-                          : '#18181b'
-                        : color.swatch,
+                    backgroundColor: color.id === 'default' ? (isDark ? '#fafafa' : '#18181b') : color.swatch,
                   }"
                 >
                   <Check
@@ -570,19 +493,12 @@ const copyCommand = async () => {
           <!-- Border Radius -->
           <div class="space-y-1.5">
             <div class="flex items-center justify-between">
-              <label class="text-muted-foreground text-xs font-medium"
-                >Border Radius</label
-              >
+              <label class="text-muted-foreground text-xs font-medium">Border Radius</label>
               <span class="text-muted-foreground font-mono text-[11px]">
-                {{
-                  RADIUS_PRESETS.find((r) => r.value === activeRadius)?.name ||
-                  activeRadius
-                }}
+                {{ RADIUS_PRESETS.find((r) => r.value === activeRadius)?.name || activeRadius }}
               </span>
             </div>
-            <div
-              class="border-border/60 bg-muted/40 grid grid-cols-4 gap-1 rounded-[8px] border p-1"
-            >
+            <div class="border-border/60 bg-muted/40 grid grid-cols-4 gap-1 rounded-[8px] border p-1">
               <button
                 v-for="rad in RADIUS_PRESETS"
                 :key="rad.id"

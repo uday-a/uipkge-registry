@@ -1,45 +1,45 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue";
-import { computed, ref, watch } from "vue";
-import { cn } from "@/lib/utils";
-import { organizationChartVariants } from "./organization-chart.variants";
-import OrgChartNode from "./OrgChartNode.vue";
-import type { OrgNode } from "./types";
+import type { HTMLAttributes } from 'vue'
+import { computed, ref, watch } from 'vue'
+import { cn } from '@/lib/utils'
+import { organizationChartVariants } from './organization-chart.variants'
+import OrgChartNode from './OrgChartNode.vue'
+import type { OrgNode } from './types'
 
 interface Props {
-  data: OrgNode;
-  direction?: "top-down" | "left-right";
-  defaultExpanded?: boolean;
-  showConnectors?: boolean;
-  zoomable?: boolean;
-  class?: HTMLAttributes["class"];
+  data: OrgNode
+  direction?: 'top-down' | 'left-right'
+  defaultExpanded?: boolean
+  showConnectors?: boolean
+  zoomable?: boolean
+  class?: HTMLAttributes['class']
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  direction: "top-down",
+  direction: 'top-down',
   defaultExpanded: true,
   showConnectors: true,
   zoomable: false,
-});
+})
 
 const emit = defineEmits<{
-  nodeClick: [node: OrgNode];
-  toggle: [node: OrgNode, expanded: boolean];
-}>();
+  nodeClick: [node: OrgNode]
+  toggle: [node: OrgNode, expanded: boolean]
+}>()
 
-const expanded = ref<Set<string>>(new Set());
+const expanded = ref<Set<string>>(new Set())
 
 function collectIds(node: OrgNode, acc: string[] = []): string[] {
-  acc.push(node.id);
-  if (node.children) for (const c of node.children) collectIds(c, acc);
-  return acc;
+  acc.push(node.id)
+  if (node.children) for (const c of node.children) collectIds(c, acc)
+  return acc
 }
 
 function defaultExpand() {
   if (props.defaultExpanded) {
-    expanded.value = new Set(collectIds(props.data));
+    expanded.value = new Set(collectIds(props.data))
   } else {
-    expanded.value = new Set([props.data.id]);
+    expanded.value = new Set([props.data.id])
   }
 }
 
@@ -47,45 +47,45 @@ watch(
   () => [props.data, props.defaultExpanded],
   () => defaultExpand(),
   { immediate: true },
-);
+)
 
 function toggleNode(node: OrgNode) {
-  const next = new Set(expanded.value);
-  if (next.has(node.id)) next.delete(node.id);
-  else next.add(node.id);
-  expanded.value = next;
-  emit("toggle", node, next.has(node.id));
+  const next = new Set(expanded.value)
+  if (next.has(node.id)) next.delete(node.id)
+  else next.add(node.id)
+  expanded.value = next
+  emit('toggle', node, next.has(node.id))
 }
 
 function isExpanded(node: OrgNode): boolean {
-  return expanded.value.has(node.id);
+  return expanded.value.has(node.id)
 }
 
 function expandAll() {
-  expanded.value = new Set(collectIds(props.data));
+  expanded.value = new Set(collectIds(props.data))
 }
 
 function collapseAll() {
-  expanded.value = new Set([props.data.id]);
+  expanded.value = new Set([props.data.id])
 }
 
-const zoom = ref(1);
+const zoom = ref(1)
 function zoomIn() {
-  zoom.value = Math.min(2, zoom.value + 0.1);
+  zoom.value = Math.min(2, zoom.value + 0.1)
 }
 function zoomOut() {
-  zoom.value = Math.max(0.5, zoom.value - 0.1);
+  zoom.value = Math.max(0.5, zoom.value - 0.1)
 }
 function resetZoom() {
-  zoom.value = 1;
+  zoom.value = 1
 }
 
 const containerStyle = computed(() => ({
   transform: `scale(${zoom.value})`,
-  transformOrigin: "top center",
-}));
+  transformOrigin: 'top center',
+}))
 
-defineExpose({ expandAll, collapseAll, zoomIn, zoomOut, resetZoom });
+defineExpose({ expandAll, collapseAll, zoomIn, zoomOut, resetZoom })
 </script>
 
 <template>
@@ -95,10 +95,7 @@ defineExpose({ expandAll, collapseAll, zoomIn, zoomOut, resetZoom });
     :data-direction="direction"
     :class="cn(organizationChartVariants(), props.class)"
   >
-    <div
-      v-if="zoomable"
-      class="border-border flex items-center gap-2 border-b px-3 py-2"
-    >
+    <div v-if="zoomable" class="border-border flex items-center gap-2 border-b px-3 py-2">
       <button
         type="button"
         class="text-muted-foreground hover:text-foreground hover:bg-accent inline-flex size-7 items-center justify-center rounded-md text-sm"
@@ -107,9 +104,7 @@ defineExpose({ expandAll, collapseAll, zoomIn, zoomOut, resetZoom });
       >
         −
       </button>
-      <span class="text-muted-foreground w-12 text-center text-xs tabular-nums"
-        >{{ Math.round(zoom * 100) }}%</span
-      >
+      <span class="text-muted-foreground w-12 text-center text-xs tabular-nums">{{ Math.round(zoom * 100) }}%</span>
       <button
         type="button"
         class="text-muted-foreground hover:text-foreground hover:bg-accent inline-flex size-7 items-center justify-center rounded-md text-sm"

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ProgressRingChart } from "@/components/ui/charts";
+import { ProgressRingChart } from '@/components/ui/charts'
 </script>
 
 <template>
@@ -19,10 +19,6 @@ import { ProgressRingChart } from "@/components/ui/charts";
   </Story>
 
   <Story title="Custom centre" description="Override the centre label.">
-    <ProgressRingChart
-      :rings="[{ value: 92 }]"
-      center-label="A+"
-      height="200"
-    />
+    <ProgressRingChart :rings="[{ value: 92 }]" center-label="A+" height="200" />
   </Story>
 </template>

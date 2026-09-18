@@ -1,1 +1,1 @@
-export { AlertModal, type AlertModalProps } from "./alert-modal";
+export { AlertModal, type AlertModalProps } from './alert-modal'

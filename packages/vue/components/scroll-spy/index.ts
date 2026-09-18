@@ -1,16 +1,16 @@
-import ScrollSpyComp from "./ScrollSpy.vue";
-import ScrollSpyIndicatorComp from "./ScrollSpyIndicator.vue";
-import ScrollSpyItemComp from "./ScrollSpyItem.vue";
-import ScrollSpyLinkComp from "./ScrollSpyLink.vue";
-import ScrollSpyListComp from "./ScrollSpyList.vue";
-import ScrollSpyTitleComp from "./ScrollSpyTitle.vue";
-import ScrollSpyStepperComp from "./ScrollSpyStepper.vue";
+import ScrollSpyComp from './ScrollSpy.vue'
+import ScrollSpyIndicatorComp from './ScrollSpyIndicator.vue'
+import ScrollSpyItemComp from './ScrollSpyItem.vue'
+import ScrollSpyLinkComp from './ScrollSpyLink.vue'
+import ScrollSpyListComp from './ScrollSpyList.vue'
+import ScrollSpyTitleComp from './ScrollSpyTitle.vue'
+import ScrollSpyStepperComp from './ScrollSpyStepper.vue'
 
 export interface ScrollSpyItem {
-  href: string;
-  title: string;
-  depth?: number;
-  children?: ScrollSpyItem[];
+  href: string
+  title: string
+  depth?: number
+  children?: ScrollSpyItem[]
 }
 
 export type {
@@ -21,7 +21,7 @@ export type {
   ScrollSpyRailPosition,
   ScrollSpyLineWidth,
   ScrollSpyColor,
-} from "./context";
+} from './context'
 
 export const ScrollSpy = Object.assign(ScrollSpyComp, {
   Root: ScrollSpyComp,
@@ -31,14 +31,14 @@ export const ScrollSpy = Object.assign(ScrollSpyComp, {
   Item: ScrollSpyItemComp,
   Link: ScrollSpyLinkComp,
   Stepper: ScrollSpyStepperComp,
-});
+})
 
-export const ScrollSpyRoot = ScrollSpyComp;
-export const ScrollSpyTitle = ScrollSpyTitleComp;
-export const ScrollSpyList = ScrollSpyListComp;
-export const ScrollSpyIndicator = ScrollSpyIndicatorComp;
-export const ScrollSpyItem = ScrollSpyItemComp;
-export const ScrollSpyLink = ScrollSpyLinkComp;
-export const ScrollSpyStepper = ScrollSpyStepperComp;
+export const ScrollSpyRoot = ScrollSpyComp
+export const ScrollSpyTitle = ScrollSpyTitleComp
+export const ScrollSpyList = ScrollSpyListComp
+export const ScrollSpyIndicator = ScrollSpyIndicatorComp
+export const ScrollSpyItem = ScrollSpyItemComp
+export const ScrollSpyLink = ScrollSpyLinkComp
+export const ScrollSpyStepper = ScrollSpyStepperComp
 
-export default ScrollSpy;
+export default ScrollSpy

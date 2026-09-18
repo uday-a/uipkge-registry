@@ -1,5 +1,5 @@
-import { useState } from "react";
-import Story from "../../components/story/Story";
+import { useState } from 'react'
+import Story from '../../components/story/Story'
 import {
   ContextMenu,
   ContextMenuCheckboxItem,
@@ -14,19 +14,16 @@ import {
   ContextMenuSubContent,
   ContextMenuSubTrigger,
   ContextMenuTrigger,
-} from "@react-registry/context-menu";
+} from '@react-registry/context-menu'
 
 export default function ContextMenuDemo() {
-  const [showBookmarks, setShowBookmarks] = useState(true);
-  const [showFullUrls, setShowFullUrls] = useState(false);
-  const [person, setPerson] = useState("pedro");
+  const [showBookmarks, setShowBookmarks] = useState(true)
+  const [showFullUrls, setShowFullUrls] = useState(false)
+  const [person, setPerson] = useState('pedro')
 
   return (
     <>
-      <Story
-        title="Default"
-        description="Right-click the target to open a menu with items and a separator."
-      >
+      <Story title="Default" description="Right-click the target to open a menu with items and a separator.">
         <ContextMenu>
           <ContextMenuTrigger className="border-border bg-muted/30 grid h-32 w-72 place-items-center rounded-md border border-dashed text-sm">
             Right-click here
@@ -52,16 +49,10 @@ export default function ContextMenuDemo() {
           <ContextMenuContent className="w-56">
             <ContextMenuLabel>View</ContextMenuLabel>
             <ContextMenuSeparator />
-            <ContextMenuCheckboxItem
-              checked={showBookmarks}
-              onCheckedChange={setShowBookmarks}
-            >
+            <ContextMenuCheckboxItem checked={showBookmarks} onCheckedChange={setShowBookmarks}>
               Show Bookmarks Bar
             </ContextMenuCheckboxItem>
-            <ContextMenuCheckboxItem
-              checked={showFullUrls}
-              onCheckedChange={setShowFullUrls}
-            >
+            <ContextMenuCheckboxItem checked={showFullUrls} onCheckedChange={setShowFullUrls}>
               Show Full URLs
             </ContextMenuCheckboxItem>
           </ContextMenuContent>
@@ -71,10 +62,7 @@ export default function ContextMenuDemo() {
         </p>
       </Story>
 
-      <Story
-        title="Radio group"
-        description="ContextMenuRadioGroup + ContextMenuRadioItem for single-select state."
-      >
+      <Story title="Radio group" description="ContextMenuRadioGroup + ContextMenuRadioItem for single-select state.">
         <ContextMenu>
           <ContextMenuTrigger className="border-border bg-muted/30 grid h-32 w-72 place-items-center rounded-md border border-dashed text-sm">
             Right-click to pick a person
@@ -83,25 +71,16 @@ export default function ContextMenuDemo() {
             <ContextMenuLabel>People</ContextMenuLabel>
             <ContextMenuSeparator />
             <ContextMenuRadioGroup value={person} onValueChange={setPerson}>
-              <ContextMenuRadioItem value="pedro">
-                Pedro Duarte
-              </ContextMenuRadioItem>
-              <ContextMenuRadioItem value="colm">
-                Colm Tuite
-              </ContextMenuRadioItem>
-              <ContextMenuRadioItem value="benoit">
-                Benoît Grélard
-              </ContextMenuRadioItem>
+              <ContextMenuRadioItem value="pedro">Pedro Duarte</ContextMenuRadioItem>
+              <ContextMenuRadioItem value="colm">Colm Tuite</ContextMenuRadioItem>
+              <ContextMenuRadioItem value="benoit">Benoît Grélard</ContextMenuRadioItem>
             </ContextMenuRadioGroup>
           </ContextMenuContent>
         </ContextMenu>
         <p className="text-muted-foreground mt-2 text-xs">Selected: {person}</p>
       </Story>
 
-      <Story
-        title="Submenu"
-        description="Nest a ContextMenuSub inside the content for a hover-revealed submenu."
-      >
+      <Story title="Submenu" description="Nest a ContextMenuSub inside the content for a hover-revealed submenu.">
         <ContextMenu>
           <ContextMenuTrigger className="border-border bg-muted/30 grid h-32 w-72 place-items-center rounded-md border border-dashed text-sm">
             Right-click for share options
@@ -171,5 +150,5 @@ export default function ContextMenuDemo() {
         </ContextMenu>
       </Story>
     </>
-  );
+  )
 }

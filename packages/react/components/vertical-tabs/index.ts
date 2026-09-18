@@ -6,4 +6,4 @@ export {
   VerticalTabsContent,
   type VerticalTabsListProps,
   type VerticalTabsSectionProps,
-} from "./vertical-tabs";
+} from './vertical-tabs'

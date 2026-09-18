@@ -8,20 +8,20 @@
   <CarouselIndicators />
 -->
 <script setup lang="ts">
-import { inject, type HTMLAttributes } from "vue";
-import { cn } from "@/lib/utils";
+import { inject, type HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils'
 
 interface Props {
-  class?: HTMLAttributes["class"];
+  class?: HTMLAttributes['class']
 }
 
-defineProps<Props>();
+defineProps<Props>()
 
 const carousel = inject<{
-  activeIndex: { value: number };
-  scrollSnaps: { value: number[] };
-  scrollTo: (index: number, smooth?: boolean) => void;
-} | null>("carousel", null);
+  activeIndex: { value: number }
+  scrollSnaps: { value: number[] }
+  scrollTo: (index: number, smooth?: boolean) => void
+} | null>('carousel', null)
 </script>
 
 <template>

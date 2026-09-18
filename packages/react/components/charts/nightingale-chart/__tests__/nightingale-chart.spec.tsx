@@ -1,32 +1,24 @@
-import * as React from "react";
-import { describe, expect, it } from "vitest";
-import { render } from "@testing-library/react";
-import { NightingaleChart } from "../index";
+import * as React from 'react'
+import { describe, expect, it } from 'vitest'
+import { render } from '@testing-library/react'
+import { NightingaleChart } from '../index'
 
-describe("NightingaleChart", () => {
-  const sampleProps = { data: [{ name: "A", value: 10 }] };
+describe('NightingaleChart', () => {
+  const sampleProps = { data: [{ name: 'A', value: 10 }] }
 
-  it("renders without crashing", () => {
+  it('renders without crashing', () => {
+    const { container, unmount } = render(<NightingaleChart {...sampleProps} />)
+    expect(container).toBeDefined()
+    expect(container.firstChild).toBeTruthy()
+    unmount()
+  })
+
+  it('renders expected content or unique feature', () => {
     const { container, unmount } = render(
-      <NightingaleChart {...sampleProps} />,
-    );
-    expect(container).toBeDefined();
-    expect(container.firstChild).toBeTruthy();
-    unmount();
-  });
-
-  it("renders expected content or unique feature", () => {
-    const { container, unmount } = render(
-      <NightingaleChart
-        {...sampleProps}
-        className="custom-chart-test"
-        height={380}
-      />,
-    );
-    expect(container).toBeDefined();
-    expect(
-      container.querySelector(".custom-chart-test") || container.firstChild,
-    ).toBeTruthy();
-    unmount();
-  });
-});
+      <NightingaleChart {...sampleProps} className="custom-chart-test" height={380} />,
+    )
+    expect(container).toBeDefined()
+    expect(container.querySelector('.custom-chart-test') || container.firstChild).toBeTruthy()
+    unmount()
+  })
+})

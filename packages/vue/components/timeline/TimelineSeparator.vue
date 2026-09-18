@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { computed, inject } from "vue";
-import type { HTMLAttributes } from "vue";
-import { cn } from "@/lib/utils";
-import { TIMELINE_ITEM_CONTEXT } from "./context";
+import { computed, inject } from 'vue'
+import type { HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils'
+import { TIMELINE_ITEM_CONTEXT } from './context'
 
 const props = defineProps<{
-  class?: HTMLAttributes["class"];
-  hideConnector?: boolean;
-}>();
+  class?: HTMLAttributes['class']
+  hideConnector?: boolean
+}>()
 
-const item = inject(TIMELINE_ITEM_CONTEXT, null);
-const direction = computed(() => item?.direction.value ?? "vertical");
-const isLast = computed(() => item?.isLast.value ?? true);
-const showConnector = computed(() => !props.hideConnector && !isLast.value);
+const item = inject(TIMELINE_ITEM_CONTEXT, null)
+const direction = computed(() => item?.direction.value ?? 'vertical')
+const isLast = computed(() => item?.isLast.value ?? true)
+const showConnector = computed(() => !props.hideConnector && !isLast.value)
 </script>
 
 <template>
@@ -22,9 +22,7 @@ const showConnector = computed(() => !props.hideConnector && !isLast.value);
     :class="
       cn(
         'relative flex shrink-0 items-center',
-        direction === 'vertical'
-          ? 'w-4 flex-col self-stretch'
-          : 'h-4 flex-row items-center self-stretch',
+        direction === 'vertical' ? 'w-4 flex-col self-stretch' : 'h-4 flex-row items-center self-stretch',
         props.class,
       )
     "
@@ -43,14 +41,7 @@ const showConnector = computed(() => !props.hideConnector && !isLast.value);
       v-if="showConnector"
       aria-hidden="true"
       data-slot="timeline-media-connector"
-      :class="
-        cn(
-          'bg-border',
-          direction === 'vertical'
-            ? 'my-1.5 w-0.5 flex-1'
-            : 'mx-1.5 h-0.5 flex-1',
-        )
-      "
+      :class="cn('bg-border', direction === 'vertical' ? 'my-1.5 w-0.5 flex-1' : 'mx-1.5 h-0.5 flex-1')"
     />
   </div>
 </template>

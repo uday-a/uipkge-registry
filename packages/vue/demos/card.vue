@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { ArrowUpRight, Check } from "lucide-vue-next";
+import { ArrowUpRight, Check } from 'lucide-vue-next'
 </script>
 
 <template>
-  <Story
-    title="Simple"
-    description="Header (title + description) plus content."
-  >
+  <Story title="Simple" description="Header (title + description) plus content.">
     <Card class="max-w-md">
       <CardHeader>
         <CardTitle>Simple card</CardTitle>
@@ -14,17 +11,13 @@ import { ArrowUpRight, Check } from "lucide-vue-next";
       </CardHeader>
       <CardContent>
         <p class="text-sm">
-          Cards group related content. They include headers, content, and
-          footers — each as separate slots.
+          Cards group related content. They include headers, content, and footers — each as separate slots.
         </p>
       </CardContent>
     </Card>
   </Story>
 
-  <Story
-    title="With footer actions"
-    description="CardFooter slot for save/cancel patterns."
-  >
+  <Story title="With footer actions" description="CardFooter slot for save/cancel patterns.">
     <Card class="max-w-md">
       <CardHeader>
         <CardTitle>Edit profile</CardTitle>
@@ -40,10 +33,7 @@ import { ArrowUpRight, Check } from "lucide-vue-next";
     </Card>
   </Story>
 
-  <Story
-    title="With header action"
-    description="Secondary action in the top-right corner."
-  >
+  <Story title="With header action" description="Secondary action in the top-right corner.">
     <Card class="max-w-md">
       <CardHeader>
         <div class="flex items-start justify-between">
@@ -51,9 +41,7 @@ import { ArrowUpRight, Check } from "lucide-vue-next";
             <CardTitle>Recent activity</CardTitle>
             <CardDescription>Last 7 days.</CardDescription>
           </div>
-          <Button variant="ghost" size="icon-sm" class="-mt-1 -mr-2"
-            ><ArrowUpRight class="size-4"
-          /></Button>
+          <Button variant="ghost" size="icon-sm" class="-mt-1 -mr-2"><ArrowUpRight class="size-4" /></Button>
         </div>
       </CardHeader>
       <CardContent>
@@ -73,15 +61,9 @@ import { ArrowUpRight, Check } from "lucide-vue-next";
         <CardDescription>$24 / month, billed annually.</CardDescription>
       </CardHeader>
       <CardContent class="space-y-2 text-sm">
-        <p class="flex gap-2">
-          <Check class="size-4 text-emerald-500" /> Unlimited projects
-        </p>
-        <p class="flex gap-2">
-          <Check class="size-4 text-emerald-500" /> Priority support
-        </p>
-        <p class="flex gap-2">
-          <Check class="size-4 text-emerald-500" /> Custom themes
-        </p>
+        <p class="flex gap-2"><Check class="size-4 text-emerald-500" /> Unlimited projects</p>
+        <p class="flex gap-2"><Check class="size-4 text-emerald-500" /> Priority support</p>
+        <p class="flex gap-2"><Check class="size-4 text-emerald-500" /> Custom themes</p>
       </CardContent>
       <CardFooter>
         <Button class="w-full">Choose Pro</Button>

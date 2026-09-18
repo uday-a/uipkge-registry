@@ -1,1 +1,1 @@
-export { MaskedInput, type MaskedInputProps } from "./masked-input";
+export { MaskedInput, type MaskedInputProps } from './masked-input'

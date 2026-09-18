@@ -1,1 +1,1 @@
-export { default as ColorPicker } from "./ColorPicker.vue";
+export { default as ColorPicker } from './ColorPicker.vue'

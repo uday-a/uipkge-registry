@@ -1,1 +1,1 @@
-export { default as AlluvialChart } from "./AlluvialChart.vue";
+export { default as AlluvialChart } from './AlluvialChart.vue'

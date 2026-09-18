@@ -1,1 +1,1 @@
-export { BorderBeam, type BorderBeamProps } from "./BorderBeam";
+export { BorderBeam, type BorderBeamProps } from './BorderBeam'

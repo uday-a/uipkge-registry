@@ -1,14 +1,8 @@
-import { describe, it, expect } from "vitest";
-import { render } from "@testing-library/react";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "../select";
+import { describe, it, expect } from 'vitest'
+import { render } from '@testing-library/react'
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '../select'
 
-describe("Select", () => {
+describe('Select', () => {
   it('renders trigger with data-slot="select-trigger"', () => {
     const { container } = render(
       <Select>
@@ -19,13 +13,11 @@ describe("Select", () => {
           <SelectItem value="a">A</SelectItem>
         </SelectContent>
       </Select>,
-    );
-    expect(
-      container.querySelector('[data-slot="select-trigger"]'),
-    ).toBeTruthy();
-  });
+    )
+    expect(container.querySelector('[data-slot="select-trigger"]')).toBeTruthy()
+  })
 
-  it("renders placeholder text", () => {
+  it('renders placeholder text', () => {
     const { container } = render(
       <Select>
         <SelectTrigger>
@@ -35,11 +27,11 @@ describe("Select", () => {
           <SelectItem value="a">A</SelectItem>
         </SelectContent>
       </Select>,
-    );
-    expect(container.textContent).toContain("Choose...");
-  });
+    )
+    expect(container.textContent).toContain('Choose...')
+  })
 
-  it("applies size data attribute", () => {
+  it('applies size data attribute', () => {
     const { container } = render(
       <Select>
         <SelectTrigger size="lg">
@@ -49,15 +41,11 @@ describe("Select", () => {
           <SelectItem value="a">A</SelectItem>
         </SelectContent>
       </Select>,
-    );
-    expect(
-      container
-        .querySelector('[data-slot="select-trigger"]')
-        ?.getAttribute("data-size"),
-    ).toBe("lg");
-  });
+    )
+    expect(container.querySelector('[data-slot="select-trigger"]')?.getAttribute('data-size')).toBe('lg')
+  })
 
-  it("applies state data attribute", () => {
+  it('applies state data attribute', () => {
     const { container } = render(
       <Select>
         <SelectTrigger state="error">
@@ -67,15 +55,11 @@ describe("Select", () => {
           <SelectItem value="a">A</SelectItem>
         </SelectContent>
       </Select>,
-    );
-    expect(
-      container
-        .querySelector('[data-slot="select-trigger"]')
-        ?.getAttribute("data-state-value"),
-    ).toBe("error");
-  });
+    )
+    expect(container.querySelector('[data-slot="select-trigger"]')?.getAttribute('data-state-value')).toBe('error')
+  })
 
-  it("shows loading state (aria-busy)", () => {
+  it('shows loading state (aria-busy)', () => {
     const { container } = render(
       <Select>
         <SelectTrigger loading>
@@ -85,12 +69,12 @@ describe("Select", () => {
           <SelectItem value="a">A</SelectItem>
         </SelectContent>
       </Select>,
-    );
-    const trigger = container.querySelector('[data-slot="select-trigger"]')!;
-    expect(trigger.getAttribute("aria-busy")).toBe("true");
-  });
+    )
+    const trigger = container.querySelector('[data-slot="select-trigger"]')!
+    expect(trigger.getAttribute('aria-busy')).toBe('true')
+  })
 
-  it("disables trigger when disabled", () => {
+  it('disables trigger when disabled', () => {
     const { container } = render(
       <Select>
         <SelectTrigger disabled>
@@ -100,15 +84,11 @@ describe("Select", () => {
           <SelectItem value="a">A</SelectItem>
         </SelectContent>
       </Select>,
-    );
-    expect(
-      container
-        .querySelector('[data-slot="select-trigger"]')
-        ?.hasAttribute("disabled"),
-    ).toBe(true);
-  });
+    )
+    expect(container.querySelector('[data-slot="select-trigger"]')?.hasAttribute('disabled')).toBe(true)
+  })
 
-  it("disables trigger when loading", () => {
+  it('disables trigger when loading', () => {
     const { container } = render(
       <Select>
         <SelectTrigger loading>
@@ -118,15 +98,11 @@ describe("Select", () => {
           <SelectItem value="a">A</SelectItem>
         </SelectContent>
       </Select>,
-    );
-    expect(
-      container
-        .querySelector('[data-slot="select-trigger"]')
-        ?.hasAttribute("disabled"),
-    ).toBe(true);
-  });
+    )
+    expect(container.querySelector('[data-slot="select-trigger"]')?.hasAttribute('disabled')).toBe(true)
+  })
 
-  it("renders chevron icon (svg) when not loading", () => {
+  it('renders chevron icon (svg) when not loading', () => {
     const { container } = render(
       <Select>
         <SelectTrigger>
@@ -136,13 +112,11 @@ describe("Select", () => {
           <SelectItem value="a">A</SelectItem>
         </SelectContent>
       </Select>,
-    );
-    expect(
-      container.querySelector('[data-slot="select-trigger"] svg'),
-    ).toBeTruthy();
-  });
+    )
+    expect(container.querySelector('[data-slot="select-trigger"] svg')).toBeTruthy()
+  })
 
-  it("renders loader icon (svg) when loading", () => {
+  it('renders loader icon (svg) when loading', () => {
     const { container } = render(
       <Select>
         <SelectTrigger loading>
@@ -152,11 +126,9 @@ describe("Select", () => {
           <SelectItem value="a">A</SelectItem>
         </SelectContent>
       </Select>,
-    );
-    expect(
-      container.querySelector('[data-slot="select-trigger"] svg'),
-    ).toBeTruthy();
-  });
+    )
+    expect(container.querySelector('[data-slot="select-trigger"] svg')).toBeTruthy()
+  })
 
   it('renders SelectValue with data-slot="select-value"', () => {
     const { container } = render(
@@ -168,11 +140,11 @@ describe("Select", () => {
           <SelectItem value="a">A</SelectItem>
         </SelectContent>
       </Select>,
-    );
-    expect(container.querySelector('[data-slot="select-value"]')).toBeTruthy();
-  });
+    )
+    expect(container.querySelector('[data-slot="select-value"]')).toBeTruthy()
+  })
 
-  it("renders a button trigger element", () => {
+  it('renders a button trigger element', () => {
     const { container } = render(
       <Select>
         <SelectTrigger>
@@ -182,15 +154,11 @@ describe("Select", () => {
           <SelectItem value="a">A</SelectItem>
         </SelectContent>
       </Select>,
-    );
-    expect(
-      container
-        .querySelector('[data-slot="select-trigger"]')
-        ?.tagName.toLowerCase(),
-    ).toBe("button");
-  });
+    )
+    expect(container.querySelector('[data-slot="select-trigger"]')?.tagName.toLowerCase()).toBe('button')
+  })
 
-  it("applies sm size data attribute", () => {
+  it('applies sm size data attribute', () => {
     const { container } = render(
       <Select>
         <SelectTrigger size="sm">
@@ -200,15 +168,11 @@ describe("Select", () => {
           <SelectItem value="a">A</SelectItem>
         </SelectContent>
       </Select>,
-    );
-    expect(
-      container
-        .querySelector('[data-slot="select-trigger"]')
-        ?.getAttribute("data-size"),
-    ).toBe("sm");
-  });
+    )
+    expect(container.querySelector('[data-slot="select-trigger"]')?.getAttribute('data-size')).toBe('sm')
+  })
 
-  it("applies success state data attribute", () => {
+  it('applies success state data attribute', () => {
     const { container } = render(
       <Select>
         <SelectTrigger state="success">
@@ -218,11 +182,7 @@ describe("Select", () => {
           <SelectItem value="a">A</SelectItem>
         </SelectContent>
       </Select>,
-    );
-    expect(
-      container
-        .querySelector('[data-slot="select-trigger"]')
-        ?.getAttribute("data-state-value"),
-    ).toBe("success");
-  });
-});
+    )
+    expect(container.querySelector('[data-slot="select-trigger"]')?.getAttribute('data-state-value')).toBe('success')
+  })
+})

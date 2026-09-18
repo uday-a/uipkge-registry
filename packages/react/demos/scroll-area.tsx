@@ -1,28 +1,19 @@
-import Story from "../../components/story/Story";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@react-registry/card";
-import { ScrollArea, ScrollBar } from "@react-registry/scroll-area";
+import Story from '../../components/story/Story'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@react-registry/card'
+import { ScrollArea, ScrollBar } from '@react-registry/scroll-area'
 
-const tags = Array.from({ length: 30 }, (_, i) => `tag-${i + 1}`);
+const tags = Array.from({ length: 30 }, (_, i) => `tag-${i + 1}`)
 const figures = Array.from({ length: 12 }, (_, i) => ({
   id: i + 1,
   title: `Figure ${i + 1}`,
   caption: `Photo by Photographer ${i + 1}`,
-}));
-const grid = Array.from({ length: 80 }, (_, i) => i + 1);
+}))
+const grid = Array.from({ length: 80 }, (_, i) => i + 1)
 
 export default function ScrollAreaDemo() {
   return (
     <>
-      <Story
-        title="Default"
-        description="Fixed-height container with a styled scrollbar for overflowing content."
-      >
+      <Story title="Default" description="Fixed-height container with a styled scrollbar for overflowing content.">
         <ScrollArea className="border-border h-48 max-w-xs rounded-md border p-4">
           <h4 className="mb-3 text-sm font-medium">Tags</h4>
           <div className="space-y-1 font-mono text-sm">
@@ -44,9 +35,7 @@ export default function ScrollAreaDemo() {
                 <div className="bg-muted text-muted-foreground grid size-32 place-items-center rounded-md text-xs">
                   {f.title}
                 </div>
-                <figcaption className="text-muted-foreground pt-2 text-xs">
-                  {f.caption}
-                </figcaption>
+                <figcaption className="text-muted-foreground pt-2 text-xs">{f.caption}</figcaption>
               </figure>
             ))}
           </div>
@@ -61,10 +50,7 @@ export default function ScrollAreaDemo() {
         <ScrollArea className="border-border h-64 max-w-md rounded-md border">
           <div className="grid w-[640px] grid-cols-8 gap-2 p-4 font-mono text-xs">
             {grid.map((n) => (
-              <div
-                key={n}
-                className="bg-muted grid aspect-square place-items-center rounded"
-              >
+              <div key={n} className="bg-muted grid aspect-square place-items-center rounded">
                 {n}
               </div>
             ))}
@@ -90,9 +76,7 @@ export default function ScrollAreaDemo() {
                     <div className="bg-muted mt-0.5 size-2 shrink-0 rounded-full" />
                     <div>
                       <p>Event #{i} — something happened.</p>
-                      <p className="text-muted-foreground text-xs">
-                        {i * 2} minutes ago
-                      </p>
+                      <p className="text-muted-foreground text-xs">{i * 2} minutes ago</p>
                     </div>
                   </li>
                 ))}
@@ -102,5 +86,5 @@ export default function ScrollAreaDemo() {
         </Card>
       </Story>
     </>
-  );
+  )
 }

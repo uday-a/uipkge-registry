@@ -24,7 +24,7 @@ export {
   type LeafletCircleMarkerProps,
   type LeafletGeoJsonProps,
   type LeafletTileLayerProps,
-} from "./leaflet-map";
+} from './leaflet-map'
 export {
   leafletMapVariants,
   LEAFLET_TILES,
@@ -32,4 +32,4 @@ export {
   type LeafletMapVariant,
   type LeafletMapVariants,
   type LeafletTilePreset,
-} from "./leaflet-map.variants";
+} from './leaflet-map.variants'

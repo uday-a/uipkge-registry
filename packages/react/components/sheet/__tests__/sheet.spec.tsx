@@ -1,5 +1,5 @@
-import { describe, it, expect, afterEach } from "vitest";
-import { render, cleanup } from "@testing-library/react";
+import { describe, it, expect, afterEach } from 'vitest'
+import { render, cleanup } from '@testing-library/react'
 import {
   Sheet,
   SheetTrigger,
@@ -9,32 +9,28 @@ import {
   SheetTitle,
   SheetDescription,
   SheetClose,
-} from "../sheet";
+} from '../sheet'
 
-afterEach(cleanup);
+afterEach(cleanup)
 
-describe("Sheet", () => {
+describe('Sheet', () => {
   it('SheetTrigger renders with data-slot="sheet-trigger"', () => {
     const { container } = render(
       <Sheet>
         <SheetTrigger>Open</SheetTrigger>
       </Sheet>,
-    );
-    expect(container.querySelector('[data-slot="sheet-trigger"]')).toBeTruthy();
-  });
+    )
+    expect(container.querySelector('[data-slot="sheet-trigger"]')).toBeTruthy()
+  })
 
-  it("SheetTrigger renders as a button", () => {
+  it('SheetTrigger renders as a button', () => {
     const { container } = render(
       <Sheet>
         <SheetTrigger>Open</SheetTrigger>
       </Sheet>,
-    );
-    expect(
-      container
-        .querySelector('[data-slot="sheet-trigger"]')
-        ?.tagName.toLowerCase(),
-    ).toBe("button");
-  });
+    )
+    expect(container.querySelector('[data-slot="sheet-trigger"]')?.tagName.toLowerCase()).toBe('button')
+  })
 
   it('SheetContent has data-slot="sheet-content" when open', () => {
     render(
@@ -47,13 +43,11 @@ describe("Sheet", () => {
           </SheetHeader>
         </SheetContent>
       </Sheet>,
-    );
-    expect(
-      document.body.querySelector('[data-slot="sheet-content"]'),
-    ).toBeTruthy();
-  });
+    )
+    expect(document.body.querySelector('[data-slot="sheet-content"]')).toBeTruthy()
+  })
 
-  it("SheetContent has data-uipkge", () => {
+  it('SheetContent has data-uipkge', () => {
     render(
       <Sheet defaultOpen>
         <SheetTrigger>Open</SheetTrigger>
@@ -64,13 +58,9 @@ describe("Sheet", () => {
           </SheetHeader>
         </SheetContent>
       </Sheet>,
-    );
-    expect(
-      document.body
-        .querySelector('[data-slot="sheet-content"]')
-        ?.hasAttribute("data-uipkge"),
-    ).toBe(true);
-  });
+    )
+    expect(document.body.querySelector('[data-slot="sheet-content"]')?.hasAttribute('data-uipkge')).toBe(true)
+  })
 
   it('SheetContent has data-state="open" when open', () => {
     render(
@@ -83,15 +73,11 @@ describe("Sheet", () => {
           </SheetHeader>
         </SheetContent>
       </Sheet>,
-    );
-    expect(
-      document.body
-        .querySelector('[data-slot="sheet-content"]')
-        ?.getAttribute("data-state"),
-    ).toBe("open");
-  });
+    )
+    expect(document.body.querySelector('[data-slot="sheet-content"]')?.getAttribute('data-state')).toBe('open')
+  })
 
-  it("SheetContent renders close button", () => {
+  it('SheetContent renders close button', () => {
     render(
       <Sheet defaultOpen>
         <SheetTrigger>Open</SheetTrigger>
@@ -102,12 +88,10 @@ describe("Sheet", () => {
           </SheetHeader>
         </SheetContent>
       </Sheet>,
-    );
+    )
     // SheetContent renders a built-in close button (DialogPrimitive.Close) with an X icon
-    expect(
-      document.body.querySelector('[data-slot="sheet-content"] svg'),
-    ).toBeTruthy();
-  });
+    expect(document.body.querySelector('[data-slot="sheet-content"] svg')).toBeTruthy()
+  })
 
   it('SheetHeader renders with data-slot="sheet-header"', () => {
     render(
@@ -120,11 +104,9 @@ describe("Sheet", () => {
           </SheetHeader>
         </SheetContent>
       </Sheet>,
-    );
-    expect(
-      document.body.querySelector('[data-slot="sheet-header"]'),
-    ).toBeTruthy();
-  });
+    )
+    expect(document.body.querySelector('[data-slot="sheet-header"]')).toBeTruthy()
+  })
 
   it('SheetFooter renders with data-slot="sheet-footer"', () => {
     render(
@@ -134,11 +116,9 @@ describe("Sheet", () => {
           <SheetFooter>Footer</SheetFooter>
         </SheetContent>
       </Sheet>,
-    );
-    expect(
-      document.body.querySelector('[data-slot="sheet-footer"]'),
-    ).toBeTruthy();
-  });
+    )
+    expect(document.body.querySelector('[data-slot="sheet-footer"]')).toBeTruthy()
+  })
 
   it('SheetTitle renders with data-slot="sheet-title"', () => {
     render(
@@ -151,11 +131,9 @@ describe("Sheet", () => {
           </SheetHeader>
         </SheetContent>
       </Sheet>,
-    );
-    expect(
-      document.body.querySelector('[data-slot="sheet-title"]'),
-    ).toBeTruthy();
-  });
+    )
+    expect(document.body.querySelector('[data-slot="sheet-title"]')).toBeTruthy()
+  })
 
   it('SheetDescription renders with data-slot="sheet-description"', () => {
     render(
@@ -168,11 +146,9 @@ describe("Sheet", () => {
           </SheetHeader>
         </SheetContent>
       </Sheet>,
-    );
-    expect(
-      document.body.querySelector('[data-slot="sheet-description"]'),
-    ).toBeTruthy();
-  });
+    )
+    expect(document.body.querySelector('[data-slot="sheet-description"]')).toBeTruthy()
+  })
 
   it('SheetClose renders with data-slot="sheet-close"', () => {
     render(
@@ -182,12 +158,12 @@ describe("Sheet", () => {
           <SheetClose>Close</SheetClose>
         </SheetContent>
       </Sheet>,
-    );
-    const closes = document.body.querySelectorAll('[data-slot="sheet-close"]');
-    expect(closes.length).toBeGreaterThan(0);
-  });
+    )
+    const closes = document.body.querySelectorAll('[data-slot="sheet-close"]')
+    expect(closes.length).toBeGreaterThan(0)
+  })
 
-  it("SheetContent renders title text when open", () => {
+  it('SheetContent renders title text when open', () => {
     render(
       <Sheet defaultOpen>
         <SheetTrigger>Open</SheetTrigger>
@@ -198,7 +174,7 @@ describe("Sheet", () => {
           </SheetHeader>
         </SheetContent>
       </Sheet>,
-    );
-    expect(document.body.textContent).toContain("My Sheet Title");
-  });
-});
+    )
+    expect(document.body.textContent).toContain('My Sheet Title')
+  })
+})

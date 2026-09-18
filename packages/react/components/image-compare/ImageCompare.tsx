@@ -1,38 +1,33 @@
-"use client";
+'use client'
 
-import * as React from "react";
-import { MoveHorizontal, MoveVertical } from "lucide-react";
-import { cn } from "@/lib/utils";
-import {
-  imageCompareVariants,
-  type ImageCompareVariants,
-} from "./image-compare.variants";
+import * as React from 'react'
+import { MoveHorizontal, MoveVertical } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { imageCompareVariants, type ImageCompareVariants } from './image-compare.variants'
 
 export interface ImageCompareProps
-  extends
-    Omit<React.HTMLAttributes<HTMLDivElement>, "onChange">,
-    ImageCompareVariants {
-  beforeSrc: string;
-  afterSrc: string;
-  beforeAlt?: string;
-  afterAlt?: string;
-  beforeLabel?: string;
-  afterLabel?: string;
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'>, ImageCompareVariants {
+  beforeSrc: string
+  afterSrc: string
+  beforeAlt?: string
+  afterAlt?: string
+  beforeLabel?: string
+  afterLabel?: string
   /** Controlled slider position (0–100). */
-  value?: number;
+  value?: number
   /** Uncontrolled initial position (0–100). */
-  defaultValue?: number;
+  defaultValue?: number
   /** Fired with the new position (0–100) on drag / keyboard move. */
-  onValueChange?: (value: number) => void;
-  disabled?: boolean;
-  showLabels?: boolean;
-  showHandle?: boolean;
+  onValueChange?: (value: number) => void
+  disabled?: boolean
+  showLabels?: boolean
+  showHandle?: boolean
   /** Custom handle content — replaces the default arrow icon. */
-  handle?: React.ReactNode;
+  handle?: React.ReactNode
 }
 
 function clamp(v: number): number {
-  return Math.min(100, Math.max(0, v));
+  return Math.min(100, Math.max(0, v))
 }
 
 const ImageCompare = React.forwardRef<HTMLDivElement, ImageCompareProps>(
@@ -40,14 +35,14 @@ const ImageCompare = React.forwardRef<HTMLDivElement, ImageCompareProps>(
     {
       beforeSrc,
       afterSrc,
-      beforeAlt = "Before",
-      afterAlt = "After",
-      beforeLabel = "Before",
-      afterLabel = "After",
+      beforeAlt = 'Before',
+      afterAlt = 'After',
+      beforeLabel = 'Before',
+      afterLabel = 'After',
       value: controlledValue,
       defaultValue = 50,
       onValueChange,
-      orientation = "horizontal",
+      orientation = 'horizontal',
       disabled = false,
       showLabels = true,
       showHandle = true,
@@ -57,63 +52,62 @@ const ImageCompare = React.forwardRef<HTMLDivElement, ImageCompareProps>(
     },
     ref,
   ) => {
-    const isControlled = controlledValue !== undefined;
-    const [internal, setInternal] = React.useState(defaultValue);
-    const position = isControlled ? controlledValue! : internal;
+    const isControlled = controlledValue !== undefined
+    const [internal, setInternal] = React.useState(defaultValue)
+    const position = isControlled ? controlledValue! : internal
 
-    const containerRef = React.useRef<HTMLDivElement | null>(null);
-    const draggingRef = React.useRef(false);
+    const containerRef = React.useRef<HTMLDivElement | null>(null)
+    const draggingRef = React.useRef(false)
 
     const setRefs = React.useCallback(
       (node: HTMLDivElement | null) => {
-        containerRef.current = node;
-        if (typeof ref === "function") ref(node);
-        else if (ref)
-          (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+        containerRef.current = node
+        if (typeof ref === 'function') ref(node)
+        else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node
       },
       [ref],
-    );
+    )
 
     function setPosition(next: number) {
-      const clamped = clamp(next);
-      if (!isControlled) setInternal(clamped);
-      onValueChange?.(clamped);
+      const clamped = clamp(next)
+      if (!isControlled) setInternal(clamped)
+      onValueChange?.(clamped)
     }
 
     function updateFromPointer(clientX: number, clientY: number) {
-      const el = containerRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      if (orientation === "horizontal") {
-        setPosition(((clientX - rect.left) / rect.width) * 100);
+      const el = containerRef.current
+      if (!el) return
+      const rect = el.getBoundingClientRect()
+      if (orientation === 'horizontal') {
+        setPosition(((clientX - rect.left) / rect.width) * 100)
       } else {
-        setPosition(((clientY - rect.top) / rect.height) * 100);
+        setPosition(((clientY - rect.top) / rect.height) * 100)
       }
     }
 
     function onPointerDown(e: React.PointerEvent) {
-      if (disabled) return;
-      draggingRef.current = true;
-      const el = e.currentTarget as HTMLElement;
+      if (disabled) return
+      draggingRef.current = true
+      const el = e.currentTarget as HTMLElement
       try {
-        el.setPointerCapture(e.pointerId);
+        el.setPointerCapture(e.pointerId)
       } catch {
         // pointer capture can fail on synthetic / non-active pointers
       }
-      updateFromPointer(e.clientX, e.clientY);
+      updateFromPointer(e.clientX, e.clientY)
     }
 
     function onPointerMove(e: React.PointerEvent) {
-      if (!draggingRef.current || disabled) return;
-      updateFromPointer(e.clientX, e.clientY);
+      if (!draggingRef.current || disabled) return
+      updateFromPointer(e.clientX, e.clientY)
     }
 
     function onPointerUp(e: React.PointerEvent) {
-      if (!draggingRef.current) return;
-      draggingRef.current = false;
-      const el = e.currentTarget as HTMLElement;
+      if (!draggingRef.current) return
+      draggingRef.current = false
+      const el = e.currentTarget as HTMLElement
       try {
-        el.releasePointerCapture(e.pointerId);
+        el.releasePointerCapture(e.pointerId)
       } catch {
         // pointer already released
       }
@@ -121,38 +115,35 @@ const ImageCompare = React.forwardRef<HTMLDivElement, ImageCompareProps>(
 
     // Keyboard support: arrow keys move the slider by 1% (Shift = 10%)
     function onKeyDown(e: React.KeyboardEvent) {
-      if (disabled) return;
-      const isH = orientation === "horizontal";
-      const step = e.shiftKey ? 10 : 1;
-      let next = position;
+      if (disabled) return
+      const isH = orientation === 'horizontal'
+      const step = e.shiftKey ? 10 : 1
+      let next = position
       if (isH) {
-        if (e.key === "ArrowLeft") next -= step;
-        else if (e.key === "ArrowRight") next += step;
-        else return;
+        if (e.key === 'ArrowLeft') next -= step
+        else if (e.key === 'ArrowRight') next += step
+        else return
       } else {
-        if (e.key === "ArrowUp") next -= step;
-        else if (e.key === "ArrowDown") next += step;
-        else return;
+        if (e.key === 'ArrowUp') next -= step
+        else if (e.key === 'ArrowDown') next += step
+        else return
       }
-      e.preventDefault();
-      setPosition(next);
+      e.preventDefault()
+      setPosition(next)
     }
 
     // "After" image is clipped to show only the right portion.
     // Dragging right (higher %) reveals more of "before" on the left.
-    const pct = position;
+    const pct = position
     const clipStyle =
-      orientation === "horizontal"
-        ? { clipPath: `inset(0 0 0 ${pct}%)` }
-        : { clipPath: `inset(${pct}% 0 0 0)` };
-    const dividerStyle =
-      orientation === "horizontal" ? { left: `${pct}%` } : { top: `${pct}%` };
+      orientation === 'horizontal' ? { clipPath: `inset(0 0 0 ${pct}%)` } : { clipPath: `inset(${pct}% 0 0 0)` }
+    const dividerStyle = orientation === 'horizontal' ? { left: `${pct}%` } : { top: `${pct}%` }
 
     React.useEffect(() => {
       return () => {
-        draggingRef.current = false;
-      };
-    }, []);
+        draggingRef.current = false
+      }
+    }, [])
 
     return (
       <div
@@ -160,9 +151,9 @@ const ImageCompare = React.forwardRef<HTMLDivElement, ImageCompareProps>(
         data-uipkge=""
         data-slot="image-compare"
         data-orientation={orientation}
-        data-disabled={disabled ? "" : undefined}
+        data-disabled={disabled ? '' : undefined}
         className={cn(imageCompareVariants({ orientation }), className)}
-        style={{ touchAction: "none" }}
+        style={{ touchAction: 'none' }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
@@ -201,10 +192,8 @@ const ImageCompare = React.forwardRef<HTMLDivElement, ImageCompareProps>(
         {!disabled && (
           <div
             className={cn(
-              "bg-border absolute z-10",
-              orientation === "horizontal"
-                ? "top-0 h-full w-0.5"
-                : "left-0 h-0.5 w-full",
+              'bg-border absolute z-10',
+              orientation === 'horizontal' ? 'top-0 h-full w-0.5' : 'left-0 h-0.5 w-full',
             )}
             style={dividerStyle}
           >
@@ -216,19 +205,17 @@ const ImageCompare = React.forwardRef<HTMLDivElement, ImageCompareProps>(
                 aria-valuemin={0}
                 aria-valuemax={100}
                 aria-label={`Image comparison slider, ${Math.round(position)} percent`}
-                aria-orientation={
-                  orientation === "vertical" ? "vertical" : "horizontal"
-                }
+                aria-orientation={orientation === 'vertical' ? 'vertical' : 'horizontal'}
                 tabIndex={0}
                 className={cn(
-                  "bg-background border-border focus-visible:ring-ring absolute flex size-9 cursor-ew-resize items-center justify-center rounded-full border shadow-md transition-transform hover:scale-110 focus-visible:ring-2 focus-visible:outline-none",
-                  "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
-                  orientation === "vertical" && "cursor-ns-resize",
+                  'bg-background border-border focus-visible:ring-ring absolute flex size-9 cursor-ew-resize items-center justify-center rounded-full border shadow-md transition-transform hover:scale-110 focus-visible:ring-2 focus-visible:outline-none',
+                  'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
+                  orientation === 'vertical' && 'cursor-ns-resize',
                 )}
                 onKeyDown={onKeyDown}
                 onPointerDown={(e) => {
-                  e.stopPropagation();
-                  onPointerDown(e);
+                  e.stopPropagation()
+                  onPointerDown(e)
                 }}
                 onPointerMove={onPointerMove}
                 onPointerUp={onPointerUp}
@@ -236,7 +223,7 @@ const ImageCompare = React.forwardRef<HTMLDivElement, ImageCompareProps>(
               >
                 {handle !== undefined ? (
                   handle
-                ) : orientation === "horizontal" ? (
+                ) : orientation === 'horizontal' ? (
                   <MoveHorizontal className="text-foreground size-4" />
                 ) : (
                   <MoveVertical className="text-foreground size-4" />
@@ -248,9 +235,9 @@ const ImageCompare = React.forwardRef<HTMLDivElement, ImageCompareProps>(
 
         {disabled && <div className="bg-background/40 absolute inset-0" />}
       </div>
-    );
+    )
   },
-);
-ImageCompare.displayName = "ImageCompare";
+)
+ImageCompare.displayName = 'ImageCompare'
 
-export { ImageCompare };
+export { ImageCompare }

@@ -1,5 +1,5 @@
-import type { VariantProps } from "class-variance-authority";
-import { cva } from "class-variance-authority";
+import type { VariantProps } from 'class-variance-authority'
+import { cva } from 'class-variance-authority'
 
 /**
  * Variant definitions live in their own file (rather than inline in the
@@ -8,34 +8,32 @@ import { cva } from "class-variance-authority";
  * render before the module graph fully resolves. Sibling pattern to
  * `card/card.variants.ts`.
  */
-export const progressLinearVariants = cva("relative overflow-hidden w-full", {
+export const progressLinearVariants = cva('relative overflow-hidden w-full', {
   variants: {
     rounded: {
-      none: "rounded-none",
-      sm: "rounded-sm",
-      default: "rounded-full",
-      md: "rounded-md",
-      lg: "rounded-lg",
-      xl: "rounded-xl",
-      full: "rounded-full",
+      none: 'rounded-none',
+      sm: 'rounded-sm',
+      default: 'rounded-full',
+      md: 'rounded-md',
+      lg: 'rounded-lg',
+      xl: 'rounded-xl',
+      full: 'rounded-full',
     },
     color: {
-      default: "bg-primary",
-      primary: "bg-primary",
-      secondary: "bg-secondary",
-      destructive: "bg-destructive",
-      success: "bg-success",
-      warning: "bg-warning",
-      info: "bg-info",
-      error: "bg-destructive",
+      default: 'bg-primary',
+      primary: 'bg-primary',
+      secondary: 'bg-secondary',
+      destructive: 'bg-destructive',
+      success: 'bg-success',
+      warning: 'bg-warning',
+      info: 'bg-info',
+      error: 'bg-destructive',
     },
   },
   defaultVariants: {
-    rounded: "default",
-    color: "default",
+    rounded: 'default',
+    color: 'default',
   },
-});
+})
 
-export type ProgressLinearVariants = VariantProps<
-  typeof progressLinearVariants
->;
+export type ProgressLinearVariants = VariantProps<typeof progressLinearVariants>

@@ -1,58 +1,42 @@
-"use client";
+'use client'
 
-import * as React from "react";
-import { flushSync } from "react-dom";
-import { useTheme } from "next-themes";
-import {
-  ChevronDown,
-  Monitor,
-  Moon,
-  Palette,
-  Sparkles,
-  Sun,
-  type LucideIcon,
-} from "lucide-react";
-import { SectionCard } from "@/components/ui/section-card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import * as React from 'react'
+import { flushSync } from 'react-dom'
+import { useTheme } from 'next-themes'
+import { ChevronDown, Monitor, Moon, Palette, Sparkles, Sun, type LucideIcon } from 'lucide-react'
+import { SectionCard } from '@/components/ui/section-card'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 
-type Theme = "light" | "dark" | "system" | "black";
-type Variant =
-  "cards" | "icons" | "icon-only" | "dropdown" | "pill" | "pill-4" | "switch";
+type Theme = 'light' | 'dark' | 'system' | 'black'
+type Variant = 'cards' | 'icons' | 'icon-only' | 'dropdown' | 'pill' | 'pill-4' | 'switch'
 
 const ICONS: Record<Theme, LucideIcon> = {
   light: Sun,
   dark: Moon,
   system: Monitor,
   black: Sparkles,
-};
+}
 
 const LABELS: Record<Theme, string> = {
-  light: "Light",
-  dark: "Dark",
-  system: "System",
-  black: "Black",
-};
+  light: 'Light',
+  dark: 'Dark',
+  system: 'System',
+  black: 'Black',
+}
 
 const VARIANT_OPTIONS: Record<Variant, Theme[]> = {
-  cards: ["light", "dark", "system"],
-  icons: ["light", "dark", "system"],
-  "icon-only": ["light", "dark"],
-  dropdown: ["light", "dark", "system"],
-  pill: ["light", "dark", "system"],
-  "pill-4": ["system", "light", "dark", "black"],
-  switch: ["light", "dark"],
-};
+  cards: ['light', 'dark', 'system'],
+  icons: ['light', 'dark', 'system'],
+  'icon-only': ['light', 'dark'],
+  dropdown: ['light', 'dark', 'system'],
+  pill: ['light', 'dark', 'system'],
+  'pill-4': ['system', 'light', 'dark', 'black'],
+  switch: ['light', 'dark'],
+}
 
 type ViewTransitionDocument = Document & {
-  startViewTransition?: (callback: () => unknown) => {
-    finished: Promise<void>;
-  };
-};
+  startViewTransition?: (callback: () => unknown) => { finished: Promise<void> }
+}
 
 /**
  * Swap the theme inside a View Transition so the new theme wipes in as a
@@ -64,116 +48,90 @@ type ViewTransitionDocument = Document & {
  * startViewTransition, or the user prefers reduced motion. The swap runs in
  * flushSync because the API captures the DOM as soon as the callback returns.
  */
-let revealing = false;
+let revealing = false
 
-async function withThemeReveal(
-  enabled: boolean,
-  event: React.MouseEvent | undefined,
-  swap: () => void,
-): Promise<void> {
-  const startViewTransition = (
-    document as ViewTransitionDocument
-  ).startViewTransition?.bind(document);
-  const reduceMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
-  ).matches;
+async function withThemeReveal(enabled: boolean, event: React.MouseEvent | undefined, swap: () => void): Promise<void> {
+  const startViewTransition = (document as ViewTransitionDocument).startViewTransition?.bind(document)
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   if (!enabled || !startViewTransition || reduceMotion) {
-    swap();
-    return;
+    swap()
+    return
   }
   // The dropdown variant fires both onSelect and onClick; without this a
   // second startViewTransition would abort the first mid-wipe.
-  if (revealing) return;
-  revealing = true;
+  if (revealing) return
+  revealing = true
 
-  const root = document.documentElement;
-  const x = event?.clientX ?? window.innerWidth / 2;
-  const y = event?.clientY ?? window.innerHeight / 2;
+  const root = document.documentElement
+  const x = event?.clientX ?? window.innerWidth / 2
+  const y = event?.clientY ?? window.innerHeight / 2
   // Radius that still covers the farthest corner from the click.
-  const radius = Math.hypot(
-    Math.max(x, window.innerWidth - x),
-    Math.max(y, window.innerHeight - y),
-  );
-  root.style.setProperty("--uipkge-theme-x", `${x}px`);
-  root.style.setProperty("--uipkge-theme-y", `${y}px`);
-  root.style.setProperty("--uipkge-theme-r", `${radius}px`);
-  root.setAttribute("data-uipkge-theme-reveal", "");
+  const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y))
+  root.style.setProperty('--uipkge-theme-x', `${x}px`)
+  root.style.setProperty('--uipkge-theme-y', `${y}px`)
+  root.style.setProperty('--uipkge-theme-r', `${radius}px`)
+  root.setAttribute('data-uipkge-theme-reveal', '')
 
   try {
-    await startViewTransition(() => flushSync(swap)).finished;
+    await startViewTransition(() => flushSync(swap)).finished
   } finally {
-    root.removeAttribute("data-uipkge-theme-reveal");
-    revealing = false;
+    root.removeAttribute('data-uipkge-theme-reveal')
+    revealing = false
   }
 }
 
 export interface ThemeSwitchProps {
   /** Controlled value. When omitted, falls back to next-themes' `theme`. */
-  value?: Theme;
-  onValueChange?: (theme: Theme) => void;
-  variant?: Variant;
-  title?: string;
-  description?: string;
+  value?: Theme
+  onValueChange?: (theme: Theme) => void
+  variant?: Variant
+  title?: string
+  description?: string
   /** Wipe the new theme in from the clicked control. Ignored without View Transition support or with reduced motion. */
-  viewTransition?: boolean;
-  className?: string;
+  viewTransition?: boolean
+  className?: string
 }
 
 const ThemeSwitch = React.forwardRef<HTMLDivElement, ThemeSwitchProps>(
-  (
-    {
-      value,
-      onValueChange,
-      variant = "cards",
-      title,
-      description,
-      viewTransition = true,
-      className,
-    },
-    ref,
-  ) => {
-    const { theme, setTheme } = useTheme();
-    const modelValue = (value ?? (theme as Theme) ?? "system") as Theme;
+  ({ value, onValueChange, variant = 'cards', title, description, viewTransition = true, className }, ref) => {
+    const { theme, setTheme } = useTheme()
+    const modelValue = (value ?? (theme as Theme) ?? 'system') as Theme
 
-    const options = VARIANT_OPTIONS[variant];
+    const options = VARIANT_OPTIONS[variant]
     const activeIndex = React.useMemo(() => {
-      const i = options.indexOf(modelValue);
-      return i === -1 ? 0 : i;
-    }, [options, modelValue]);
+      const i = options.indexOf(modelValue)
+      return i === -1 ? 0 : i
+    }, [options, modelValue])
 
     const indicatorStyle: React.CSSProperties = {
       width: `calc((100% - 4px) / ${options.length})`,
       transform: `translateX(calc(${activeIndex} * 100%))`,
-    };
+    }
 
     function set(t: Theme, event?: React.MouseEvent) {
       void withThemeReveal(viewTransition, event, () => {
-        if (onValueChange) onValueChange(t);
-        else setTheme(t);
-      });
+        if (onValueChange) onValueChange(t)
+        else setTheme(t)
+      })
     }
     function cycle(event?: React.MouseEvent) {
-      const next = options[(activeIndex + 1) % options.length];
-      if (next) set(next, event);
+      const next = options[(activeIndex + 1) % options.length]
+      if (next) set(next, event)
     }
 
     // Cards: full SectionCard with 3-button grid (default)
-    if (variant === "cards") {
+    if (variant === 'cards') {
       return (
         <SectionCard
           ref={ref}
-          title={title ?? "Appearance"}
-          description={description ?? "Choose your interface theme."}
+          title={title ?? 'Appearance'}
+          description={description ?? 'Choose your interface theme.'}
           className={className}
           headerAction={<Palette className="text-muted-foreground size-5" />}
         >
-          <div
-            className="grid grid-cols-3 gap-2"
-            role="radiogroup"
-            aria-label={title ?? "Theme"}
-          >
+          <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-label={title ?? 'Theme'}>
             {options.map((t) => {
-              const Icon = ICONS[t];
+              const Icon = ICONS[t]
               return (
                 <button
                   type="button"
@@ -181,42 +139,36 @@ const ThemeSwitch = React.forwardRef<HTMLDivElement, ThemeSwitchProps>(
                   role="radio"
                   aria-checked={modelValue === t}
                   className={[
-                    "focus-visible:ring-ring rounded-md border p-3 text-left transition focus:outline-none focus-visible:ring-2 focus-visible:outline-none",
+                    'focus-visible:ring-ring rounded-md border p-3 text-left transition focus:outline-none focus-visible:ring-2 focus-visible:outline-none',
                     modelValue === t
-                      ? "border-primary ring-primary bg-primary/5 ring-1"
-                      : "border-border hover:bg-muted/50",
-                  ].join(" ")}
+                      ? 'border-primary ring-primary bg-primary/5 ring-1'
+                      : 'border-border hover:bg-muted/50',
+                  ].join(' ')}
                   onClick={(e) => set(t, e)}
                 >
-                  <Icon
-                    className="text-muted-foreground mb-2 size-4"
-                    aria-hidden="true"
-                  />
+                  <Icon className="text-muted-foreground mb-2 size-4" aria-hidden="true" />
                   <p className="text-xs font-medium">{LABELS[t]}</p>
                 </button>
-              );
+              )
             })}
           </div>
         </SectionCard>
-      );
+      )
     }
 
     // Icons: compact 3-icon segmented row, no labels
-    if (variant === "icons") {
+    if (variant === 'icons') {
       return (
         <div
           ref={ref}
           role="radiogroup"
-          aria-label={title ?? "Theme"}
-          className={[
-            "border-border bg-card inline-flex items-center gap-0.5 rounded-md border p-0.5",
-            className,
-          ]
+          aria-label={title ?? 'Theme'}
+          className={['border-border bg-card inline-flex items-center gap-0.5 rounded-md border p-0.5', className]
             .filter(Boolean)
-            .join(" ")}
+            .join(' ')}
         >
           {options.map((t) => {
-            const Icon = ICONS[t];
+            const Icon = ICONS[t]
             return (
               <button
                 type="button"
@@ -225,56 +177,56 @@ const ThemeSwitch = React.forwardRef<HTMLDivElement, ThemeSwitchProps>(
                 aria-checked={modelValue === t}
                 aria-label={LABELS[t]}
                 className={[
-                  "focus-visible:ring-ring grid size-7 place-items-center rounded transition-colors focus-visible:ring-2 focus-visible:outline-none",
+                  'focus-visible:ring-ring grid size-7 place-items-center rounded transition-colors focus-visible:ring-2 focus-visible:outline-none',
                   modelValue === t
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground",
-                ].join(" ")}
+                    ? 'bg-primary text-primary-foreground'
+                    : 'text-muted-foreground hover:bg-muted hover:text-foreground',
+                ].join(' ')}
                 onClick={(e) => set(t, e)}
               >
                 <Icon className="size-4" aria-hidden="true" />
               </button>
-            );
+            )
           })}
         </div>
-      );
+      )
     }
 
     // Icon-only: header-grade icon button.
-    if (variant === "icon-only") {
-      const Icon = ICONS[modelValue];
+    if (variant === 'icon-only') {
+      const Icon = ICONS[modelValue]
       return (
         <button
           type="button"
           ref={ref as React.Ref<HTMLButtonElement>}
           aria-label={LABELS[modelValue]}
           className={[
-            "text-muted-foreground hover:text-foreground hover:bg-accent focus-visible:ring-ring inline-flex size-8 items-center justify-center rounded-lg transition-colors focus-visible:ring-2 focus-visible:outline-none",
+            'text-muted-foreground hover:text-foreground hover:bg-accent focus-visible:ring-ring inline-flex size-8 items-center justify-center rounded-lg transition-colors focus-visible:ring-2 focus-visible:outline-none',
             className,
           ]
             .filter(Boolean)
-            .join(" ")}
+            .join(' ')}
           onClick={cycle}
         >
           <Icon className="size-4" aria-hidden="true" />
         </button>
-      );
+      )
     }
 
     // Dropdown: trigger button → menu of states
-    if (variant === "dropdown") {
-      const TriggerIcon = ICONS[modelValue];
+    if (variant === 'dropdown') {
+      const TriggerIcon = ICONS[modelValue]
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
               type="button"
               className={[
-                "border-border bg-card hover:bg-muted focus-visible:ring-ring inline-flex h-9 items-center gap-2 rounded-md border px-3 text-sm transition focus-visible:ring-2 focus-visible:outline-none",
+                'border-border bg-card hover:bg-muted focus-visible:ring-ring inline-flex h-9 items-center gap-2 rounded-md border px-3 text-sm transition focus-visible:ring-2 focus-visible:outline-none',
                 className,
               ]
                 .filter(Boolean)
-                .join(" ")}
+                .join(' ')}
             >
               <TriggerIcon className="size-4" aria-hidden="true" />
               <span>{LABELS[modelValue]}</span>
@@ -283,36 +235,29 @@ const ThemeSwitch = React.forwardRef<HTMLDivElement, ThemeSwitchProps>(
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="min-w-[140px]">
             {options.map((t) => {
-              const Icon = ICONS[t];
+              const Icon = ICONS[t]
               return (
-                <DropdownMenuItem
-                  key={t}
-                  onSelect={() => set(t)}
-                  onClick={(e) => set(t, e)}
-                >
+                <DropdownMenuItem key={t} onSelect={() => set(t)} onClick={(e) => set(t, e)}>
                   <Icon className="mr-2 size-4" aria-hidden="true" />
                   <span>{LABELS[t]}</span>
                 </DropdownMenuItem>
-              );
+              )
             })}
           </DropdownMenuContent>
         </DropdownMenu>
-      );
+      )
     }
 
     // Pill / Pill-4: equal segments with sliding indicator
-    if (variant === "pill" || variant === "pill-4") {
+    if (variant === 'pill' || variant === 'pill-4') {
       return (
         <div
           ref={ref}
           role="radiogroup"
-          aria-label={title ?? "Theme"}
-          className={[
-            "border-border bg-card relative inline-flex w-full max-w-md rounded-full border p-0.5",
-            className,
-          ]
+          aria-label={title ?? 'Theme'}
+          className={['border-border bg-card relative inline-flex w-full max-w-md rounded-full border p-0.5', className]
             .filter(Boolean)
-            .join(" ")}
+            .join(' ')}
         >
           <span
             aria-hidden
@@ -320,7 +265,7 @@ const ThemeSwitch = React.forwardRef<HTMLDivElement, ThemeSwitchProps>(
             style={indicatorStyle}
           />
           {options.map((t) => {
-            const Icon = ICONS[t];
+            const Icon = ICONS[t]
             return (
               <button
                 type="button"
@@ -329,20 +274,18 @@ const ThemeSwitch = React.forwardRef<HTMLDivElement, ThemeSwitchProps>(
                 aria-checked={modelValue === t}
                 aria-label={LABELS[t]}
                 className={[
-                  "focus-visible:ring-ring relative z-[1] inline-flex h-7 flex-1 items-center justify-center gap-1.5 rounded-full px-3 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none",
-                  modelValue === t
-                    ? "text-primary-foreground"
-                    : "text-muted-foreground hover:text-foreground",
-                ].join(" ")}
+                  'focus-visible:ring-ring relative z-[1] inline-flex h-7 flex-1 items-center justify-center gap-1.5 rounded-full px-3 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none',
+                  modelValue === t ? 'text-primary-foreground' : 'text-muted-foreground hover:text-foreground',
+                ].join(' ')}
                 onClick={(e) => set(t, e)}
               >
                 <Icon className="size-3.5" aria-hidden="true" />
                 <span>{LABELS[t]}</span>
               </button>
-            );
+            )
           })}
         </div>
-      );
+      )
     }
 
     // Switch: iOS-style 2-state toggle with thumb that slides
@@ -351,42 +294,40 @@ const ThemeSwitch = React.forwardRef<HTMLDivElement, ThemeSwitchProps>(
         type="button"
         ref={ref as React.Ref<HTMLButtonElement>}
         role="switch"
-        aria-checked={modelValue === "dark"}
+        aria-checked={modelValue === 'dark'}
         aria-label={LABELS[modelValue]}
         className={[
-          "border-border focus-visible:ring-ring relative inline-flex h-8 w-16 items-center rounded-full border transition-colors focus-visible:ring-2 focus-visible:outline-none",
-          modelValue === "dark" ? "bg-primary" : "bg-muted",
+          'border-border focus-visible:ring-ring relative inline-flex h-8 w-16 items-center rounded-full border transition-colors focus-visible:ring-2 focus-visible:outline-none',
+          modelValue === 'dark' ? 'bg-primary' : 'bg-muted',
           className,
         ]
           .filter(Boolean)
-          .join(" ")}
-        onClick={(e) => set(modelValue === "dark" ? "light" : "dark", e)}
+          .join(' ')}
+        onClick={(e) => set(modelValue === 'dark' ? 'light' : 'dark', e)}
       >
         <Sun
           className={[
-            "text-warning absolute left-1.5 size-4 transition-opacity",
-            modelValue === "dark" ? "opacity-30" : "opacity-100",
-          ].join(" ")}
+            'text-warning absolute left-1.5 size-4 transition-opacity',
+            modelValue === 'dark' ? 'opacity-30' : 'opacity-100',
+          ].join(' ')}
           aria-hidden="true"
         />
         <Moon
           className={[
-            "text-muted-foreground absolute right-1.5 size-4 transition-opacity",
-            modelValue === "light" ? "opacity-30" : "opacity-100",
-          ].join(" ")}
+            'text-muted-foreground absolute right-1.5 size-4 transition-opacity',
+            modelValue === 'light' ? 'opacity-30' : 'opacity-100',
+          ].join(' ')}
           aria-hidden="true"
         />
         <span
           aria-hidden
           className="bg-card border-border absolute size-6 rounded-full border shadow transition-transform duration-300 ease-out"
-          style={{
-            transform: `translateX(${modelValue === "dark" ? "36px" : "4px"})`,
-          }}
+          style={{ transform: `translateX(${modelValue === 'dark' ? '36px' : '4px'})` }}
         />
       </button>
-    );
+    )
   },
-);
-ThemeSwitch.displayName = "ThemeSwitch";
+)
+ThemeSwitch.displayName = 'ThemeSwitch'
 
-export { ThemeSwitch };
+export { ThemeSwitch }

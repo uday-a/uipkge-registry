@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref } from 'vue'
 import {
   Menubar,
   MenubarCheckboxItem,
@@ -15,31 +15,22 @@ import {
   MenubarSubContent,
   MenubarSubTrigger,
   MenubarTrigger,
-} from "@/components/ui/menubar";
-const showBookmarks = ref(true);
-const showFullUrls = ref(false);
-const profile = ref("benoit");
+} from '@/components/ui/menubar'
+const showBookmarks = ref(true)
+const showFullUrls = ref(false)
+const profile = ref('benoit')
 </script>
 
 <template>
-  <Story
-    title="Default"
-    description="Horizontal menubar with File, Edit, and View menus and keyboard shortcut hints."
-  >
+  <Story title="Default" description="Horizontal menubar with File, Edit, and View menus and keyboard shortcut hints.">
     <Menubar class="max-w-md">
       <MenubarMenu>
         <MenubarTrigger>File</MenubarTrigger>
         <MenubarContent>
-          <MenubarItem
-            >New Tab <MenubarShortcut>⌘T</MenubarShortcut></MenubarItem
-          >
-          <MenubarItem
-            >New Window <MenubarShortcut>⌘N</MenubarShortcut></MenubarItem
-          >
+          <MenubarItem>New Tab <MenubarShortcut>⌘T</MenubarShortcut></MenubarItem>
+          <MenubarItem>New Window <MenubarShortcut>⌘N</MenubarShortcut></MenubarItem>
           <MenubarSeparator />
-          <MenubarItem
-            >Print… <MenubarShortcut>⌘P</MenubarShortcut></MenubarItem
-          >
+          <MenubarItem>Print… <MenubarShortcut>⌘P</MenubarShortcut></MenubarItem>
         </MenubarContent>
       </MenubarMenu>
       <MenubarMenu>
@@ -52,9 +43,7 @@ const profile = ref("benoit");
       <MenubarMenu>
         <MenubarTrigger>View</MenubarTrigger>
         <MenubarContent>
-          <MenubarItem
-            >Reload <MenubarShortcut>⌘R</MenubarShortcut></MenubarItem
-          >
+          <MenubarItem>Reload <MenubarShortcut>⌘R</MenubarShortcut></MenubarItem>
           <MenubarItem>Toggle Fullscreen</MenubarItem>
         </MenubarContent>
       </MenubarMenu>
@@ -71,18 +60,13 @@ const profile = ref("benoit");
         <MenubarContent>
           <MenubarLabel>Appearance</MenubarLabel>
           <MenubarSeparator />
-          <MenubarCheckboxItem v-model:checked="showBookmarks">
-            Always Show Bookmarks Bar
-          </MenubarCheckboxItem>
-          <MenubarCheckboxItem v-model:checked="showFullUrls">
-            Always Show Full URLs
-          </MenubarCheckboxItem>
+          <MenubarCheckboxItem v-model:checked="showBookmarks"> Always Show Bookmarks Bar </MenubarCheckboxItem>
+          <MenubarCheckboxItem v-model:checked="showFullUrls"> Always Show Full URLs </MenubarCheckboxItem>
         </MenubarContent>
       </MenubarMenu>
     </Menubar>
     <p class="text-muted-foreground mt-2 text-xs">
-      Bookmarks: {{ showBookmarks ? "on" : "off" }} · Full URLs:
-      {{ showFullUrls ? "on" : "off" }}
+      Bookmarks: {{ showBookmarks ? 'on' : 'off' }} · Full URLs: {{ showFullUrls ? 'on' : 'off' }}
     </p>
   </Story>
 
@@ -134,10 +118,7 @@ const profile = ref("benoit");
     </Menubar>
   </Story>
 
-  <Story
-    title="With shortcuts"
-    description="MenubarShortcut right-aligns a hint string with a muted style."
-  >
+  <Story title="With shortcuts" description="MenubarShortcut right-aligns a hint string with a muted style.">
     <Menubar class="max-w-md">
       <MenubarMenu>
         <MenubarTrigger>Edit</MenubarTrigger>
@@ -147,9 +128,7 @@ const profile = ref("benoit");
           <MenubarItem>Paste <MenubarShortcut>⌘V</MenubarShortcut></MenubarItem>
           <MenubarSeparator />
           <MenubarItem>Find… <MenubarShortcut>⌘F</MenubarShortcut></MenubarItem>
-          <MenubarItem
-            >Find Next <MenubarShortcut>⌘G</MenubarShortcut></MenubarItem
-          >
+          <MenubarItem>Find Next <MenubarShortcut>⌘G</MenubarShortcut></MenubarItem>
         </MenubarContent>
       </MenubarMenu>
     </Menubar>
@@ -175,9 +154,7 @@ const profile = ref("benoit");
           </MenubarSub>
           <MenubarSeparator />
           <MenubarItem>Save <MenubarShortcut>⌘S</MenubarShortcut></MenubarItem>
-          <MenubarItem
-            >Save As… <MenubarShortcut>⇧⌘S</MenubarShortcut></MenubarItem
-          >
+          <MenubarItem>Save As… <MenubarShortcut>⇧⌘S</MenubarShortcut></MenubarItem>
         </MenubarContent>
       </MenubarMenu>
       <MenubarMenu>
@@ -194,19 +171,11 @@ const profile = ref("benoit");
       <MenubarMenu>
         <MenubarTrigger>View</MenubarTrigger>
         <MenubarContent>
-          <MenubarCheckboxItem v-model:checked="showBookmarks"
-            >Bookmarks bar</MenubarCheckboxItem
-          >
-          <MenubarCheckboxItem v-model:checked="showFullUrls"
-            >Full URLs</MenubarCheckboxItem
-          >
+          <MenubarCheckboxItem v-model:checked="showBookmarks">Bookmarks bar</MenubarCheckboxItem>
+          <MenubarCheckboxItem v-model:checked="showFullUrls">Full URLs</MenubarCheckboxItem>
           <MenubarSeparator />
-          <MenubarItem
-            >Reload <MenubarShortcut>⌘R</MenubarShortcut></MenubarItem
-          >
-          <MenubarItem
-            >Force Reload <MenubarShortcut>⇧⌘R</MenubarShortcut></MenubarItem
-          >
+          <MenubarItem>Reload <MenubarShortcut>⌘R</MenubarShortcut></MenubarItem>
+          <MenubarItem>Force Reload <MenubarShortcut>⇧⌘R</MenubarShortcut></MenubarItem>
           <MenubarSeparator />
           <MenubarItem>Toggle Fullscreen</MenubarItem>
         </MenubarContent>

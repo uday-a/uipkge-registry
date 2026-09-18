@@ -1,79 +1,77 @@
 <script setup lang="ts">
-import { computed, ref, type Component, type HTMLAttributes } from "vue";
-import { cn } from "@/lib/utils";
+import { computed, ref, type Component, type HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils'
 
 export interface DockItem {
   /** Unique id for the item. */
-  id: string;
+  id: string
   /** Lucide icon component to render. */
-  icon: Component;
+  icon: Component
   /** Label shown in the tooltip on hover. */
-  label: string;
+  label: string
   /** Click handler. */
-  handler?: () => void;
+  handler?: () => void
   /** Whether this item is the active one. */
-  active?: boolean;
+  active?: boolean
 }
 
 interface Props {
   /** Dock items. */
-  items: DockItem[];
+  items: DockItem[]
   /** Base icon size in pixels. Default 48. */
-  baseSize?: number;
+  baseSize?: number
   /** Peak magnification scale as the cursor hovers directly over an item. Default 1.6. */
-  magnification?: number;
+  magnification?: number
   /** Pixel radius within which items magnify. Default 120. */
-  distance?: number;
+  distance?: number
   /** Orientation. Only 'horizontal' (bottom dock) is supported. */
-  orientation?: "horizontal";
+  orientation?: 'horizontal'
   /** Show the tooltip label on hover. Default true. */
-  showTooltips?: boolean;
-  class?: HTMLAttributes["class"];
+  showTooltips?: boolean
+  class?: HTMLAttributes['class']
 }
 
 const props = withDefaults(defineProps<Props>(), {
   baseSize: 48,
   magnification: 1.6,
   distance: 120,
-  orientation: "horizontal",
+  orientation: 'horizontal',
   showTooltips: true,
-});
+})
 
-const mouseX = ref<number | null>(null);
-const hoveredId = ref<string | null>(null);
+const mouseX = ref<number | null>(null)
+const hoveredId = ref<string | null>(null)
 
 function onMove(e: MouseEvent) {
-  mouseX.value = e.clientX;
+  mouseX.value = e.clientX
 }
 
 function onLeave() {
-  mouseX.value = null;
-  hoveredId.value = null;
+  mouseX.value = null
+  hoveredId.value = null
 }
 
 function sizeFor(item: DockItem, index: number): number {
-  if (mouseX.value === null) return props.baseSize;
-  const el = itemRefs.value[index];
-  if (!el) return props.baseSize;
-  const rect = el.getBoundingClientRect();
-  const center = rect.left + rect.width / 2;
-  const dist = Math.abs(mouseX.value - center);
-  if (dist > props.distance) return props.baseSize;
+  if (mouseX.value === null) return props.baseSize
+  const el = itemRefs.value[index]
+  if (!el) return props.baseSize
+  const rect = el.getBoundingClientRect()
+  const center = rect.left + rect.width / 2
+  const dist = Math.abs(mouseX.value - center)
+  if (dist > props.distance) return props.baseSize
   // Cosine bell curve so magnification falls off smoothly.
-  const t = 1 - dist / props.distance;
-  const scale = 1 + (props.magnification - 1) * t;
-  return props.baseSize * scale;
+  const t = 1 - dist / props.distance
+  const scale = 1 + (props.magnification - 1) * t
+  return props.baseSize * scale
 }
 
-const itemRefs = ref<HTMLElement[]>([]);
+const itemRefs = ref<HTMLElement[]>([])
 
 function setRef(el: any, index: number) {
-  if (el) itemRefs.value[index] = el as HTMLElement;
+  if (el) itemRefs.value[index] = el as HTMLElement
 }
 
-const sizes = computed(() =>
-  props.items.map((_, i) => sizeFor(props.items[i]!, i)),
-);
+const sizes = computed(() => props.items.map((_, i) => sizeFor(props.items[i]!, i)))
 </script>
 
 <template>
@@ -127,21 +125,11 @@ const sizes = computed(() =>
         "
         :style="{ width: `${sizes[index]}px`, height: `${sizes[index]}px` }"
       >
-        <component
-          :is="item.icon"
-          :style="{
-            width: `${sizes[index] * 0.5}px`,
-            height: `${sizes[index] * 0.5}px`,
-          }"
-        />
+        <component :is="item.icon" :style="{ width: `${sizes[index] * 0.5}px`, height: `${sizes[index] * 0.5}px` }" />
       </span>
 
       <!-- Active indicator dot -->
-      <span
-        v-if="item.active"
-        class="bg-primary absolute -bottom-2 size-1 rounded-full"
-        aria-hidden="true"
-      />
+      <span v-if="item.active" class="bg-primary absolute -bottom-2 size-1 rounded-full" aria-hidden="true" />
     </div>
   </div>
 </template>

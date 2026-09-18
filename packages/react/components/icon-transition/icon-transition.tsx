@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import * as React from "react";
+import * as React from 'react'
 
 // Self-contained icon-swap control. Click runs an optional async `action`,
 // then flips from `defaultIcon` to `activeIcon` with a spring pop. By default
@@ -18,46 +18,43 @@ import * as React from "react";
 // icon (e.g. inside a parent button) — in that mode the parent is responsible
 // for triggering `trigger()` via the exposed ref.
 
-type IconComponent = React.ComponentType<{
-  className?: string;
-  "aria-hidden"?: boolean | "true" | "false";
-}>;
+type IconComponent = React.ComponentType<{ className?: string; 'aria-hidden'?: boolean | 'true' | 'false' }>
 
 export interface IconTransitionProps {
-  defaultIcon: IconComponent;
-  activeIcon: IconComponent;
+  defaultIcon: IconComponent
+  activeIcon: IconComponent
   /** Tailwind size/color applied to the icons. */
-  iconClass?: string;
+  iconClass?: string
   /** Async work executed on click before the icon flips. Return `false` to skip the flip. */
-  action?: () => boolean | void | Promise<boolean | void>;
+  action?: () => boolean | void | Promise<boolean | void>
   /** ms before reverting to defaultIcon. Set to `0` (or null) to stay active. */
-  resetAfter?: number | null;
+  resetAfter?: number | null
   /** Pop animation duration in ms (also scales the leave fade). */
-  duration?: number;
+  duration?: number
   /** aria-label shown in default state. */
-  label?: string;
+  label?: string
   /** aria-label shown after activation; falls back to `label`. */
-  activeLabel?: string;
+  activeLabel?: string
   /** Tailwind class applied while active (e.g. "text-success"). */
-  activeClass?: string;
+  activeClass?: string
   /** Render element. `button` adds click handler + focus styling; `span` is purely visual. */
-  as?: "button" | "span";
+  as?: 'button' | 'span'
   /** External control. When provided, this prop wins over internal state. */
-  active?: boolean;
-  className?: string;
-  onActivate?: () => void;
-  onReset?: () => void;
+  active?: boolean
+  className?: string
+  onActivate?: () => void
+  onReset?: () => void
 }
 
 export interface IconTransitionHandle {
-  trigger: () => Promise<void>;
-  reset: () => void;
+  trigger: () => Promise<void>
+  reset: () => void
 }
 
 // Scoped styles injected once. Mirrors the Vue SFC's scoped <style> block 1:1
 // (pop on enter, fade on leave, reduced-motion guard). Scoped to the
 // `.icon-transition` ancestor so the keyframes don't leak.
-const STYLE_ID = "uipkge-icon-transition-styles";
+const STYLE_ID = 'uipkge-icon-transition-styles'
 const STYLES = `
 .icon-transition .icon-transition-slot {
   grid-area: 1 / 1;
@@ -101,34 +98,31 @@ const STYLES = `
     animation-duration: 0ms !important;
   }
 }
-`;
+`
 
 function useInjectedStyles() {
   React.useEffect(() => {
-    if (typeof document === "undefined") return;
-    if (document.getElementById(STYLE_ID)) return;
-    const el = document.createElement("style");
-    el.id = STYLE_ID;
-    el.textContent = STYLES;
-    document.head.appendChild(el);
-  }, []);
+    if (typeof document === 'undefined') return
+    if (document.getElementById(STYLE_ID)) return
+    const el = document.createElement('style')
+    el.id = STYLE_ID
+    el.textContent = STYLES
+    document.head.appendChild(el)
+  }, [])
 }
 
-const IconTransition = React.forwardRef<
-  IconTransitionHandle,
-  IconTransitionProps
->(function IconTransition(
+const IconTransition = React.forwardRef<IconTransitionHandle, IconTransitionProps>(function IconTransition(
   {
     defaultIcon: DefaultIcon,
     activeIcon: ActiveIcon,
-    iconClass = "size-4",
+    iconClass = 'size-4',
     action,
     resetAfter = 1500,
     duration = 240,
     label,
     activeLabel,
-    activeClass = "text-success",
-    as = "button",
+    activeClass = 'text-success',
+    as = 'button',
     active,
     className,
     onActivate,
@@ -136,105 +130,96 @@ const IconTransition = React.forwardRef<
   },
   ref,
 ) {
-  useInjectedStyles();
+  useInjectedStyles()
 
-  const [internalActive, setInternalActive] = React.useState(false);
-  const isActive = active !== undefined ? active : internalActive;
+  const [internalActive, setInternalActive] = React.useState(false)
+  const isActive = active !== undefined ? active : internalActive
 
   // Track the previous active state so we can render an outgoing (leaving)
   // icon alongside the incoming (entering) one for the cross-fade — Vue's
   // <Transition> does this for free; React needs us to hold the prior key.
-  const [prevActive, setPrevActive] = React.useState<boolean | null>(null);
-  const prevIsActiveRef = React.useRef(isActive);
+  const [prevActive, setPrevActive] = React.useState<boolean | null>(null)
+  const prevIsActiveRef = React.useRef(isActive)
   React.useEffect(() => {
     if (prevIsActiveRef.current !== isActive) {
-      setPrevActive(prevIsActiveRef.current);
-      prevIsActiveRef.current = isActive;
+      setPrevActive(prevIsActiveRef.current)
+      prevIsActiveRef.current = isActive
     }
-  }, [isActive]);
+  }, [isActive])
 
   // Drop the leave slot after the animation finishes so it doesn't linger
   // in the DOM (Vue's <Transition> unmounts leave elements automatically).
   React.useEffect(() => {
-    if (prevActive === null || prevActive === isActive) return;
-    const t = setTimeout(() => setPrevActive(null), duration);
-    return () => clearTimeout(t);
-  }, [prevActive, isActive, duration]);
+    if (prevActive === null || prevActive === isActive) return
+    const t = setTimeout(() => setPrevActive(null), duration)
+    return () => clearTimeout(t)
+  }, [prevActive, isActive, duration])
 
-  const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const clearTimer = React.useCallback(() => {
     if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
+      clearTimeout(timerRef.current)
+      timerRef.current = null
     }
-  }, []);
+  }, [])
 
   const reset = React.useCallback(() => {
-    setInternalActive(false);
-    onReset?.();
-    clearTimer();
-  }, [onReset, clearTimer]);
+    setInternalActive(false)
+    onReset?.()
+    clearTimer()
+  }, [onReset, clearTimer])
 
   const trigger = React.useCallback(async () => {
     if (action) {
-      const result = await action();
-      if (result === false) return;
+      const result = await action()
+      if (result === false) return
     }
-    setInternalActive(true);
-    onActivate?.();
-    clearTimer();
+    setInternalActive(true)
+    onActivate?.()
+    clearTimer()
     if (resetAfter && resetAfter > 0) {
-      timerRef.current = setTimeout(reset, resetAfter);
+      timerRef.current = setTimeout(reset, resetAfter)
     }
-  }, [action, onActivate, clearTimer, resetAfter, reset]);
+  }, [action, onActivate, clearTimer, resetAfter, reset])
 
-  React.useImperativeHandle(ref, () => ({ trigger, reset }), [trigger, reset]);
+  React.useImperativeHandle(ref, () => ({ trigger, reset }), [trigger, reset])
 
-  React.useEffect(() => clearTimer, [clearTimer]);
+  React.useEffect(() => clearTimer, [clearTimer])
 
-  const Comp = as;
+  const Comp = as
 
-  const renderSlot = (
-    slotActive: boolean,
-    phase: "enter" | "leave",
-    key: string,
-  ) => {
-    const SlotIcon = slotActive ? ActiveIcon : DefaultIcon;
-    const phaseClass =
-      phase === "enter"
-        ? "icon-transition-enter-active"
-        : "icon-transition-leave-active";
+  const renderSlot = (slotActive: boolean, phase: 'enter' | 'leave', key: string) => {
+    const SlotIcon = slotActive ? ActiveIcon : DefaultIcon
+    const phaseClass = phase === 'enter' ? 'icon-transition-enter-active' : 'icon-transition-leave-active'
     return (
       <span key={key} className={`icon-transition-slot ${phaseClass}`}>
         <SlotIcon className={iconClass} aria-hidden="true" />
       </span>
-    );
-  };
+    )
+  }
 
   return (
     <Comp
       data-uipkge=""
       data-slot="icon-transition"
-      {...(as === "button" ? { type: "button" as const } : {})}
+      {...(as === 'button' ? { type: 'button' as const } : {})}
       aria-label={isActive ? (activeLabel ?? label) : label}
-      aria-live={isActive ? "polite" : undefined}
+      aria-live={isActive ? 'polite' : undefined}
       className={[
-        "icon-transition focus-visible:ring-ring inline-grid place-items-center transition-colors focus-visible:ring-2 focus-visible:outline-none",
-        isActive ? activeClass : "",
-        className ?? "",
+        'icon-transition focus-visible:ring-ring inline-grid place-items-center transition-colors focus-visible:ring-2 focus-visible:outline-none',
+        isActive ? activeClass : '',
+        className ?? '',
       ]
         .filter(Boolean)
-        .join(" ")}
-      style={{ ["--it-duration" as string]: `${duration}ms` }}
-      onClick={as === "button" ? () => void trigger() : undefined}
+        .join(' ')}
+      style={{ ['--it-duration' as string]: `${duration}ms` }}
+      onClick={as === 'button' ? () => void trigger() : undefined}
     >
-      {prevActive !== null &&
-        prevActive !== isActive &&
-        renderSlot(prevActive, "leave", `leave-${prevActive}`)}
-      {renderSlot(isActive, "enter", `enter-${isActive}`)}
+      {prevActive !== null && prevActive !== isActive && renderSlot(prevActive, 'leave', `leave-${prevActive}`)}
+      {renderSlot(isActive, 'enter', `enter-${isActive}`)}
     </Comp>
-  );
-});
+  )
+})
 
-export { IconTransition };
+export { IconTransition }

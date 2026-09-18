@@ -1,153 +1,143 @@
-import { useState } from "react";
-import Story from "../../components/story/Story";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@react-registry/card";
-import { CascadeSelect } from "@react-registry/cascade-select";
-import type { CascadeOption } from "@react-registry/cascade-select";
+import { useState } from 'react'
+import Story from '../../components/story/Story'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@react-registry/card'
+import { CascadeSelect } from '@react-registry/cascade-select'
+import type { CascadeOption } from '@react-registry/cascade-select'
 
 const regionData: CascadeOption[] = [
   {
-    value: "zhejiang",
-    label: "Zhejiang",
+    value: 'zhejiang',
+    label: 'Zhejiang',
     children: [
       {
-        value: "hangzhou",
-        label: "Hangzhou",
+        value: 'hangzhou',
+        label: 'Hangzhou',
         children: [
-          { value: "xihu", label: "West Lake" },
-          { value: "binjiang", label: "Binjiang" },
+          { value: 'xihu', label: 'West Lake' },
+          { value: 'binjiang', label: 'Binjiang' },
         ],
       },
       {
-        value: "ningbo",
-        label: "Ningbo",
+        value: 'ningbo',
+        label: 'Ningbo',
         children: [
-          { value: "haishu", label: "Haishu" },
-          { value: "jiangbei", label: "Jiangbei" },
+          { value: 'haishu', label: 'Haishu' },
+          { value: 'jiangbei', label: 'Jiangbei' },
         ],
       },
     ],
   },
   {
-    value: "jiangsu",
-    label: "Jiangsu",
+    value: 'jiangsu',
+    label: 'Jiangsu',
     children: [
       {
-        value: "nanjing",
-        label: "Nanjing",
+        value: 'nanjing',
+        label: 'Nanjing',
         children: [
-          { value: "xuanwu", label: "Xuanwu" },
-          { value: "gulou", label: "Gulou" },
+          { value: 'xuanwu', label: 'Xuanwu' },
+          { value: 'gulou', label: 'Gulou' },
         ],
       },
       {
-        value: "suzhou",
-        label: "Suzhou",
+        value: 'suzhou',
+        label: 'Suzhou',
         children: [
-          { value: "gusu", label: "Gusu" },
-          { value: "wuzhong", label: "Wuzhong" },
+          { value: 'gusu', label: 'Gusu' },
+          { value: 'wuzhong', label: 'Wuzhong' },
         ],
       },
     ],
   },
   {
-    value: "guangdong",
-    label: "Guangdong",
+    value: 'guangdong',
+    label: 'Guangdong',
     children: [
       {
-        value: "guangzhou",
-        label: "Guangzhou",
+        value: 'guangzhou',
+        label: 'Guangzhou',
         children: [
-          { value: "tianhe", label: "Tianhe" },
-          { value: "yuexiu", label: "Yuexiu" },
+          { value: 'tianhe', label: 'Tianhe' },
+          { value: 'yuexiu', label: 'Yuexiu' },
         ],
       },
       {
-        value: "shenzhen",
-        label: "Shenzhen",
+        value: 'shenzhen',
+        label: 'Shenzhen',
         children: [
-          { value: "nanshan", label: "Nanshan" },
-          { value: "futian", label: "Futian" },
+          { value: 'nanshan', label: 'Nanshan' },
+          { value: 'futian', label: 'Futian' },
         ],
       },
     ],
   },
-];
+]
 
 const categoryData: CascadeOption[] = [
   {
-    value: "electronics",
-    label: "Electronics",
+    value: 'electronics',
+    label: 'Electronics',
     children: [
       {
-        value: "phones",
-        label: "Phones",
+        value: 'phones',
+        label: 'Phones',
         children: [
-          { value: "iphone", label: "iPhone" },
-          { value: "android", label: "Android" },
+          { value: 'iphone', label: 'iPhone' },
+          { value: 'android', label: 'Android' },
         ],
       },
       {
-        value: "laptops",
-        label: "Laptops",
+        value: 'laptops',
+        label: 'Laptops',
         children: [
-          { value: "macbook", label: "MacBook" },
-          { value: "windows", label: "Windows" },
+          { value: 'macbook', label: 'MacBook' },
+          { value: 'windows', label: 'Windows' },
         ],
       },
     ],
   },
   {
-    value: "clothing",
-    label: "Clothing",
+    value: 'clothing',
+    label: 'Clothing',
     children: [
       {
-        value: "mens",
+        value: 'mens',
         label: "Men's",
         children: [
-          { value: "shirts", label: "Shirts" },
-          { value: "pants", label: "Pants" },
+          { value: 'shirts', label: 'Shirts' },
+          { value: 'pants', label: 'Pants' },
         ],
       },
       {
-        value: "womens",
+        value: 'womens',
         label: "Women's",
         children: [
-          { value: "dresses", label: "Dresses" },
-          { value: "tops", label: "Tops" },
+          { value: 'dresses', label: 'Dresses' },
+          { value: 'tops', label: 'Tops' },
         ],
       },
     ],
   },
-];
+]
 
 const restrictedData: CascadeOption[] = [
   {
-    value: "level1",
-    label: "Level 1",
+    value: 'level1',
+    label: 'Level 1',
     children: [
-      { value: "l1-a", label: "Option A", disabled: true },
-      { value: "l1-b", label: "Option B" },
+      { value: 'l1-a', label: 'Option A', disabled: true },
+      { value: 'l1-b', label: 'Option B' },
     ],
   },
-];
+]
 
 export default function CascadeSelectDemo() {
-  const [regionValue, setRegionValue] = useState<string[] | null>(null);
-  const [categoryValue, setCategoryValue] = useState<string[] | null>(null);
-  const [preselectedValue, setPreselectedValue] = useState<string[] | null>([
-    "zhejiang",
-    "hangzhou",
-    "xihu",
-  ]);
-  const [smValue, setSmValue] = useState<string[] | null>(null);
-  const [lgValue, setLgValue] = useState<string[] | null>(null);
-  const [shippingValue, setShippingValue] = useState<string[] | null>(null);
+  const [regionValue, setRegionValue] = useState<string[] | null>(null)
+  const [categoryValue, setCategoryValue] = useState<string[] | null>(null)
+  const [preselectedValue, setPreselectedValue] = useState<string[] | null>(['zhejiang', 'hangzhou', 'xihu'])
+  const [smValue, setSmValue] = useState<string[] | null>(null)
+  const [lgValue, setLgValue] = useState<string[] | null>(null)
+  const [shippingValue, setShippingValue] = useState<string[] | null>(null)
 
   return (
     <>
@@ -163,9 +153,7 @@ export default function CascadeSelectDemo() {
             placeholder="Select a region..."
             className="w-full"
           />
-          <p className="text-muted-foreground text-xs">
-            Selected: {regionValue?.join(" / ") ?? "none"}
-          </p>
+          <p className="text-muted-foreground text-xs">Selected: {regionValue?.join(' / ') ?? 'none'}</p>
         </div>
       </Story>
 
@@ -181,16 +169,11 @@ export default function CascadeSelectDemo() {
             placeholder="Select category..."
             className="w-full"
           />
-          <p className="text-muted-foreground text-xs">
-            Selected: {categoryValue?.join(" / ") ?? "none"}
-          </p>
+          <p className="text-muted-foreground text-xs">Selected: {categoryValue?.join(' / ') ?? 'none'}</p>
         </div>
       </Story>
 
-      <Story
-        title="Size variants"
-        description="Small, default, and large triggers for different form densities."
-      >
+      <Story title="Size variants" description="Small, default, and large triggers for different form densities.">
         <div className="max-w-md space-y-3">
           <CascadeSelect
             value={smValue}
@@ -200,11 +183,7 @@ export default function CascadeSelectDemo() {
             placeholder="Small..."
             className="w-full"
           />
-          <CascadeSelect
-            options={regionData}
-            placeholder="Default..."
-            className="w-full"
-          />
+          <CascadeSelect options={regionData} placeholder="Default..." className="w-full" />
           <CascadeSelect
             value={lgValue}
             onValueChange={setLgValue}
@@ -221,23 +200,9 @@ export default function CascadeSelectDemo() {
         description="Loading spinner, fully disabled control, and individual disabled options in one view."
       >
         <div className="max-w-md space-y-3">
-          <CascadeSelect
-            options={regionData}
-            loading
-            placeholder="Loading..."
-            className="w-full"
-          />
-          <CascadeSelect
-            options={regionData}
-            disabled
-            placeholder="Disabled"
-            className="w-full"
-          />
-          <CascadeSelect
-            options={restrictedData}
-            placeholder="Restricted options..."
-            className="w-full"
-          />
+          <CascadeSelect options={regionData} loading placeholder="Loading..." className="w-full" />
+          <CascadeSelect options={regionData} disabled placeholder="Disabled" className="w-full" />
+          <CascadeSelect options={restrictedData} placeholder="Restricted options..." className="w-full" />
         </div>
       </Story>
 
@@ -255,9 +220,7 @@ export default function CascadeSelectDemo() {
             placeholder="Select a region..."
             className="w-full"
           />
-          <p className="text-muted-foreground text-xs">
-            Path: {preselectedValue?.join(" > ")}
-          </p>
+          <p className="text-muted-foreground text-xs">Path: {preselectedValue?.join(' > ')}</p>
         </div>
       </Story>
 
@@ -268,9 +231,7 @@ export default function CascadeSelectDemo() {
         <Card className="max-w-md">
           <CardHeader>
             <CardTitle>Shipping address</CardTitle>
-            <CardDescription>
-              Select your province, city, and district to calculate delivery.
-            </CardDescription>
+            <CardDescription>Select your province, city, and district to calculate delivery.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <CascadeSelect
@@ -283,17 +244,13 @@ export default function CascadeSelectDemo() {
               className="w-full"
             />
             {shippingValue ? (
-              <p className="text-muted-foreground text-xs">
-                Delivering to: {shippingValue.join(" / ")}
-              </p>
+              <p className="text-muted-foreground text-xs">Delivering to: {shippingValue.join(' / ')}</p>
             ) : (
-              <p className="text-muted-foreground text-xs">
-                No region selected yet.
-              </p>
+              <p className="text-muted-foreground text-xs">No region selected yet.</p>
             )}
           </CardContent>
         </Card>
       </Story>
     </>
-  );
+  )
 }

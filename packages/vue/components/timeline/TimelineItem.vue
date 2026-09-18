@@ -1,82 +1,75 @@
 <script setup lang="ts">
-import { computed, inject, onBeforeUnmount, provide, toRef } from "vue";
-import type { HTMLAttributes } from "vue";
-import { cn } from "@/lib/utils";
-import {
-  TIMELINE_CONTEXT,
-  TIMELINE_ITEM_CONTEXT,
-  type TimelineSide,
-  type TimelineStatus,
-} from "./context";
+import { computed, inject, onBeforeUnmount, provide, toRef } from 'vue'
+import type { HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils'
+import { TIMELINE_CONTEXT, TIMELINE_ITEM_CONTEXT, type TimelineSide, type TimelineStatus } from './context'
 
 const props = withDefaults(
   defineProps<{
-    class?: HTMLAttributes["class"];
-    side?: TimelineSide;
-    status?: TimelineStatus;
+    class?: HTMLAttributes['class']
+    side?: TimelineSide
+    status?: TimelineStatus
   }>(),
   {
-    status: "default",
+    status: 'default',
   },
-);
+)
 
-const ctx = inject(TIMELINE_CONTEXT, null);
-const id = Symbol("TimelineItem");
+const ctx = inject(TIMELINE_CONTEXT, null)
+const id = Symbol('TimelineItem')
 
 if (ctx) {
-  ctx.register(id);
-  onBeforeUnmount(() => ctx.unregister(id));
+  ctx.register(id)
+  onBeforeUnmount(() => ctx.unregister(id))
 }
 
-const index = computed(() => (ctx ? ctx.itemIds.value.indexOf(id) : 0));
-const isFirst = computed(() => index.value === 0);
-const isLast = computed(() =>
-  ctx ? index.value === ctx.itemIds.value.length - 1 : false,
-);
+const index = computed(() => (ctx ? ctx.itemIds.value.indexOf(id) : 0))
+const isFirst = computed(() => index.value === 0)
+const isLast = computed(() => (ctx ? index.value === ctx.itemIds.value.length - 1 : false))
 
 const effectiveSide = computed<TimelineSide>(() => {
-  if (props.side) return props.side;
-  if (!ctx) return "left";
-  if (ctx.align.value === "center") {
-    if (ctx.direction.value === "vertical") {
-      return index.value % 2 === 0 ? "left" : "right";
+  if (props.side) return props.side
+  if (!ctx) return 'left'
+  if (ctx.align.value === 'center') {
+    if (ctx.direction.value === 'vertical') {
+      return index.value % 2 === 0 ? 'left' : 'right'
     }
-    return index.value % 2 === 0 ? "top" : "bottom";
+    return index.value % 2 === 0 ? 'top' : 'bottom'
   }
-  return ctx.side.value;
-});
+  return ctx.side.value
+})
 
-const direction = computed(() => ctx?.direction.value ?? "vertical");
-const density = computed(() => ctx?.density.value ?? "default");
-const isCenter = computed(() => ctx?.align.value === "center");
+const direction = computed(() => ctx?.direction.value ?? 'vertical')
+const density = computed(() => ctx?.density.value ?? 'default')
+const isCenter = computed(() => ctx?.align.value === 'center')
 
 const verticalSpacing = computed(() => {
-  if (isLast.value) return "";
+  if (isLast.value) return ''
   return {
-    compact: "[&>[data-slot=timeline-content]]:pb-3",
-    default: "[&>[data-slot=timeline-content]]:pb-6",
-    comfortable: "[&>[data-slot=timeline-content]]:pb-10",
-  }[density.value];
-});
+    compact: '[&>[data-slot=timeline-content]]:pb-3',
+    default: '[&>[data-slot=timeline-content]]:pb-6',
+    comfortable: '[&>[data-slot=timeline-content]]:pb-10',
+  }[density.value]
+})
 
 const horizontalSpacing = computed(() => {
-  if (isLast.value) return "";
+  if (isLast.value) return ''
   return {
-    compact: "[&>[data-slot=timeline-content]]:pr-3",
-    default: "[&>[data-slot=timeline-content]]:pr-6",
-    comfortable: "[&>[data-slot=timeline-content]]:pr-10",
-  }[density.value];
-});
+    compact: '[&>[data-slot=timeline-content]]:pr-3',
+    default: '[&>[data-slot=timeline-content]]:pr-6',
+    comfortable: '[&>[data-slot=timeline-content]]:pr-10',
+  }[density.value]
+})
 
 provide(TIMELINE_ITEM_CONTEXT, {
   index,
   isFirst,
   isLast,
   side: effectiveSide,
-  status: toRef(props, "status"),
+  status: toRef(props, 'status'),
   direction,
   density,
-});
+})
 </script>
 
 <template>
@@ -111,8 +104,7 @@ provide(TIMELINE_ITEM_CONTEXT, {
             '[&>[data-slot=timeline-content]]:row-start-1',
             effectiveSide === 'left' &&
               '[&>[data-slot=timeline-content]]:col-start-1 [&>[data-slot=timeline-content]]:text-right',
-            effectiveSide === 'right' &&
-              '[&>[data-slot=timeline-content]]:col-start-3',
+            effectiveSide === 'right' && '[&>[data-slot=timeline-content]]:col-start-3',
             verticalSpacing,
           ],
         isCenter &&
@@ -123,8 +115,7 @@ provide(TIMELINE_ITEM_CONTEXT, {
             '[&>[data-slot=timeline-content]]:col-start-1',
             effectiveSide === 'top' &&
               '[&>[data-slot=timeline-content]]:row-start-1 [&>[data-slot=timeline-content]]:self-end',
-            effectiveSide === 'bottom' &&
-              '[&>[data-slot=timeline-content]]:row-start-3',
+            effectiveSide === 'bottom' && '[&>[data-slot=timeline-content]]:row-start-3',
             horizontalSpacing,
           ],
         props.class,
@@ -132,12 +123,7 @@ provide(TIMELINE_ITEM_CONTEXT, {
     "
     v-bind="$attrs"
   >
-    <slot
-      :index="index"
-      :is-last="isLast"
-      :side="effectiveSide"
-      :status="status"
-    />
+    <slot :index="index" :is-last="isLast" :side="effectiveSide" :status="status" />
   </div>
 </template>
 
@@ -168,15 +154,15 @@ provide(TIMELINE_ITEM_CONTEXT, {
   animation-delay: var(--timeline-stagger, 0ms);
 }
 
-.timeline-item-current [data-slot="timeline-media-marker"],
-.timeline-item-current [data-slot="timeline-separator-marker"] {
+.timeline-item-current [data-slot='timeline-media-marker'],
+.timeline-item-current [data-slot='timeline-separator-marker'] {
   animation: timeline-current-pulse 1.8s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .timeline-item-enter,
-  .timeline-item-current [data-slot="timeline-media-marker"],
-  .timeline-item-current [data-slot="timeline-separator-marker"] {
+  .timeline-item-current [data-slot='timeline-media-marker'],
+  .timeline-item-current [data-slot='timeline-separator-marker'] {
     animation: none !important;
   }
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import {
   ExternalLink,
   Copy,
@@ -18,43 +18,38 @@ import {
   Smartphone,
   PanelLeftClose,
   PanelLeft,
-} from "lucide-react";
-import {
-  COLOR_THEMES,
-  RADIUS_PRESETS,
-  VIEWPORT_PRESETS,
-  type CanvasBackground,
-} from "../theme";
+} from 'lucide-react'
+import { COLOR_THEMES, RADIUS_PRESETS, VIEWPORT_PRESETS, type CanvasBackground } from '../theme'
 
 export interface WorkbenchHeaderProps {
-  componentId: string;
-  componentName: string;
-  componentType: string;
-  category?: string;
-  isDark: boolean;
-  onToggleDark: () => void;
-  activeColorTheme: string;
-  onChangeColorTheme: (id: string) => void;
-  activeRadius: string;
-  onChangeRadius: (val: string) => void;
-  activeViewport: string;
-  onChangeViewport: (id: string) => void;
-  canvasBg: CanvasBackground;
-  onChangeCanvasBg: (bg: CanvasBackground) => void;
-  onRemount: () => void;
-  isInspectorOpen: boolean;
-  onToggleInspector: () => void;
-  isSidebarOpen?: boolean;
-  onToggleSidebar?: () => void;
+  componentId: string
+  componentName: string
+  componentType: string
+  category?: string
+  isDark: boolean
+  onToggleDark: () => void
+  activeColorTheme: string
+  onChangeColorTheme: (id: string) => void
+  activeRadius: string
+  onChangeRadius: (val: string) => void
+  activeViewport: string
+  onChangeViewport: (id: string) => void
+  canvasBg: CanvasBackground
+  onChangeCanvasBg: (bg: CanvasBackground) => void
+  onRemount: () => void
+  isInspectorOpen: boolean
+  onToggleInspector: () => void
+  isSidebarOpen?: boolean
+  onToggleSidebar?: () => void
 }
 
 const VIEWPORT_LABELS: Record<string, { title: string; short: string }> = {
-  fluid: { title: "Fluid (100%)", short: "Full" },
-  desktop: { title: "Desktop (1280px)", short: "1280" },
-  laptop: { title: "Laptop (1024px)", short: "1024" },
-  tablet: { title: "Tablet (768px)", short: "768" },
-  mobile: { title: "Mobile (375px)", short: "375" },
-};
+  fluid: { title: 'Fluid (100%)', short: 'Full' },
+  desktop: { title: 'Desktop (1280px)', short: '1280' },
+  laptop: { title: 'Laptop (1024px)', short: '1024' },
+  tablet: { title: 'Tablet (768px)', short: '768' },
+  mobile: { title: 'Mobile (375px)', short: '375' },
+}
 
 export default function WorkbenchHeader({
   componentId,
@@ -77,19 +72,19 @@ export default function WorkbenchHeader({
   isSidebarOpen = true,
   onToggleSidebar,
 }: WorkbenchHeaderProps) {
-  const [copiedCmd, setCopiedCmd] = useState(false);
-  const [showThemePopover, setShowThemePopover] = useState(false);
+  const [copiedCmd, setCopiedCmd] = useState(false)
+  const [showThemePopover, setShowThemePopover] = useState(false)
 
   const copyInstallCommand = async () => {
-    const cmd = `npx shadcn add @uipkge/${componentId}`;
+    const cmd = `npx shadcn add @uipkge/${componentId}`
     try {
-      await navigator.clipboard.writeText(cmd);
-      setCopiedCmd(true);
-      setTimeout(() => setCopiedCmd(false), 1500);
+      await navigator.clipboard.writeText(cmd)
+      setCopiedCmd(true)
+      setTimeout(() => setCopiedCmd(false), 1500)
     } catch (err) {
-      console.error("Failed to copy install command:", err);
+      console.error('Failed to copy install command:', err)
     }
-  };
+  }
 
   return (
     <header className="border-border bg-card z-20 flex h-14 shrink-0 items-center justify-between gap-2 border-b px-3 select-none sm:gap-4 sm:px-4">
@@ -113,54 +108,12 @@ export default function WorkbenchHeader({
             className="border-border bg-card flex size-8 shrink-0 items-center justify-center rounded-lg border shadow-xs select-none"
             title="UIPKGE Dev Workbench"
           >
-            <svg
-              width="22"
-              height="22"
-              viewBox="0 0 32 32"
-              className="shrink-0"
-              aria-hidden="true"
-            >
-              <rect
-                x="0.5"
-                y="0.5"
-                width="31"
-                height="31"
-                rx="7"
-                className="fill-card stroke-border"
-                strokeWidth="1"
-              />
-              <rect
-                x="6"
-                y="6"
-                width="8"
-                height="8"
-                rx="1.6"
-                className="fill-foreground"
-              />
-              <rect
-                x="18"
-                y="6"
-                width="8"
-                height="8"
-                rx="1.6"
-                className="fill-primary"
-              />
-              <rect
-                x="6"
-                y="18"
-                width="8"
-                height="8"
-                rx="1.6"
-                className="fill-muted"
-              />
-              <rect
-                x="18"
-                y="18"
-                width="8"
-                height="8"
-                rx="1.6"
-                className="fill-foreground"
-              />
+            <svg width="22" height="22" viewBox="0 0 32 32" className="shrink-0" aria-hidden="true">
+              <rect x="0.5" y="0.5" width="31" height="31" rx="7" className="fill-card stroke-border" strokeWidth="1" />
+              <rect x="6" y="6" width="8" height="8" rx="1.6" className="fill-foreground" />
+              <rect x="18" y="6" width="8" height="8" rx="1.6" className="fill-primary" />
+              <rect x="6" y="18" width="8" height="8" rx="1.6" className="fill-muted" />
+              <rect x="18" y="18" width="8" height="8" rx="1.6" className="fill-foreground" />
             </svg>
           </div>
         )}
@@ -203,14 +156,8 @@ export default function WorkbenchHeader({
           className="border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted hidden h-8 shrink-0 cursor-pointer items-center gap-1.5 rounded-lg border px-2.5 font-mono text-xs whitespace-nowrap shadow-xs transition min-[1400px]:flex"
           onClick={copyInstallCommand}
         >
-          {copiedCmd ? (
-            <Check className="size-3 shrink-0 text-emerald-500" />
-          ) : (
-            <Copy className="size-3 shrink-0" />
-          )}
-          <span className="max-w-[180px] truncate whitespace-nowrap">
-            add @uipkge/{componentId}
-          </span>
+          {copiedCmd ? <Check className="size-3 shrink-0 text-emerald-500" /> : <Copy className="size-3 shrink-0" />}
+          <span className="max-w-[180px] truncate whitespace-nowrap">add @uipkge/{componentId}</span>
         </button>
         <button
           type="button"
@@ -237,21 +184,17 @@ export default function WorkbenchHeader({
               title={VIEWPORT_LABELS[vp.id]?.title || vp.name}
               className={`flex shrink-0 cursor-pointer items-center gap-1 rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap transition ${
                 activeViewport === vp.id
-                  ? "bg-background text-foreground border-border/80 border font-semibold shadow-xs"
-                  : "text-muted-foreground hover:text-foreground border border-transparent"
+                  ? 'bg-background text-foreground border-border/80 border font-semibold shadow-xs'
+                  : 'text-muted-foreground hover:text-foreground border border-transparent'
               }`}
               onClick={() => onChangeViewport(vp.id)}
             >
-              {vp.id === "fluid" && <Maximize className="size-3.5 shrink-0" />}
-              {vp.id === "desktop" && <Monitor className="size-3.5 shrink-0" />}
-              {vp.id === "laptop" && <Laptop className="size-3.5 shrink-0" />}
-              {vp.id === "tablet" && <Tablet className="size-3.5 shrink-0" />}
-              {vp.id === "mobile" && (
-                <Smartphone className="size-3.5 shrink-0" />
-              )}
-              <span className="hidden min-[1600px]:inline">
-                {VIEWPORT_LABELS[vp.id]?.short || vp.name}
-              </span>
+              {vp.id === 'fluid' && <Maximize className="size-3.5 shrink-0" />}
+              {vp.id === 'desktop' && <Monitor className="size-3.5 shrink-0" />}
+              {vp.id === 'laptop' && <Laptop className="size-3.5 shrink-0" />}
+              {vp.id === 'tablet' && <Tablet className="size-3.5 shrink-0" />}
+              {vp.id === 'mobile' && <Smartphone className="size-3.5 shrink-0" />}
+              <span className="hidden min-[1600px]:inline">{VIEWPORT_LABELS[vp.id]?.short || vp.name}</span>
             </button>
           ))}
         </div>
@@ -262,11 +205,11 @@ export default function WorkbenchHeader({
             type="button"
             title="Dots canvas background"
             className={`flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md transition-colors ${
-              canvasBg === "dots"
-                ? "bg-background text-foreground border-border/80 border shadow-xs"
-                : "text-muted-foreground hover:text-foreground border border-transparent"
+              canvasBg === 'dots'
+                ? 'bg-background text-foreground border-border/80 border shadow-xs'
+                : 'text-muted-foreground hover:text-foreground border border-transparent'
             }`}
-            onClick={() => onChangeCanvasBg("dots")}
+            onClick={() => onChangeCanvasBg('dots')}
           >
             <CircleDot className="size-3.5 shrink-0" />
           </button>
@@ -274,11 +217,11 @@ export default function WorkbenchHeader({
             type="button"
             title="Grid canvas background"
             className={`flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md transition-colors ${
-              canvasBg === "grid"
-                ? "bg-background text-foreground border-border/80 border shadow-xs"
-                : "text-muted-foreground hover:text-foreground border border-transparent"
+              canvasBg === 'grid'
+                ? 'bg-background text-foreground border-border/80 border shadow-xs'
+                : 'text-muted-foreground hover:text-foreground border border-transparent'
             }`}
-            onClick={() => onChangeCanvasBg("grid")}
+            onClick={() => onChangeCanvasBg('grid')}
           >
             <Grid className="size-3.5 shrink-0" />
           </button>
@@ -286,11 +229,11 @@ export default function WorkbenchHeader({
             type="button"
             title="Solid canvas background"
             className={`flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md transition-colors ${
-              canvasBg === "solid"
-                ? "bg-background text-foreground border-border/80 border shadow-xs"
-                : "text-muted-foreground hover:text-foreground border border-transparent"
+              canvasBg === 'solid'
+                ? 'bg-background text-foreground border-border/80 border shadow-xs'
+                : 'text-muted-foreground hover:text-foreground border border-transparent'
             }`}
-            onClick={() => onChangeCanvasBg("solid")}
+            onClick={() => onChangeCanvasBg('solid')}
           >
             <Square className="size-3.5 shrink-0" />
           </button>
@@ -318,12 +261,7 @@ export default function WorkbenchHeader({
           </button>
 
           {/* Click outside backdrop */}
-          {showThemePopover && (
-            <div
-              className="fixed inset-0 z-40"
-              onClick={() => setShowThemePopover(false)}
-            />
-          )}
+          {showThemePopover && <div className="fixed inset-0 z-40" onClick={() => setShowThemePopover(false)} />}
 
           {/* Theme Customizer Popover */}
           {showThemePopover && (
@@ -336,23 +274,19 @@ export default function WorkbenchHeader({
                   </div>
                   <div>
                     <div className="flex items-center gap-1.5">
-                      <h4 className="text-foreground text-xs font-semibold tracking-tight">
-                        Theme Customizer
-                      </h4>
+                      <h4 className="text-foreground text-xs font-semibold tracking-tight">Theme Customizer</h4>
                       <span className="bg-muted text-muted-foreground rounded-[4px] px-1.5 py-0.5 font-mono text-[10px] font-medium uppercase">
                         OKLCH
                       </span>
                     </div>
-                    <p className="text-muted-foreground text-[11px]">
-                      Tokens & preview settings
-                    </p>
+                    <p className="text-muted-foreground text-[11px]">Tokens & preview settings</p>
                   </div>
                 </div>
                 <button
                   type="button"
                   onClick={() => {
-                    onChangeColorTheme("default");
-                    onChangeRadius("0.5rem");
+                    onChangeColorTheme('default')
+                    onChangeRadius('0.5rem')
                   }}
                   title="Reset to default theme & radius"
                   className="text-muted-foreground hover:text-foreground hover:bg-muted hover:border-border/60 flex shrink-0 cursor-pointer items-center gap-1 rounded-[6px] border border-transparent px-2 py-1 text-xs font-medium transition"
@@ -364,19 +298,17 @@ export default function WorkbenchHeader({
 
               {/* Appearance / Color Mode */}
               <div className="mb-3.5 space-y-1.5">
-                <label className="text-muted-foreground text-xs font-medium">
-                  Appearance
-                </label>
+                <label className="text-muted-foreground text-xs font-medium">Appearance</label>
                 <div className="border-border/60 bg-muted/40 grid grid-cols-2 gap-1 rounded-[8px] border p-1">
                   <button
                     type="button"
                     onClick={() => {
-                      if (isDark) onToggleDark();
+                      if (isDark) onToggleDark()
                     }}
                     className={`flex cursor-pointer items-center justify-center gap-2 rounded-[6px] py-1.5 text-xs font-medium transition ${
                       !isDark
-                        ? "bg-background text-foreground border-border/80 border font-semibold shadow-xs"
-                        : "text-muted-foreground hover:text-foreground"
+                        ? 'bg-background text-foreground border-border/80 border font-semibold shadow-xs'
+                        : 'text-muted-foreground hover:text-foreground'
                     }`}
                   >
                     <Sun className="size-3.5" />
@@ -385,12 +317,12 @@ export default function WorkbenchHeader({
                   <button
                     type="button"
                     onClick={() => {
-                      if (!isDark) onToggleDark();
+                      if (!isDark) onToggleDark()
                     }}
                     className={`flex cursor-pointer items-center justify-center gap-2 rounded-[6px] py-1.5 text-xs font-medium transition ${
                       isDark
-                        ? "bg-background text-foreground border-border/80 border font-semibold shadow-xs"
-                        : "text-muted-foreground hover:text-foreground"
+                        ? 'bg-background text-foreground border-border/80 border font-semibold shadow-xs'
+                        : 'text-muted-foreground hover:text-foreground'
                     }`}
                   >
                     <Moon className="size-3.5" />
@@ -402,36 +334,26 @@ export default function WorkbenchHeader({
               {/* Accent Color */}
               <div className="mb-3.5 space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <label className="text-muted-foreground text-xs font-medium">
-                    Accent Color
-                  </label>
+                  <label className="text-muted-foreground text-xs font-medium">Accent Color</label>
                   <span className="text-muted-foreground flex items-center gap-1.5 font-mono text-[11px] capitalize">
                     <span
                       className="size-2 rounded-full border border-black/10 dark:border-white/20"
                       style={{
                         backgroundColor:
-                          activeColorTheme === "default"
+                          activeColorTheme === 'default'
                             ? isDark
-                              ? "#fafafa"
-                              : "#18181b"
-                            : COLOR_THEMES.find(
-                                (t) => t.id === activeColorTheme,
-                              )?.swatch || "#18181b",
+                              ? '#fafafa'
+                              : '#18181b'
+                            : COLOR_THEMES.find((t) => t.id === activeColorTheme)?.swatch || '#18181b',
                       }}
                     />
-                    {COLOR_THEMES.find((t) => t.id === activeColorTheme)
-                      ?.name || "Neutral"}
+                    {COLOR_THEMES.find((t) => t.id === activeColorTheme)?.name || 'Neutral'}
                   </span>
                 </div>
                 <div className="grid grid-cols-3 gap-1.5">
                   {COLOR_THEMES.map((theme) => {
-                    const isSelected = activeColorTheme === theme.id;
-                    const swatchBg =
-                      theme.id === "default"
-                        ? isDark
-                          ? "#fafafa"
-                          : "#18181b"
-                        : theme.swatch;
+                    const isSelected = activeColorTheme === theme.id
+                    const swatchBg = theme.id === 'default' ? (isDark ? '#fafafa' : '#18181b') : theme.swatch
                     return (
                       <button
                         key={theme.id}
@@ -440,8 +362,8 @@ export default function WorkbenchHeader({
                         title={theme.name}
                         className={`group flex cursor-pointer items-center gap-2 rounded-[6px] border px-2 py-1.5 text-xs font-medium transition ${
                           isSelected
-                            ? "border-primary bg-primary/10 text-foreground font-semibold shadow-2xs"
-                            : "border-border/50 bg-background/60 text-muted-foreground hover:border-border hover:bg-muted/60 hover:text-foreground"
+                            ? 'border-primary bg-primary/10 text-foreground font-semibold shadow-2xs'
+                            : 'border-border/50 bg-background/60 text-muted-foreground hover:border-border hover:bg-muted/60 hover:text-foreground'
                         }`}
                       >
                         <span
@@ -451,20 +373,20 @@ export default function WorkbenchHeader({
                           {isSelected && (
                             <Check
                               className={`size-2 stroke-[3] ${
-                                theme.id === "default"
+                                theme.id === 'default'
                                   ? isDark
-                                    ? "text-black"
-                                    : "text-white"
-                                  : theme.id === "amber" || theme.id === "cyan"
-                                    ? "text-black"
-                                    : "text-white"
+                                    ? 'text-black'
+                                    : 'text-white'
+                                  : theme.id === 'amber' || theme.id === 'cyan'
+                                    ? 'text-black'
+                                    : 'text-white'
                               }`}
                             />
                           )}
                         </span>
                         <span className="truncate">{theme.name}</span>
                       </button>
-                    );
+                    )
                   })}
                 </div>
               </div>
@@ -472,17 +394,14 @@ export default function WorkbenchHeader({
               {/* Border Radius */}
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <label className="text-muted-foreground text-xs font-medium">
-                    Border Radius
-                  </label>
+                  <label className="text-muted-foreground text-xs font-medium">Border Radius</label>
                   <span className="text-muted-foreground font-mono text-[11px]">
-                    {RADIUS_PRESETS.find((r) => r.value === activeRadius)
-                      ?.name || activeRadius}
+                    {RADIUS_PRESETS.find((r) => r.value === activeRadius)?.name || activeRadius}
                   </span>
                 </div>
                 <div className="border-border/60 bg-muted/40 grid grid-cols-4 gap-1 rounded-[8px] border p-1">
                   {RADIUS_PRESETS.map((r) => {
-                    const isSelected = activeRadius === r.value;
+                    const isSelected = activeRadius === r.value
                     return (
                       <button
                         key={r.id}
@@ -491,13 +410,13 @@ export default function WorkbenchHeader({
                         title={r.name}
                         className={`flex cursor-pointer items-center justify-center rounded-[6px] py-1.5 font-mono text-xs transition ${
                           isSelected
-                            ? "bg-background text-foreground border-border/80 border font-semibold shadow-xs"
-                            : "text-muted-foreground hover:text-foreground hover:bg-background/40"
+                            ? 'bg-background text-foreground border-border/80 border font-semibold shadow-xs'
+                            : 'text-muted-foreground hover:text-foreground hover:bg-background/40'
                         }`}
                       >
                         {r.label}
                       </button>
-                    );
+                    )
                   })}
                 </div>
               </div>
@@ -508,15 +427,11 @@ export default function WorkbenchHeader({
         {/* Dark/Light mode toggle */}
         <button
           type="button"
-          title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+          title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
           className="border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md border shadow-xs transition"
           onClick={onToggleDark}
         >
-          {isDark ? (
-            <Sun className="size-4 shrink-0" />
-          ) : (
-            <Moon className="size-4 shrink-0" />
-          )}
+          {isDark ? <Sun className="size-4 shrink-0" /> : <Moon className="size-4 shrink-0" />}
         </button>
 
         <div className="bg-border h-4 w-px shrink-0" />
@@ -527,8 +442,8 @@ export default function WorkbenchHeader({
           title="Toggle Test Bench & Inspector"
           className={`flex h-8 shrink-0 cursor-pointer items-center gap-1.5 rounded-md border px-2.5 text-xs font-medium whitespace-nowrap shadow-xs transition ${
             isInspectorOpen
-              ? "bg-primary text-primary-foreground border-primary"
-              : "border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted"
+              ? 'bg-primary text-primary-foreground border-primary'
+              : 'border-border bg-background text-muted-foreground hover:text-foreground hover:bg-muted'
           }`}
           onClick={onToggleInspector}
         >
@@ -537,5 +452,5 @@ export default function WorkbenchHeader({
         </button>
       </div>
     </header>
-  );
+  )
 }

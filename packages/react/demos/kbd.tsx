@@ -1,23 +1,17 @@
-import Story from "../../components/story/Story";
-import { Button } from "@react-registry/button";
-import { Kbd } from "@react-registry/kbd";
+import Story from '../../components/story/Story'
+import { Button } from '@react-registry/button'
+import { Kbd } from '@react-registry/kbd'
 
 export default function KbdDemo() {
   return (
     <>
-      <Story
-        title="Default"
-        description="Inline keyboard hint styled with muted surface and mono font."
-      >
+      <Story title="Default" description="Inline keyboard hint styled with muted surface and mono font.">
         <p className="text-sm">
           Press <Kbd>⌘</Kbd> <Kbd>K</Kbd> to open the command palette.
         </p>
       </Story>
 
-      <Story
-        title="Single key"
-        description="One-letter shortcuts for arrow keys and modifiers."
-      >
+      <Story title="Single key" description="One-letter shortcuts for arrow keys and modifiers.">
         <div className="flex flex-wrap items-center gap-2 text-sm">
           <Kbd>↑</Kbd>
           <Kbd>↓</Kbd>
@@ -28,20 +22,13 @@ export default function KbdDemo() {
         </div>
       </Story>
 
-      <Story
-        title="Modifier combos"
-        description="Group related keys inline — each key is its own chip."
-      >
+      <Story title="Modifier combos" description="Group related keys inline — each key is its own chip.">
         <p className="text-sm">
-          Save with <Kbd>⌘</Kbd> <Kbd>S</Kbd> or <Kbd>Ctrl</Kbd> <Kbd>S</Kbd> on
-          Windows.
+          Save with <Kbd>⌘</Kbd> <Kbd>S</Kbd> or <Kbd>Ctrl</Kbd> <Kbd>S</Kbd> on Windows.
         </p>
       </Story>
 
-      <Story
-        title="In a button row"
-        description="Pair with Button for shortcut affordances on toolbars."
-      >
+      <Story title="In a button row" description="Pair with Button for shortcut affordances on toolbars.">
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm">
             Search
@@ -54,12 +41,9 @@ export default function KbdDemo() {
         </div>
       </Story>
 
-      <Story
-        title="Long label"
-        description="Chips grow with content — no truncation on wider labels."
-      >
+      <Story title="Long label" description="Chips grow with content — no truncation on wider labels.">
         <Kbd>Shift</Kbd>
       </Story>
     </>
-  );
+  )
 }

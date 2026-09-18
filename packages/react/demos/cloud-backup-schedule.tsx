@@ -1,5 +1,5 @@
-import Story from "../../components/story/Story";
-import { CloudBackupSchedule } from "@/components/blocks/cloud-backup-schedule/CloudBackupSchedule";
+import Story from '../../components/story/Story'
+import { CloudBackupSchedule } from '@/components/blocks/cloud-backup-schedule/CloudBackupSchedule'
 
 export default function CloudBackupScheduleDemo() {
   return (
@@ -15,12 +15,7 @@ export default function CloudBackupScheduleDemo() {
         title="High Storage Utilization"
         description="Backup scheduler showing near-capacity storage quota requiring retention adjustment."
       >
-        <CloudBackupSchedule
-          storageUsedGb={92.4}
-          storageTotalGb={100}
-          retentionDays={14}
-          frequency="Every 6 hours"
-        />
+        <CloudBackupSchedule storageUsedGb={92.4} storageTotalGb={100} retentionDays={14} frequency="Every 6 hours" />
       </Story>
 
       <Story
@@ -36,5 +31,5 @@ export default function CloudBackupScheduleDemo() {
         />
       </Story>
     </>
-  );
+  )
 }

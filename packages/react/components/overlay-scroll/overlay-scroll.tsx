@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import * as React from "react";
-import { cn } from "@/lib/utils";
+import * as React from 'react'
+import { cn } from '@/lib/utils'
 
 // Slack-style overlay scrollbar. Hides the native scrollbar entirely so the
 // scrolled content uses the full container width (no reservation), then draws
@@ -66,223 +66,207 @@ const overlayScrollCss = `
   background: var(--foreground) !important;
   width: 8px !important;
 }
-`;
+`
 
 function OverlayScrollStyle() {
-  return <style dangerouslySetInnerHTML={{ __html: overlayScrollCss }} />;
+  return <style dangerouslySetInnerHTML={{ __html: overlayScrollCss }} />
 }
 
 export interface OverlayScrollHandle {
   /** Underlying scroller DOM element; call .scrollTo() on it from a parent. */
-  scrollerEl: HTMLElement | null;
+  scrollerEl: HTMLElement | null
   /** Force thumb recalc after a non-DOM size change. */
-  recompute: () => void;
+  recompute: () => void
 }
 
 export interface OverlayScrollProps {
   /** Thumb width in px when idle. Expands to ~2x on hover / drag. */
-  thumbWidth?: number;
+  thumbWidth?: number
   /** Right offset of the thumb from the inner edge, in px. */
-  thumbOffset?: number;
+  thumbOffset?: number
   /** ms of scroll inactivity before the thumb fades. */
-  idleHideMs?: number;
+  idleHideMs?: number
   /** Allow dragging the thumb to scroll. */
-  draggable?: boolean;
+  draggable?: boolean
   /** Tailwind classes forwarded to the outer wrapper. */
-  className?: string;
-  children?: React.ReactNode;
+  className?: string
+  children?: React.ReactNode
 }
 
 const OverlayScroll = React.forwardRef<OverlayScrollHandle, OverlayScrollProps>(
-  (
-    {
-      thumbWidth = 4,
-      thumbOffset = 2,
-      idleHideMs = 800,
-      draggable = true,
-      className,
-      children,
-    },
-    ref,
-  ) => {
-    const scrollerRef = React.useRef<HTMLDivElement | null>(null);
-    const thumbRef = React.useRef<HTMLDivElement | null>(null);
+  ({ thumbWidth = 4, thumbOffset = 2, idleHideMs = 800, draggable = true, className, children }, ref) => {
+    const scrollerRef = React.useRef<HTMLDivElement | null>(null)
+    const thumbRef = React.useRef<HTMLDivElement | null>(null)
 
-    const [thumbHeight, setThumbHeight] = React.useState(0);
-    const [thumbTop, setThumbTop] = React.useState(0);
-    const [showThumb, setShowThumb] = React.useState(false);
-    const [isDragging, setIsDragging] = React.useState(false);
+    const [thumbHeight, setThumbHeight] = React.useState(0)
+    const [thumbTop, setThumbTop] = React.useState(0)
+    const [showThumb, setShowThumb] = React.useState(false)
+    const [isDragging, setIsDragging] = React.useState(false)
 
     // Refs that hold the latest value for callbacks bound once (no re-bind on
     // every render). Mirrors the Vue refs that the closures read directly.
-    const isHoveredRef = React.useRef(false);
-    const isDraggingRef = React.useRef(false);
-    const thumbHeightRef = React.useRef(0);
-    const hideTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(
-      null,
-    );
-    const idleHideMsRef = React.useRef(idleHideMs);
-    const draggableRef = React.useRef(draggable);
+    const isHoveredRef = React.useRef(false)
+    const isDraggingRef = React.useRef(false)
+    const thumbHeightRef = React.useRef(0)
+    const hideTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+    const idleHideMsRef = React.useRef(idleHideMs)
+    const draggableRef = React.useRef(draggable)
 
     React.useEffect(() => {
-      idleHideMsRef.current = idleHideMs;
-    }, [idleHideMs]);
+      idleHideMsRef.current = idleHideMs
+    }, [idleHideMs])
     React.useEffect(() => {
-      draggableRef.current = draggable;
-    }, [draggable]);
+      draggableRef.current = draggable
+    }, [draggable])
 
     const recompute = React.useCallback(() => {
-      const el = scrollerRef.current;
-      if (!el) return;
-      const ratio = el.clientHeight / el.scrollHeight;
+      const el = scrollerRef.current
+      if (!el) return
+      const ratio = el.clientHeight / el.scrollHeight
       if (!Number.isFinite(ratio) || ratio >= 1) {
-        thumbHeightRef.current = 0;
-        setThumbHeight(0);
-        return;
+        thumbHeightRef.current = 0
+        setThumbHeight(0)
+        return
       }
-      const h = Math.max(24, el.clientHeight * ratio);
-      thumbHeightRef.current = h;
-      setThumbHeight(h);
-      const maxScroll = el.scrollHeight - el.clientHeight;
-      const maxThumb = el.clientHeight - h;
-      setThumbTop(maxScroll > 0 ? (el.scrollTop / maxScroll) * maxThumb : 0);
-    }, []);
+      const h = Math.max(24, el.clientHeight * ratio)
+      thumbHeightRef.current = h
+      setThumbHeight(h)
+      const maxScroll = el.scrollHeight - el.clientHeight
+      const maxThumb = el.clientHeight - h
+      setThumbTop(maxScroll > 0 ? (el.scrollTop / maxScroll) * maxThumb : 0)
+    }, [])
 
     const flashThumb = React.useCallback(() => {
-      if (thumbHeightRef.current === 0) return;
-      setShowThumb(true);
-      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+      if (thumbHeightRef.current === 0) return
+      setShowThumb(true)
+      if (hideTimerRef.current) clearTimeout(hideTimerRef.current)
       hideTimerRef.current = setTimeout(() => {
-        if (!isHoveredRef.current && !isDraggingRef.current)
-          setShowThumb(false);
-      }, idleHideMsRef.current);
-    }, []);
+        if (!isHoveredRef.current && !isDraggingRef.current) setShowThumb(false)
+      }, idleHideMsRef.current)
+    }, [])
 
     const onScroll = React.useCallback(() => {
-      recompute();
-      flashThumb();
-    }, [recompute, flashThumb]);
+      recompute()
+      flashThumb()
+    }, [recompute, flashThumb])
 
     const onEnter = React.useCallback(() => {
-      isHoveredRef.current = true;
-      recompute();
-      if (thumbHeightRef.current > 0) setShowThumb(true);
-    }, [recompute]);
+      isHoveredRef.current = true
+      recompute()
+      if (thumbHeightRef.current > 0) setShowThumb(true)
+    }, [recompute])
 
     const onLeave = React.useCallback(() => {
-      isHoveredRef.current = false;
-      if (isDraggingRef.current) return;
-      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
-      setShowThumb(false);
-    }, []);
+      isHoveredRef.current = false
+      if (isDraggingRef.current) return
+      if (hideTimerRef.current) clearTimeout(hideTimerRef.current)
+      setShowThumb(false)
+    }, [])
 
     // Pointer Events cover mouse + touch + pen on every modern browser
     // (Chrome 55+, Firefox 59+, Safari 13+, Edge). setPointerCapture keeps the
     // drag alive even if the pointer leaves the thumb, matching native feel.
-    const activePointerIdRef = React.useRef<number | null>(null);
-    const dragStartYRef = React.useRef(0);
-    const dragStartScrollTopRef = React.useRef(0);
+    const activePointerIdRef = React.useRef<number | null>(null)
+    const dragStartYRef = React.useRef(0)
+    const dragStartScrollTopRef = React.useRef(0)
 
     const onPointerMove = React.useCallback((e: PointerEvent) => {
-      if (activePointerIdRef.current !== e.pointerId) return;
-      const el = scrollerRef.current;
-      if (!el) return;
-      const maxScroll = el.scrollHeight - el.clientHeight;
-      const maxThumb = el.clientHeight - thumbHeightRef.current;
-      if (maxThumb <= 0) return;
-      const scrollRatio = maxScroll / maxThumb;
-      el.scrollTop =
-        dragStartScrollTopRef.current +
-        (e.clientY - dragStartYRef.current) * scrollRatio;
-    }, []);
+      if (activePointerIdRef.current !== e.pointerId) return
+      const el = scrollerRef.current
+      if (!el) return
+      const maxScroll = el.scrollHeight - el.clientHeight
+      const maxThumb = el.clientHeight - thumbHeightRef.current
+      if (maxThumb <= 0) return
+      const scrollRatio = maxScroll / maxThumb
+      el.scrollTop = dragStartScrollTopRef.current + (e.clientY - dragStartYRef.current) * scrollRatio
+    }, [])
 
-    const endDragRef = React.useRef<(e?: PointerEvent) => void>(() => {});
+    const endDragRef = React.useRef<(e?: PointerEvent) => void>(() => {})
 
     const endDrag = React.useCallback(
       (e?: PointerEvent) => {
-        if (e && activePointerIdRef.current !== e.pointerId) return;
-        isDraggingRef.current = false;
-        setIsDragging(false);
+        if (e && activePointerIdRef.current !== e.pointerId) return
+        isDraggingRef.current = false
+        setIsDragging(false)
         if (thumbRef.current && activePointerIdRef.current !== null) {
           try {
-            thumbRef.current.releasePointerCapture(activePointerIdRef.current);
+            thumbRef.current.releasePointerCapture(activePointerIdRef.current)
           } catch {
             // pointer may already be released; ignore
           }
         }
-        activePointerIdRef.current = null;
-        const handler = endDragRef.current;
-        thumbRef.current?.removeEventListener("pointermove", onPointerMove);
-        thumbRef.current?.removeEventListener("pointerup", handler);
-        thumbRef.current?.removeEventListener("pointercancel", handler);
-        if (!isHoveredRef.current) setShowThumb(false);
+        activePointerIdRef.current = null
+        const handler = endDragRef.current
+        thumbRef.current?.removeEventListener('pointermove', onPointerMove)
+        thumbRef.current?.removeEventListener('pointerup', handler)
+        thumbRef.current?.removeEventListener('pointercancel', handler)
+        if (!isHoveredRef.current) setShowThumb(false)
       },
       [onPointerMove],
-    );
+    )
 
     React.useLayoutEffect(() => {
-      endDragRef.current = endDrag;
-    }, [endDrag]);
+      endDragRef.current = endDrag
+    }, [endDrag])
 
     const onThumbPointerDown = React.useCallback(
       (e: React.PointerEvent) => {
-        if (!draggableRef.current || !scrollerRef.current || !thumbRef.current)
-          return;
-        if (e.pointerType === "mouse" && e.button !== 0) return;
-        e.preventDefault();
-        isDraggingRef.current = true;
-        setIsDragging(true);
-        activePointerIdRef.current = e.pointerId;
-        dragStartYRef.current = e.clientY;
-        dragStartScrollTopRef.current = scrollerRef.current.scrollTop;
-        thumbRef.current.setPointerCapture(e.pointerId);
-        thumbRef.current.addEventListener("pointermove", onPointerMove);
-        thumbRef.current.addEventListener("pointerup", endDrag);
-        thumbRef.current.addEventListener("pointercancel", endDrag);
+        if (!draggableRef.current || !scrollerRef.current || !thumbRef.current) return
+        if (e.pointerType === 'mouse' && e.button !== 0) return
+        e.preventDefault()
+        isDraggingRef.current = true
+        setIsDragging(true)
+        activePointerIdRef.current = e.pointerId
+        dragStartYRef.current = e.clientY
+        dragStartScrollTopRef.current = scrollerRef.current.scrollTop
+        thumbRef.current.setPointerCapture(e.pointerId)
+        thumbRef.current.addEventListener('pointermove', onPointerMove)
+        thumbRef.current.addEventListener('pointerup', endDrag)
+        thumbRef.current.addEventListener('pointercancel', endDrag)
       },
       [onPointerMove, endDrag],
-    );
+    )
 
     React.useEffect(() => {
-      recompute();
-      const scroller = scrollerRef.current;
-      if (!scroller) return;
+      recompute()
+      const scroller = scrollerRef.current
+      if (!scroller) return
 
-      const resizeObserver = new ResizeObserver(recompute);
-      resizeObserver.observe(scroller);
+      const resizeObserver = new ResizeObserver(recompute)
+      resizeObserver.observe(scroller)
 
-      const inner = scroller.firstElementChild as HTMLElement | null;
-      let mutationObserver: MutationObserver | null = null;
+      const inner = scroller.firstElementChild as HTMLElement | null
+      let mutationObserver: MutationObserver | null = null
       if (inner) {
-        resizeObserver.observe(inner);
-        mutationObserver = new MutationObserver(recompute);
-        mutationObserver.observe(inner, { childList: true, subtree: true });
+        resizeObserver.observe(inner)
+        mutationObserver = new MutationObserver(recompute)
+        mutationObserver.observe(inner, { childList: true, subtree: true })
       }
 
       return () => {
-        resizeObserver.disconnect();
-        mutationObserver?.disconnect();
-        if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
-        endDrag();
-      };
-    }, [recompute, endDrag]);
+        resizeObserver.disconnect()
+        mutationObserver?.disconnect()
+        if (hideTimerRef.current) clearTimeout(hideTimerRef.current)
+        endDrag()
+      }
+    }, [recompute, endDrag])
 
     React.useImperativeHandle(
       ref,
       () => ({
         get scrollerEl() {
-          return scrollerRef.current;
+          return scrollerRef.current
         },
         recompute,
       }),
       [recompute],
-    );
+    )
 
     return (
       <div
         data-uipkge=""
         data-slot="overlay-scroll"
-        className={cn("overlay-scroll relative", className)}
+        className={cn('overlay-scroll relative', className)}
         onMouseEnter={onEnter}
         onMouseLeave={onLeave}
       >
@@ -300,10 +284,10 @@ const OverlayScroll = React.forwardRef<OverlayScrollHandle, OverlayScrollProps>(
           data-slot="overlay-scroll-thumb"
           aria-hidden="true"
           className={cn(
-            "overlay-scroll__thumb",
-            showThumb && "overlay-scroll__thumb--visible",
-            isDragging && "overlay-scroll__thumb--dragging",
-            draggable && "overlay-scroll__thumb--draggable",
+            'overlay-scroll__thumb',
+            showThumb && 'overlay-scroll__thumb--visible',
+            isDragging && 'overlay-scroll__thumb--dragging',
+            draggable && 'overlay-scroll__thumb--draggable',
           )}
           style={{
             width: `${thumbWidth}px`,
@@ -318,9 +302,9 @@ const OverlayScroll = React.forwardRef<OverlayScrollHandle, OverlayScrollProps>(
           onPointerDown={onThumbPointerDown}
         />
       </div>
-    );
+    )
   },
-);
-OverlayScroll.displayName = "OverlayScroll";
+)
+OverlayScroll.displayName = 'OverlayScroll'
 
-export { OverlayScroll };
+export { OverlayScroll }

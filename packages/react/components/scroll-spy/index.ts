@@ -22,4 +22,4 @@ export {
   type ScrollSpyColor,
   type ScrollSpyPosition,
   type ScrollSpyRailPosition,
-} from "./scroll-spy";
+} from './scroll-spy'

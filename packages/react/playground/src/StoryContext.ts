@@ -1,8 +1,8 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext } from 'react'
 
-export const StoryCodeContext = createContext<Record<string, string>>({});
+export const StoryCodeContext = createContext<Record<string, string>>({})
 
 export function useStoryCode(title: string) {
-  const codeMap = useContext(StoryCodeContext);
-  return codeMap[title] || "";
+  const codeMap = useContext(StoryCodeContext)
+  return codeMap[title] || ''
 }

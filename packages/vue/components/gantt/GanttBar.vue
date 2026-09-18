@@ -1,39 +1,38 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue";
-import { cn } from "@/lib/utils";
-import type { GanttTask } from "./types";
+import type { HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils'
+import type { GanttTask } from './types'
 
 interface Props {
-  task: GanttTask;
-  left: number;
-  width: number;
-  top: number;
-  height: number;
-  class?: HTMLAttributes["class"];
+  task: GanttTask
+  left: number
+  width: number
+  top: number
+  height: number
+  class?: HTMLAttributes['class']
 }
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 
 const emits = defineEmits<{
-  (e: "click", task: GanttTask): void;
-}>();
+  (e: 'click', task: GanttTask): void
+}>()
 
 const statusColors: Record<string, string> = {
-  done: "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border-emerald-500/40",
-  "in-progress": "bg-primary/20 text-primary border-primary/40",
-  "at-risk":
-    "bg-amber-500/20 text-amber-700 dark:text-amber-300 border-amber-500/40",
-  todo: "bg-muted/80 text-muted-foreground border-border",
-  blocked: "bg-destructive/20 text-destructive border-destructive/40",
-};
+  done: 'bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border-emerald-500/40',
+  'in-progress': 'bg-primary/20 text-primary border-primary/40',
+  'at-risk': 'bg-amber-500/20 text-amber-700 dark:text-amber-300 border-amber-500/40',
+  todo: 'bg-muted/80 text-muted-foreground border-border',
+  blocked: 'bg-destructive/20 text-destructive border-destructive/40',
+}
 
 const progressColors: Record<string, string> = {
-  done: "bg-emerald-500/40",
-  "in-progress": "bg-primary/40",
-  "at-risk": "bg-amber-500/40",
-  todo: "bg-muted-foreground/20",
-  blocked: "bg-destructive/40",
-};
+  done: 'bg-emerald-500/40',
+  'in-progress': 'bg-primary/40',
+  'at-risk': 'bg-amber-500/40',
+  todo: 'bg-muted-foreground/20',
+  blocked: 'bg-destructive/40',
+}
 </script>
 
 <template>
@@ -57,9 +56,7 @@ const progressColors: Record<string, string> = {
     @click="$emit('click', task)"
   >
     <span class="truncate">{{ task.name }}</span>
-    <span v-if="task.progress != null" class="font-mono text-xs opacity-80">
-      {{ task.progress }}%
-    </span>
+    <span v-if="task.progress != null" class="font-mono text-xs opacity-80"> {{ task.progress }}% </span>
   </div>
 
   <!-- Standard Deliverable Bar -->
@@ -86,23 +83,13 @@ const progressColors: Record<string, string> = {
     <div
       v-if="task.progress != null && task.progress > 0"
       :style="{ width: `${task.progress}%` }"
-      :class="
-        cn(
-          'absolute inset-y-0 left-0 transition-[width]',
-          progressColors[task.status ?? 'in-progress'],
-        )
-      "
+      :class="cn('absolute inset-y-0 left-0 transition-[width]', progressColors[task.status ?? 'in-progress'])"
     />
 
     <!-- Content -->
-    <div
-      class="relative z-10 flex w-full min-w-0 items-center justify-between px-2"
-    >
+    <div class="relative z-10 flex w-full min-w-0 items-center justify-between px-2">
       <span class="truncate font-medium">{{ task.name }}</span>
-      <span
-        v-if="task.progress != null"
-        class="ml-1 shrink-0 font-mono text-xs opacity-80"
-      >
+      <span v-if="task.progress != null" class="ml-1 shrink-0 font-mono text-xs opacity-80">
         {{ task.progress }}%
       </span>
     </div>

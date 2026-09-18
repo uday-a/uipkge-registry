@@ -4,4 +4,4 @@ export {
   type ChoroplethDatum,
   type ChoroplethPin,
   type ChoroplethLink,
-} from "./ChoroplethMapChart";
+} from './ChoroplethMapChart'

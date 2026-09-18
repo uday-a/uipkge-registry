@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import * as React from "react";
-import { cn } from "@/lib/utils";
+import * as React from 'react'
+import { cn } from '@/lib/utils'
 import {
   formatAbsoluteTime,
   formatVisibleTime,
@@ -10,30 +10,27 @@ import {
   type RelativeTimeNumeric,
   type RelativeTimeParseAs,
   type RelativeTimeStyle,
-} from "./format-relative-time";
+} from './format-relative-time'
 
-export interface RelativeTimeProps extends Omit<
-  React.TimeHTMLAttributes<HTMLTimeElement>,
-  "dateTime"
-> {
+export interface RelativeTimeProps extends Omit<React.TimeHTMLAttributes<HTMLTimeElement>, 'dateTime'> {
   /** Instant to display. Accepts a Date, ISO string, or epoch ms. */
-  date: Date | string | number;
+  date: Date | string | number
   /** Clock used for the delta. Pass in tests and SSR to keep output stable. */
-  now?: Date | string | number;
+  now?: Date | string | number
   /** Intl relative style. */
-  formatStyle?: RelativeTimeStyle;
+  formatStyle?: RelativeTimeStyle
   /** `auto` yields "yesterday"; `always` yields "1 day ago". */
-  numeric?: RelativeTimeNumeric;
+  numeric?: RelativeTimeNumeric
   /** BCP 47 locale. Defaults to the runtime locale. */
-  locale?: string;
+  locale?: string
   /** Visible label: relative (default), absolute clock, or both. */
-  display?: RelativeTimeDisplay;
+  display?: RelativeTimeDisplay
   /** IANA zone for absolute text and the title tooltip. Omit for the browser local zone. Pass `UTC` for UTC. */
-  timeZone?: string;
+  timeZone?: string
   /** How to parse date strings with no offset. `local` is JS default; `utc` treats naive ISO as UTC. */
-  parseAs?: RelativeTimeParseAs;
+  parseAs?: RelativeTimeParseAs
   /** Tick interval in ms. `0` freezes the clock. */
-  updateInterval?: number;
+  updateInterval?: number
 }
 
 const RelativeTime = React.forwardRef<HTMLTimeElement, RelativeTimeProps>(
@@ -41,12 +38,12 @@ const RelativeTime = React.forwardRef<HTMLTimeElement, RelativeTimeProps>(
     {
       date,
       now,
-      formatStyle = "long",
-      numeric = "auto",
+      formatStyle = 'long',
+      numeric = 'auto',
       locale,
-      display = "relative",
+      display = 'relative',
       timeZone,
-      parseAs = "local",
+      parseAs = 'local',
       updateInterval = 30_000,
       className,
       children,
@@ -54,17 +51,17 @@ const RelativeTime = React.forwardRef<HTMLTimeElement, RelativeTimeProps>(
     },
     ref,
   ) => {
-    const [tick, setTick] = React.useState(0);
+    const [tick, setTick] = React.useState(0)
 
     React.useEffect(() => {
-      if (updateInterval <= 0 || now !== undefined) return;
-      const timer = setInterval(() => setTick((n) => n + 1), updateInterval);
-      return () => clearInterval(timer);
-    }, [updateInterval, now]);
+      if (updateInterval <= 0 || now !== undefined) return
+      const timer = setInterval(() => setTick((n) => n + 1), updateInterval)
+      return () => clearInterval(timer)
+    }, [updateInterval, now])
 
-    const resolvedDate = toDate(date, parseAs);
-    const resolvedNow = now === undefined ? new Date() : toDate(now, parseAs);
-    void tick;
+    const resolvedDate = toDate(date, parseAs)
+    const resolvedNow = now === undefined ? new Date() : toDate(now, parseAs)
+    void tick
 
     const label = formatVisibleTime(resolvedDate, resolvedNow, {
       display,
@@ -72,8 +69,8 @@ const RelativeTime = React.forwardRef<HTMLTimeElement, RelativeTimeProps>(
       numeric,
       locale,
       timeZone,
-    });
-    const absolute = formatAbsoluteTime(resolvedDate, locale, timeZone);
+    })
+    const absolute = formatAbsoluteTime(resolvedDate, locale, timeZone)
 
     return (
       <time
@@ -81,18 +78,18 @@ const RelativeTime = React.forwardRef<HTMLTimeElement, RelativeTimeProps>(
         data-uipkge=""
         data-slot="relative-time"
         data-display={display}
-        data-timezone={timeZone || "local"}
+        data-timezone={timeZone || 'local'}
         data-parse-as={parseAs}
         dateTime={resolvedDate.toISOString()}
         title={absolute}
-        className={cn("text-muted-foreground text-sm tabular-nums", className)}
+        className={cn('text-muted-foreground text-sm tabular-nums', className)}
         {...props}
       >
         {children ?? label}
       </time>
-    );
+    )
   },
-);
-RelativeTime.displayName = "RelativeTime";
+)
+RelativeTime.displayName = 'RelativeTime'
 
-export { RelativeTime };
+export { RelativeTime }

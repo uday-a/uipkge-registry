@@ -1,5 +1,1 @@
-export {
-  Countdown,
-  type CountdownProps,
-  type CountdownRenderProps,
-} from "./Countdown";
+export { Countdown, type CountdownProps, type CountdownRenderProps } from './Countdown'

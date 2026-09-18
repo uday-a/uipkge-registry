@@ -1,1 +1,1 @@
-export { TreeChart, type TreeChartProps } from "./TreeChart";
+export { TreeChart, type TreeChartProps } from './TreeChart'

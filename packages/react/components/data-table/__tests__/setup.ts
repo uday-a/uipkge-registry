@@ -1,5 +1,5 @@
-import "@testing-library/jest-dom/vitest";
-import * as React from "react";
+import '@testing-library/jest-dom/vitest'
+import * as React from 'react'
 
 class RO {
   observe() {}
@@ -7,13 +7,13 @@ class RO {
   disconnect() {}
 }
 // @ts-expect-error test polyfill
-globalThis.ResizeObserver = globalThis.ResizeObserver ?? RO;
+globalThis.ResizeObserver = globalThis.ResizeObserver ?? RO
 
 // IntersectionObserver polyfill for jsdom (marks elements as intersecting immediately)
 class IO {
-  private cb: IntersectionObserverCallback;
+  private cb: IntersectionObserverCallback
   constructor(cb: IntersectionObserverCallback) {
-    this.cb = cb;
+    this.cb = cb
   }
   observe(el: Element) {
     this.cb(
@@ -22,31 +22,29 @@ class IO {
           isIntersecting: true,
           target: el,
           intersectionRatio: 1,
-          boundingClientRect:
-            el.getBoundingClientRect?.() ?? ({} as DOMRectReadOnly),
-          intersectionRect:
-            el.getBoundingClientRect?.() ?? ({} as DOMRectReadOnly),
+          boundingClientRect: el.getBoundingClientRect?.() ?? ({} as DOMRectReadOnly),
+          intersectionRect: el.getBoundingClientRect?.() ?? ({} as DOMRectReadOnly),
           rootBounds: null,
           time: Date.now(),
         },
       ],
       this as unknown as IntersectionObserver,
-    );
+    )
   }
   unobserve() {}
   disconnect() {}
   takeRecords() {
-    return [];
+    return []
   }
-  root = null;
-  rootMargin = "";
-  thresholds = [];
+  root = null
+  rootMargin = ''
+  thresholds = []
 }
 // @ts-expect-error test polyfill
-globalThis.IntersectionObserver = IO;
+globalThis.IntersectionObserver = IO
 
 // Canvas 2D context stub for ECharts / zrender / charts
-if (typeof HTMLCanvasElement !== "undefined") {
+if (typeof HTMLCanvasElement !== 'undefined') {
   const dummyCtx = {
     fillRect: () => {},
     clearRect: () => {},
@@ -68,11 +66,7 @@ if (typeof HTMLCanvasElement !== "undefined") {
     rotate: () => {},
     arc: () => {},
     fill: () => {},
-    measureText: () => ({
-      width: 0,
-      actualBoundingBoxAscent: 0,
-      actualBoundingBoxDescent: 0,
-    }),
+    measureText: () => ({ width: 0, actualBoundingBoxAscent: 0, actualBoundingBoxDescent: 0 }),
     transform: () => {},
     rect: () => {},
     strokeRect: () => {},
@@ -87,16 +81,15 @@ if (typeof HTMLCanvasElement !== "undefined") {
     createPattern: () => null,
     createLinearGradient: () => ({ addColorStop: () => {} }),
     createRadialGradient: () => ({ addColorStop: () => {} }),
-  };
+  }
   // @ts-expect-error test polyfill
   HTMLCanvasElement.prototype.getContext = function (type: string) {
-    if (type === "2d") return dummyCtx;
-    return null;
-  };
+    if (type === '2d') return dummyCtx
+    return null
+  }
 }
 // @ts-expect-error test polyfill
-Element.prototype.scrollIntoView =
-  Element.prototype.scrollIntoView ?? (() => {});
+Element.prototype.scrollIntoView = Element.prototype.scrollIntoView ?? (() => {})
 // @ts-expect-error test polyfill
 globalThis.matchMedia =
   globalThis.matchMedia ??
@@ -109,50 +102,48 @@ globalThis.matchMedia =
     addEventListener: () => {},
     removeEventListener: () => {},
     dispatchEvent: () => false,
-  }));
+  }))
 
 // URL.createObjectURL for export tests
-if (typeof URL.createObjectURL !== "function") {
+if (typeof URL.createObjectURL !== 'function') {
   // @ts-expect-error test polyfill
-  URL.createObjectURL = () => "blob:test";
+  URL.createObjectURL = () => 'blob:test'
 }
-if (typeof URL.revokeObjectURL !== "function") {
+if (typeof URL.revokeObjectURL !== 'function') {
   // @ts-expect-error test polyfill
-  URL.revokeObjectURL = () => {};
+  URL.revokeObjectURL = () => {}
 }
 
 // Chart container client dimensions for ECharts/zrender in jsdom
-if (typeof HTMLElement !== "undefined") {
-  Object.defineProperty(HTMLElement.prototype, "clientWidth", {
+if (typeof HTMLElement !== 'undefined') {
+  Object.defineProperty(HTMLElement.prototype, 'clientWidth', {
     configurable: true,
     get() {
-      return 500;
+      return 500
     },
-  });
-  Object.defineProperty(HTMLElement.prototype, "clientHeight", {
+  })
+  Object.defineProperty(HTMLElement.prototype, 'clientHeight', {
     configurable: true,
     get() {
-      return 300;
+      return 300
     },
-  });
+  })
 }
 
-vi.mock("react-map-gl/mapbox", () => ({
+vi.mock('react-map-gl/mapbox', () => ({
   default: ({ children }: { children?: React.ReactNode }) =>
-    React.createElement("div", { className: "mock-map" }, children),
-  NavigationControl: () =>
-    React.createElement("div", { className: "mock-nav" }),
-  FullscreenControl: () =>
-    React.createElement("div", { className: "mock-fullscreen" }),
-  Marker: () => React.createElement("div"),
-  Popup: () => React.createElement("div"),
-  Layer: () => React.createElement("div"),
-  Source: () => React.createElement("div"),
-}));
+    React.createElement('div', { className: 'mock-map' }, children),
+  NavigationControl: () => React.createElement('div', { className: 'mock-nav' }),
+  FullscreenControl: () => React.createElement('div', { className: 'mock-fullscreen' }),
+  Marker: () => React.createElement('div'),
+  Popup: () => React.createElement('div'),
+  Layer: () => React.createElement('div'),
+  Source: () => React.createElement('div'),
+}))
 
-vi.mock("mapbox-gl", () => {
+vi.mock('mapbox-gl', () => {
   class NavigationControl {
-    showCompass = false;
+    showCompass = false
   }
   class FullscreenControl {}
   return {
@@ -163,10 +154,10 @@ vi.mock("mapbox-gl", () => {
     },
     NavigationControl,
     FullscreenControl,
-  };
-});
+  }
+})
 
-vi.mock("leaflet", () => {
+vi.mock('leaflet', () => {
   const fakeLayer = () => ({
     addTo: vi.fn().mockReturnThis(),
     remove: vi.fn().mockReturnThis(),
@@ -185,7 +176,7 @@ vi.mock("leaflet", () => {
     unbindTooltip: vi.fn(),
     clearLayers: vi.fn(),
     addData: vi.fn(),
-  });
+  })
   return {
     map: vi.fn(() => ({
       addLayer: vi.fn(),
@@ -231,5 +222,5 @@ vi.mock("leaflet", () => {
       attribution: vi.fn(() => ({ addTo: vi.fn(), remove: vi.fn() })),
     },
     Icon: { Default: { mergeOptions: vi.fn() } },
-  };
-});
+  }
+})

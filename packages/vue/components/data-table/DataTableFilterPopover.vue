@@ -22,244 +22,225 @@
  * makes "Reset" / per-section "Clear" behave intuitively (they clear
  * the draft, not the live table).
  */
-import type { Table } from "@tanstack/vue-table";
-import type { FilterDefinition, FilterOption } from "./DataTable.vue";
-import type { DateValue } from "@internationalized/date";
-import type { DateRange as RekaDateRange } from "reka-ui";
-import { computed, ref, watch } from "vue";
-import { CalendarDate } from "@internationalized/date";
+import type { Table } from '@tanstack/vue-table'
+import type { FilterDefinition, FilterOption } from './DataTable.vue'
+import type { DateValue } from '@internationalized/date'
+import type { DateRange as RekaDateRange } from 'reka-ui'
+import { computed, ref, watch } from 'vue'
+import { CalendarDate } from '@internationalized/date'
 
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { RangeCalendar } from "@/components/ui/range-calendar";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import { Check, SlidersHorizontal, X } from "lucide-vue-next";
+import { Input } from '@/components/ui/input'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Label } from '@/components/ui/label'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { RangeCalendar } from '@/components/ui/range-calendar'
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
+import { Check, SlidersHorizontal, X } from 'lucide-vue-next'
 
-type DraftDateValue = { from?: string; to?: string };
-type DraftValue = string[] | string | DraftDateValue | undefined;
-type Draft = Record<string, DraftValue>;
+type DraftDateValue = { from?: string; to?: string }
+type DraftValue = string[] | string | DraftDateValue | undefined
+type Draft = Record<string, DraftValue>
 
 function resolveOption(opt: string | FilterOption): FilterOption {
-  if (typeof opt === "string") return { value: opt, label: opt };
-  return opt;
+  if (typeof opt === 'string') return { value: opt, label: opt }
+  return opt
 }
 
 const props = defineProps<{
-  table: Table<any>;
-  filters: FilterDefinition[];
-  activeFilterCount: number;
-  isAnyFilterActive: boolean;
-  isServerSide: boolean;
-  getMultiSelectValue: (column: string) => string[];
-  getDateRangeValue: (column: string) => { from?: string; to?: string };
-  formatDateRange: (column: string) => string;
-  getCalendarModel: (column: string) => any;
-}>();
+  table: Table<any>
+  filters: FilterDefinition[]
+  activeFilterCount: number
+  isAnyFilterActive: boolean
+  isServerSide: boolean
+  getMultiSelectValue: (column: string) => string[]
+  getDateRangeValue: (column: string) => { from?: string; to?: string }
+  formatDateRange: (column: string) => string
+  getCalendarModel: (column: string) => any
+}>()
 
-const open = ref(false);
+const open = ref(false)
 
 const emit = defineEmits<{
-  (e: "clear-all"): void;
+  (e: 'clear-all'): void
   // Committed draft on Apply -- a `Record<columnId, value>` where each
   // value is the final shape TanStack's `setFilterValue` expects
   // (multiselect: string[]|undefined, text: string|undefined,
   //  date: {from?,to?}|undefined).
-  (e: "commit-draft", draft: Draft): void;
-  (e: "open"): void;
-}>();
+  (e: 'commit-draft', draft: Draft): void
+  (e: 'open'): void
+}>()
 
 // ── Draft state ──────────────────────────────────────────────────────
 // Seeded from real column filter values when the popover opens; cleared
 // when it closes. All in-popover UI binds to this map -- never to the
 // live TanStack filter values directly.
-const draft = ref<Draft>({});
+const draft = ref<Draft>({})
 
 function seedDraft() {
-  const next: Draft = {};
+  const next: Draft = {}
   for (const f of props.filters) {
-    if (f.type === "multiselect" || f.type === "select") {
-      next[f.column] = [...props.getMultiSelectValue(f.column)];
-    } else if (f.type === "date") {
-      const dr = props.getDateRangeValue(f.column);
-      next[f.column] = { from: dr.from, to: dr.to };
-    } else if (f.type === "text") {
-      const v = props.table.getColumn(f.column)?.getFilterValue() as
-        string | undefined;
-      next[f.column] = v ?? "";
+    if (f.type === 'multiselect' || f.type === 'select') {
+      next[f.column] = [...props.getMultiSelectValue(f.column)]
+    } else if (f.type === 'date') {
+      const dr = props.getDateRangeValue(f.column)
+      next[f.column] = { from: dr.from, to: dr.to }
+    } else if (f.type === 'text') {
+      const v = props.table.getColumn(f.column)?.getFilterValue() as string | undefined
+      next[f.column] = v ?? ''
     }
   }
-  draft.value = next;
+  draft.value = next
 }
 
 function getDraftMulti(column: string): string[] {
-  const v = draft.value[column];
-  return Array.isArray(v) ? v : [];
+  const v = draft.value[column]
+  return Array.isArray(v) ? v : []
 }
 
 function getDraftText(column: string): string {
-  const v = draft.value[column];
-  return typeof v === "string" ? v : "";
+  const v = draft.value[column]
+  return typeof v === 'string' ? v : ''
 }
 
 function getDraftDate(column: string): DraftDateValue {
-  const v = draft.value[column];
-  if (v && typeof v === "object" && !Array.isArray(v))
-    return v as DraftDateValue;
-  return {};
+  const v = draft.value[column]
+  if (v && typeof v === 'object' && !Array.isArray(v)) return v as DraftDateValue
+  return {}
 }
 
 function toggleDraftMulti(column: string, option: string) {
-  const current = getDraftMulti(column);
-  const next = current.includes(option)
-    ? current.filter((v) => v !== option)
-    : [...current, option];
-  draft.value = { ...draft.value, [column]: next };
+  const current = getDraftMulti(column)
+  const next = current.includes(option) ? current.filter((v) => v !== option) : [...current, option]
+  draft.value = { ...draft.value, [column]: next }
 }
 
 function setDraftText(column: string, value: string) {
-  draft.value = { ...draft.value, [column]: value };
+  draft.value = { ...draft.value, [column]: value }
 }
 
 function clearDraftSection(filter: FilterDefinition) {
-  if (filter.type === "multiselect" || filter.type === "select") {
-    draft.value = { ...draft.value, [filter.column]: [] };
-  } else if (filter.type === "date") {
-    draft.value = { ...draft.value, [filter.column]: {} };
-  } else if (filter.type === "text") {
-    draft.value = { ...draft.value, [filter.column]: "" };
+  if (filter.type === 'multiselect' || filter.type === 'select') {
+    draft.value = { ...draft.value, [filter.column]: [] }
+  } else if (filter.type === 'date') {
+    draft.value = { ...draft.value, [filter.column]: {} }
+  } else if (filter.type === 'text') {
+    draft.value = { ...draft.value, [filter.column]: '' }
   }
 }
 
 function resetDraft() {
-  const next: Draft = {};
+  const next: Draft = {}
   for (const f of props.filters) {
-    if (f.type === "multiselect" || f.type === "select") next[f.column] = [];
-    else if (f.type === "date") next[f.column] = {};
-    else if (f.type === "text") next[f.column] = "";
+    if (f.type === 'multiselect' || f.type === 'select') next[f.column] = []
+    else if (f.type === 'date') next[f.column] = {}
+    else if (f.type === 'text') next[f.column] = ''
   }
-  draft.value = next;
+  draft.value = next
 }
 
 // ── Date helpers (local; popover is fully self-contained for draft) ──
 function stringToDateValue(str: string | undefined): DateValue | undefined {
-  if (!str) return undefined;
-  const [y, m, d] = str.split("-").map(Number);
-  if (y === undefined || m === undefined || d === undefined) return undefined;
-  return new CalendarDate(y, m, d);
+  if (!str) return undefined
+  const [y, m, d] = str.split('-').map(Number)
+  if (y === undefined || m === undefined || d === undefined) return undefined
+  return new CalendarDate(y, m, d)
 }
 
 function dateValueToString(dv: DateValue | undefined): string {
-  if (!dv) return "";
-  return `${dv.year}-${String(dv.month).padStart(2, "0")}-${String(dv.day).padStart(2, "0")}`;
+  if (!dv) return ''
+  return `${dv.year}-${String(dv.month).padStart(2, '0')}-${String(dv.day).padStart(2, '0')}`
 }
 
 function getDraftCalendarModel(column: string): RekaDateRange {
-  const dr = getDraftDate(column);
+  const dr = getDraftDate(column)
   return {
     start: stringToDateValue(dr.from) as DateValue,
     end: stringToDateValue(dr.to) as DateValue,
-  };
+  }
 }
 
 function onDraftCalendarUpdate(column: string, val: RekaDateRange) {
-  const from = val?.start ? dateValueToString(val.start) : undefined;
-  const to = val?.end ? dateValueToString(val.end) : undefined;
-  draft.value = { ...draft.value, [column]: { from, to } };
+  const from = val?.start ? dateValueToString(val.start) : undefined
+  const to = val?.end ? dateValueToString(val.end) : undefined
+  draft.value = { ...draft.value, [column]: { from, to } }
 }
 
 function formatDraftDateRange(column: string): string {
-  const dr = getDraftDate(column);
-  if (dr.from && dr.to) return `${dr.from} - ${dr.to}`;
-  if (dr.from) return `From ${dr.from}`;
-  if (dr.to) return `Until ${dr.to}`;
-  return "";
+  const dr = getDraftDate(column)
+  if (dr.from && dr.to) return `${dr.from} - ${dr.to}`
+  if (dr.from) return `From ${dr.from}`
+  if (dr.to) return `Until ${dr.to}`
+  return ''
 }
 
 // ── Active section detection (draft, not live) ───────────────────────
 function isDraftSectionActive(filter: FilterDefinition): boolean {
-  if (filter.type === "multiselect" || filter.type === "select") {
-    return getDraftMulti(filter.column).length > 0;
+  if (filter.type === 'multiselect' || filter.type === 'select') {
+    return getDraftMulti(filter.column).length > 0
   }
-  if (filter.type === "date") {
-    const dr = getDraftDate(filter.column);
-    return !!(dr.from || dr.to);
+  if (filter.type === 'date') {
+    const dr = getDraftDate(filter.column)
+    return !!(dr.from || dr.to)
   }
-  if (filter.type === "text") {
-    return !!getDraftText(filter.column);
+  if (filter.type === 'text') {
+    return !!getDraftText(filter.column)
   }
-  return false;
+  return false
 }
 
 // `Reset` is disabled when the draft has nothing to clear.
-const isDraftDirty = computed(() => props.filters.some(isDraftSectionActive));
+const isDraftDirty = computed(() => props.filters.some(isDraftSectionActive))
 
 // ── Popover lifecycle ────────────────────────────────────────────────
 watch(open, (isOpen, wasOpen) => {
   if (isOpen && !wasOpen) {
-    seedDraft();
-    emit("open");
-    return;
+    seedDraft()
+    emit('open')
+    return
   }
   if (!isOpen && wasOpen) {
     // Close-without-apply: nothing to do. Real column filters were never
     // mutated by the popover; the draft is local and can be left to
     // garbage-collect (next open re-seeds from live state).
-    draft.value = {};
+    draft.value = {}
   }
-});
+})
 
 function applyAndClose() {
   // Snapshot the draft so the parent receives a stable object even if
   // the close watcher fires before they finish consuming it.
-  const snapshot: Draft = {};
+  const snapshot: Draft = {}
   for (const f of props.filters) {
-    const v = draft.value[f.column];
-    if (f.type === "multiselect" || f.type === "select") {
-      const arr = Array.isArray(v) ? v : [];
-      snapshot[f.column] = arr.length > 0 ? arr : undefined;
-    } else if (f.type === "date") {
-      const dr =
-        v && typeof v === "object" && !Array.isArray(v)
-          ? (v as DraftDateValue)
-          : {};
-      snapshot[f.column] =
-        dr.from || dr.to ? { from: dr.from, to: dr.to } : undefined;
-    } else if (f.type === "text") {
-      const s = typeof v === "string" ? v : "";
-      snapshot[f.column] = s || undefined;
+    const v = draft.value[f.column]
+    if (f.type === 'multiselect' || f.type === 'select') {
+      const arr = Array.isArray(v) ? v : []
+      snapshot[f.column] = arr.length > 0 ? arr : undefined
+    } else if (f.type === 'date') {
+      const dr = v && typeof v === 'object' && !Array.isArray(v) ? (v as DraftDateValue) : {}
+      snapshot[f.column] = dr.from || dr.to ? { from: dr.from, to: dr.to } : undefined
+    } else if (f.type === 'text') {
+      const s = typeof v === 'string' ? v : ''
+      snapshot[f.column] = s || undefined
     }
   }
-  emit("commit-draft", snapshot);
-  open.value = false;
+  emit('commit-draft', snapshot)
+  open.value = false
 }
 
 function onResetClick() {
-  resetDraft();
+  resetDraft()
 }
 
-const filterScrollRef = ref<HTMLElement | null>(null);
+const filterScrollRef = ref<HTMLElement | null>(null)
 
 watch(open, (isOpen) => {
   if (isOpen) {
     setTimeout(() => {
-      filterScrollRef.value?.scrollTo({ top: 0 });
-    }, 50);
+      filterScrollRef.value?.scrollTo({ top: 0 })
+    }, 50)
   }
-});
+})
 </script>
 
 <template>
@@ -270,9 +251,7 @@ watch(open, (isOpen) => {
         size="sm"
         :class="[
           'h-8 gap-2',
-          activeFilterCount > 0
-            ? 'border-primary/40 bg-primary/5 text-primary hover:bg-primary/10'
-            : '',
+          activeFilterCount > 0 ? 'border-primary/40 bg-primary/5 text-primary hover:bg-primary/10' : '',
         ]"
       >
         <SlidersHorizontal class="size-4" />
@@ -285,16 +264,11 @@ watch(open, (isOpen) => {
         </Badge>
       </Button>
     </PopoverTrigger>
-    <PopoverContent
-      align="start"
-      class="flex max-h-[min(560px,80vh)] w-96 flex-col overflow-hidden p-0"
-    >
+    <PopoverContent align="start" class="flex max-h-[min(560px,80vh)] w-96 flex-col overflow-hidden p-0">
       <!-- Header -->
       <div class="border-b px-4 pt-4 pb-3">
         <div class="flex items-center gap-3">
-          <div
-            class="bg-muted flex size-7 items-center justify-center rounded-md"
-          >
+          <div class="bg-muted flex size-7 items-center justify-center rounded-md">
             <SlidersHorizontal class="text-muted-foreground size-4" />
           </div>
           <div class="flex-1">
@@ -303,9 +277,8 @@ watch(open, (isOpen) => {
               <template v-if="activeFilterCount > 0">
                 {{ activeFilterCount }} active
                 <template v-if="!isServerSide">
-                  &middot;
-                  {{ table.getFilteredRowModel().rows.length }} result{{
-                    table.getFilteredRowModel().rows.length !== 1 ? "s" : ""
+                  &middot; {{ table.getFilteredRowModel().rows.length }} result{{
+                    table.getFilteredRowModel().rows.length !== 1 ? 's' : ''
                   }}
                 </template>
               </template>
@@ -320,15 +293,11 @@ watch(open, (isOpen) => {
         <div class="space-y-2 p-3">
           <template v-for="filter in filters" :key="filter.column">
             <!-- Text filter -->
-            <div
-              v-if="filter.type === 'text'"
-              class="bg-muted/40 rounded-lg p-3"
-            >
+            <div v-if="filter.type === 'text'" class="bg-muted/40 rounded-lg p-3">
               <div class="mb-2 flex items-center justify-between">
-                <Label
-                  class="text-muted-foreground text-xs font-medium tracking-wide uppercase"
-                  >{{ filter.label }}</Label
-                >
+                <Label class="text-muted-foreground text-xs font-medium tracking-wide uppercase">{{
+                  filter.label
+                }}</Label>
                 <button
                   v-if="getDraftText(filter.column)"
                   type="button"
@@ -342,30 +311,23 @@ watch(open, (isOpen) => {
                 :placeholder="`Filter by ${filter.label.toLowerCase()}...`"
                 :model-value="getDraftText(filter.column)"
                 class="h-8 text-sm"
-                @update:model-value="
-                  setDraftText(filter.column, ($event as string) ?? '')
-                "
+                @update:model-value="setDraftText(filter.column, ($event as string) ?? '')"
               />
             </div>
 
             <!-- Multiselect / Select filter -->
             <div
-              v-else-if="
-                filter.type === 'multiselect' || filter.type === 'select'
-              "
+              v-else-if="filter.type === 'multiselect' || filter.type === 'select'"
               class="rounded-lg p-3 transition-colors"
               :class="[
-                getDraftMulti(filter.column).length > 0
-                  ? 'bg-primary/[0.04] ring-primary/20 ring-1'
-                  : 'bg-muted/40',
+                getDraftMulti(filter.column).length > 0 ? 'bg-primary/[0.04] ring-primary/20 ring-1' : 'bg-muted/40',
               ]"
             >
               <div class="mb-2 flex items-center justify-between">
                 <div class="flex items-center gap-2">
-                  <Label
-                    class="text-muted-foreground text-xs font-medium tracking-wide uppercase"
-                    >{{ filter.label }}</Label
-                  >
+                  <Label class="text-muted-foreground text-xs font-medium tracking-wide uppercase">{{
+                    filter.label
+                  }}</Label>
                   <Badge
                     v-if="getDraftMulti(filter.column).length > 0"
                     variant="secondary"
@@ -386,10 +348,7 @@ watch(open, (isOpen) => {
               <Command
                 class="[&_[data-slot=command-input-wrapper]]:border-input overflow-visible bg-transparent [&_[data-slot=command-input-wrapper]]:h-8 [&_[data-slot=command-input-wrapper]]:rounded-md [&_[data-slot=command-input-wrapper]]:border [&_[data-slot=command-input-wrapper]]:px-3"
               >
-                <CommandInput
-                  class="h-7 text-sm"
-                  :placeholder="`Search ${filter.label.toLowerCase()}...`"
-                />
+                <CommandInput class="h-7 text-sm" :placeholder="`Search ${filter.label.toLowerCase()}...`" />
                 <CommandList class="mt-1 max-h-36">
                   <CommandEmpty>No results.</CommandEmpty>
                   <CommandGroup class="p-0">
@@ -398,19 +357,12 @@ watch(open, (isOpen) => {
                       :key="resolveOption(rawOpt).value"
                       :value="resolveOption(rawOpt).label"
                       class="rounded-md px-2 py-2 text-sm"
-                      @select="
-                        toggleDraftMulti(
-                          filter.column,
-                          resolveOption(rawOpt).value,
-                        )
-                      "
+                      @select="toggleDraftMulti(filter.column, resolveOption(rawOpt).value)"
                     >
                       <div
                         class="flex size-4 shrink-0 items-center justify-center rounded-sm border transition-colors"
                         :class="[
-                          getDraftMulti(filter.column).includes(
-                            resolveOption(rawOpt).value,
-                          )
+                          getDraftMulti(filter.column).includes(resolveOption(rawOpt).value)
                             ? 'border-primary bg-primary text-primary-foreground'
                             : 'border-muted-foreground/40 [&_svg]:invisible',
                         ]"
@@ -434,23 +386,18 @@ watch(open, (isOpen) => {
               v-else-if="filter.type === 'date'"
               class="rounded-lg p-3 transition-colors"
               :class="[
-                getDraftDate(filter.column).from ||
-                getDraftDate(filter.column).to
+                getDraftDate(filter.column).from || getDraftDate(filter.column).to
                   ? 'bg-primary/[0.04] ring-primary/20 ring-1'
                   : 'bg-muted/40',
               ]"
             >
               <div class="mb-2 flex items-center justify-between">
                 <div class="flex items-center gap-2">
-                  <Label
-                    class="text-muted-foreground text-xs font-medium tracking-wide uppercase"
-                    >{{ filter.label }}</Label
-                  >
+                  <Label class="text-muted-foreground text-xs font-medium tracking-wide uppercase">{{
+                    filter.label
+                  }}</Label>
                   <Badge
-                    v-if="
-                      getDraftDate(filter.column).from ||
-                      getDraftDate(filter.column).to
-                    "
+                    v-if="getDraftDate(filter.column).from || getDraftDate(filter.column).to"
                     variant="secondary"
                     class="bg-primary/15 text-primary h-auto rounded-full px-2 py-0 text-xs font-medium"
                   >
@@ -458,10 +405,7 @@ watch(open, (isOpen) => {
                   </Badge>
                 </div>
                 <button
-                  v-if="
-                    getDraftDate(filter.column).from ||
-                    getDraftDate(filter.column).to
-                  "
+                  v-if="getDraftDate(filter.column).from || getDraftDate(filter.column).to"
                   type="button"
                   class="text-muted-foreground hover:text-foreground text-xs transition-colors"
                   @click="clearDraftSection(filter)"
@@ -469,19 +413,12 @@ watch(open, (isOpen) => {
                   Clear
                 </button>
               </div>
-              <div
-                class="flex justify-center overflow-hidden rounded-md border"
-              >
+              <div class="flex justify-center overflow-hidden rounded-md border">
                 <RangeCalendar
                   :model-value="getDraftCalendarModel(filter.column)"
                   :number-of-months="1"
                   class="p-2"
-                  @update:model-value="
-                    onDraftCalendarUpdate(
-                      filter.column,
-                      $event as RekaDateRange,
-                    )
-                  "
+                  @update:model-value="onDraftCalendarUpdate(filter.column, $event as RekaDateRange)"
                 />
               </div>
             </div>
@@ -494,19 +431,11 @@ watch(open, (isOpen) => {
 
       <!-- Footer -->
       <div class="flex gap-2 border-t px-3 py-3">
-        <Button
-          variant="outline"
-          size="sm"
-          class="h-8 flex-1"
-          :disabled="!isDraftDirty"
-          @click="onResetClick"
-        >
+        <Button variant="outline" size="sm" class="h-8 flex-1" :disabled="!isDraftDirty" @click="onResetClick">
           <X class="size-4" />
           Reset
         </Button>
-        <Button size="sm" class="h-8 flex-1" @click="applyAndClose">
-          Apply
-        </Button>
+        <Button size="sm" class="h-8 flex-1" @click="applyAndClose"> Apply </Button>
       </div>
     </PopoverContent>
   </Popover>

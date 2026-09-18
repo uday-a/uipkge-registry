@@ -10,9 +10,5 @@ export {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-} from "./select";
-export {
-  NativeSelect,
-  type NativeSelectProps,
-  type NativeSelectOption,
-} from "./NativeSelect";
+} from './select'
+export { NativeSelect, type NativeSelectProps, type NativeSelectOption } from './NativeSelect'

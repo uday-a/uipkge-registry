@@ -1,1 +1,1 @@
-export { LollipopChart, type LollipopChartProps } from "./LollipopChart";
+export { LollipopChart, type LollipopChartProps } from './LollipopChart'

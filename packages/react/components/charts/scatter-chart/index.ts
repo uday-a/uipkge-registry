@@ -1,1 +1,1 @@
-export { ScatterChart, type ScatterChartProps } from "./ScatterChart";
+export { ScatterChart, type ScatterChartProps } from './ScatterChart'

@@ -7,29 +7,27 @@
   <CarouselPrevious label="Previous slide" />
 -->
 <script setup lang="ts">
-import { inject, computed, type HTMLAttributes } from "vue";
-import { ChevronLeft } from "lucide-vue-next";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { inject, computed, type HTMLAttributes } from 'vue'
+import { ChevronLeft } from 'lucide-vue-next'
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
 
 interface Props {
-  class?: HTMLAttributes["class"];
-  label?: string;
+  class?: HTMLAttributes['class']
+  label?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  label: "Previous slide",
-});
+  label: 'Previous slide',
+})
 
 const carousel = inject<{
-  canScrollPrev: { value: boolean };
-  scrollToPrev: (smooth?: boolean) => void;
-  orientation: { value: "horizontal" | "vertical" };
-} | null>("carousel", null);
+  canScrollPrev: { value: boolean }
+  scrollToPrev: (smooth?: boolean) => void
+  orientation: { value: 'horizontal' | 'vertical' }
+} | null>('carousel', null)
 
-const isHorizontal = computed(
-  () => carousel?.orientation?.value !== "vertical",
-);
+const isHorizontal = computed(() => carousel?.orientation?.value !== 'vertical')
 </script>
 
 <template>
@@ -43,9 +41,7 @@ const isHorizontal = computed(
         'bg-background/80 border shadow-md backdrop-blur-sm',
         'hover:bg-accent hover:text-accent-foreground',
         'disabled:pointer-events-none disabled:opacity-50',
-        isHorizontal
-          ? 'top-1/2 -left-3 -translate-y-1/2'
-          : '-top-3 left-1/2 -translate-x-1/2 rotate-90',
+        isHorizontal ? 'top-1/2 -left-3 -translate-y-1/2' : '-top-3 left-1/2 -translate-x-1/2 rotate-90',
         props.class,
       )
     "

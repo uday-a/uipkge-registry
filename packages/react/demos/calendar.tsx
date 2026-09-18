@@ -1,51 +1,41 @@
-import { useState } from "react";
-import Story from "../../components/story/Story";
-import { Calendar } from "@react-registry/calendar";
-import { enUS, ja } from "react-day-picker/locale";
+import { useState } from 'react'
+import Story from '../../components/story/Story'
+import { Calendar } from '@react-registry/calendar'
+import { enUS, ja } from 'react-day-picker/locale'
 
 // react-day-picker v9/v10 works with native Date (the React mirror is
 // react-day-picker based, unlike the reka-ui / @internationalized/date Vue
 // version). Single-date selection is controlled via useState<Date>.
-const minValue = new Date();
-minValue.setDate(minValue.getDate() - 7);
-const maxValue = new Date();
-maxValue.setDate(maxValue.getDate() + 30);
+const minValue = new Date()
+minValue.setDate(minValue.getDate() - 7)
+const maxValue = new Date()
+maxValue.setDate(maxValue.getDate() + 30)
 
 function isWeekend(date: Date) {
-  const day = date.getDay();
-  return day === 0 || day === 6;
+  const day = date.getDay()
+  return day === 0 || day === 6
 }
 
 export default function CalendarDemo() {
-  const [date, setDate] = useState<Date | undefined>(new Date(2026, 4, 15));
-  const [restrictedDate, setRestrictedDate] = useState<Date>();
-  const [usDate, setUsDate] = useState<Date>();
-  const [jaDate, setJaDate] = useState<Date>();
-  const [sideBySideA, setSideBySideA] = useState<Date>();
-  const [sideBySideB, setSideBySideB] = useState<Date>();
-  const [todayDate, setTodayDate] = useState<Date | undefined>(new Date());
+  const [date, setDate] = useState<Date | undefined>(new Date(2026, 4, 15))
+  const [restrictedDate, setRestrictedDate] = useState<Date>()
+  const [usDate, setUsDate] = useState<Date>()
+  const [jaDate, setJaDate] = useState<Date>()
+  const [sideBySideA, setSideBySideA] = useState<Date>()
+  const [sideBySideB, setSideBySideB] = useState<Date>()
+  const [todayDate, setTodayDate] = useState<Date | undefined>(new Date())
   const [multiDates, setMultiDates] = useState<Date[] | undefined>([
     new Date(2026, 4, 10),
     new Date(2026, 4, 15),
     new Date(2026, 4, 20),
-  ]);
-  const [multiMonthDate, setMultiMonthDate] = useState<Date | undefined>(
-    new Date(2026, 4, 15),
-  );
-  const [unavailableDate, setUnavailableDate] = useState<Date>();
+  ])
+  const [multiMonthDate, setMultiMonthDate] = useState<Date | undefined>(new Date(2026, 4, 15))
+  const [unavailableDate, setUnavailableDate] = useState<Date>()
 
   return (
     <>
-      <Story
-        title="Default"
-        description="Single-date calendar bound to a Date value."
-      >
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          className="rounded-md border"
-        />
+      <Story title="Default" description="Single-date calendar bound to a Date value.">
+        <Calendar mode="single" selected={date} onSelect={setDate} className="rounded-md border" />
       </Story>
 
       <Story
@@ -78,17 +68,9 @@ export default function CalendarDemo() {
         title="Multiple selection"
         description="mode='multiple' lets users pick several individual days. Value is an array of Date."
       >
-        <Calendar
-          mode="multiple"
-          selected={multiDates}
-          onSelect={setMultiDates}
-          className="rounded-md border"
-        />
+        <Calendar mode="multiple" selected={multiDates} onSelect={setMultiDates} className="rounded-md border" />
         <p className="text-muted-foreground mt-2 text-xs">
-          Selected:{" "}
-          {multiDates?.length
-            ? multiDates.map((d) => d.toLocaleDateString("en-CA")).join(", ")
-            : "none"}
+          Selected: {multiDates?.length ? multiDates.map((d) => d.toLocaleDateString('en-CA')).join(', ') : 'none'}
         </p>
       </Story>
 
@@ -123,18 +105,8 @@ export default function CalendarDemo() {
         description="Render two Calendar instances next to each other for parallel month browsing."
       >
         <div className="flex flex-col gap-4 sm:flex-row">
-          <Calendar
-            mode="single"
-            selected={sideBySideA}
-            onSelect={setSideBySideA}
-            className="rounded-md border"
-          />
-          <Calendar
-            mode="single"
-            selected={sideBySideB}
-            onSelect={setSideBySideB}
-            className="rounded-md border"
-          />
+          <Calendar mode="single" selected={sideBySideA} onSelect={setSideBySideA} className="rounded-md border" />
+          <Calendar mode="single" selected={sideBySideB} onSelect={setSideBySideB} className="rounded-md border" />
         </div>
       </Story>
 
@@ -143,20 +115,8 @@ export default function CalendarDemo() {
         description="Pass locale to localize weekday labels, month names, and first day of week."
       >
         <div className="flex flex-col gap-4 sm:flex-row">
-          <Calendar
-            mode="single"
-            selected={usDate}
-            onSelect={setUsDate}
-            locale={enUS}
-            className="rounded-md border"
-          />
-          <Calendar
-            mode="single"
-            selected={jaDate}
-            onSelect={setJaDate}
-            locale={ja}
-            className="rounded-md border"
-          />
+          <Calendar mode="single" selected={usDate} onSelect={setUsDate} locale={enUS} className="rounded-md border" />
+          <Calendar mode="single" selected={jaDate} onSelect={setJaDate} locale={ja} className="rounded-md border" />
         </div>
       </Story>
 
@@ -164,25 +124,15 @@ export default function CalendarDemo() {
         title="Pre-selected today"
         description="Initialize state with new Date() to mark today's cell as selected on mount."
       >
-        <Calendar
-          mode="single"
-          selected={todayDate}
-          onSelect={setTodayDate}
-          className="rounded-md border"
-        />
+        <Calendar mode="single" selected={todayDate} onSelect={setTodayDate} className="rounded-md border" />
       </Story>
 
       <Story
         title="Keyboard"
         description="Focus the grid and use arrow keys to move, Space/Enter to select, PageUp/PageDown for months."
       >
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          className="rounded-md border"
-        />
+        <Calendar mode="single" selected={date} onSelect={setDate} className="rounded-md border" />
       </Story>
     </>
-  );
+  )
 }

@@ -1,1 +1,1 @@
-export { SmoothFunnel, type SmoothFunnelProps } from "./SmoothFunnel";
+export { SmoothFunnel, type SmoothFunnelProps } from './SmoothFunnel'

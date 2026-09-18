@@ -1,16 +1,10 @@
-import Story from "../../components/story/Story";
-import { Watermark } from "@react-registry/watermark";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@react-registry/card";
-import { Button } from "@react-registry/button";
+import Story from '../../components/story/Story'
+import { Watermark } from '@react-registry/watermark'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@react-registry/card'
+import { Button } from '@react-registry/button'
 
 const reportText =
-  "Q3 revenue grew 18% YoY, driven by enterprise expansion and a 32% increase in self-serve signups. Net retention reached 118%, with three of the top five accounts expanding their seat count beyond the 500-user threshold.";
+  'Q3 revenue grew 18% YoY, driven by enterprise expansion and a 32% increase in self-serve signups. Net retention reached 118%, with three of the top five accounts expanding their seat count beyond the 500-user threshold.'
 
 export default function WatermarkDemo() {
   return (
@@ -19,32 +13,17 @@ export default function WatermarkDemo() {
         title="Confidential document"
         description="A diagonal CONFIDENTIAL stamp deters screenshots of sensitive internal reports."
       >
-        <Watermark
-          content="CONFIDENTIAL"
-          opacity={0.12}
-          className="rounded-lg border p-6"
-        >
+        <Watermark content="CONFIDENTIAL" opacity={0.12} className="rounded-lg border p-6">
           <p className="text-sm leading-relaxed">{reportText}</p>
         </Watermark>
       </Story>
 
-      <Story
-        title="Draft card"
-        description="Mark work-in-progress content so reviewers know it is not final."
-      >
-        <Watermark
-          content="DRAFT"
-          rotate={-30}
-          opacity={0.15}
-          fontSize={20}
-          fontWeight={700}
-        >
+      <Story title="Draft card" description="Mark work-in-progress content so reviewers know it is not final.">
+        <Watermark content="DRAFT" rotate={-30} opacity={0.15} fontSize={20} fontWeight={700}>
           <Card className="max-w-md">
             <CardHeader>
               <CardTitle>Onboarding flow v2</CardTitle>
-              <CardDescription>
-                Subject to review — do not share externally.
-              </CardDescription>
+              <CardDescription>Subject to review — do not share externally.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-2 text-sm">
               <p>1. Welcome screen with product tour</p>
@@ -88,28 +67,13 @@ export default function WatermarkDemo() {
         description="Horizontal (0°), default (-22°), and steep (-45°) at three gap settings — pick the tiling that fits your content."
       >
         <div className="grid max-w-2xl gap-4 sm:grid-cols-3">
-          <Watermark
-            content="UIPKGE"
-            rotate={0}
-            gap={80}
-            className="rounded-lg border p-4"
-          >
+          <Watermark content="UIPKGE" rotate={0} gap={80} className="rounded-lg border p-4">
             <p className="text-muted-foreground text-xs">0° · gap 80</p>
           </Watermark>
-          <Watermark
-            content="UIPKGE"
-            rotate={-22}
-            gap={100}
-            className="rounded-lg border p-4"
-          >
+          <Watermark content="UIPKGE" rotate={-22} gap={100} className="rounded-lg border p-4">
             <p className="text-muted-foreground text-xs">-22° · gap 100</p>
           </Watermark>
-          <Watermark
-            content="UIPKGE"
-            rotate={-45}
-            gap={120}
-            className="rounded-lg border p-4"
-          >
+          <Watermark content="UIPKGE" rotate={-45} gap={120} className="rounded-lg border p-4">
             <p className="text-muted-foreground text-xs">-45° · gap 120</p>
           </Watermark>
         </div>
@@ -120,26 +84,13 @@ export default function WatermarkDemo() {
         description="From barely-there (0.04) to prominent (0.2), with a branded blue accent for marketing assets."
       >
         <div className="grid max-w-2xl gap-4 sm:grid-cols-3">
-          <Watermark
-            content="SAMPLE"
-            opacity={0.04}
-            className="rounded-lg border p-4"
-          >
+          <Watermark content="SAMPLE" opacity={0.04} className="rounded-lg border p-4">
             <p className="text-muted-foreground text-xs">opacity 0.04</p>
           </Watermark>
-          <Watermark
-            content="SAMPLE"
-            opacity={0.12}
-            className="rounded-lg border p-4"
-          >
+          <Watermark content="SAMPLE" opacity={0.12} className="rounded-lg border p-4">
             <p className="text-muted-foreground text-xs">opacity 0.12</p>
           </Watermark>
-          <Watermark
-            content="SAMPLE"
-            opacity={0.2}
-            color="#3b82f6"
-            className="rounded-lg border p-4"
-          >
+          <Watermark content="SAMPLE" opacity={0.2} color="#3b82f6" className="rounded-lg border p-4">
             <p className="text-muted-foreground text-xs">blue · 0.2</p>
           </Watermark>
         </div>
@@ -174,11 +125,9 @@ export default function WatermarkDemo() {
           rotate={-15}
           className="rounded-lg border p-8"
         >
-          <p className="text-sm">
-            Branded content with a repeating avatar watermark.
-          </p>
+          <p className="text-sm">Branded content with a repeating avatar watermark.</p>
         </Watermark>
       </Story>
     </>
-  );
+  )
 }

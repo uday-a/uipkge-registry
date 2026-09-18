@@ -1,76 +1,68 @@
-import Story from "../../components/story/Story";
-import { PieChart } from "@react-registry/charts";
+import Story from '../../components/story/Story'
+import { PieChart } from '@react-registry/charts'
 
 const devices = [
-  { name: "Desktop", value: 45 },
-  { name: "Mobile", value: 35 },
-  { name: "Tablet", value: 15 },
-  { name: "Other", value: 5 },
-];
+  { name: 'Desktop', value: 45 },
+  { name: 'Mobile', value: 35 },
+  { name: 'Tablet', value: 15 },
+  { name: 'Other', value: 5 },
+]
 
 // Air cargo: weekly freighter capacity share by carrier.
 const capacityShare = [
-  { name: "SQ", value: 22 },
-  { name: "CX", value: 19 },
-  { name: "LH", value: 15 },
-  { name: "EK", value: 13 },
-  { name: "QR", value: 11 },
-  { name: "KE", value: 10 },
-  { name: "Other", value: 10 },
-];
+  { name: 'SQ', value: 22 },
+  { name: 'CX', value: 19 },
+  { name: 'LH', value: 15 },
+  { name: 'EK', value: 13 },
+  { name: 'QR', value: 11 },
+  { name: 'KE', value: 10 },
+  { name: 'Other', value: 10 },
+]
 
 const traffic = [
-  { name: "Organic", value: 4200 },
-  { name: "Paid", value: 2800 },
-  { name: "Referral", value: 1900 },
-  { name: "Direct", value: 1400 },
-  { name: "Email", value: 900 },
-];
+  { name: 'Organic', value: 4200 },
+  { name: 'Paid', value: 2800 },
+  { name: 'Referral', value: 1900 },
+  { name: 'Direct', value: 1400 },
+  { name: 'Email', value: 900 },
+]
 
 // Outside labels with leader lines.
 const labeledOption = {
   series: [
     {
-      label: {
-        show: true,
-        formatter: "{b}\n{d}%",
-        fontSize: 11,
-        color: "var(--foreground)",
-      },
+      label: { show: true, formatter: '{b}\n{d}%', fontSize: 11, color: 'var(--foreground)' },
       labelLine: { show: true, length: 8, length2: 12 },
     },
   ],
-};
+}
 
 // Rose (Nightingale) — radius scales with value.
 const roseOption = {
-  series: [{ roseType: "radius", radius: ["20%", "70%"] }],
-};
+  series: [{ roseType: 'radius', radius: ['20%', '70%'] }],
+}
 
 // Center-label donut: bigger inner ring + percentage in the hole.
 const centerLabelOption = {
   series: [
     {
-      radius: ["55%", "75%"],
+      radius: ['55%', '75%'],
       label: {
         show: true,
-        position: "center",
-        formatter: "45%\nDesktop",
+        position: 'center',
+        formatter: '45%\nDesktop',
         fontSize: 16,
         fontWeight: 700,
-        color: "var(--foreground)",
+        color: 'var(--foreground)',
       },
     },
   ],
-};
+}
 
 export default function PieChartDemo() {
   return (
     <>
-      <Story
-        title="Basic pie"
-        description="Solid pie with bottom legend. Tooltip shows value and percentage."
-      >
+      <Story title="Basic pie" description="Solid pie with bottom legend. Tooltip shows value and percentage.">
         <PieChart data={devices} height="320" />
       </Story>
 
@@ -85,12 +77,7 @@ export default function PieChartDemo() {
         title="Donut with center label"
         description="Combine `donut` with an option override that paints a label inside the hole — popular for share/percent KPIs."
       >
-        <PieChart
-          data={devices}
-          donut={true}
-          option={centerLabelOption}
-          height="320"
-        />
+        <PieChart data={devices} donut={true} option={centerLabelOption} height="320" />
       </Story>
 
       <Story
@@ -107,18 +94,9 @@ export default function PieChartDemo() {
         <PieChart data={traffic} option={labeledOption} height="340" />
       </Story>
 
-      <Story
-        title="Carrier capacity"
-        description="Air cargo freighter share — SQ leads the week on Transpacific lift."
-      >
-        <PieChart
-          data={capacityShare}
-          nameField="name"
-          valueField="value"
-          donut
-          height="320"
-        />
+      <Story title="Carrier capacity" description="Air cargo freighter share — SQ leads the week on Transpacific lift.">
+        <PieChart data={capacityShare} nameField="name" valueField="value" donut height="320" />
       </Story>
     </>
-  );
+  )
 }

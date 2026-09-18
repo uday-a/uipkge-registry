@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue";
-import { cn } from "@/lib/utils";
+import type { HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils'
 
 const props = defineProps<{
-  class?: HTMLAttributes["class"];
+  class?: HTMLAttributes['class']
   /** Show only when this is true (consumer wires from `lane.length === 0`). */
-  when?: boolean;
-}>();
+  when?: boolean
+}>()
 </script>
 
 <template>

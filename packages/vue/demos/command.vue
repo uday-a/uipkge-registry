@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from "vue";
-import { Button } from "@/components/ui/button";
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { Button } from '@/components/ui/button'
 import {
   Command,
   CommandDialog,
@@ -11,47 +11,36 @@ import {
   CommandList,
   CommandSeparator,
   CommandShortcut,
-} from "@/components/ui/command";
-import {
-  Calculator,
-  Calendar,
-  CreditCard,
-  Mail,
-  Settings,
-  Smile,
-  User,
-} from "lucide-vue-next";
+} from '@/components/ui/command'
+import { Calculator, Calendar, CreditCard, Mail, Settings, Smile, User } from 'lucide-vue-next'
 
-const dialogOpen = ref(false);
-const loading = ref(true);
+const dialogOpen = ref(false)
+const loading = ref(true)
 
 function openDialog() {
-  dialogOpen.value = true;
+  dialogOpen.value = true
 }
 
 // Toggle for the loading/empty showcase.
 function toggleLoading() {
-  loading.value = !loading.value;
+  loading.value = !loading.value
 }
 
 // Cmd-K binding for the dialog story.
 onMounted(() => {
   const handler = (e: KeyboardEvent) => {
-    if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-      e.preventDefault();
-      dialogOpen.value = !dialogOpen.value;
+    if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault()
+      dialogOpen.value = !dialogOpen.value
     }
-  };
-  document.addEventListener("keydown", handler);
-  onBeforeUnmount(() => document.removeEventListener("keydown", handler));
-});
+  }
+  document.addEventListener('keydown', handler)
+  onBeforeUnmount(() => document.removeEventListener('keydown', handler))
+})
 </script>
 
 <template>
-  <Story
-    title="Default"
-    description="Searchable command palette with grouped items and an empty state."
-  >
+  <Story title="Default" description="Searchable command palette with grouped items and an empty state.">
     <Command class="max-w-md rounded-lg border shadow-sm">
       <CommandInput placeholder="Type a command or search…" />
       <CommandList>
@@ -74,10 +63,7 @@ onMounted(() => {
     </Command>
   </Story>
 
-  <Story
-    title="With shortcuts"
-    description="CommandShortcut renders a right-aligned keyboard hint on each item."
-  >
+  <Story title="With shortcuts" description="CommandShortcut renders a right-aligned keyboard hint on each item.">
     <Command class="max-w-md rounded-lg border shadow-sm">
       <CommandInput placeholder="Search actions…" />
       <CommandList>
@@ -147,17 +133,11 @@ onMounted(() => {
     </Command>
   </Story>
 
-  <Story
-    title="CommandDialog (modal)"
-    description="Press ⌘K (or click the button) to open a modal command palette."
-  >
+  <Story title="CommandDialog (modal)" description="Press ⌘K (or click the button) to open a modal command palette.">
     <div class="flex items-center gap-2">
       <Button variant="outline" @click="openDialog">
         Open command menu
-        <kbd
-          class="bg-muted text-muted-foreground ml-2 rounded px-1.5 py-0.5 text-xs"
-          >⌘K</kbd
-        >
+        <kbd class="bg-muted text-muted-foreground ml-2 rounded px-1.5 py-0.5 text-xs">⌘K</kbd>
       </Button>
       <span class="text-muted-foreground text-sm">open = {{ dialogOpen }}</span>
     </div>
@@ -201,9 +181,7 @@ onMounted(() => {
     description="Show a loading skeleton then fall through to CommandEmpty when no items match."
   >
     <div class="max-w-md space-y-3">
-      <Button variant="outline" size="sm" @click="toggleLoading">
-        Toggle: {{ loading ? "Loading" : "Empty" }}
-      </Button>
+      <Button variant="outline" size="sm" @click="toggleLoading"> Toggle: {{ loading ? 'Loading' : 'Empty' }} </Button>
       <Command class="rounded-lg border shadow-sm">
         <CommandInput placeholder="Search…" />
         <CommandList>

@@ -1,1 +1,1 @@
-export { default as LabeledValue } from "./LabeledValue.vue";
+export { default as LabeledValue } from './LabeledValue.vue'

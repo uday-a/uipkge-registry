@@ -1,51 +1,45 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue";
-import { Primitive } from "reka-ui";
-import { cn } from "@/lib/utils";
-import { fabVariants } from "./fab.variants";
+import type { HTMLAttributes } from 'vue'
+import { Primitive } from 'reka-ui'
+import { cn } from '@/lib/utils'
+import { fabVariants } from './fab.variants'
 
-type Variant = "default" | "secondary" | "destructive" | "outline";
-type Size = "mini" | "default" | "large" | "extended";
-type Position =
-  | "bottom-right"
-  | "bottom-left"
-  | "top-right"
-  | "top-left"
-  | "bottom-center"
-  | "inline";
+type Variant = 'default' | 'secondary' | 'destructive' | 'outline'
+type Size = 'mini' | 'default' | 'large' | 'extended'
+type Position = 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left' | 'bottom-center' | 'inline'
 
 interface Props {
   /** Label text — renders an extended FAB. Use the default slot for an icon. */
-  label?: string;
-  as?: string;
-  asChild?: boolean;
-  variant?: Variant;
-  size?: Size;
-  position?: Position;
+  label?: string
+  as?: string
+  asChild?: boolean
+  variant?: Variant
+  size?: Size
+  position?: Position
   /** Use absolute instead of fixed positioning (for contained FABs). */
-  absolute?: boolean;
-  disabled?: boolean;
+  absolute?: boolean
+  disabled?: boolean
   /** Accessible label. Defaults to the label prop or 'Floating action'. */
-  ariaLabel?: string;
-  class?: HTMLAttributes["class"];
+  ariaLabel?: string
+  class?: HTMLAttributes['class']
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  as: "button",
-  variant: "default",
-  size: "default",
-  position: "bottom-right",
+  as: 'button',
+  variant: 'default',
+  size: 'default',
+  position: 'bottom-right',
   absolute: false,
-});
+})
 
-const emit = defineEmits<{ (e: "click", event: MouseEvent): void }>();
+const emit = defineEmits<{ (e: 'click', event: MouseEvent): void }>()
 
 function onClick(e: MouseEvent) {
-  if (props.disabled) return;
-  emit("click", e);
+  if (props.disabled) return
+  emit('click', e)
 }
 
-const resolvedSize = () => (props.label ? "extended" : props.size);
+const resolvedSize = () => (props.label ? 'extended' : props.size)
 </script>
 
 <template>

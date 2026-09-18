@@ -1,1 +1,1 @@
-export { default as TextReveal } from "./TextReveal.vue";
+export { default as TextReveal } from './TextReveal.vue'

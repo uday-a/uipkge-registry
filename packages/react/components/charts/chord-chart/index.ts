@@ -1,1 +1,1 @@
-export { ChordChart, type ChordChartProps } from "./ChordChart";
+export { ChordChart, type ChordChartProps } from './ChordChart'

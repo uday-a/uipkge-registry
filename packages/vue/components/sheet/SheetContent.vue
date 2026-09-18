@@ -1,16 +1,11 @@
 <script setup lang="ts">
-import type { DialogContentEmits, DialogContentProps } from "reka-ui";
-import type { HTMLAttributes } from "vue";
-import { reactiveOmit } from "@vueuse/core";
-import { X } from "lucide-vue-next";
-import {
-  DialogClose,
-  DialogContent,
-  DialogPortal,
-  useForwardPropsEmits,
-} from "reka-ui";
-import { cn } from "@/lib/utils";
-import SheetOverlay from "./SheetOverlay.vue";
+import type { DialogContentEmits, DialogContentProps } from 'reka-ui'
+import type { HTMLAttributes } from 'vue'
+import { reactiveOmit } from '@vueuse/core'
+import { X } from 'lucide-vue-next'
+import { DialogClose, DialogContent, DialogPortal, useForwardPropsEmits } from 'reka-ui'
+import { cn } from '@/lib/utils'
+import SheetOverlay from './SheetOverlay.vue'
 
 // SFC compiler quirk: when the extension type is a *named* interface
 // in an intersection (`DialogContentProps & ExtraProps`), the runtime
@@ -22,22 +17,22 @@ import SheetOverlay from "./SheetOverlay.vue";
 // flow through useForwardPropsEmits below.
 defineOptions({
   inheritAttrs: false,
-});
+})
 
 const props = withDefaults(
   defineProps<
     DialogContentProps & {
-      class?: HTMLAttributes["class"];
-      side?: "top" | "right" | "bottom" | "left";
+      class?: HTMLAttributes['class']
+      side?: 'top' | 'right' | 'bottom' | 'left'
     }
   >(),
-  { side: "right" },
-);
-const emits = defineEmits<DialogContentEmits>();
+  { side: 'right' },
+)
+const emits = defineEmits<DialogContentEmits>()
 
-const delegatedProps = reactiveOmit(props, "class", "side");
+const delegatedProps = reactiveOmit(props, 'class', 'side')
 
-const forwarded = useForwardPropsEmits(delegatedProps, emits);
+const forwarded = useForwardPropsEmits(delegatedProps, emits)
 </script>
 
 <template>

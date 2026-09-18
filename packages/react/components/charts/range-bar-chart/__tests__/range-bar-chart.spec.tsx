@@ -1,30 +1,22 @@
-import * as React from "react";
-import { describe, expect, it } from "vitest";
-import { render } from "@testing-library/react";
-import { RangeBarChart } from "../index";
+import * as React from 'react'
+import { describe, expect, it } from 'vitest'
+import { render } from '@testing-library/react'
+import { RangeBarChart } from '../index'
 
-describe("RangeBarChart", () => {
-  const sampleProps = { data: [{ category: "A", min: 10, max: 20 }] };
+describe('RangeBarChart', () => {
+  const sampleProps = { data: [{ category: 'A', min: 10, max: 20 }] }
 
-  it("renders without crashing", () => {
-    const { container, unmount } = render(<RangeBarChart {...sampleProps} />);
-    expect(container).toBeDefined();
-    expect(container.firstChild).toBeTruthy();
-    unmount();
-  });
+  it('renders without crashing', () => {
+    const { container, unmount } = render(<RangeBarChart {...sampleProps} />)
+    expect(container).toBeDefined()
+    expect(container.firstChild).toBeTruthy()
+    unmount()
+  })
 
-  it("renders expected content or unique feature", () => {
-    const { container, unmount } = render(
-      <RangeBarChart
-        {...sampleProps}
-        className="custom-chart-test"
-        height={380}
-      />,
-    );
-    expect(container).toBeDefined();
-    expect(
-      container.querySelector(".custom-chart-test") || container.firstChild,
-    ).toBeTruthy();
-    unmount();
-  });
-});
+  it('renders expected content or unique feature', () => {
+    const { container, unmount } = render(<RangeBarChart {...sampleProps} className="custom-chart-test" height={380} />)
+    expect(container).toBeDefined()
+    expect(container.querySelector('.custom-chart-test') || container.firstChild).toBeTruthy()
+    unmount()
+  })
+})

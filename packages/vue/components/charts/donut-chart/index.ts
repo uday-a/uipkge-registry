@@ -1,1 +1,1 @@
-export { default as DonutChart } from "./DonutChart.vue";
+export { default as DonutChart } from './DonutChart.vue'

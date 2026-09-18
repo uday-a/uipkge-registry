@@ -1,11 +1,9 @@
-import type { InjectionKey, Ref } from "vue";
+import type { InjectionKey, Ref } from 'vue'
 
-export type PopoverCloseBehavior =
-  "auto" | "click-outside" | "esc" | "manual" | "none";
+export type PopoverCloseBehavior = 'auto' | 'click-outside' | 'esc' | 'manual' | 'none'
 
 export interface PopoverContext {
-  closeBehavior: Ref<PopoverCloseBehavior>;
+  closeBehavior: Ref<PopoverCloseBehavior>
 }
 
-export const POPOVER_INJECTION_KEY: InjectionKey<PopoverContext> =
-  Symbol("uipkge-popover");
+export const POPOVER_INJECTION_KEY: InjectionKey<PopoverContext> = Symbol('uipkge-popover')

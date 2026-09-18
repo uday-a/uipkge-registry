@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue";
-import { cn } from "@/lib/utils";
-import type { GanttTask } from "./types";
+import type { HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils'
+import type { GanttTask } from './types'
 
 interface Props {
-  task: GanttTask;
-  left: number;
-  top: number;
-  size?: number;
-  class?: HTMLAttributes["class"];
+  task: GanttTask
+  left: number
+  top: number
+  size?: number
+  class?: HTMLAttributes['class']
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 16,
-});
+})
 
 const emits = defineEmits<{
-  (e: "click", task: GanttTask): void;
-}>();
+  (e: 'click', task: GanttTask): void
+}>()
 </script>
 
 <template>

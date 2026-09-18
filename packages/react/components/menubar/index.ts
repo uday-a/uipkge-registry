@@ -15,4 +15,4 @@ export {
   MenubarSubContent,
   MenubarGroup,
   MenubarPortal,
-} from "./menubar";
+} from './menubar'

@@ -1,25 +1,7 @@
-import Story from "../../components/story/Story";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@react-registry/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@react-registry/tabs";
-import {
-  Activity,
-  BarChart3,
-  Bell,
-  CreditCard,
-  Globe,
-  Lock,
-  Mail,
-  Settings,
-  Shield,
-  User,
-  Users,
-} from "lucide-react";
+import Story from '../../components/story/Story'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@react-registry/card'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@react-registry/tabs'
+import { Activity, BarChart3, Bell, CreditCard, Globe, Lock, Mail, Settings, Shield, User, Users } from 'lucide-react'
 
 export default function TabsDemo() {
   return (
@@ -35,19 +17,13 @@ export default function TabsDemo() {
             <TabsTrigger value="team">Team</TabsTrigger>
           </TabsList>
           <TabsContent value="account">
-            <p className="p-3 text-sm">
-              Tabs let users switch between related sections without navigation.
-            </p>
+            <p className="p-3 text-sm">Tabs let users switch between related sections without navigation.</p>
           </TabsContent>
           <TabsContent value="password">
-            <p className="text-muted-foreground p-3 text-sm">
-              Password fields go here.
-            </p>
+            <p className="text-muted-foreground p-3 text-sm">Password fields go here.</p>
           </TabsContent>
           <TabsContent value="team">
-            <p className="text-muted-foreground p-3 text-sm">
-              Team management UI goes here.
-            </p>
+            <p className="text-muted-foreground p-3 text-sm">Team management UI goes here.</p>
           </TabsContent>
         </Tabs>
       </Story>
@@ -65,14 +41,10 @@ export default function TabsDemo() {
             <TabsTrigger value="billing">Billing</TabsTrigger>
           </TabsList>
           <TabsContent value="overview">
-            <p className="p-3 text-sm">
-              Scroll the tab row — every trigger stays reachable.
-            </p>
+            <p className="p-3 text-sm">Scroll the tab row — every trigger stays reachable.</p>
           </TabsContent>
           <TabsContent value="billing">
-            <p className="text-muted-foreground p-3 text-sm">
-              Billing settings go here.
-            </p>
+            <p className="text-muted-foreground p-3 text-sm">Billing settings go here.</p>
           </TabsContent>
         </Tabs>
       </Story>
@@ -81,48 +53,36 @@ export default function TabsDemo() {
         title="Vertical orientation"
         description="orientation='vertical' rotates the layout — TabsList becomes a left rail and content fills the rest."
       >
-        <Tabs
-          defaultValue="profile"
-          orientation="vertical"
-          className="max-w-xl"
-        >
+        <Tabs defaultValue="profile" orientation="vertical" className="max-w-xl">
           <TabsList className="w-48 shrink-0">
             <TabsTrigger value="profile">
-              {" "}
-              <User className="size-4" /> Profile{" "}
+              {' '}
+              <User className="size-4" /> Profile{' '}
             </TabsTrigger>
             <TabsTrigger value="notifications">
-              {" "}
-              <Bell className="size-4" /> Notifications{" "}
+              {' '}
+              <Bell className="size-4" /> Notifications{' '}
             </TabsTrigger>
             <TabsTrigger value="security">
-              {" "}
-              <Shield className="size-4" /> Security{" "}
+              {' '}
+              <Shield className="size-4" /> Security{' '}
             </TabsTrigger>
             <TabsTrigger value="billing">
-              {" "}
-              <CreditCard className="size-4" /> Billing{" "}
+              {' '}
+              <CreditCard className="size-4" /> Billing{' '}
             </TabsTrigger>
           </TabsList>
           <TabsContent value="profile">
-            <p className="text-sm">
-              Update your profile information and avatar.
-            </p>
+            <p className="text-sm">Update your profile information and avatar.</p>
           </TabsContent>
           <TabsContent value="notifications">
-            <p className="text-sm">
-              Manage email and push notification preferences.
-            </p>
+            <p className="text-sm">Manage email and push notification preferences.</p>
           </TabsContent>
           <TabsContent value="security">
-            <p className="text-sm">
-              Configure two-factor authentication and active sessions.
-            </p>
+            <p className="text-sm">Configure two-factor authentication and active sessions.</p>
           </TabsContent>
           <TabsContent value="billing">
-            <p className="text-sm">
-              View invoices and update your payment method.
-            </p>
+            <p className="text-sm">View invoices and update your payment method.</p>
           </TabsContent>
         </Tabs>
       </Story>
@@ -147,24 +107,16 @@ export default function TabsDemo() {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="overview">
-            <p className="text-muted-foreground p-3 text-sm">
-              Overview content.
-            </p>
+            <p className="text-muted-foreground p-3 text-sm">Overview content.</p>
           </TabsContent>
           <TabsContent value="analytics">
-            <p className="text-muted-foreground p-3 text-sm">
-              Analytics content.
-            </p>
+            <p className="text-muted-foreground p-3 text-sm">Analytics content.</p>
           </TabsContent>
           <TabsContent value="reports">
-            <p className="text-muted-foreground p-3 text-sm">
-              Reports content.
-            </p>
+            <p className="text-muted-foreground p-3 text-sm">Reports content.</p>
           </TabsContent>
           <TabsContent value="settings">
-            <p className="text-muted-foreground p-3 text-sm">
-              Settings content.
-            </p>
+            <p className="text-muted-foreground p-3 text-sm">Settings content.</p>
           </TabsContent>
         </Tabs>
       </Story>
@@ -189,17 +141,13 @@ export default function TabsDemo() {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="day">
-            <p className="text-muted-foreground p-3 text-sm">
-              Daily breakdown.
-            </p>
+            <p className="text-muted-foreground p-3 text-sm">Daily breakdown.</p>
           </TabsContent>
           <TabsContent value="week">
             <p className="text-muted-foreground p-3 text-sm">Weekly trends.</p>
           </TabsContent>
           <TabsContent value="month">
-            <p className="text-muted-foreground p-3 text-sm">
-              Monthly summary.
-            </p>
+            <p className="text-muted-foreground p-3 text-sm">Monthly summary.</p>
           </TabsContent>
           <TabsContent value="year">
             <p className="text-muted-foreground p-3 text-sm">Yearly review.</p>
@@ -221,19 +169,13 @@ export default function TabsDemo() {
             <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
           <TabsContent value="overview">
-            <p className="text-muted-foreground p-3 text-sm">
-              Overview content.
-            </p>
+            <p className="text-muted-foreground p-3 text-sm">Overview content.</p>
           </TabsContent>
           <TabsContent value="analytics">
-            <p className="text-muted-foreground p-3 text-sm">
-              Analytics content.
-            </p>
+            <p className="text-muted-foreground p-3 text-sm">Analytics content.</p>
           </TabsContent>
           <TabsContent value="settings">
-            <p className="text-muted-foreground p-3 text-sm">
-              Settings content.
-            </p>
+            <p className="text-muted-foreground p-3 text-sm">Settings content.</p>
           </TabsContent>
         </Tabs>
       </Story>
@@ -272,39 +214,25 @@ export default function TabsDemo() {
             </TabsList>
           </div>
           <TabsContent value="general">
-            <p className="text-muted-foreground p-3 text-sm">
-              General settings.
-            </p>
+            <p className="text-muted-foreground p-3 text-sm">General settings.</p>
           </TabsContent>
           <TabsContent value="users">
-            <p className="text-muted-foreground p-3 text-sm">
-              User management.
-            </p>
+            <p className="text-muted-foreground p-3 text-sm">User management.</p>
           </TabsContent>
           <TabsContent value="security">
-            <p className="text-muted-foreground p-3 text-sm">
-              Security policies.
-            </p>
+            <p className="text-muted-foreground p-3 text-sm">Security policies.</p>
           </TabsContent>
           <TabsContent value="email">
-            <p className="text-muted-foreground p-3 text-sm">
-              Email configuration.
-            </p>
+            <p className="text-muted-foreground p-3 text-sm">Email configuration.</p>
           </TabsContent>
           <TabsContent value="billing">
-            <p className="text-muted-foreground p-3 text-sm">
-              Billing details.
-            </p>
+            <p className="text-muted-foreground p-3 text-sm">Billing details.</p>
           </TabsContent>
           <TabsContent value="locale">
-            <p className="text-muted-foreground p-3 text-sm">
-              Locale and timezone.
-            </p>
+            <p className="text-muted-foreground p-3 text-sm">Locale and timezone.</p>
           </TabsContent>
           <TabsContent value="metrics">
-            <p className="text-muted-foreground p-3 text-sm">
-              Metrics dashboard.
-            </p>
+            <p className="text-muted-foreground p-3 text-sm">Metrics dashboard.</p>
           </TabsContent>
           <TabsContent value="audit">
             <p className="text-muted-foreground p-3 text-sm">Audit log.</p>
@@ -326,15 +254,10 @@ export default function TabsDemo() {
             <Card>
               <CardHeader>
                 <CardTitle>Account</CardTitle>
-                <CardDescription>
-                  Make changes to your account here.
-                </CardDescription>
+                <CardDescription>Make changes to your account here.</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm">
-                  Tabs let users switch between related sections without
-                  navigation.
-                </p>
+                <p className="text-sm">Tabs let users switch between related sections without navigation.</p>
               </CardContent>
             </Card>
           </TabsContent>
@@ -345,9 +268,7 @@ export default function TabsDemo() {
                 <CardDescription>Change your password.</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground text-sm">
-                  Password fields go here.
-                </p>
+                <p className="text-muted-foreground text-sm">Password fields go here.</p>
               </CardContent>
             </Card>
           </TabsContent>
@@ -358,14 +279,12 @@ export default function TabsDemo() {
                 <CardDescription>Manage your team.</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground text-sm">
-                  Team management UI goes here.
-                </p>
+                <p className="text-muted-foreground text-sm">Team management UI goes here.</p>
               </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
       </Story>
     </>
-  );
+  )
 }

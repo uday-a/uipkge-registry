@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onUnmounted } from "vue";
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import {
   Search,
   X,
@@ -10,206 +10,151 @@ import {
   ChevronRight,
   ChevronDown,
   PanelLeftClose,
-} from "lucide-vue-next";
+} from 'lucide-vue-next'
 
 export interface SidebarItem {
-  id: string;
-  name: string;
-  type: string;
-  category: string;
-  categories?: string[];
+  id: string
+  name: string
+  type: string
+  category: string
+  categories?: string[]
 }
 
 const props = withDefaults(
   defineProps<{
-    items: SidebarItem[];
-    selectedId: string;
-    collapsed?: boolean;
+    items: SidebarItem[]
+    selectedId: string
+    collapsed?: boolean
   }>(),
   {
     collapsed: false,
   },
-);
+)
 
 const emit = defineEmits<{
-  (e: "select", id: string): void;
-  (e: "toggle-collapse"): void;
-}>();
+  (e: 'select', id: string): void
+  (e: 'toggle-collapse'): void
+}>()
 
-const search = ref("");
-const searchInputRef = ref<HTMLInputElement | null>(null);
-const collapsedCategories = ref<Record<string, boolean>>({});
+const search = ref('')
+const searchInputRef = ref<HTMLInputElement | null>(null)
+const collapsedCategories = ref<Record<string, boolean>>({})
 
 const isBlockItem = (item: SidebarItem) =>
-  item.type === "registry:block" ||
-  item.category === "Blocks" ||
-  item.id === "cloud-backup-schedule";
+  item.type === 'registry:block' || item.category === 'Blocks' || item.id === 'cloud-backup-schedule'
 
-const componentsList = computed(() =>
-  props.items.filter((i) => !isBlockItem(i)),
-);
-const blocksList = computed(() => props.items.filter((i) => isBlockItem(i)));
+const componentsList = computed(() => props.items.filter((i) => !isBlockItem(i)))
+const blocksList = computed(() => props.items.filter((i) => isBlockItem(i)))
 
-const activeTab = ref<"components" | "blocks">("components");
+const activeTab = ref<'components' | 'blocks'>('components')
 
 // Sync active tab with selected component
 watch(
   () => props.selectedId,
   (newId) => {
     if (newId) {
-      const match = props.items.find((i) => i.id === newId);
+      const match = props.items.find((i) => i.id === newId)
       if (match) {
-        activeTab.value = isBlockItem(match) ? "blocks" : "components";
+        activeTab.value = isBlockItem(match) ? 'blocks' : 'components'
       }
     }
   },
   { immediate: true },
-);
+)
 
-function switchTab(tab: "components" | "blocks") {
-  activeTab.value = tab;
-  search.value = "";
-  if (tab === "blocks") {
+function switchTab(tab: 'components' | 'blocks') {
+  activeTab.value = tab
+  search.value = ''
+  if (tab === 'blocks') {
     if (!blocksList.value.some((b) => b.id === props.selectedId)) {
       if (blocksList.value.length > 0) {
-        emit("select", blocksList.value[0].id);
+        emit('select', blocksList.value[0].id)
       }
     }
   } else {
     if (!componentsList.value.some((c) => c.id === props.selectedId)) {
-      const defaultComp = componentsList.value.some((c) => c.id === "button")
-        ? "button"
-        : componentsList.value[0]?.id;
-      if (defaultComp) emit("select", defaultComp);
+      const defaultComp = componentsList.value.some((c) => c.id === 'button') ? 'button' : componentsList.value[0]?.id
+      if (defaultComp) emit('select', defaultComp)
     }
   }
 }
 
 // Items for the current active tab
 const currentTabItems = computed(() => {
-  return activeTab.value === "blocks" ? blocksList.value : componentsList.value;
-});
+  return activeTab.value === 'blocks' ? blocksList.value : componentsList.value
+})
 
 // Filter items by search query
 const filteredItems = computed(() => {
-  const q = search.value.toLowerCase().trim();
-  if (!q) return currentTabItems.value;
+  const q = search.value.toLowerCase().trim()
+  if (!q) return currentTabItems.value
   return currentTabItems.value.filter(
     (i) =>
       i.id.toLowerCase().includes(q) ||
       i.name.toLowerCase().includes(q) ||
       i.categories?.some((c) => c.toLowerCase().includes(q)),
-  );
-});
+  )
+})
 
 // Group items by category
 const groupedItems = computed(() => {
-  const groups: Record<string, SidebarItem[]> = {};
+  const groups: Record<string, SidebarItem[]> = {}
   for (const item of filteredItems.value) {
-    const cat = item.category || "General";
-    const formattedCat = cat.charAt(0).toUpperCase() + cat.slice(1);
-    if (!groups[formattedCat]) groups[formattedCat] = [];
-    groups[formattedCat].push(item);
+    const cat = item.category || 'General'
+    const formattedCat = cat.charAt(0).toUpperCase() + cat.slice(1)
+    if (!groups[formattedCat]) groups[formattedCat] = []
+    groups[formattedCat].push(item)
   }
-  return Object.entries(groups).sort(([a], [b]) => a.localeCompare(b));
-});
+  return Object.entries(groups).sort(([a], [b]) => a.localeCompare(b))
+})
 
 const toggleCategory = (cat: string) => {
-  collapsedCategories.value[cat] = !collapsedCategories.value[cat];
-};
+  collapsedCategories.value[cat] = !collapsedCategories.value[cat]
+}
 
 const clearSearch = () => {
-  search.value = "";
-  searchInputRef.value?.focus();
-};
+  search.value = ''
+  searchInputRef.value?.focus()
+}
 
 // Global hotkeys: '/' to focus search, Esc to blur
 const handleKeydown = (e: KeyboardEvent) => {
-  if (e.key === "/" && document.activeElement !== searchInputRef.value) {
-    e.preventDefault();
-    searchInputRef.value?.focus();
-  } else if (
-    e.key === "Escape" &&
-    document.activeElement === searchInputRef.value
-  ) {
-    searchInputRef.value?.blur();
+  if (e.key === '/' && document.activeElement !== searchInputRef.value) {
+    e.preventDefault()
+    searchInputRef.value?.focus()
+  } else if (e.key === 'Escape' && document.activeElement === searchInputRef.value) {
+    searchInputRef.value?.blur()
   }
-};
+}
 
 onMounted(() => {
-  window.addEventListener("keydown", handleKeydown);
-});
+  window.addEventListener('keydown', handleKeydown)
+})
 
 onUnmounted(() => {
-  window.removeEventListener("keydown", handleKeydown);
-});
+  window.removeEventListener('keydown', handleKeydown)
+})
 </script>
 
 <template>
   <aside
     class="border-border bg-card/60 flex shrink-0 flex-col border-r backdrop-blur transition-[width,opacity,border-right-width] duration-200 select-none"
-    :class="[
-      collapsed
-        ? 'pointer-events-none w-0 overflow-hidden border-r-0 p-0 opacity-0'
-        : 'w-[300px]',
-    ]"
+    :class="[collapsed ? 'pointer-events-none w-0 overflow-hidden border-r-0 p-0 opacity-0' : 'w-[300px]']"
   >
     <!-- Brand Header: UIPKGE Registry Logo, Title & Collapse Action -->
-    <div
-      class="border-border bg-card/80 flex h-14 shrink-0 items-center justify-between border-b px-3.5"
-    >
+    <div class="border-border bg-card/80 flex h-14 shrink-0 items-center justify-between border-b px-3.5">
       <div class="flex min-w-0 items-center gap-2.5">
         <!-- UIPKGE Official Brand Icon -->
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 32 32"
-          class="shrink-0"
-          aria-hidden="true"
-        >
-          <rect
-            x="0.5"
-            y="0.5"
-            width="31"
-            height="31"
-            rx="7"
-            class="fill-card stroke-border"
-            stroke-width="1"
-          />
-          <rect
-            x="6"
-            y="6"
-            width="8"
-            height="8"
-            rx="1.6"
-            class="fill-foreground"
-          />
-          <rect
-            x="18"
-            y="6"
-            width="8"
-            height="8"
-            rx="1.6"
-            class="fill-primary"
-          />
+        <svg width="24" height="24" viewBox="0 0 32 32" class="shrink-0" aria-hidden="true">
+          <rect x="0.5" y="0.5" width="31" height="31" rx="7" class="fill-card stroke-border" stroke-width="1" />
+          <rect x="6" y="6" width="8" height="8" rx="1.6" class="fill-foreground" />
+          <rect x="18" y="6" width="8" height="8" rx="1.6" class="fill-primary" />
           <rect x="6" y="18" width="8" height="8" rx="1.6" class="fill-muted" />
-          <rect
-            x="18"
-            y="18"
-            width="8"
-            height="8"
-            rx="1.6"
-            class="fill-foreground"
-          />
+          <rect x="18" y="18" width="8" height="8" rx="1.6" class="fill-foreground" />
         </svg>
         <div class="flex min-w-0 items-baseline gap-1.5">
-          <span
-            class="text-foreground font-display text-sm font-bold tracking-tight"
-            >UIPKGE</span
-          >
-          <span class="text-muted-foreground text-xs font-semibold"
-            >Registry</span
-          >
+          <span class="text-foreground font-display text-sm font-bold tracking-tight">UIPKGE</span>
+          <span class="text-muted-foreground text-xs font-semibold">Registry</span>
         </div>
       </div>
       <div class="flex shrink-0 items-center gap-1.5">
@@ -232,9 +177,7 @@ onUnmounted(() => {
     <!-- Top Section: Components & Blocks Tabs Side by Side + Search Bar -->
     <div class="border-border space-y-2.5 border-b p-3">
       <!-- Tabs Side by Side: Flexible Components tab + snug Blocks tab -->
-      <div
-        class="bg-muted/60 border-border/50 flex items-center gap-1 rounded-lg border p-0.5 text-xs font-medium"
-      >
+      <div class="bg-muted/60 border-border/50 flex items-center gap-1 rounded-lg border p-0.5 text-xs font-medium">
         <button
           type="button"
           id="tab-components"
@@ -251,11 +194,7 @@ onUnmounted(() => {
           <span class="text-xs font-medium">Components</span>
           <span
             class="shrink-0 rounded-full px-1.5 py-0.5 font-mono text-[10px] leading-none tabular-nums"
-            :class="
-              activeTab === 'components'
-                ? 'bg-muted text-foreground'
-                : 'text-muted-foreground'
-            "
+            :class="activeTab === 'components' ? 'bg-muted text-foreground' : 'text-muted-foreground'"
           >
             {{ componentsList.length }}
           </span>
@@ -277,11 +216,7 @@ onUnmounted(() => {
           <span class="text-xs font-medium">Blocks</span>
           <span
             class="shrink-0 rounded-full px-1.5 py-0.5 font-mono text-[10px] leading-none tabular-nums"
-            :class="
-              activeTab === 'blocks'
-                ? 'bg-muted text-foreground'
-                : 'text-muted-foreground'
-            "
+            :class="activeTab === 'blocks' ? 'bg-muted text-foreground' : 'text-muted-foreground'"
           >
             {{ blocksList.length }}
           </span>
@@ -290,18 +225,12 @@ onUnmounted(() => {
 
       <!-- Search Bar -->
       <div class="relative">
-        <Search
-          class="text-muted-foreground pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2"
-        />
+        <Search class="text-muted-foreground pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2" />
         <input
           ref="searchInputRef"
           v-model="search"
           type="text"
-          :placeholder="
-            activeTab === 'blocks'
-              ? 'Search blocks... (/)'
-              : 'Search components... (/)'
-          "
+          :placeholder="activeTab === 'blocks' ? 'Search blocks... (/)' : 'Search components... (/)'"
           class="border-border bg-background text-foreground placeholder:text-muted-foreground focus:ring-primary w-full rounded-lg border py-1.5 pr-7 pl-8 text-xs shadow-xs focus:ring-1 focus:outline-none"
         />
         <button
@@ -317,11 +246,7 @@ onUnmounted(() => {
 
     <!-- Grouped Component / Block List -->
     <div class="flex-1 space-y-3 overflow-y-auto p-2">
-      <div
-        v-for="[category, groupItems] in groupedItems"
-        :key="category"
-        class="space-y-0.5"
-      >
+      <div v-for="[category, groupItems] in groupedItems" :key="category" class="space-y-0.5">
         <!-- Category Header -->
         <button
           type="button"
@@ -329,10 +254,7 @@ onUnmounted(() => {
           @click="toggleCategory(category)"
         >
           <div class="flex items-center gap-1.5">
-            <component
-              :is="collapsedCategories[category] ? ChevronRight : ChevronDown"
-              class="size-3 opacity-60"
-            />
+            <component :is="collapsedCategories[category] ? ChevronRight : ChevronDown" class="size-3 opacity-60" />
             <span>{{ category }}</span>
           </div>
           <span class="text-muted-foreground/80 font-mono text-xs">
@@ -367,13 +289,8 @@ onUnmounted(() => {
       </div>
 
       <!-- Empty State -->
-      <div
-        v-if="filteredItems.length === 0"
-        class="text-muted-foreground py-12 text-center text-xs"
-      >
-        No {{ activeTab === "blocks" ? "blocks" : "components" }} match "{{
-          search
-        }}"
+      <div v-if="filteredItems.length === 0" class="text-muted-foreground py-12 text-center text-xs">
+        No {{ activeTab === 'blocks' ? 'blocks' : 'components' }} match "{{ search }}"
       </div>
     </div>
 
@@ -383,13 +300,7 @@ onUnmounted(() => {
     >
       <span>
         {{ filteredItems.length }}
-        {{
-          activeTab === "blocks"
-            ? filteredItems.length === 1
-              ? "block"
-              : "blocks"
-            : "components"
-        }}
+        {{ activeTab === 'blocks' ? (filteredItems.length === 1 ? 'block' : 'blocks') : 'components' }}
       </span>
       <span>UIPKGE v1.0</span>
     </div>

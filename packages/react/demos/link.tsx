@@ -1,19 +1,7 @@
-import Story from "../../components/story/Story";
-import { Link } from "@react-registry/link";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@react-registry/card";
-import {
-  ArrowRight,
-  ExternalLink,
-  FileText,
-  Home,
-  LifeBuoy,
-} from "lucide-react";
+import Story from '../../components/story/Story'
+import { Link } from '@react-registry/link'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@react-registry/card'
+import { ArrowRight, ExternalLink, FileText, Home, LifeBuoy } from 'lucide-react'
 
 export default function LinkDemo() {
   return (
@@ -23,10 +11,10 @@ export default function LinkDemo() {
         description="Links flow naturally inside a paragraph — the most common place you'll reach for this component."
       >
         <p className="text-foreground max-w-md text-sm leading-relaxed">
-          By signing up you agree to our{" "}
+          By signing up you agree to our{' '}
           <Link href="#" underline="always">
             Terms of Service
-          </Link>{" "}
+          </Link>{' '}
           and acknowledge our
           <Link href="#" underline="always">
             Privacy Policy
@@ -69,10 +57,7 @@ export default function LinkDemo() {
         </div>
       </Story>
 
-      <Story
-        title="Sizes"
-        description="sm, default, and lg for matching the surrounding text scale."
-      >
+      <Story title="Sizes" description="sm, default, and lg for matching the surrounding text scale.">
         <div className="flex max-w-md flex-wrap items-baseline gap-4">
           <Link href="#" size="sm">
             Small link
@@ -111,19 +96,15 @@ export default function LinkDemo() {
         description="http(s) hrefs auto-open in a new tab with rel=noopener. Pass external={false} to force same-tab, or use a relative href."
       >
         <p className="text-sm">
-          External: <Link href="https://uipkge.dev">uipkge.dev</Link> opens in a
-          new tab. Internal:
+          External: <Link href="https://uipkge.dev">uipkge.dev</Link> opens in a new tab. Internal:
           <Link href="/about" external={false}>
             About page
-          </Link>{" "}
+          </Link>{' '}
           stays in-tab.
         </p>
       </Story>
 
-      <Story
-        title="Disabled"
-        description="Non-interactive links are dimmed and ignore pointer events."
-      >
+      <Story title="Disabled" description="Non-interactive links are dimmed and ignore pointer events.">
         <div className="flex max-w-md flex-wrap items-center gap-4 text-sm">
           <Link href="#" disabled>
             Disabled link
@@ -141,9 +122,7 @@ export default function LinkDemo() {
         <Card className="max-w-md">
           <CardHeader>
             <CardTitle>Need a hand?</CardTitle>
-            <CardDescription>
-              We're here Monday through Friday, 9–5 GMT.
-            </CardDescription>
+            <CardDescription>We're here Monday through Friday, 9–5 GMT.</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
             <Link href="#" left={<LifeBuoy />}>
@@ -166,5 +145,5 @@ export default function LinkDemo() {
         </Link>
       </Story>
     </>
-  );
+  )
 }

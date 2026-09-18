@@ -1,91 +1,68 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import {
-  OrganizationChart,
-  type OrgNode,
-} from "@/components/ui/organization-chart";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ref } from 'vue'
+import { OrganizationChart, type OrgNode } from '@/components/ui/organization-chart'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 const acmeOrg: OrgNode = {
-  id: "1",
-  name: "Sarah Johnson",
-  title: "Chief Executive Officer",
-  avatar: "https://i.pravatar.cc/80?img=47",
-  department: "Executive",
+  id: '1',
+  name: 'Sarah Johnson',
+  title: 'Chief Executive Officer',
+  avatar: 'https://i.pravatar.cc/80?img=47',
+  department: 'Executive',
   children: [
     {
-      id: "2",
-      name: "Michael Chen",
-      title: "VP of Engineering",
-      avatar: "https://i.pravatar.cc/80?img=12",
-      department: "Engineering",
+      id: '2',
+      name: 'Michael Chen',
+      title: 'VP of Engineering',
+      avatar: 'https://i.pravatar.cc/80?img=12',
+      department: 'Engineering',
       children: [
         {
-          id: "5",
-          name: "Alex Rivera",
-          title: "Engineering Lead",
-          avatar: "https://i.pravatar.cc/80?img=33",
-          department: "Engineering",
+          id: '5',
+          name: 'Alex Rivera',
+          title: 'Engineering Lead',
+          avatar: 'https://i.pravatar.cc/80?img=33',
+          department: 'Engineering',
           children: [
-            {
-              id: "8",
-              name: "Jordan Lee",
-              title: "Senior Engineer",
-              department: "Engineering",
-            },
-            {
-              id: "9",
-              name: "Taylor Brooks",
-              title: "Frontend Engineer",
-              department: "Engineering",
-            },
+            { id: '8', name: 'Jordan Lee', title: 'Senior Engineer', department: 'Engineering' },
+            { id: '9', name: 'Taylor Brooks', title: 'Frontend Engineer', department: 'Engineering' },
           ],
         },
         {
-          id: "6",
-          name: "Sam Patel",
-          title: "DevOps Lead",
-          department: "Engineering",
+          id: '6',
+          name: 'Sam Patel',
+          title: 'DevOps Lead',
+          department: 'Engineering',
         },
       ],
     },
     {
-      id: "3",
-      name: "Emily Davis",
-      title: "VP of Sales",
-      avatar: "https://i.pravatar.cc/80?img=45",
-      department: "Sales",
+      id: '3',
+      name: 'Emily Davis',
+      title: 'VP of Sales',
+      avatar: 'https://i.pravatar.cc/80?img=45',
+      department: 'Sales',
       children: [
-        {
-          id: "7",
-          name: "Chris Brown",
-          title: "Sales Manager",
-          department: "Sales",
-        },
-        {
-          id: "10",
-          name: "Maria Garcia",
-          title: "Account Executive",
-          department: "Sales",
-        },
+        { id: '7', name: 'Chris Brown', title: 'Sales Manager', department: 'Sales' },
+        { id: '10', name: 'Maria Garcia', title: 'Account Executive', department: 'Sales' },
       ],
     },
     {
-      id: "4",
-      name: "David Wilson",
-      title: "VP of Marketing",
-      avatar: "https://i.pravatar.cc/80?img=60",
-      department: "Marketing",
+      id: '4',
+      name: 'David Wilson',
+      title: 'VP of Marketing',
+      avatar: 'https://i.pravatar.cc/80?img=60',
+      department: 'Marketing',
     },
   ],
-};
+}
 
-const selectedNode = ref<OrgNode | null>(null);
-const lastToggle = ref("");
+const selectedNode = ref<OrgNode | null>(null)
+const lastToggle = ref('')
 
 function onClick(node: OrgNode) {
-  selectedNode.value = node;
+  selectedNode.value = node
 }
 </script>
 
@@ -96,8 +73,7 @@ function onClick(node: OrgNode) {
   >
     <OrganizationChart :data="acmeOrg" @node-click="onClick" class="w-full" />
     <p v-if="selectedNode" class="text-muted-foreground mt-3 text-xs">
-      Selected:
-      <span class="text-foreground font-medium">{{ selectedNode.name }}</span> ·
+      Selected: <span class="text-foreground font-medium">{{ selectedNode.name }}</span> ·
       {{ selectedNode.title }}
     </p>
   </Story>
@@ -109,9 +85,7 @@ function onClick(node: OrgNode) {
     <OrganizationChart :data="acmeOrg" class="w-full">
       <template #node="{ node }">
         <div v-if="node.department" class="mt-1">
-          <Badge variant="secondary" class="text-xs">{{
-            node.department
-          }}</Badge>
+          <Badge variant="secondary" class="text-xs">{{ node.department }}</Badge>
         </div>
       </template>
     </OrganizationChart>
@@ -135,11 +109,7 @@ function onClick(node: OrgNode) {
     title="Collapsed by default"
     description="Start with only the root visible — users drill into the branches they care about."
   >
-    <OrganizationChart
-      :data="acmeOrg"
-      :default-expanded="false"
-      class="w-full"
-    />
+    <OrganizationChart :data="acmeOrg" :default-expanded="false" class="w-full" />
   </Story>
 
   <Story
@@ -154,15 +124,10 @@ function onClick(node: OrgNode) {
         <OrganizationChart
           :data="acmeOrg"
           :default-expanded="false"
-          @toggle="
-            (n, e) =>
-              (lastToggle = `${n.name}: ${e ? 'expanded' : 'collapsed'}`)
-          "
+          @toggle="(n, e) => (lastToggle = `${n.name}: ${e ? 'expanded' : 'collapsed'}`)"
           class="w-full"
         />
-        <p v-if="lastToggle" class="text-muted-foreground mt-2 text-xs">
-          {{ lastToggle }}
-        </p>
+        <p v-if="lastToggle" class="text-muted-foreground mt-2 text-xs">{{ lastToggle }}</p>
       </CardContent>
     </Card>
   </Story>

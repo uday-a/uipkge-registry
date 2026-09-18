@@ -1,1 +1,1 @@
-export { default as AnimatedNumber } from "./AnimatedNumber.vue";
+export { default as AnimatedNumber } from './AnimatedNumber.vue'

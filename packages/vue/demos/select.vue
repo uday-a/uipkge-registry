@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref } from 'vue'
 import {
   Select,
   SelectContent,
@@ -10,22 +10,19 @@ import {
   SelectTrigger,
   SelectValue,
   NativeSelect,
-} from "@/components/ui/select";
-const fruit = ref<string>();
-const nativeFruit = ref<string>("banana");
-const country = ref<string>();
-const role = ref<string>();
-const tz = ref<string>();
-const skill = ref<string>();
-const disabledTrigger = ref<string>();
-const fruits = ref<string[]>([]);
+} from '@/components/ui/select'
+const fruit = ref<string>()
+const nativeFruit = ref<string>('banana')
+const country = ref<string>()
+const role = ref<string>()
+const tz = ref<string>()
+const skill = ref<string>()
+const disabledTrigger = ref<string>()
+const fruits = ref<string[]>([])
 </script>
 
 <template>
-  <Story
-    title="Default"
-    description="Single-select dropdown with a placeholder and basic options."
-  >
+  <Story title="Default" description="Single-select dropdown with a placeholder and basic options.">
     <Select v-model="fruit">
       <SelectTrigger class="w-48">
         <SelectValue placeholder="Pick a fruit" />
@@ -38,10 +35,7 @@ const fruits = ref<string[]>([]);
     </Select>
   </Story>
 
-  <Story
-    title="Grouped with labels"
-    description="Multiple SelectGroups, each with a SelectLabel header."
-  >
+  <Story title="Grouped with labels" description="Multiple SelectGroups, each with a SelectLabel header.">
     <Select v-model="country">
       <SelectTrigger class="w-56">
         <SelectValue placeholder="Choose a country" />
@@ -63,10 +57,7 @@ const fruits = ref<string[]>([]);
     </Select>
   </Story>
 
-  <Story
-    title="Disabled item"
-    description="Individual items can be disabled via the disabled prop."
-  >
+  <Story title="Disabled item" description="Individual items can be disabled via the disabled prop.">
     <Select v-model="role">
       <SelectTrigger class="w-48">
         <SelectValue placeholder="Pick a role" />
@@ -80,10 +71,7 @@ const fruits = ref<string[]>([]);
     </Select>
   </Story>
 
-  <Story
-    title="With separator"
-    description="Use SelectSeparator to visually split groups inside the popover."
-  >
+  <Story title="With separator" description="Use SelectSeparator to visually split groups inside the popover.">
     <Select v-model="skill">
       <SelectTrigger class="w-56">
         <SelectValue placeholder="Pick a skill level" />
@@ -134,10 +122,7 @@ const fruits = ref<string[]>([]);
     </Select>
   </Story>
 
-  <Story
-    title="Disabled trigger"
-    description="Pass disabled to the root to lock the entire control."
-  >
+  <Story title="Disabled trigger" description="Pass disabled to the root to lock the entire control.">
     <Select v-model="disabledTrigger" disabled>
       <SelectTrigger class="w-48">
         <SelectValue placeholder="Locked" />
@@ -149,10 +134,7 @@ const fruits = ref<string[]>([]);
     </Select>
   </Story>
 
-  <Story
-    title="Multi-select"
-    description="Pass multiple to the root; modelValue becomes a string[]."
-  >
+  <Story title="Multi-select" description="Pass multiple to the root; modelValue becomes a string[].">
     <div class="space-y-2">
       <Select v-model="fruits" multiple>
         <SelectTrigger class="w-56">
@@ -167,10 +149,7 @@ const fruits = ref<string[]>([]);
         </SelectContent>
       </Select>
       <p class="text-muted-foreground text-xs">
-        Selected:
-        <code class="text-foreground">{{
-          fruits.length ? fruits.join(", ") : "—"
-        }}</code>
+        Selected: <code class="text-foreground">{{ fruits.length ? fruits.join(', ') : '—' }}</code>
       </p>
     </div>
   </Story>
@@ -186,11 +165,7 @@ const fruits = ref<string[]>([]);
           { label: 'Apple', value: 'apple' },
           { label: 'Banana', value: 'banana' },
           { label: 'Cherry', value: 'cherry' },
-          {
-            label: 'Dragonfruit (Sold out)',
-            value: 'dragonfruit',
-            disabled: true,
-          },
+          { label: 'Dragonfruit (Sold out)', value: 'dragonfruit', disabled: true },
         ]"
       />
       <p class="text-muted-foreground text-xs">

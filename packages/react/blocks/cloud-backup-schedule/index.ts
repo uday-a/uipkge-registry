@@ -1,5 +1,1 @@
-export {
-  CloudBackupSchedule,
-  type CloudBackupScheduleProps,
-  type BackupSnapshot,
-} from "./CloudBackupSchedule";
+export { CloudBackupSchedule, type CloudBackupScheduleProps, type BackupSnapshot } from './CloudBackupSchedule'

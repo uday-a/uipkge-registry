@@ -1,1 +1,1 @@
-export { DonutChart, type DonutChartProps } from "./DonutChart";
+export { DonutChart, type DonutChartProps } from './DonutChart'

@@ -1,1 +1,1 @@
-export { default as StackedBarChart } from "./StackedBarChart.vue";
+export { default as StackedBarChart } from './StackedBarChart.vue'

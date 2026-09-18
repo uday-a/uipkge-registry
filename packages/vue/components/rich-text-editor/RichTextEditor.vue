@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { computed, watch, onBeforeUnmount, ref, useId } from "vue";
-import { useEditor, EditorContent } from "@tiptap/vue-3";
-import StarterKit from "@tiptap/starter-kit";
-import Placeholder from "@tiptap/extension-placeholder";
-import Underline from "@tiptap/extension-underline";
-import Link from "@tiptap/extension-link";
-import TextAlign from "@tiptap/extension-text-align";
-import TaskList from "@tiptap/extension-task-list";
-import TaskItem from "@tiptap/extension-task-item";
+import { computed, watch, onBeforeUnmount, ref, useId } from 'vue'
+import { useEditor, EditorContent } from '@tiptap/vue-3'
+import StarterKit from '@tiptap/starter-kit'
+import Placeholder from '@tiptap/extension-placeholder'
+import Underline from '@tiptap/extension-underline'
+import Link from '@tiptap/extension-link'
+import TextAlign from '@tiptap/extension-text-align'
+import TaskList from '@tiptap/extension-task-list'
+import TaskItem from '@tiptap/extension-task-item'
 import {
   Bold,
   Italic,
@@ -29,36 +29,32 @@ import {
   Code,
   RemoveFormatting,
   ChevronDown,
-} from "lucide-vue-next";
-import { Toggle } from "@/components/ui/toggle";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
+} from 'lucide-vue-next'
+import { Toggle } from '@/components/ui/toggle'
+import { Separator } from '@/components/ui/separator'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { cn } from '@/lib/utils'
 
 const props = withDefaults(
   defineProps<{
-    modelValue?: string;
-    placeholder?: string;
-    class?: string;
-    editorClass?: string;
-    minHeight?: string;
+    modelValue?: string
+    placeholder?: string
+    class?: string
+    editorClass?: string
+    minHeight?: string
   }>(),
   {
-    modelValue: "",
-    placeholder: "Start writing...",
-    minHeight: "120px",
+    modelValue: '',
+    placeholder: 'Start writing...',
+    minHeight: '120px',
   },
-);
+)
 
 const emit = defineEmits<{
-  "update:modelValue": [value: string];
-}>();
+  'update:modelValue': [value: string]
+}>()
 
 const editor = useEditor({
   content: props.modelValue,
@@ -75,253 +71,216 @@ const editor = useEditor({
     Underline,
     Link.configure({
       openOnClick: false,
-      HTMLAttributes: { class: "text-primary underline cursor-pointer" },
+      HTMLAttributes: { class: 'text-primary underline cursor-pointer' },
     }),
-    TextAlign.configure({ types: ["heading", "paragraph"] }),
+    TextAlign.configure({ types: ['heading', 'paragraph'] }),
     TaskList,
     TaskItem.configure({ nested: true }),
   ],
   editorProps: {
     attributes: {
-      class: "prose prose-sm dark:prose-invert max-w-none focus:outline-none",
+      class: 'prose prose-sm dark:prose-invert max-w-none focus:outline-none',
     },
   },
   onUpdate: ({ editor: e }) => {
-    emit("update:modelValue", e.getHTML());
+    emit('update:modelValue', e.getHTML())
   },
-});
+})
 
 watch(
   () => props.modelValue,
   (val) => {
     if (editor.value && editor.value.getHTML() !== val) {
-      editor.value.commands.setContent(val || "", { emitUpdate: false });
+      editor.value.commands.setContent(val || '', { emitUpdate: false })
     }
   },
-);
+)
 
 onBeforeUnmount(() => {
-  editor.value?.destroy();
-});
+  editor.value?.destroy()
+})
 
 // Link editing lives in a popover rather than window.prompt: a native prompt
 // is unstyleable, blocks the main thread, cannot be tested, and is suppressed
 // outright in sandboxed iframes and some mobile browsers.
-const linkOpen = ref(false);
-const linkUrl = ref("");
-const linkFieldId = useId();
+const linkOpen = ref(false)
+const linkUrl = ref('')
+const linkFieldId = useId()
 
 function openLinkEditor() {
-  if (!editor.value) return;
+  if (!editor.value) return
   // Prefill with the current href so the popover edits instead of replaces.
-  linkUrl.value =
-    (editor.value.getAttributes("link").href as string | undefined) ?? "";
-  linkOpen.value = true;
+  linkUrl.value = (editor.value.getAttributes('link').href as string | undefined) ?? ''
+  linkOpen.value = true
 }
 
 function applyLink() {
-  const url = linkUrl.value.trim();
-  if (!editor.value || !url) return;
-  editor.value
-    .chain()
-    .focus()
-    .extendMarkRange("link")
-    .setLink({ href: url })
-    .run();
-  linkOpen.value = false;
+  const url = linkUrl.value.trim()
+  if (!editor.value || !url) return
+  editor.value.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
+  linkOpen.value = false
 }
 
 function removeLink() {
-  editor.value?.chain().focus().extendMarkRange("link").unsetLink().run();
-  linkUrl.value = "";
-  linkOpen.value = false;
+  editor.value?.chain().focus().extendMarkRange('link').unsetLink().run()
+  linkUrl.value = ''
+  linkOpen.value = false
 }
 
 interface ToolbarItem {
-  type: "button" | "separator" | "link";
-  icon?: any;
-  action?: () => void;
-  isActive?: () => boolean;
-  title?: string;
+  type: 'button' | 'separator' | 'link'
+  icon?: any
+  action?: () => void
+  isActive?: () => boolean
+  title?: string
 }
 
-const showExtended = ref(false);
+const showExtended = ref(false)
 
 const essentialItems = computed<ToolbarItem[]>(() => {
-  if (!editor.value) return [];
-  const e = editor.value;
+  if (!editor.value) return []
+  const e = editor.value
   return [
     {
-      type: "button",
+      type: 'button',
       icon: Bold,
       action: () => e.chain().focus().toggleBold().run(),
-      isActive: () => e.isActive("bold"),
-      title: "Bold",
+      isActive: () => e.isActive('bold'),
+      title: 'Bold',
     },
     {
-      type: "button",
+      type: 'button',
       icon: Italic,
       action: () => e.chain().focus().toggleItalic().run(),
-      isActive: () => e.isActive("italic"),
-      title: "Italic",
+      isActive: () => e.isActive('italic'),
+      title: 'Italic',
     },
     {
-      type: "button",
+      type: 'button',
       icon: UnderlineIcon,
       action: () => e.chain().focus().toggleUnderline().run(),
-      isActive: () => e.isActive("underline"),
-      title: "Underline",
+      isActive: () => e.isActive('underline'),
+      title: 'Underline',
     },
     {
-      type: "button",
+      type: 'button',
       icon: Strikethrough,
       action: () => e.chain().focus().toggleStrike().run(),
-      isActive: () => e.isActive("strike"),
-      title: "Strikethrough",
+      isActive: () => e.isActive('strike'),
+      title: 'Strikethrough',
     },
-    { type: "separator" },
+    { type: 'separator' },
     {
-      type: "button",
+      type: 'button',
       icon: List,
       action: () => e.chain().focus().toggleBulletList().run(),
-      isActive: () => e.isActive("bulletList"),
-      title: "Bullet list",
+      isActive: () => e.isActive('bulletList'),
+      title: 'Bullet list',
     },
     {
-      type: "button",
+      type: 'button',
       icon: ListOrdered,
       action: () => e.chain().focus().toggleOrderedList().run(),
-      isActive: () => e.isActive("orderedList"),
-      title: "Numbered list",
+      isActive: () => e.isActive('orderedList'),
+      title: 'Numbered list',
     },
-    { type: "separator" },
-    {
-      type: "link",
-      icon: LinkIcon,
-      action: openLinkEditor,
-      isActive: () => e.isActive("link"),
-      title: "Link",
-    },
-    { type: "separator" },
-    {
-      type: "button",
-      icon: Undo2,
-      action: () => e.chain().focus().undo().run(),
-      isActive: () => false,
-      title: "Undo",
-    },
-    {
-      type: "button",
-      icon: Redo2,
-      action: () => e.chain().focus().redo().run(),
-      isActive: () => false,
-      title: "Redo",
-    },
-  ];
-});
+    { type: 'separator' },
+    { type: 'link', icon: LinkIcon, action: openLinkEditor, isActive: () => e.isActive('link'), title: 'Link' },
+    { type: 'separator' },
+    { type: 'button', icon: Undo2, action: () => e.chain().focus().undo().run(), isActive: () => false, title: 'Undo' },
+    { type: 'button', icon: Redo2, action: () => e.chain().focus().redo().run(), isActive: () => false, title: 'Redo' },
+  ]
+})
 
 const extendedItems = computed<ToolbarItem[]>(() => {
-  if (!editor.value) return [];
-  const e = editor.value;
+  if (!editor.value) return []
+  const e = editor.value
   return [
     {
-      type: "button",
+      type: 'button',
       icon: Heading1,
       action: () => e.chain().focus().toggleHeading({ level: 1 }).run(),
-      isActive: () => e.isActive("heading", { level: 1 }),
-      title: "Heading 1",
+      isActive: () => e.isActive('heading', { level: 1 }),
+      title: 'Heading 1',
     },
     {
-      type: "button",
+      type: 'button',
       icon: Heading2,
       action: () => e.chain().focus().toggleHeading({ level: 2 }).run(),
-      isActive: () => e.isActive("heading", { level: 2 }),
-      title: "Heading 2",
+      isActive: () => e.isActive('heading', { level: 2 }),
+      title: 'Heading 2',
     },
-    { type: "separator" },
+    { type: 'separator' },
     {
-      type: "button",
+      type: 'button',
       icon: Code,
       action: () => e.chain().focus().toggleCode().run(),
-      isActive: () => e.isActive("code"),
-      title: "Inline code",
+      isActive: () => e.isActive('code'),
+      title: 'Inline code',
     },
     {
-      type: "button",
+      type: 'button',
       icon: Quote,
       action: () => e.chain().focus().toggleBlockquote().run(),
-      isActive: () => e.isActive("blockquote"),
-      title: "Blockquote",
+      isActive: () => e.isActive('blockquote'),
+      title: 'Blockquote',
     },
     {
-      type: "button",
+      type: 'button',
       icon: Minus,
       action: () => e.chain().focus().setHorizontalRule().run(),
       isActive: () => false,
-      title: "Divider",
+      title: 'Divider',
     },
     {
-      type: "button",
+      type: 'button',
       icon: ListChecks,
       action: () => e.chain().focus().toggleTaskList().run(),
-      isActive: () => e.isActive("taskList"),
-      title: "Task list",
+      isActive: () => e.isActive('taskList'),
+      title: 'Task list',
     },
-    { type: "separator" },
+    { type: 'separator' },
     {
-      type: "button",
+      type: 'button',
       icon: AlignLeft,
-      action: () => e.chain().focus().setTextAlign("left").run(),
-      isActive: () => e.isActive({ textAlign: "left" }),
-      title: "Align left",
+      action: () => e.chain().focus().setTextAlign('left').run(),
+      isActive: () => e.isActive({ textAlign: 'left' }),
+      title: 'Align left',
     },
     {
-      type: "button",
+      type: 'button',
       icon: AlignCenter,
-      action: () => e.chain().focus().setTextAlign("center").run(),
-      isActive: () => e.isActive({ textAlign: "center" }),
-      title: "Align center",
+      action: () => e.chain().focus().setTextAlign('center').run(),
+      isActive: () => e.isActive({ textAlign: 'center' }),
+      title: 'Align center',
     },
     {
-      type: "button",
+      type: 'button',
       icon: AlignRight,
-      action: () => e.chain().focus().setTextAlign("right").run(),
-      isActive: () => e.isActive({ textAlign: "right" }),
-      title: "Align right",
+      action: () => e.chain().focus().setTextAlign('right').run(),
+      isActive: () => e.isActive({ textAlign: 'right' }),
+      title: 'Align right',
     },
-    { type: "separator" },
+    { type: 'separator' },
     {
-      type: "button",
+      type: 'button',
       icon: RemoveFormatting,
       action: () => e.chain().focus().clearNodes().unsetAllMarks().run(),
       isActive: () => false,
-      title: "Clear formatting",
+      title: 'Clear formatting',
     },
-  ];
-});
+  ]
+})
 </script>
 
 <template>
-  <div
-    data-uipkge
-    data-slot="rich-text-editor"
-    :class="cn('rich-text-editor rounded-lg border', props.class)"
-  >
+  <div data-uipkge data-slot="rich-text-editor" :class="cn('rich-text-editor rounded-lg border', props.class)">
     <!-- Toolbar -->
-    <div
-      v-if="editor"
-      class="border-b"
-      role="toolbar"
-      aria-label="Text formatting"
-    >
+    <div v-if="editor" class="border-b" role="toolbar" aria-label="Text formatting">
       <!-- Essential row -->
       <div class="flex items-center gap-0.5 px-2 py-1.5">
         <template v-for="(item, i) in essentialItems" :key="'e' + i">
-          <Separator
-            v-if="item.type === 'separator'"
-            orientation="vertical"
-            class="mx-1 h-5"
-          />
+          <Separator v-if="item.type === 'separator'" orientation="vertical" class="mx-1 h-5" />
           <Popover v-else-if="item.type === 'link'" v-model:open="linkOpen">
             <PopoverTrigger as-child>
               <Toggle
@@ -332,20 +291,12 @@ const extendedItems = computed<ToolbarItem[]>(() => {
                 class="focus-visible:ring-ring size-7 p-0 focus-visible:ring-2 focus-visible:outline-none"
                 @click="openLinkEditor"
               >
-                <component
-                  :is="item.icon"
-                  class="size-3.5"
-                  aria-hidden="true"
-                />
+                <component :is="item.icon" class="size-3.5" aria-hidden="true" />
               </Toggle>
             </PopoverTrigger>
             <PopoverContent align="start" class="w-72 p-3">
               <form class="flex flex-col gap-2" @submit.prevent="applyLink">
-                <label
-                  :for="`${linkFieldId}`"
-                  class="text-foreground text-xs font-medium"
-                  >Link URL</label
-                >
+                <label :for="`${linkFieldId}`" class="text-foreground text-xs font-medium">Link URL</label>
                 <Input
                   :id="linkFieldId"
                   v-model="linkUrl"
@@ -356,18 +307,10 @@ const extendedItems = computed<ToolbarItem[]>(() => {
                   spellcheck="false"
                 />
                 <div class="flex items-center justify-end gap-2">
-                  <Button
-                    v-if="item.isActive?.()"
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    @click="removeLink"
-                  >
+                  <Button v-if="item.isActive?.()" type="button" variant="ghost" size="sm" @click="removeLink">
                     Remove
                   </Button>
-                  <Button type="submit" size="sm" :disabled="!linkUrl.trim()"
-                    >Apply</Button
-                  >
+                  <Button type="submit" size="sm" :disabled="!linkUrl.trim()">Apply</Button>
                 </div>
               </form>
             </PopoverContent>
@@ -400,10 +343,7 @@ const extendedItems = computed<ToolbarItem[]>(() => {
           @click="showExtended = !showExtended"
         >
           <ChevronDown
-            :class="[
-              'size-3.5 transition-transform duration-200',
-              showExtended && 'rotate-180',
-            ]"
+            :class="['size-3.5 transition-transform duration-200', showExtended && 'rotate-180']"
             aria-hidden="true"
           />
         </button>
@@ -413,19 +353,13 @@ const extendedItems = computed<ToolbarItem[]>(() => {
       <div
         :class="[
           'grid transition-colors duration-200 ease-in-out',
-          showExtended
-            ? 'grid-rows-[1fr] opacity-100'
-            : 'grid-rows-[0fr] opacity-0',
+          showExtended ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0',
         ]"
       >
         <div class="overflow-hidden">
           <div class="flex items-center gap-0.5 border-t px-2 py-1.5">
             <template v-for="(item, i) in extendedItems" :key="'x' + i">
-              <Separator
-                v-if="item.type === 'separator'"
-                orientation="vertical"
-                class="mx-1 h-5"
-              />
+              <Separator v-if="item.type === 'separator'" orientation="vertical" class="mx-1 h-5" />
               <Toggle
                 v-else
                 size="sm"
@@ -435,11 +369,7 @@ const extendedItems = computed<ToolbarItem[]>(() => {
                 class="focus-visible:ring-ring size-7 p-0 focus-visible:ring-2 focus-visible:outline-none"
                 @click="item.action?.()"
               >
-                <component
-                  :is="item.icon"
-                  class="size-3.5"
-                  aria-hidden="true"
-                />
+                <component :is="item.icon" class="size-3.5" aria-hidden="true" />
               </Toggle>
             </template>
           </div>
@@ -450,12 +380,7 @@ const extendedItems = computed<ToolbarItem[]>(() => {
     <!-- Editor -->
     <EditorContent
       :editor="editor"
-      :class="
-        cn(
-          'rich-text-content cursor-text overflow-y-auto px-3 py-2',
-          props.editorClass,
-        )
-      "
+      :class="cn('rich-text-content cursor-text overflow-y-auto px-3 py-2', props.editorClass)"
       :style="{ minHeight: props.minHeight }"
       @click="editor?.commands.focus()"
     />
@@ -560,35 +485,30 @@ const extendedItems = computed<ToolbarItem[]>(() => {
 }
 
 /* Task list styling */
-.rich-text-content .tiptap ul[data-type="taskList"] {
+.rich-text-content .tiptap ul[data-type='taskList'] {
   list-style: none;
   padding-left: 0;
 }
 
-.rich-text-content .tiptap ul[data-type="taskList"] li {
+.rich-text-content .tiptap ul[data-type='taskList'] li {
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
 }
 
-.rich-text-content .tiptap ul[data-type="taskList"] li > label {
+.rich-text-content .tiptap ul[data-type='taskList'] li > label {
   flex-shrink: 0;
   margin-top: 0.125rem;
 }
 
-.rich-text-content
-  .tiptap
-  ul[data-type="taskList"]
-  li
-  > label
-  input[type="checkbox"] {
+.rich-text-content .tiptap ul[data-type='taskList'] li > label input[type='checkbox'] {
   accent-color: var(--primary);
   width: 0.875rem;
   height: 0.875rem;
   cursor: pointer;
 }
 
-.rich-text-content .tiptap ul[data-type="taskList"] li > div {
+.rich-text-content .tiptap ul[data-type='taskList'] li > div {
   flex: 1;
 }
 

@@ -1,19 +1,11 @@
-import Story from "../../components/story/Story";
-import { Card, CardContent, CardHeader, CardTitle } from "@react-registry/card";
-import { Sparkline } from "@react-registry/charts";
-import { KpiGrid } from "@react-registry/kpi-grid";
-import {
-  Activity,
-  Briefcase,
-  CalendarClock,
-  DollarSign,
-  TrendingUp,
-  UserCheck,
-  Users,
-} from "lucide-react";
+import Story from '../../components/story/Story'
+import { Card, CardContent, CardHeader, CardTitle } from '@react-registry/card'
+import { Sparkline } from '@react-registry/charts'
+import { KpiGrid } from '@react-registry/kpi-grid'
+import { Activity, Briefcase, CalendarClock, DollarSign, TrendingUp, UserCheck, Users } from 'lucide-react'
 
-const headcount = [108, 112, 115, 119, 121, 122, 124];
-const revenue = [820, 880, 905, 940, 980, 1050, 1180];
+const headcount = [108, 112, 115, 119, 121, 122, 124]
+const revenue = [820, 880, 905, 940, 980, 1050, 1180]
 
 export default function KpiGridDemo() {
   return (
@@ -68,10 +60,7 @@ export default function KpiGridDemo() {
               <CardTitle className="text-muted-foreground text-xs font-medium tracking-widest uppercase">
                 ON LEAVE
               </CardTitle>
-              <CalendarClock
-                className="text-muted-foreground size-4"
-                aria-hidden="true"
-              />
+              <CalendarClock className="text-muted-foreground size-4" aria-hidden="true" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold tracking-tight">5</div>
@@ -83,10 +72,7 @@ export default function KpiGridDemo() {
               <CardTitle className="text-muted-foreground text-xs font-medium tracking-widest uppercase">
                 TERMINATED
               </CardTitle>
-              <Briefcase
-                className="text-muted-foreground size-4"
-                aria-hidden="true"
-              />
+              <Briefcase className="text-muted-foreground size-4" aria-hidden="true" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold tracking-tight">3</div>
@@ -95,20 +81,14 @@ export default function KpiGridDemo() {
         </KpiGrid>
       </Story>
 
-      <Story
-        title="Three columns"
-        description="Use the columns prop to change density. Accepts 2, 3, or 4."
-      >
+      <Story title="Three columns" description="Use the columns prop to change density. Accepts 2, 3, or 4.">
         <KpiGrid columns={3}>
           <Card className="flex flex-col justify-between">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-muted-foreground text-xs font-medium tracking-widest uppercase">
                 REVENUE
               </CardTitle>
-              <DollarSign
-                className="text-muted-foreground size-4"
-                aria-hidden="true"
-              />
+              <DollarSign className="text-muted-foreground size-4" aria-hidden="true" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold tracking-tight">$1.2M</div>
@@ -126,10 +106,7 @@ export default function KpiGridDemo() {
               <CardTitle className="text-muted-foreground text-xs font-medium tracking-widest uppercase">
                 CONVERSION
               </CardTitle>
-              <TrendingUp
-                className="text-muted-foreground size-4"
-                aria-hidden="true"
-              />
+              <TrendingUp className="text-muted-foreground size-4" aria-hidden="true" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold tracking-tight">3.7%</div>
@@ -147,10 +124,7 @@ export default function KpiGridDemo() {
               <CardTitle className="text-muted-foreground text-xs font-medium tracking-widest uppercase">
                 ACTIVE USERS
               </CardTitle>
-              <Activity
-                className="text-muted-foreground size-4"
-                aria-hidden="true"
-              />
+              <Activity className="text-muted-foreground size-4" aria-hidden="true" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold tracking-tight">8,412</div>
@@ -175,10 +149,7 @@ export default function KpiGridDemo() {
               <CardTitle className="text-muted-foreground text-xs font-medium tracking-widest uppercase">
                 HEADCOUNT
               </CardTitle>
-              <Users
-                className="text-muted-foreground size-4"
-                aria-hidden="true"
-              />
+              <Users className="text-muted-foreground size-4" aria-hidden="true" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold tracking-tight">124</div>
@@ -198,9 +169,7 @@ export default function KpiGridDemo() {
           </Card>
 
           <div className="bg-muted/50 flex flex-col justify-center rounded-lg border border-dashed p-6">
-            <div className="text-muted-foreground text-xs font-medium tracking-widest uppercase">
-              PIPELINE
-            </div>
+            <div className="text-muted-foreground text-xs font-medium tracking-widest uppercase">PIPELINE</div>
             <div className="mt-2 text-3xl font-bold tabular-nums">42</div>
           </div>
 
@@ -209,10 +178,7 @@ export default function KpiGridDemo() {
               <CardTitle className="text-muted-foreground text-xs font-medium tracking-widest uppercase">
                 ACTIVE
               </CardTitle>
-              <UserCheck
-                className="text-muted-foreground size-4"
-                aria-hidden="true"
-              />
+              <UserCheck className="text-muted-foreground size-4" aria-hidden="true" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold tracking-tight">116</div>
@@ -231,10 +197,7 @@ export default function KpiGridDemo() {
               <CardTitle className="text-muted-foreground text-xs font-medium tracking-widest uppercase">
                 REVENUE
               </CardTitle>
-              <DollarSign
-                className="text-muted-foreground size-4"
-                aria-hidden="true"
-              />
+              <DollarSign className="text-muted-foreground size-4" aria-hidden="true" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold tracking-tight">$1.2M</div>
@@ -245,10 +208,7 @@ export default function KpiGridDemo() {
               <CardTitle className="text-muted-foreground text-xs font-medium tracking-widest uppercase">
                 ACTIVE USERS
               </CardTitle>
-              <Activity
-                className="text-muted-foreground size-4"
-                aria-hidden="true"
-              />
+              <Activity className="text-muted-foreground size-4" aria-hidden="true" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold tracking-tight">8,412</div>
@@ -303,14 +263,11 @@ export default function KpiGridDemo() {
               <div className="text-xl font-bold tabular-nums">0.9%</div>
             </CardHeader>
             <CardContent className="pt-0">
-              <Sparkline
-                data={[2.1, 1.8, 1.5, 1.4, 1.2, 1.0, 0.9]}
-                height={48}
-              />
+              <Sparkline data={[2.1, 1.8, 1.5, 1.4, 1.2, 1.0, 0.9]} height={48} />
             </CardContent>
           </Card>
         </KpiGrid>
       </Story>
     </>
-  );
+  )
 }

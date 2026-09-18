@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import type { HTMLAttributes } from "vue";
-import { cn } from "@/lib/utils";
-import { progressLinearVariants } from "./progress-linear.variants";
+import { computed } from 'vue'
+import type { HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils'
+import { progressLinearVariants } from './progress-linear.variants'
 
 const props = withDefaults(
   defineProps<{
-    class?: HTMLAttributes["class"];
-    modelValue?: number;
-    bgColor?: string;
-    buffer?: number;
-    color?: string;
-    height?: number | string;
-    indeterminate?: boolean;
-    reverse?: boolean;
-    rounded?: "none" | "sm" | "default" | "md" | "lg" | "xl" | "full";
-    stream?: boolean;
-    striped?: boolean;
-    active?: boolean;
+    class?: HTMLAttributes['class']
+    modelValue?: number
+    bgColor?: string
+    buffer?: number
+    color?: string
+    height?: number | string
+    indeterminate?: boolean
+    reverse?: boolean
+    rounded?: 'none' | 'sm' | 'default' | 'md' | 'lg' | 'xl' | 'full'
+    stream?: boolean
+    striped?: boolean
+    active?: boolean
   }>(),
   {
     modelValue: 0,
@@ -27,29 +27,27 @@ const props = withDefaults(
     striped: false,
     active: true,
   },
-);
+)
 
 const normalizedValue = computed(() => {
-  return Math.min(100, Math.max(0, props.modelValue));
-});
+  return Math.min(100, Math.max(0, props.modelValue))
+})
 
 const normalizedBuffer = computed(() => {
-  return Math.min(100, Math.max(0, props.buffer || 0));
-});
+  return Math.min(100, Math.max(0, props.buffer || 0))
+})
 
 const heightValue = computed(() => {
-  if (typeof props.height === "number") return `${props.height}px`;
-  if (typeof props.height === "string") return props.height;
-  return "4px";
-});
+  if (typeof props.height === 'number') return `${props.height}px`
+  if (typeof props.height === 'string') return props.height
+  return '4px'
+})
 
-const bgColorValue = computed(() => props.bgColor || "currentColor");
+const bgColorValue = computed(() => props.bgColor || 'currentColor')
 
-const progressColorValue = computed(() => props.color || "currentColor");
+const progressColorValue = computed(() => props.color || 'currentColor')
 
-const containerClasses = computed(() =>
-  cn(progressLinearVariants({ rounded: props.rounded }), props.class),
-);
+const containerClasses = computed(() => cn(progressLinearVariants({ rounded: props.rounded }), props.class))
 </script>
 
 <template>
@@ -80,10 +78,7 @@ const containerClasses = computed(() =>
     <div
       v-if="!indeterminate && normalizedBuffer > 0 && normalizedBuffer < 100"
       class="absolute inset-0 transition-colors duration-300"
-      :class="[
-        reverse ? 'right-0 left-auto' : 'right-auto left-0',
-        striped ? 'progress-striped-medium' : '',
-      ]"
+      :class="[reverse ? 'right-0 left-auto' : 'right-auto left-0', striped ? 'progress-striped-medium' : '']"
       :style="{
         backgroundColor: bgColorValue,
         width: `${normalizedBuffer}%`,
@@ -97,10 +92,7 @@ const containerClasses = computed(() =>
       class="absolute inset-0 overflow-hidden"
       :class="reverse ? 'right-0 left-auto' : 'right-auto left-0'"
     >
-      <div
-        class="animate-stream progress-stream absolute inset-0"
-        :style="{ width: `${normalizedBuffer || 100}%` }"
-      />
+      <div class="animate-stream progress-stream absolute inset-0" :style="{ width: `${normalizedBuffer || 100}%` }" />
     </div>
 
     <!-- Progress bar -->

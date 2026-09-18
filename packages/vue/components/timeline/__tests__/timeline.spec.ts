@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { mount } from "@vue/test-utils";
+import { describe, it, expect } from 'vitest'
+import { mount } from '@vue/test-utils'
 import {
   Timeline,
   TimelineItem,
@@ -8,13 +8,13 @@ import {
   TimelineTitle,
   TimelineDescription,
   TimelineDate,
-} from "../index";
+} from '../index'
 
 function mountTimeline() {
   return mount(
     {
       template:
-        "<Timeline><TimelineItem><TimelineMedia /><TimelineContent><TimelineTitle>Title 1</TimelineTitle><TimelineDescription>Description 1</TimelineDescription><TimelineDate>Jan 1</TimelineDate></TimelineContent></TimelineItem></Timeline>",
+        '<Timeline><TimelineItem><TimelineMedia /><TimelineContent><TimelineTitle>Title 1</TimelineTitle><TimelineDescription>Description 1</TimelineDescription><TimelineDate>Jan 1</TimelineDate></TimelineContent></TimelineItem></Timeline>',
       components: {
         Timeline,
         TimelineItem,
@@ -26,103 +26,93 @@ function mountTimeline() {
       },
     },
     { attachTo: document.body },
-  );
+  )
 }
 
-describe("Timeline", () => {
+describe('Timeline', () => {
   it('renders with data-slot="timeline"', () => {
-    const w = mountTimeline();
-    expect(w.find('[data-slot="timeline"]').exists()).toBe(true);
-    w.unmount();
-  });
+    const w = mountTimeline()
+    expect(w.find('[data-slot="timeline"]').exists()).toBe(true)
+    w.unmount()
+  })
 
-  it("has data-uipkge", () => {
-    const w = mountTimeline();
-    expect(
-      w.find('[data-slot="timeline"]').attributes("data-uipkge"),
-    ).toBeDefined();
-    w.unmount();
-  });
+  it('has data-uipkge', () => {
+    const w = mountTimeline()
+    expect(w.find('[data-slot="timeline"]').attributes('data-uipkge')).toBeDefined()
+    w.unmount()
+  })
 
-  it("applies data-direction (vertical by default)", () => {
-    const w = mountTimeline();
-    expect(w.find('[data-slot="timeline"]').attributes("data-direction")).toBe(
-      "vertical",
-    );
-    w.unmount();
-  });
+  it('applies data-direction (vertical by default)', () => {
+    const w = mountTimeline()
+    expect(w.find('[data-slot="timeline"]').attributes('data-direction')).toBe('vertical')
+    w.unmount()
+  })
 
-  it("applies data-align", () => {
-    const w = mountTimeline();
-    expect(w.find('[data-slot="timeline"]').attributes("data-align")).toBe(
-      "start",
-    );
-    w.unmount();
-  });
+  it('applies data-align', () => {
+    const w = mountTimeline()
+    expect(w.find('[data-slot="timeline"]').attributes('data-align')).toBe('start')
+    w.unmount()
+  })
 
   it('TimelineItem renders with data-slot="timeline-item"', () => {
-    const w = mountTimeline();
-    expect(w.find('[data-slot="timeline-item"]').exists()).toBe(true);
-    w.unmount();
-  });
+    const w = mountTimeline()
+    expect(w.find('[data-slot="timeline-item"]').exists()).toBe(true)
+    w.unmount()
+  })
 
-  it("TimelineItem has data-uipkge", () => {
-    const w = mountTimeline();
-    expect(
-      w.find('[data-slot="timeline-item"]').attributes("data-uipkge"),
-    ).toBeDefined();
-    w.unmount();
-  });
+  it('TimelineItem has data-uipkge', () => {
+    const w = mountTimeline()
+    expect(w.find('[data-slot="timeline-item"]').attributes('data-uipkge')).toBeDefined()
+    w.unmount()
+  })
 
-  it("TimelineItem applies data-status", () => {
-    const w = mountTimeline();
-    expect(
-      w.find('[data-slot="timeline-item"]').attributes("data-status"),
-    ).toBeDefined();
-    w.unmount();
-  });
+  it('TimelineItem applies data-status', () => {
+    const w = mountTimeline()
+    expect(w.find('[data-slot="timeline-item"]').attributes('data-status')).toBeDefined()
+    w.unmount()
+  })
 
   it('TimelineMedia renders with data-slot="timeline-media"', () => {
-    const w = mountTimeline();
-    expect(w.find('[data-slot="timeline-media"]').exists()).toBe(true);
-    w.unmount();
-  });
+    const w = mountTimeline()
+    expect(w.find('[data-slot="timeline-media"]').exists()).toBe(true)
+    w.unmount()
+  })
 
   it('TimelineContent renders with data-slot="timeline-content"', () => {
-    const w = mountTimeline();
-    expect(w.find('[data-slot="timeline-content"]').exists()).toBe(true);
-    w.unmount();
-  });
+    const w = mountTimeline()
+    expect(w.find('[data-slot="timeline-content"]').exists()).toBe(true)
+    w.unmount()
+  })
 
   it('TimelineTitle renders with data-slot="timeline-title"', () => {
-    const w = mountTimeline();
-    expect(w.find('[data-slot="timeline-title"]').exists()).toBe(true);
-    w.unmount();
-  });
+    const w = mountTimeline()
+    expect(w.find('[data-slot="timeline-title"]').exists()).toBe(true)
+    w.unmount()
+  })
 
   it('TimelineDescription renders with data-slot="timeline-description"', () => {
-    const w = mountTimeline();
-    expect(w.find('[data-slot="timeline-description"]').exists()).toBe(true);
-    w.unmount();
-  });
+    const w = mountTimeline()
+    expect(w.find('[data-slot="timeline-description"]').exists()).toBe(true)
+    w.unmount()
+  })
 
   it('TimelineDate renders with data-slot="timeline-date"', () => {
-    const w = mountTimeline();
-    expect(w.find('[data-slot="timeline-date"]').exists()).toBe(true);
-    w.unmount();
-  });
+    const w = mountTimeline()
+    expect(w.find('[data-slot="timeline-date"]').exists()).toBe(true)
+    w.unmount()
+  })
 
-  it("TimelineDate renders a time element", () => {
-    const w = mountTimeline();
-    expect(w.find('time[data-slot="timeline-date"]').exists()).toBe(true);
-    w.unmount();
-  });
+  it('TimelineDate renders a time element', () => {
+    const w = mountTimeline()
+    expect(w.find('time[data-slot="timeline-date"]').exists()).toBe(true)
+    w.unmount()
+  })
 
-  it("TimelineTitle renders as h3 by default", () => {
-    const w = mountTimeline();
-    expect(w.find('h3[data-slot="timeline-title"]').exists()).toBe(true);
-    w.unmount();
-  });
+  it('TimelineTitle renders as h3 by default', () => {
+    const w = mountTimeline()
+    expect(w.find('h3[data-slot="timeline-title"]').exists()).toBe(true)
+    w.unmount()
+  })
 
   it('align="center" applies row-start-1 and col-start-2 to timeline-media', () => {
     const w = mount(
@@ -138,14 +128,10 @@ describe("Timeline", () => {
         },
       },
       { attachTo: document.body },
-    );
-    const item = w.find('[data-slot="timeline-item"]');
-    expect(item.classes()).toContain(
-      "[&>[data-slot=timeline-media]]:row-start-1",
-    );
-    expect(item.classes()).toContain(
-      "[&>[data-slot=timeline-content]]:row-start-1",
-    );
-    w.unmount();
-  });
-});
+    )
+    const item = w.find('[data-slot="timeline-item"]')
+    expect(item.classes()).toContain('[&>[data-slot=timeline-media]]:row-start-1')
+    expect(item.classes()).toContain('[&>[data-slot=timeline-content]]:row-start-1')
+    w.unmount()
+  })
+})

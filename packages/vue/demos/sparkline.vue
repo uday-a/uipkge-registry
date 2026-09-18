@@ -1,40 +1,40 @@
 <script setup lang="ts">
-import { Sparkline } from "@/components/ui/charts";
-const trendUp = [12, 19, 15, 25, 22, 30, 28, 35, 32, 40];
-const trendDown = [42, 38, 41, 33, 36, 28, 30, 22, 19, 14];
-const flat = [22, 24, 21, 23, 22, 25, 22, 24, 23, 22];
-const winLoss = [1, 1, -1, 1, -1, -1, 1, 1, -1, 1, 1, -1, 1];
+import { Sparkline } from '@/components/ui/charts'
+const trendUp = [12, 19, 15, 25, 22, 30, 28, 35, 32, 40]
+const trendDown = [42, 38, 41, 33, 36, 28, 30, 22, 19, 14]
+const flat = [22, 24, 21, 23, 22, 25, 22, 24, 23, 22]
+const winLoss = [1, 1, -1, 1, -1, -1, 1, 1, -1, 1, 1, -1, 1]
 
 // Bar-style sparkline via the option escape hatch.
 const barOption = {
   series: [
     {
-      type: "bar",
-      barCategoryGap: "25%",
-      itemStyle: { color: "#14b8a6", borderRadius: [2, 2, 0, 0] },
+      type: 'bar',
+      barCategoryGap: '25%',
+      itemStyle: { color: '#14b8a6', borderRadius: [2, 2, 0, 0] },
       areaStyle: undefined,
       lineStyle: undefined,
     },
   ],
-};
+}
 
 // Win/loss: ±1 values rendered as up-bars (green) / down-bars (red).
 const winLossOption = {
   series: [
     {
-      type: "bar",
-      barCategoryGap: "15%",
+      type: 'bar',
+      barCategoryGap: '15%',
       data: winLoss,
       areaStyle: undefined,
       lineStyle: undefined,
       itemStyle: {
-        color: (params: any) => (params.value >= 0 ? "#14b8a6" : "#f97316"),
+        color: (params: any) => (params.value >= 0 ? '#14b8a6' : '#f97316'),
         borderRadius: 1,
       },
     },
   ],
-  yAxis: { type: "value", show: false, min: -1.2, max: 1.2 },
-};
+  yAxis: { type: 'value', show: false, min: -1.2, max: 1.2 },
+}
 </script>
 
 <template>

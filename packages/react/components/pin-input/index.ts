@@ -5,4 +5,4 @@ export {
   PinInputSeparator,
   type PinInputProps,
   type PinInputSlotProps,
-} from "./pin-input";
+} from './pin-input'

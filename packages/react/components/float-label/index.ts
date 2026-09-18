@@ -1,1 +1,1 @@
-export { FloatLabel, type FloatLabelProps } from "./FloatLabel";
+export { FloatLabel, type FloatLabelProps } from './FloatLabel'

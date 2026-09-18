@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch } from 'vue'
 import {
   Layers,
   FileCode,
@@ -16,114 +16,112 @@ import {
   Code2,
   Maximize2,
   Minimize2,
-} from "lucide-vue-next";
-import type { PropMeta } from "../lib/extract-props";
-import type { TypeDecl } from "../lib/extract-meta";
+} from 'lucide-vue-next'
+import type { PropMeta } from '../lib/extract-props'
+import type { TypeDecl } from '../lib/extract-meta'
 
 export interface LoggedEvent {
-  id: string;
-  timestamp: string;
-  type: string;
-  target: string;
-  detail?: string;
+  id: string
+  timestamp: string
+  type: string
+  target: string
+  detail?: string
 }
 
 const props = defineProps<{
-  componentId: string;
-  componentName: string;
-  componentType: string;
-  propsList: PropMeta[];
-  typeDecls: TypeDecl[];
-  files: Array<{ path: string; target: string; content?: string }>;
-  dependencies: string[];
-  registryDependencies: string[];
-  events: LoggedEvent[];
-  isOpen: boolean;
-}>();
+  componentId: string
+  componentName: string
+  componentType: string
+  propsList: PropMeta[]
+  typeDecls: TypeDecl[]
+  files: Array<{ path: string; target: string; content?: string }>
+  dependencies: string[]
+  registryDependencies: string[]
+  events: LoggedEvent[]
+  isOpen: boolean
+}>()
 
 const emit = defineEmits<{
-  (e: "update:isOpen", value: boolean): void;
-  (e: "selectComponent", id: string): void;
-  (e: "clearEvents"): void;
-}>();
+  (e: 'update:isOpen', value: boolean): void
+  (e: 'selectComponent', id: string): void
+  (e: 'clearEvents'): void
+}>()
 
-type TabKey = "props" | "files" | "manifest" | "events";
-const activeTab = ref<TabKey>("props");
-const selectedFileIdx = ref(0);
-const copied = ref(false);
-const copiedSnippet = ref(false);
-const isMaximized = ref(false);
+type TabKey = 'props' | 'files' | 'manifest' | 'events'
+const activeTab = ref<TabKey>('props')
+const selectedFileIdx = ref(0)
+const copied = ref(false)
+const copiedSnippet = ref(false)
+const isMaximized = ref(false)
 
 // Interactive controls state
-const interactiveValues = ref<Record<string, any>>({});
-const customSlotText = ref("Test Action");
+const interactiveValues = ref<Record<string, any>>({})
+const customSlotText = ref('Test Action')
 
 // Initialize interactive values when propsList changes
 watch(
   () => props.propsList,
   (newProps) => {
-    const vals: Record<string, any> = {};
+    const vals: Record<string, any> = {}
     for (const p of newProps) {
       if (p.values && p.values.length > 0) {
-        vals[p.name] = p.default ? p.default.replace(/['"]/g, "") : p.values[0];
-      } else if (p.type.includes("boolean")) {
-        vals[p.name] = p.default === "true";
-      } else if (p.name === "label" || p.name === "title") {
-        vals[p.name] = p.default
-          ? p.default.replace(/['"]/g, "")
-          : "Example Label";
+        vals[p.name] = p.default ? p.default.replace(/['"]/g, '') : p.values[0]
+      } else if (p.type.includes('boolean')) {
+        vals[p.name] = p.default === 'true'
+      } else if (p.name === 'label' || p.name === 'title') {
+        vals[p.name] = p.default ? p.default.replace(/['"]/g, '') : 'Example Label'
       }
     }
-    interactiveValues.value = vals;
+    interactiveValues.value = vals
   },
   { immediate: true },
-);
+)
 
 // Generate interactive code snippet
 const generatedSnippet = computed(() => {
   const compTag = props.componentId
-    .split("-")
+    .split('-')
     .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join("");
+    .join('')
 
-  const attrs: string[] = [];
+  const attrs: string[] = []
   for (const [key, val] of Object.entries(interactiveValues.value)) {
-    if (val === undefined || val === "") continue;
-    if (typeof val === "boolean") {
-      if (val) attrs.push(key);
+    if (val === undefined || val === '') continue
+    if (typeof val === 'boolean') {
+      if (val) attrs.push(key)
     } else {
-      attrs.push(`${key}="${val}"`);
+      attrs.push(`${key}="${val}"`)
     }
   }
 
-  const attrStr = attrs.length ? " " + attrs.join(" ") : "";
-  return `<${compTag}${attrStr}>\n  ${customSlotText.value}\n</${compTag}>`;
-});
+  const attrStr = attrs.length ? ' ' + attrs.join(' ') : ''
+  return `<${compTag}${attrStr}>\n  ${customSlotText.value}\n</${compTag}>`
+})
 
 const copyGeneratedSnippet = async () => {
   try {
-    await navigator.clipboard.writeText(generatedSnippet.value);
-    copiedSnippet.value = true;
-    setTimeout(() => (copiedSnippet.value = false), 1500);
+    await navigator.clipboard.writeText(generatedSnippet.value)
+    copiedSnippet.value = true
+    setTimeout(() => (copiedSnippet.value = false), 1500)
   } catch (err) {
-    console.error("Failed to copy snippet:", err);
+    console.error('Failed to copy snippet:', err)
   }
-};
+}
 
 const currentFileContent = computed(() => {
-  return props.files[selectedFileIdx.value]?.content || "";
-});
+  return props.files[selectedFileIdx.value]?.content || ''
+})
 
 const copyCurrentFile = async () => {
-  if (!currentFileContent.value) return;
+  if (!currentFileContent.value) return
   try {
-    await navigator.clipboard.writeText(currentFileContent.value);
-    copied.value = true;
-    setTimeout(() => (copied.value = false), 1500);
+    await navigator.clipboard.writeText(currentFileContent.value)
+    copied.value = true
+    setTimeout(() => (copied.value = false), 1500)
   } catch (err) {
-    console.error("Failed to copy file:", err);
+    console.error('Failed to copy file:', err)
   }
-};
+}
 
 const copyJsonManifest = async () => {
   const manifest = {
@@ -132,19 +130,19 @@ const copyJsonManifest = async () => {
     dependencies: props.dependencies,
     registryDependencies: props.registryDependencies,
     files: props.files.map((f) => ({ target: f.target })),
-  };
-  try {
-    await navigator.clipboard.writeText(JSON.stringify(manifest, null, 2));
-    copied.value = true;
-    setTimeout(() => (copied.value = false), 1500);
-  } catch (err) {
-    console.error("Failed to copy manifest:", err);
   }
-};
+  try {
+    await navigator.clipboard.writeText(JSON.stringify(manifest, null, 2))
+    copied.value = true
+    setTimeout(() => (copied.value = false), 1500)
+  } catch (err) {
+    console.error('Failed to copy manifest:', err)
+  }
+}
 
 const parseDepName = (depUrl: string) => {
-  return depUrl.replace(/.*\//, "").replace(/\.json$/, "");
-};
+  return depUrl.replace(/.*\//, '').replace(/\.json$/, '')
+}
 </script>
 
 <template>
@@ -160,25 +158,17 @@ const parseDepName = (depUrl: string) => {
       <div class="flex items-center gap-3">
         <div class="flex items-center gap-2">
           <Sliders class="text-primary size-4" />
-          <span class="text-foreground text-xs font-semibold tracking-tight"
-            >Test Bench & Inspector</span
-          >
+          <span class="text-foreground text-xs font-semibold tracking-tight">Test Bench & Inspector</span>
         </div>
 
         <div class="bg-border h-3 w-px" />
 
         <!-- Collapsed Summary Badges -->
         <div v-if="!isOpen" class="flex items-center gap-2">
-          <span
-            v-if="propsList.length"
-            class="bg-muted text-muted-foreground rounded-md px-2 py-0.5 font-mono text-xs"
-          >
+          <span v-if="propsList.length" class="bg-muted text-muted-foreground rounded-md px-2 py-0.5 font-mono text-xs">
             {{ propsList.length }} props
           </span>
-          <span
-            v-if="files.length"
-            class="bg-muted text-muted-foreground rounded-md px-2 py-0.5 font-mono text-xs"
-          >
+          <span v-if="files.length" class="bg-muted text-muted-foreground rounded-md px-2 py-0.5 font-mono text-xs">
             {{ files.length }} files
           </span>
           <span
@@ -203,10 +193,7 @@ const parseDepName = (depUrl: string) => {
           >
             <Layers class="size-3.5" />
             <span>Props & Workbench</span>
-            <span
-              v-if="propsList.length"
-              class="bg-muted ml-1 rounded-full px-1.5 py-0.5 font-mono text-xs"
-            >
+            <span v-if="propsList.length" class="bg-muted ml-1 rounded-full px-1.5 py-0.5 font-mono text-xs">
               {{ propsList.length }}
             </span>
           </button>
@@ -223,9 +210,7 @@ const parseDepName = (depUrl: string) => {
           >
             <FileCode class="size-3.5" />
             <span>Source Files</span>
-            <span
-              class="bg-muted ml-1 rounded-full px-1.5 py-0.5 font-mono text-xs"
-            >
+            <span class="bg-muted ml-1 rounded-full px-1.5 py-0.5 font-mono text-xs">
               {{ files.length }}
             </span>
           </button>
@@ -290,7 +275,7 @@ const parseDepName = (depUrl: string) => {
           class="text-muted-foreground hover:text-foreground hover:bg-muted flex items-center gap-1 rounded-md px-2.5 py-1 text-xs transition"
           @click="emit('update:isOpen', !isOpen)"
         >
-          <span>{{ isOpen ? "Collapse" : "Expand Inspector" }}</span>
+          <span>{{ isOpen ? 'Collapse' : 'Expand Inspector' }}</span>
           <ChevronDown v-if="isOpen" class="size-3.5" />
           <ChevronUp v-else class="size-3.5" />
         </button>
@@ -300,22 +285,13 @@ const parseDepName = (depUrl: string) => {
     <!-- Drawer Body -->
     <div v-if="isOpen" class="bg-background flex-1 overflow-hidden">
       <!-- 1. Props & Schema Tab -->
-      <div
-        v-if="activeTab === 'props'"
-        class="h-full space-y-6 overflow-y-auto p-4 sm:p-6"
-      >
+      <div v-if="activeTab === 'props'" class="h-full space-y-6 overflow-y-auto p-4 sm:p-6">
         <!-- Interactive Workbench Control Card -->
         <div
-          v-if="
-            propsList.some(
-              (p) => p.values?.length || p.type.includes('boolean'),
-            )
-          "
+          v-if="propsList.some((p) => p.values?.length || p.type.includes('boolean'))"
           class="border-border bg-card rounded-xl border p-4 shadow-xs"
         >
-          <div
-            class="border-border mb-3 flex items-center justify-between border-b pb-2"
-          >
+          <div class="border-border mb-3 flex items-center justify-between border-b pb-2">
             <div class="flex items-center gap-2">
               <Code2 class="text-primary size-4" />
               <h4 class="text-foreground text-xs font-semibold tracking-tight">
@@ -333,24 +309,16 @@ const parseDepName = (depUrl: string) => {
             </button>
           </div>
 
-          <div
-            class="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4"
-          >
+          <div class="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
             <!-- Render controls for each customizable prop -->
             <div
-              v-for="prop in propsList.filter(
-                (p) => p.values?.length || p.type.includes('boolean'),
-              )"
+              v-for="prop in propsList.filter((p) => p.values?.length || p.type.includes('boolean'))"
               :key="prop.name"
               class="space-y-1.5"
             >
-              <label
-                class="text-foreground flex items-center justify-between font-mono text-xs font-medium"
-              >
+              <label class="text-foreground flex items-center justify-between font-mono text-xs font-medium">
                 <span>{{ prop.name }}</span>
-                <span class="text-muted-foreground text-xs">{{
-                  prop.required ? "required" : "optional"
-                }}</span>
+                <span class="text-muted-foreground text-xs">{{ prop.required ? 'required' : 'optional' }}</span>
               </label>
 
               <!-- Enum / Union dropdown -->
@@ -365,30 +333,22 @@ const parseDepName = (depUrl: string) => {
               </select>
 
               <!-- Boolean toggle -->
-              <div
-                v-else-if="prop.type.includes('boolean')"
-                class="flex items-center gap-2 pt-1"
-              >
+              <div v-else-if="prop.type.includes('boolean')" class="flex items-center gap-2 pt-1">
                 <input
                   :id="`toggle-${prop.name}`"
                   v-model="interactiveValues[prop.name]"
                   type="checkbox"
                   class="border-border text-primary focus:ring-primary size-4 rounded"
                 />
-                <label
-                  :for="`toggle-${prop.name}`"
-                  class="text-muted-foreground cursor-pointer text-xs select-none"
-                >
-                  {{ interactiveValues[prop.name] ? "Enabled" : "Disabled" }}
+                <label :for="`toggle-${prop.name}`" class="text-muted-foreground cursor-pointer text-xs select-none">
+                  {{ interactiveValues[prop.name] ? 'Enabled' : 'Disabled' }}
                 </label>
               </div>
             </div>
 
             <!-- Custom Slot Text input -->
             <div class="space-y-1.5">
-              <label class="text-foreground font-mono text-xs font-medium">
-                Slot Children / Text
-              </label>
+              <label class="text-foreground font-mono text-xs font-medium"> Slot Children / Text </label>
               <input
                 v-model="customSlotText"
                 type="text"
@@ -407,12 +367,8 @@ const parseDepName = (depUrl: string) => {
         <!-- Full Props Specification Table -->
         <div v-if="propsList.length > 0">
           <div class="mb-3 flex items-center justify-between">
-            <h4 class="text-foreground text-xs font-semibold tracking-tight">
-              Component Props & Slots Specification
-            </h4>
-            <span class="text-muted-foreground font-mono text-xs"
-              >{{ propsList.length }} declared properties</span
-            >
+            <h4 class="text-foreground text-xs font-semibold tracking-tight">Component Props & Slots Specification</h4>
+            <span class="text-muted-foreground font-mono text-xs">{{ propsList.length }} declared properties</span>
           </div>
 
           <table class="w-full border-collapse text-left text-xs">
@@ -426,11 +382,7 @@ const parseDepName = (depUrl: string) => {
               </tr>
             </thead>
             <tbody class="divide-border/60 divide-y">
-              <tr
-                v-for="prop in propsList"
-                :key="prop.name"
-                class="hover:bg-muted/20"
-              >
+              <tr v-for="prop in propsList" :key="prop.name" class="hover:bg-muted/20">
                 <td class="text-foreground py-2.5 pr-3 font-mono font-medium">
                   {{ prop.name }}
                 </td>
@@ -440,22 +392,17 @@ const parseDepName = (depUrl: string) => {
                   </span>
                 </td>
                 <td class="text-muted-foreground py-2.5 pr-3 font-mono">
-                  <span
-                    v-if="prop.default"
-                    class="text-foreground/80 font-medium"
-                  >
+                  <span v-if="prop.default" class="text-foreground/80 font-medium">
                     {{ prop.default }}
                   </span>
                   <span v-else class="text-muted-foreground/40">—</span>
                 </td>
                 <td class="py-2.5 pr-3 font-mono text-xs">
-                  <span v-if="prop.required" class="font-semibold text-rose-500"
-                    >Yes</span
-                  >
+                  <span v-if="prop.required" class="font-semibold text-rose-500">Yes</span>
                   <span v-else class="text-muted-foreground">No</span>
                 </td>
                 <td class="text-muted-foreground py-2.5 leading-relaxed">
-                  {{ prop.doc || "—" }}
+                  {{ prop.doc || '—' }}
                 </td>
               </tr>
             </tbody>
@@ -464,23 +411,14 @@ const parseDepName = (depUrl: string) => {
 
         <div v-else class="text-muted-foreground py-12 text-center text-xs">
           <p>No declared props extracted for this component.</p>
-          <p class="mt-1 text-xs">
-            This component may forward props directly to headless slots or
-            children.
-          </p>
+          <p class="mt-1 text-xs">This component may forward props directly to headless slots or children.</p>
         </div>
 
         <!-- Exported Types / Schemas -->
         <div v-if="typeDecls.length > 0" class="border-border border-t pt-4">
-          <h4 class="text-foreground mb-3 text-xs font-semibold">
-            Exported Types & Schemas
-          </h4>
+          <h4 class="text-foreground mb-3 text-xs font-semibold">Exported Types & Schemas</h4>
           <div class="space-y-3">
-            <div
-              v-for="decl in typeDecls"
-              :key="decl.name"
-              class="border-border bg-card rounded-lg border p-3"
-            >
+            <div v-for="decl in typeDecls" :key="decl.name" class="border-border bg-card rounded-lg border p-3">
               <div class="text-foreground mb-1.5 font-mono text-xs font-bold">
                 {{ decl.name }}
               </div>
@@ -495,9 +433,7 @@ const parseDepName = (depUrl: string) => {
       <!-- 2. Source Files Tab -->
       <div v-else-if="activeTab === 'files'" class="flex h-full flex-col">
         <!-- File switcher pills -->
-        <div
-          class="border-border bg-muted/20 flex items-center justify-between border-b px-4 py-2"
-        >
+        <div class="border-border bg-muted/20 flex items-center justify-between border-b px-4 py-2">
           <div class="flex items-center gap-1.5 overflow-x-auto">
             <button
               v-for="(f, idx) in files"
@@ -512,7 +448,7 @@ const parseDepName = (depUrl: string) => {
               @click="selectedFileIdx = idx"
             >
               <FileCode class="size-3" />
-              <span>{{ f.path.split("/").pop() }}</span>
+              <span>{{ f.path.split('/').pop() }}</span>
             </button>
           </div>
 
@@ -536,28 +472,18 @@ const parseDepName = (depUrl: string) => {
       </div>
 
       <!-- 3. Manifest & Dependencies Tab -->
-      <div
-        v-else-if="activeTab === 'manifest'"
-        class="h-full overflow-y-auto p-5"
-      >
+      <div v-else-if="activeTab === 'manifest'" class="h-full overflow-y-auto p-5">
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
           <!-- Left: Dependencies -->
           <div class="space-y-5">
             <div>
-              <h4
-                class="text-foreground mb-2 flex items-center gap-2 text-xs font-semibold"
-              >
+              <h4 class="text-foreground mb-2 flex items-center gap-2 text-xs font-semibold">
                 <span>NPM Dependencies</span>
-                <span
-                  class="bg-muted py-0.2 rounded px-1.5 font-mono text-[10px]"
-                >
+                <span class="bg-muted py-0.2 rounded px-1.5 font-mono text-[10px]">
                   {{ dependencies.length }}
                 </span>
               </h4>
-              <div
-                v-if="dependencies.length > 0"
-                class="flex flex-wrap gap-1.5"
-              >
+              <div v-if="dependencies.length > 0" class="flex flex-wrap gap-1.5">
                 <span
                   v-for="dep in dependencies"
                   :key="dep"
@@ -566,26 +492,17 @@ const parseDepName = (depUrl: string) => {
                   {{ dep }}
                 </span>
               </div>
-              <p v-else class="text-muted-foreground text-xs">
-                No third-party npm packages required.
-              </p>
+              <p v-else class="text-muted-foreground text-xs">No third-party npm packages required.</p>
             </div>
 
             <div>
-              <h4
-                class="text-foreground mb-2 flex items-center gap-2 text-xs font-semibold"
-              >
+              <h4 class="text-foreground mb-2 flex items-center gap-2 text-xs font-semibold">
                 <span>Registry Dependencies</span>
-                <span
-                  class="bg-muted py-0.2 rounded px-1.5 font-mono text-[10px]"
-                >
+                <span class="bg-muted py-0.2 rounded px-1.5 font-mono text-[10px]">
                   {{ registryDependencies.length }}
                 </span>
               </h4>
-              <div
-                v-if="registryDependencies.length > 0"
-                class="flex flex-wrap gap-1.5"
-              >
+              <div v-if="registryDependencies.length > 0" class="flex flex-wrap gap-1.5">
                 <button
                   v-for="dep in registryDependencies"
                   :key="dep"
@@ -597,15 +514,11 @@ const parseDepName = (depUrl: string) => {
                   <ExternalLink class="size-2.5 opacity-60" />
                 </button>
               </div>
-              <p v-else class="text-muted-foreground text-xs">
-                No internal registry dependencies.
-              </p>
+              <p v-else class="text-muted-foreground text-xs">No internal registry dependencies.</p>
             </div>
 
             <div>
-              <h4 class="text-foreground mb-2 text-xs font-semibold">
-                Target Installation Paths
-              </h4>
+              <h4 class="text-foreground mb-2 text-xs font-semibold">Target Installation Paths</h4>
               <div class="space-y-1">
                 <div
                   v-for="f in files"
@@ -621,9 +534,7 @@ const parseDepName = (depUrl: string) => {
           <!-- Right: Manifest JSON Preview -->
           <div class="space-y-2">
             <div class="flex items-center justify-between">
-              <h4 class="text-foreground text-xs font-semibold">
-                Registry Item Manifest
-              </h4>
+              <h4 class="text-foreground text-xs font-semibold">Registry Item Manifest</h4>
               <button
                 type="button"
                 class="border-border bg-card text-muted-foreground hover:text-foreground hover:bg-muted flex items-center gap-1 rounded-md border px-2 py-0.5 text-[11px] shadow-xs transition"
@@ -649,12 +560,9 @@ const parseDepName = (depUrl: string) => {
 
       <!-- 4. Action & Event Logger Tab -->
       <div v-else-if="activeTab === 'events'" class="flex h-full flex-col">
-        <div
-          class="border-border bg-muted/20 flex items-center justify-between border-b px-4 py-2"
-        >
+        <div class="border-border bg-muted/20 flex items-center justify-between border-b px-4 py-2">
           <div class="text-muted-foreground text-xs">
-            Capturing user interactions dispatched from the live component
-            canvas.
+            Capturing user interactions dispatched from the live component canvas.
           </div>
           <button
             type="button"
@@ -673,30 +581,19 @@ const parseDepName = (depUrl: string) => {
             class="border-border bg-card flex items-center justify-between rounded-md border px-3 py-1.5"
           >
             <div class="flex items-center gap-2.5">
-              <span class="text-muted-foreground text-[11px]">{{
-                ev.timestamp
-              }}</span>
-              <span
-                class="bg-primary/10 text-primary rounded px-1.5 py-0.5 text-[10px] font-bold uppercase"
-              >
+              <span class="text-muted-foreground text-[11px]">{{ ev.timestamp }}</span>
+              <span class="bg-primary/10 text-primary rounded px-1.5 py-0.5 text-[10px] font-bold uppercase">
                 {{ ev.type }}
               </span>
               <span class="text-foreground">{{ ev.target }}</span>
             </div>
-            <div
-              v-if="ev.detail"
-              class="text-muted-foreground max-w-xs truncate text-[11px]"
-            >
+            <div v-if="ev.detail" class="text-muted-foreground max-w-xs truncate text-[11px]">
               {{ ev.detail }}
             </div>
           </div>
 
-          <div
-            v-if="events.length === 0"
-            class="text-muted-foreground py-12 text-center font-sans text-xs"
-          >
-            No events logged yet. Interact with the component above (click,
-            type, toggle) to see actions stream here!
+          <div v-if="events.length === 0" class="text-muted-foreground py-12 text-center font-sans text-xs">
+            No events logged yet. Interact with the component above (click, type, toggle) to see actions stream here!
           </div>
         </div>
       </div>

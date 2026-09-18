@@ -1,5 +1,5 @@
-import type { VariantProps } from "class-variance-authority";
-import { cva } from "class-variance-authority";
+import type { VariantProps } from 'class-variance-authority'
+import { cva } from 'class-variance-authority'
 
 /**
  * Variant definitions live in their own file (rather than the package
@@ -10,20 +10,20 @@ import { cva } from "class-variance-authority";
  * the module graph had fully resolved.
  */
 export const cardVariants = cva(
-  "bg-card text-card-foreground rounded-xl border shadow-sm transition-colors duration-150",
+  'bg-card text-card-foreground rounded-xl border shadow-sm transition-colors duration-150',
   {
     variants: {
       variant: {
-        default: "border-border",
-        elevated: "border-transparent shadow-md hover:shadow-md",
-        outline: "border-2",
-        ghost: "border-transparent shadow-none hover:bg-muted/50",
+        default: 'border-border',
+        elevated: 'border-transparent shadow-md hover:shadow-md',
+        outline: 'border-2',
+        ghost: 'border-transparent shadow-none hover:bg-muted/50',
       },
     },
     defaultVariants: {
-      variant: "default",
+      variant: 'default',
     },
   },
-);
+)
 
-export type CardVariants = VariantProps<typeof cardVariants>;
+export type CardVariants = VariantProps<typeof cardVariants>

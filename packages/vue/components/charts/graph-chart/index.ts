@@ -1,1 +1,1 @@
-export { default as GraphChart } from "./GraphChart.vue";
+export { default as GraphChart } from './GraphChart.vue'

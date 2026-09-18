@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { XmlTreeView } from "@/components/ui/xml-tree-view";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { toast } from "vue-sonner";
+import { ref } from 'vue'
+import { XmlTreeView } from '@/components/ui/xml-tree-view'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { toast } from 'vue-sonner'
 
 const catalogXml = `<?xml version="1.0" encoding="UTF-8"?>
 <catalog>
@@ -28,7 +28,7 @@ const catalogXml = `<?xml version="1.0" encoding="UTF-8"?>
     <price>5.95</price>
     <publish_date>2000-11-17</publish_date>
   </book>
-</catalog>`;
+</catalog>`
 
 const soapFaultXml = `<?xml version="1.0" encoding="UTF-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -48,7 +48,7 @@ const soapFaultXml = `<?xml version="1.0" encoding="UTF-8"?>
       </detail>
     </soap:Fault>
   </soap:Body>
-</soap:Envelope>`;
+</soap:Envelope>`
 
 const configXml = `<?xml version="1.0"?>
 <!-- Application configuration -->
@@ -70,7 +70,7 @@ const configXml = `<?xml version="1.0"?>
     path: /var/log/app.log
     ]]>
   </logging>
-</config>`;
+</config>`
 
 const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
@@ -91,19 +91,19 @@ const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
       <description>Vue and React mirrors stay in lockstep.</description>
     </item>
   </channel>
-</rss>`;
+</rss>`
 
 const svgXml = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
   <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" />
   <path d="M8 12l3 3 5-6" fill="none" stroke="currentColor" stroke-width="2" />
-</svg>`;
+</svg>`
 
-const invalidXml = `<root><unclosed>`;
+const invalidXml = `<root><unclosed>`
 
-const lastCopied = ref("");
+const lastCopied = ref('')
 function onCopy(value: string, path: string) {
-  lastCopied.value = `${path} = ${value.slice(0, 50)}`;
-  toast.success("Copied to clipboard", { description: path });
+  lastCopied.value = `${path} = ${value.slice(0, 50)}`
+  toast.success('Copied to clipboard', { description: path })
 }
 </script>
 
@@ -119,12 +119,7 @@ function onCopy(value: string, path: string) {
     title="SOAP fault"
     description="Namespaced SOAP envelope with a nested fault detail array — common in integration logs."
   >
-    <XmlTreeView
-      :data="soapFaultXml"
-      root-label="Envelope"
-      :expand-depth="3"
-      class="max-h-96"
-    />
+    <XmlTreeView :data="soapFaultXml" root-label="Envelope" :expand-depth="3" class="max-h-96" />
   </Story>
 
   <Story
@@ -134,17 +129,11 @@ function onCopy(value: string, path: string) {
     <XmlTreeView :data="configXml" :expand-depth="2" class="max-h-96" />
   </Story>
 
-  <Story
-    title="RSS feed"
-    description="Channel + item list — how an RSS/Atom inspector looks with expandDepth 2."
-  >
+  <Story title="RSS feed" description="Channel + item list — how an RSS/Atom inspector looks with expandDepth 2.">
     <XmlTreeView :data="rssXml" :expand-depth="2" class="max-h-80" />
   </Story>
 
-  <Story
-    title="SVG markup"
-    description="Inline SVG as XML — useful when debugging icons or exported vector markup."
-  >
+  <Story title="SVG markup" description="Inline SVG as XML — useful when debugging icons or exported vector markup.">
     <XmlTreeView :data="svgXml" :expand-depth="1" class="max-h-64" />
   </Story>
 
@@ -169,15 +158,8 @@ function onCopy(value: string, path: string) {
     title="Searchable + copy on click"
     description="Filter dims non-matching nodes; click any node to copy its subtree and fire a copy event."
   >
-    <XmlTreeView
-      :data="catalogXml"
-      :expand-depth="3"
-      @copy="onCopy"
-      class="max-h-96"
-    />
-    <p v-if="lastCopied" class="text-muted-foreground mt-2 text-xs">
-      Last copied: {{ lastCopied }}
-    </p>
+    <XmlTreeView :data="catalogXml" :expand-depth="3" @copy="onCopy" class="max-h-96" />
+    <p v-if="lastCopied" class="text-muted-foreground mt-2 text-xs">Last copied: {{ lastCopied }}</p>
   </Story>
 
   <Story
@@ -186,15 +168,11 @@ function onCopy(value: string, path: string) {
   >
     <div class="grid gap-4 lg:grid-cols-2">
       <div class="space-y-1.5">
-        <span class="text-muted-foreground text-xs"
-          >expandDepth 0 — collapsed</span
-        >
+        <span class="text-muted-foreground text-xs">expandDepth 0 — collapsed</span>
         <XmlTreeView :data="catalogXml" :expand-depth="0" class="max-h-64" />
       </div>
       <div class="space-y-1.5">
-        <span class="text-muted-foreground text-xs"
-          >expandDepth 2 — expanded</span
-        >
+        <span class="text-muted-foreground text-xs">expandDepth 2 — expanded</span>
         <XmlTreeView :data="catalogXml" :expand-depth="2" class="max-h-64" />
       </div>
     </div>
@@ -207,30 +185,16 @@ function onCopy(value: string, path: string) {
     <div class="grid gap-4 lg:grid-cols-2">
       <div class="space-y-1.5">
         <span class="text-muted-foreground text-xs">No search</span>
-        <XmlTreeView
-          :data="catalogXml"
-          :show-search="false"
-          :expand-depth="1"
-          class="max-h-56"
-        />
+        <XmlTreeView :data="catalogXml" :show-search="false" :expand-depth="1" class="max-h-56" />
       </div>
       <div class="space-y-1.5">
         <span class="text-muted-foreground text-xs">No toolbar</span>
-        <XmlTreeView
-          :data="catalogXml"
-          :show-toolbar="false"
-          :show-search="false"
-          :expand-depth="1"
-          class="max-h-56"
-        />
+        <XmlTreeView :data="catalogXml" :show-toolbar="false" :show-search="false" :expand-depth="1" class="max-h-56" />
       </div>
     </div>
   </Story>
 
-  <Story
-    title="Parse error"
-    description="Malformed XML surfaces a clear error state instead of crashing the tree."
-  >
+  <Story title="Parse error" description="Malformed XML surfaces a clear error state instead of crashing the tree.">
     <XmlTreeView :data="invalidXml" class="max-h-40" />
   </Story>
 </template>

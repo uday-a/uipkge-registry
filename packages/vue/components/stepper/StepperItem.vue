@@ -1,62 +1,58 @@
 <script setup lang="ts">
-import { computed, inject } from "vue";
-import type { HTMLAttributes } from "vue";
-import { cn } from "@/lib/utils";
-import { STEPPER_CONTEXT } from "./context";
-import type { StepperStep } from "./types";
+import { computed, inject } from 'vue'
+import type { HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils'
+import { STEPPER_CONTEXT } from './context'
+import type { StepperStep } from './types'
 
 interface Props {
-  step: StepperStep;
-  index: number;
-  class?: HTMLAttributes["class"];
+  step: StepperStep
+  index: number
+  class?: HTMLAttributes['class']
 }
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 
-const _maybeCtx = inject(STEPPER_CONTEXT);
-if (!_maybeCtx) throw new Error("StepperItem must be used inside <Stepper>");
-const ctx: NonNullable<typeof _maybeCtx> = _maybeCtx;
+const _maybeCtx = inject(STEPPER_CONTEXT)
+if (!_maybeCtx) throw new Error('StepperItem must be used inside <Stepper>')
+const ctx: NonNullable<typeof _maybeCtx> = _maybeCtx
 
-const status = computed(() => ctx.getStatus(props.index));
-const orientation = computed(() => ctx.orientation.value);
-const size = computed(() => ctx.size.value);
-const isFirst = computed(() => props.index === 0);
-const isLast = computed(() => props.index === ctx.steps.value.length - 1);
-const clickable = computed(
-  () => ctx.isClickable(props.index) && !props.step.disabled,
-);
+const status = computed(() => ctx.getStatus(props.index))
+const orientation = computed(() => ctx.orientation.value)
+const size = computed(() => ctx.size.value)
+const isFirst = computed(() => props.index === 0)
+const isLast = computed(() => props.index === ctx.steps.value.length - 1)
+const clickable = computed(() => ctx.isClickable(props.index) && !props.step.disabled)
 
 // Indicator row must match stepperIndicatorVariants sizes (sm 7 / default 9 / lg 11).
 // Full class strings so Tailwind's scanner keeps them.
 const indicatorAxisClass = computed(() => {
-  if (orientation.value === "horizontal") {
+  if (orientation.value === 'horizontal') {
     return (
       {
-        sm: "h-7 w-full items-center justify-center",
-        default: "h-9 w-full items-center justify-center",
-        lg: "h-11 w-full items-center justify-center",
+        sm: 'h-7 w-full items-center justify-center',
+        default: 'h-9 w-full items-center justify-center',
+        lg: 'h-11 w-full items-center justify-center',
       } as const
-    )[size.value];
+    )[size.value]
   }
   return (
     {
-      sm: "w-7 flex-col items-center justify-start self-stretch",
-      default: "w-9 flex-col items-center justify-start self-stretch",
-      lg: "w-11 flex-col items-center justify-start self-stretch",
+      sm: 'w-7 flex-col items-center justify-start self-stretch',
+      default: 'w-9 flex-col items-center justify-start self-stretch',
+      lg: 'w-11 flex-col items-center justify-start self-stretch',
     } as const
-  )[size.value];
-});
+  )[size.value]
+})
 
 // A connector "segment" is the line drawn between this indicator and the
 // adjacent one. We split it into left/right halves so each item owns its
 // own piece — they butt up at item boundaries for pixel alignment.
-const leftSegmentCompleted = computed(() => props.index < ctx.activeStep.value);
-const rightSegmentCompleted = computed(
-  () => props.index < ctx.activeStep.value - 1,
-);
+const leftSegmentCompleted = computed(() => props.index < ctx.activeStep.value)
+const rightSegmentCompleted = computed(() => props.index < ctx.activeStep.value - 1)
 
 function handleNavigate() {
-  if (clickable.value) ctx.goToStep(props.index + 1);
+  if (clickable.value) ctx.goToStep(props.index + 1)
 }
 </script>
 
@@ -141,14 +137,7 @@ function handleNavigate() {
     <!-- Title + description -->
     <div
       data-slot="stepper-item-content"
-      :class="
-        cn(
-          'min-w-0',
-          orientation === 'horizontal'
-            ? 'max-w-[12rem] text-center'
-            : 'flex-1 pt-1.5',
-        )
-      "
+      :class="cn('min-w-0', orientation === 'horizontal' ? 'max-w-[12rem] text-center' : 'flex-1 pt-1.5')"
     >
       <button
         type="button"
@@ -167,10 +156,7 @@ function handleNavigate() {
       >
         {{ step.title }}
       </button>
-      <p
-        v-if="step.description"
-        class="text-muted-foreground mt-0.5 text-xs text-balance"
-      >
+      <p v-if="step.description" class="text-muted-foreground mt-0.5 text-xs text-balance">
         {{ step.description }}
       </p>
     </div>
@@ -179,30 +165,30 @@ function handleNavigate() {
 
 <style>
 /* Connector progress: fill scales along the track with a soft ease. */
-[data-slot="stepper-connector-fill"] {
+[data-slot='stepper-connector-fill'] {
   transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-[data-slot="stepper-connector-fill"][data-orientation="horizontal"] {
+[data-slot='stepper-connector-fill'][data-orientation='horizontal'] {
   transform-origin: left center;
   transform: scaleX(0);
 }
 
-[data-slot="stepper-connector-fill"][data-orientation="horizontal"][data-completed="true"] {
+[data-slot='stepper-connector-fill'][data-orientation='horizontal'][data-completed='true'] {
   transform: scaleX(1);
 }
 
-[data-slot="stepper-connector-fill"][data-orientation="vertical"] {
+[data-slot='stepper-connector-fill'][data-orientation='vertical'] {
   transform-origin: center top;
   transform: scaleY(0);
 }
 
-[data-slot="stepper-connector-fill"][data-orientation="vertical"][data-completed="true"] {
+[data-slot='stepper-connector-fill'][data-orientation='vertical'][data-completed='true'] {
   transform: scaleY(1);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [data-slot="stepper-connector-fill"] {
+  [data-slot='stepper-connector-fill'] {
     transition: none !important;
   }
 }

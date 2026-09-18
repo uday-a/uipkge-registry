@@ -1,19 +1,7 @@
 <script setup lang="ts">
-import { Link } from "@/components/ui/link";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  ArrowRight,
-  ExternalLink,
-  FileText,
-  Home,
-  LifeBuoy,
-} from "lucide-vue-next";
+import { Link } from '@/components/ui/link'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { ArrowRight, ExternalLink, FileText, Home, LifeBuoy } from 'lucide-vue-next'
 </script>
 
 <template>
@@ -22,10 +10,9 @@ import {
     description="Links flow naturally inside a paragraph — the most common place you'll reach for this component."
   >
     <p class="text-foreground max-w-md text-sm leading-relaxed">
-      By signing up you agree to our
-      <Link href="#" underline="always">Terms of Service</Link> and acknowledge
-      our <Link href="#" underline="always">Privacy Policy</Link>. Need help?
-      Visit our <Link href="#"><FileText /> support center</Link>.
+      By signing up you agree to our <Link href="#" underline="always">Terms of Service</Link> and acknowledge our
+      <Link href="#" underline="always">Privacy Policy</Link>. Need help? Visit our
+      <Link href="#"><FileText /> support center</Link>.
     </p>
   </Story>
 
@@ -47,10 +34,7 @@ import {
     </div>
   </Story>
 
-  <Story
-    title="Sizes"
-    description="sm, default, and lg for matching the surrounding text scale."
-  >
+  <Story title="Sizes" description="sm, default, and lg for matching the surrounding text scale.">
     <div class="flex max-w-md flex-wrap items-baseline gap-4">
       <Link href="#" size="sm">Small link</Link>
       <Link href="#" size="default">Default link</Link>
@@ -81,16 +65,12 @@ import {
     description="http(s) hrefs auto-open in a new tab with rel=noopener. Pass :external='false' to force same-tab, or use a relative href."
   >
     <p class="text-sm">
-      External: <Link href="https://uipkge.dev">uipkge.dev</Link> opens in a new
-      tab. Internal:
+      External: <Link href="https://uipkge.dev">uipkge.dev</Link> opens in a new tab. Internal:
       <Link href="/about" :external="false">About page</Link> stays in-tab.
     </p>
   </Story>
 
-  <Story
-    title="Disabled"
-    description="Non-interactive links are dimmed and ignore pointer events."
-  >
+  <Story title="Disabled" description="Non-interactive links are dimmed and ignore pointer events.">
     <div class="flex max-w-md flex-wrap items-center gap-4 text-sm">
       <Link href="#" disabled>Disabled link</Link>
       <Link href="#" color="muted" disabled>Disabled muted</Link>
@@ -104,9 +84,7 @@ import {
     <Card class="max-w-md">
       <CardHeader>
         <CardTitle>Need a hand?</CardTitle>
-        <CardDescription
-          >We're here Monday through Friday, 9–5 GMT.</CardDescription
-        >
+        <CardDescription>We're here Monday through Friday, 9–5 GMT.</CardDescription>
       </CardHeader>
       <CardContent class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
         <Link href="#"><LifeBuoy /> Support center</Link>

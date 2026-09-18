@@ -1,78 +1,65 @@
 <script setup lang="ts">
-import { computed, nextTick } from "vue";
-import {
-  ChevronDown,
-  Monitor,
-  Moon,
-  Palette,
-  Sparkles,
-  Sun,
-} from "lucide-vue-next";
-import { SectionCard } from "@/components/ui/section-card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { computed, nextTick } from 'vue'
+import { ChevronDown, Monitor, Moon, Palette, Sparkles, Sun } from 'lucide-vue-next'
+import { SectionCard } from '@/components/ui/section-card'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 
-type Theme = "light" | "dark" | "system" | "black";
-type Variant =
-  "cards" | "icons" | "icon-only" | "dropdown" | "pill" | "pill-4" | "switch";
+type Theme = 'light' | 'dark' | 'system' | 'black'
+type Variant = 'cards' | 'icons' | 'icon-only' | 'dropdown' | 'pill' | 'pill-4' | 'switch'
 
 const ICONS: Record<Theme, any> = {
   light: Sun,
   dark: Moon,
   system: Monitor,
   black: Sparkles,
-};
+}
 
 const LABELS: Record<Theme, string> = {
-  light: "Light",
-  dark: "Dark",
-  system: "System",
-  black: "Black",
-};
+  light: 'Light',
+  dark: 'Dark',
+  system: 'System',
+  black: 'Black',
+}
 
 const VARIANT_OPTIONS: Record<Variant, Theme[]> = {
-  cards: ["light", "dark", "system"],
-  icons: ["light", "dark", "system"],
-  "icon-only": ["light", "dark"],
-  dropdown: ["light", "dark", "system"],
-  pill: ["light", "dark", "system"],
-  "pill-4": ["system", "light", "dark", "black"],
-  switch: ["light", "dark"],
-};
+  cards: ['light', 'dark', 'system'],
+  icons: ['light', 'dark', 'system'],
+  'icon-only': ['light', 'dark'],
+  dropdown: ['light', 'dark', 'system'],
+  pill: ['light', 'dark', 'system'],
+  'pill-4': ['system', 'light', 'dark', 'black'],
+  switch: ['light', 'dark'],
+}
 
 const props = withDefaults(
   defineProps<{
-    modelValue: Theme;
-    variant?: Variant;
-    title?: string;
-    description?: string;
+    modelValue: Theme
+    variant?: Variant
+    title?: string
+    description?: string
     /** Wipe the new theme in from the clicked control. Ignored without View Transition support or with reduced motion. */
-    viewTransition?: boolean;
-    class?: string;
+    viewTransition?: boolean
+    class?: string
   }>(),
-  { variant: "cards", viewTransition: true },
-);
+  { variant: 'cards', viewTransition: true },
+)
 
-const emit = defineEmits<{ "update:modelValue": [Theme] }>();
+const emit = defineEmits<{ 'update:modelValue': [Theme] }>()
 
-const options = computed(() => VARIANT_OPTIONS[props.variant]);
+const options = computed(() => VARIANT_OPTIONS[props.variant])
 const activeIndex = computed(() => {
-  const i = options.value.indexOf(props.modelValue);
-  return i === -1 ? 0 : i;
-});
+  const i = options.value.indexOf(props.modelValue)
+  return i === -1 ? 0 : i
+})
 
 const indicatorStyle = computed(() => ({
   width: `calc((100% - 4px) / ${options.value.length})`,
   transform: `translateX(calc(${activeIndex.value} * 100%))`,
-}));
+}))
 
 const switchThumbStyle = computed(() => ({
-  transform: `translateX(${props.modelValue === "dark" ? "36px" : "4px"})`,
-}));
+  transform: `translateX(${props.modelValue === 'dark' ? '36px' : '4px'})`,
+}))
 
 /**
  * Swap the theme inside a View Transition so the new theme wipes in as a
@@ -86,62 +73,50 @@ const switchThumbStyle = computed(() => ({
  * awaits nextTick to let that watcher run inside the transition.
  */
 type ViewTransitionDocument = Document & {
-  startViewTransition?: (callback: () => unknown) => {
-    finished: Promise<void>;
-  };
-};
+  startViewTransition?: (callback: () => unknown) => { finished: Promise<void> }
+}
 
 // The dropdown variant fires both @select and @click; without this a second
 // startViewTransition would abort the first mid-wipe.
-let revealing = false;
+let revealing = false
 
-async function withThemeReveal(
-  event: MouseEvent | undefined,
-  swap: () => void,
-) {
-  const startViewTransition = (
-    document as ViewTransitionDocument
-  ).startViewTransition?.bind(document);
-  const reduceMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
-  ).matches;
+async function withThemeReveal(event: MouseEvent | undefined, swap: () => void) {
+  const startViewTransition = (document as ViewTransitionDocument).startViewTransition?.bind(document)
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   if (!props.viewTransition || !startViewTransition || reduceMotion) {
-    swap();
-    return;
+    swap()
+    return
   }
-  if (revealing) return;
-  revealing = true;
+  if (revealing) return
+  revealing = true
 
-  const root = document.documentElement;
-  const x = event?.clientX ?? window.innerWidth / 2;
-  const y = event?.clientY ?? window.innerHeight / 2;
+  const root = document.documentElement
+  const x = event?.clientX ?? window.innerWidth / 2
+  const y = event?.clientY ?? window.innerHeight / 2
   // Radius that still covers the farthest corner from the click.
-  const radius = Math.hypot(
-    Math.max(x, window.innerWidth - x),
-    Math.max(y, window.innerHeight - y),
-  );
-  root.style.setProperty("--uipkge-theme-x", `${x}px`);
-  root.style.setProperty("--uipkge-theme-y", `${y}px`);
-  root.style.setProperty("--uipkge-theme-r", `${radius}px`);
-  root.setAttribute("data-uipkge-theme-reveal", "");
+  const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y))
+  root.style.setProperty('--uipkge-theme-x', `${x}px`)
+  root.style.setProperty('--uipkge-theme-y', `${y}px`)
+  root.style.setProperty('--uipkge-theme-r', `${radius}px`)
+  root.setAttribute('data-uipkge-theme-reveal', '')
 
   try {
     await startViewTransition(async () => {
-      swap();
-      await nextTick();
-    }).finished;
+      swap()
+      await nextTick()
+    }).finished
   } finally {
-    root.removeAttribute("data-uipkge-theme-reveal");
-    revealing = false;
+    root.removeAttribute('data-uipkge-theme-reveal')
+    revealing = false
   }
 }
 
 function set(t: Theme, event?: MouseEvent) {
-  withThemeReveal(event, () => emit("update:modelValue", t));
+  withThemeReveal(event, () => emit('update:modelValue', t))
 }
 function cycle(event?: MouseEvent) {
-  const next = options.value[(activeIndex.value + 1) % options.value.length];
-  if (next) withThemeReveal(event, () => emit("update:modelValue", next));
+  const next = options.value[(activeIndex.value + 1) % options.value.length]
+  if (next) withThemeReveal(event, () => emit('update:modelValue', next))
 }
 </script>
 
@@ -156,11 +131,7 @@ function cycle(event?: MouseEvent) {
     <template #header-action>
       <Palette class="text-muted-foreground size-5" />
     </template>
-    <div
-      class="grid grid-cols-3 gap-2"
-      role="radiogroup"
-      :aria-label="title ?? 'Theme'"
-    >
+    <div class="grid grid-cols-3 gap-2" role="radiogroup" :aria-label="title ?? 'Theme'">
       <button
         type="button"
         v-for="t in options"
@@ -169,17 +140,11 @@ function cycle(event?: MouseEvent) {
         :aria-checked="modelValue === t"
         class="focus-visible:ring-ring rounded-md border p-3 text-left transition focus:outline-none focus-visible:ring-2 focus-visible:outline-none"
         :class="
-          modelValue === t
-            ? 'border-primary ring-primary bg-primary/5 ring-1'
-            : 'border-border hover:bg-muted/50'
+          modelValue === t ? 'border-primary ring-primary bg-primary/5 ring-1' : 'border-border hover:bg-muted/50'
         "
         @click="set(t, $event)"
       >
-        <component
-          :is="ICONS[t]"
-          class="text-muted-foreground mb-2 size-4"
-          aria-hidden="true"
-        />
+        <component :is="ICONS[t]" class="text-muted-foreground mb-2 size-4" aria-hidden="true" />
         <p class="text-xs font-medium">{{ LABELS[t] }}</p>
       </button>
     </div>
@@ -190,10 +155,7 @@ function cycle(event?: MouseEvent) {
     v-else-if="variant === 'icons'"
     role="radiogroup"
     :aria-label="title ?? 'Theme'"
-    :class="[
-      'border-border bg-card inline-flex items-center gap-0.5 rounded-md border p-0.5',
-      $props.class,
-    ]"
+    :class="['border-border bg-card inline-flex items-center gap-0.5 rounded-md border p-0.5', $props.class]"
   >
     <button
       type="button"
@@ -255,12 +217,7 @@ function cycle(event?: MouseEvent) {
       </button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end" class="min-w-[140px]">
-      <DropdownMenuItem
-        v-for="t in options"
-        :key="t"
-        @select="set(t)"
-        @click="set(t, $event)"
-      >
+      <DropdownMenuItem v-for="t in options" :key="t" @select="set(t)" @click="set(t, $event)">
         <component :is="ICONS[t]" class="mr-2 size-4" aria-hidden="true" />
         <span>{{ LABELS[t] }}</span>
       </DropdownMenuItem>
@@ -272,10 +229,7 @@ function cycle(event?: MouseEvent) {
     v-else-if="variant === 'pill' || variant === 'pill-4'"
     role="radiogroup"
     :aria-label="title ?? 'Theme'"
-    :class="[
-      'border-border bg-card relative inline-flex w-full max-w-md rounded-full border p-0.5',
-      $props.class,
-    ]"
+    :class="['border-border bg-card relative inline-flex w-full max-w-md rounded-full border p-0.5', $props.class]"
   >
     <span
       aria-hidden
@@ -290,11 +244,7 @@ function cycle(event?: MouseEvent) {
       :aria-checked="modelValue === t"
       :aria-label="LABELS[t]"
       class="focus-visible:ring-ring relative z-[1] inline-flex h-7 flex-1 items-center justify-center gap-1.5 rounded-full px-3 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
-      :class="
-        modelValue === t
-          ? 'text-primary-foreground'
-          : 'text-muted-foreground hover:text-foreground'
-      "
+      :class="modelValue === t ? 'text-primary-foreground' : 'text-muted-foreground hover:text-foreground'"
       @click="set(t, $event)"
     >
       <component :is="ICONS[t]" class="size-3.5" aria-hidden="true" />

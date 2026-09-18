@@ -1,1 +1,1 @@
-export { SectionCard, type SectionCardProps } from "./section-card";
+export { SectionCard, type SectionCardProps } from './section-card'

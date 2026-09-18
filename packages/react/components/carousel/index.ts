@@ -10,4 +10,4 @@ export {
   CarouselFooter,
   CarouselIndicators,
   useCarousel,
-} from "./carousel";
+} from './carousel'

@@ -1,1 +1,1 @@
-export { Heatmap, type HeatmapProps } from "./Heatmap";
+export { Heatmap, type HeatmapProps } from './Heatmap'

@@ -1,18 +1,18 @@
-import { config } from "@vue/test-utils";
-import { defineComponent } from "vue";
+import { config } from '@vue/test-utils'
+import { defineComponent } from 'vue'
 
 // Nuxt/Astro consumer component — passthrough for unit tests.
 const ClientOnly = defineComponent({
-  name: "ClientOnly",
+  name: 'ClientOnly',
   setup(_, { slots }) {
-    return () => slots.default?.() ?? null;
+    return () => slots.default?.() ?? null
   },
-});
+})
 
 config.global.components = {
   ...(config.global.components ?? {}),
   ClientOnly,
-};
+}
 
 // quiet reka-ui / ResizeObserver noise in happy-dom
 class RO {
@@ -21,11 +21,10 @@ class RO {
   disconnect() {}
 }
 // @ts-expect-error test polyfill
-globalThis.ResizeObserver = globalThis.ResizeObserver ?? RO;
+globalThis.ResizeObserver = globalThis.ResizeObserver ?? RO
 
 // @ts-expect-error test polyfill
-Element.prototype.scrollIntoView =
-  Element.prototype.scrollIntoView ?? (() => {});
+Element.prototype.scrollIntoView = Element.prototype.scrollIntoView ?? (() => {})
 
 // matchMedia stub for any responsive hooks
 // @ts-expect-error test polyfill
@@ -40,13 +39,13 @@ globalThis.matchMedia =
     addEventListener: () => {},
     removeEventListener: () => {},
     dispatchEvent: () => false,
-  }));
+  }))
 
 // IntersectionObserver stub for happy-dom (marks in-view immediately)
 class DefaultIO {
-  private cb: IntersectionObserverCallback;
+  private cb: IntersectionObserverCallback
   constructor(cb: IntersectionObserverCallback) {
-    this.cb = cb;
+    this.cb = cb
   }
   observe(el: Element) {
     this.cb(
@@ -55,28 +54,26 @@ class DefaultIO {
           isIntersecting: true,
           target: el,
           intersectionRatio: 1,
-          boundingClientRect:
-            el.getBoundingClientRect?.() ?? ({} as DOMRectReadOnly),
-          intersectionRect:
-            el.getBoundingClientRect?.() ?? ({} as DOMRectReadOnly),
+          boundingClientRect: el.getBoundingClientRect?.() ?? ({} as DOMRectReadOnly),
+          intersectionRect: el.getBoundingClientRect?.() ?? ({} as DOMRectReadOnly),
           rootBounds: null,
           time: Date.now(),
         },
       ],
       this as unknown as IntersectionObserver,
-    );
+    )
   }
   unobserve() {}
   disconnect() {}
   takeRecords() {
-    return [];
+    return []
   }
 }
 // @ts-expect-error test polyfill
-globalThis.IntersectionObserver = DefaultIO;
+globalThis.IntersectionObserver = DefaultIO
 
 // Canvas 2D context stub for ECharts / zrender / charts
-if (typeof HTMLCanvasElement !== "undefined") {
+if (typeof HTMLCanvasElement !== 'undefined') {
   const dummyCtx = {
     fillRect: () => {},
     clearRect: () => {},
@@ -98,11 +95,7 @@ if (typeof HTMLCanvasElement !== "undefined") {
     rotate: () => {},
     arc: () => {},
     fill: () => {},
-    measureText: () => ({
-      width: 0,
-      actualBoundingBoxAscent: 0,
-      actualBoundingBoxDescent: 0,
-    }),
+    measureText: () => ({ width: 0, actualBoundingBoxAscent: 0, actualBoundingBoxDescent: 0 }),
     transform: () => {},
     rect: () => {},
     strokeRect: () => {},
@@ -117,43 +110,43 @@ if (typeof HTMLCanvasElement !== "undefined") {
     createPattern: () => null,
     createLinearGradient: () => ({ addColorStop: () => {} }),
     createRadialGradient: () => ({ addColorStop: () => {} }),
-  };
+  }
   // @ts-expect-error test polyfill
   HTMLCanvasElement.prototype.getContext = function (type: string) {
-    if (type === "2d") return dummyCtx;
-    return null;
-  };
+    if (type === '2d') return dummyCtx
+    return null
+  }
 }
 
 // URL.createObjectURL for export tests
-if (typeof URL.createObjectURL !== "function") {
+if (typeof URL.createObjectURL !== 'function') {
   // @ts-expect-error test polyfill
-  URL.createObjectURL = () => "blob:test";
+  URL.createObjectURL = () => 'blob:test'
 }
-if (typeof URL.revokeObjectURL !== "function") {
+if (typeof URL.revokeObjectURL !== 'function') {
   // @ts-expect-error test polyfill
-  URL.revokeObjectURL = () => {};
+  URL.revokeObjectURL = () => {}
 }
 
 // Chart container client dimensions for ECharts/zrender in happy-dom
-if (typeof HTMLElement !== "undefined") {
-  Object.defineProperty(HTMLElement.prototype, "clientWidth", {
+if (typeof HTMLElement !== 'undefined') {
+  Object.defineProperty(HTMLElement.prototype, 'clientWidth', {
     configurable: true,
     get() {
-      return 500;
+      return 500
     },
-  });
-  Object.defineProperty(HTMLElement.prototype, "clientHeight", {
+  })
+  Object.defineProperty(HTMLElement.prototype, 'clientHeight', {
     configurable: true,
     get() {
-      return 300;
+      return 300
     },
-  });
+  })
 }
 
-vi.mock("mapbox-gl", () => {
+vi.mock('mapbox-gl', () => {
   class NavigationControl {
-    showCompass = false;
+    showCompass = false
   }
   class FullscreenControl {}
   return {
@@ -164,10 +157,10 @@ vi.mock("mapbox-gl", () => {
     },
     NavigationControl,
     FullscreenControl,
-  };
-});
+  }
+})
 
-vi.mock("@studiometa/vue-mapbox-gl", () => {
+vi.mock('@studiometa/vue-mapbox-gl', () => {
   const mapInst: any = {
     __v_isRef: true,
     once: () => {},
@@ -181,29 +174,20 @@ vi.mock("@studiometa/vue-mapbox-gl", () => {
     getLayer: () => null,
     getSource: () => null,
     setPaintProperty: () => {},
-  };
-  mapInst.value = mapInst;
+  }
+  mapInst.value = mapInst
   return {
     useMap: () => ({ map: mapInst }),
     MapboxMap: {
-      name: "MapboxMap",
-      props: {
-        accessToken: { type: String, default: "" },
-        mapStyle: { type: String, default: "" },
-      },
+      name: 'MapboxMap',
+      props: { accessToken: { type: String, default: '' }, mapStyle: { type: String, default: '' } },
       template: '<div class="mock-mapbox-map"><slot /></div>',
     },
-    MapboxMarker: { name: "MapboxMarker", template: "<div><slot /></div>" },
-    MapboxPopup: { name: "MapboxPopup", template: "<div><slot /></div>" },
-    MapboxLayer: { name: "MapboxLayer", template: "<div />" },
-    MapboxSource: { name: "MapboxSource", template: "<div />" },
-    MapboxNavigationControl: {
-      name: "MapboxNavigationControl",
-      template: "<div />",
-    },
-    MapboxFullscreenControl: {
-      name: "MapboxFullscreenControl",
-      template: "<div />",
-    },
-  };
-});
+    MapboxMarker: { name: 'MapboxMarker', template: '<div><slot /></div>' },
+    MapboxPopup: { name: 'MapboxPopup', template: '<div><slot /></div>' },
+    MapboxLayer: { name: 'MapboxLayer', template: '<div />' },
+    MapboxSource: { name: 'MapboxSource', template: '<div />' },
+    MapboxNavigationControl: { name: 'MapboxNavigationControl', template: '<div />' },
+    MapboxFullscreenControl: { name: 'MapboxFullscreenControl', template: '<div />' },
+  }
+})

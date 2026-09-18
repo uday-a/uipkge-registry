@@ -1,18 +1,18 @@
-import { useEffect, useState } from "react";
-import Story from "../../components/story/Story";
-import { CircularProgress } from "@react-registry/circular-progress";
-import { Card, CardContent, CardHeader, CardTitle } from "@react-registry/card";
-import { Check, Upload, Loader2 } from "lucide-react";
+import { useEffect, useState } from 'react'
+import Story from '../../components/story/Story'
+import { CircularProgress } from '@react-registry/circular-progress'
+import { Card, CardContent, CardHeader, CardTitle } from '@react-registry/card'
+import { Check, Upload, Loader2 } from 'lucide-react'
 
 export default function CircularProgressDemo() {
-  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadProgress, setUploadProgress] = useState(0)
 
   useEffect(() => {
     const id = window.setInterval(() => {
-      setUploadProgress((v) => (v >= 100 ? 0 : v + 4));
-    }, 400);
-    return () => window.clearInterval(id);
-  }, []);
+      setUploadProgress((v) => (v >= 100 ? 0 : v + 4))
+    }, 400)
+    return () => window.clearInterval(id)
+  }, [])
 
   return (
     <>
@@ -32,13 +32,7 @@ export default function CircularProgressDemo() {
           </Card>
           <Card>
             <CardContent className="flex items-center gap-4 p-5">
-              <CircularProgress
-                value={42}
-                size="lg"
-                color="#3b82f6"
-                trackColor="#dbeafe"
-                showValue
-              />
+              <CircularProgress value={42} size="lg" color="#3b82f6" trackColor="#dbeafe" showValue />
               <div>
                 <p className="text-2xl font-semibold tabular-nums">42%</p>
                 <p className="text-muted-foreground text-xs">Quarterly goal</p>
@@ -54,11 +48,7 @@ export default function CircularProgressDemo() {
       >
         <Card className="max-w-md">
           <CardContent className="flex items-center gap-4 p-5">
-            <CircularProgress
-              value={uploadProgress}
-              size="lg"
-              color={uploadProgress >= 100 ? "#22c55e" : undefined}
-            >
+            <CircularProgress value={uploadProgress} size="lg" color={uploadProgress >= 100 ? '#22c55e' : undefined}>
               {uploadProgress >= 100 ? (
                 <Check className="size-7 text-emerald-500" />
               ) : (
@@ -68,14 +58,10 @@ export default function CircularProgressDemo() {
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
                 <Upload className="text-muted-foreground size-4" />
-                <p className="truncate text-sm font-medium">
-                  quarterly-report.xlsx
-                </p>
+                <p className="truncate text-sm font-medium">quarterly-report.xlsx</p>
               </div>
               <p className="text-muted-foreground mt-1 text-xs">
-                {uploadProgress >= 100
-                  ? "Upload complete"
-                  : `Uploading… ${uploadProgress}%`}
+                {uploadProgress >= 100 ? 'Upload complete' : `Uploading… ${uploadProgress}%`}
               </p>
             </div>
           </CardContent>
@@ -112,30 +98,15 @@ export default function CircularProgressDemo() {
       >
         <div className="flex items-center gap-8">
           <div className="flex flex-col items-center gap-2">
-            <CircularProgress
-              value={100}
-              color="#22c55e"
-              trackColor="#dcfce7"
-              showValue
-            />
+            <CircularProgress value={100} color="#22c55e" trackColor="#dcfce7" showValue />
             <span className="text-muted-foreground text-xs">Complete</span>
           </div>
           <div className="flex flex-col items-center gap-2">
-            <CircularProgress
-              value={35}
-              color="#ef4444"
-              trackColor="#fee2e2"
-              showValue
-            />
+            <CircularProgress value={35} color="#ef4444" trackColor="#fee2e2" showValue />
             <span className="text-muted-foreground text-xs">At risk</span>
           </div>
           <div className="flex flex-col items-center gap-2">
-            <CircularProgress
-              value={65}
-              color="#3b82f6"
-              trackColor="#dbeafe"
-              showValue
-            />
+            <CircularProgress value={65} color="#3b82f6" trackColor="#dbeafe" showValue />
             <span className="text-muted-foreground text-xs">In progress</span>
           </div>
         </div>
@@ -162,9 +133,7 @@ export default function CircularProgressDemo() {
           </CardHeader>
           <CardContent className="flex items-center gap-5">
             <CircularProgress value={67} size="lg">
-              <span className="text-foreground text-sm font-semibold tabular-nums">
-                4/6
-              </span>
+              <span className="text-foreground text-sm font-semibold tabular-nums">4/6</span>
             </CircularProgress>
             <ul className="text-muted-foreground flex-1 space-y-1.5 text-sm">
               <li className="text-foreground flex items-center gap-2">
@@ -186,5 +155,5 @@ export default function CircularProgressDemo() {
         </Card>
       </Story>
     </>
-  );
+  )
 }

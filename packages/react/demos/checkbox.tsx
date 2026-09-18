@@ -1,37 +1,32 @@
-import { useState } from "react";
-import Story from "../../components/story/Story";
-import { Checkbox, CheckboxGroup } from "@react-registry/checkbox";
-import { Label } from "@react-registry/label";
+import { useState } from 'react'
+import Story from '../../components/story/Story'
+import { Checkbox, CheckboxGroup } from '@react-registry/checkbox'
+import { Label } from '@react-registry/label'
 
 const options = [
-  { label: "Apple", value: "apple" },
-  { label: "Pear", value: "pear" },
-  { label: "Orange", value: "orange", disabled: true },
-];
+  { label: 'Apple', value: 'apple' },
+  { label: 'Pear', value: 'pear' },
+  { label: 'Orange', value: 'orange', disabled: true },
+]
 
-const fruits = ["Apple", "Pear", "Orange"];
-const allFruits = fruits.map((f) => f.toLowerCase());
+const fruits = ['Apple', 'Pear', 'Orange']
+const allFruits = fruits.map((f) => f.toLowerCase())
 
 export default function CheckboxDemo() {
-  const [checked, setChecked] = useState(true);
-  const [selectedOptions, setSelectedOptions] = useState<string[]>(["apple"]);
-  const [selectedFruits, setSelectedFruits] = useState<string[]>(["apple"]);
+  const [checked, setChecked] = useState(true)
+  const [selectedOptions, setSelectedOptions] = useState<string[]>(['apple'])
+  const [selectedFruits, setSelectedFruits] = useState<string[]>(['apple'])
 
-  const allChecked = selectedFruits.length === fruits.length;
-  const isIndeterminate =
-    selectedFruits.length > 0 && selectedFruits.length < fruits.length;
-  const toggleAll = () => setSelectedFruits(allChecked ? [] : [...allFruits]);
+  const allChecked = selectedFruits.length === fruits.length
+  const isIndeterminate = selectedFruits.length > 0 && selectedFruits.length < fruits.length
+  const toggleAll = () => setSelectedFruits(allChecked ? [] : [...allFruits])
 
   return (
     <>
       <Story title="States" description="All four interaction states.">
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <Checkbox
-              id="c1"
-              checked={checked}
-              onCheckedChange={(v) => setChecked(v === true)}
-            />
+            <Checkbox id="c1" checked={checked} onCheckedChange={(v) => setChecked(v === true)} />
             <Label htmlFor="c1">
               Accept terms (live: <code>{String(checked)}</code>)
             </Label>
@@ -55,10 +50,7 @@ export default function CheckboxDemo() {
         </div>
       </Story>
 
-      <Story
-        title="In a list"
-        description="Common pattern for preference toggles."
-      >
+      <Story title="In a list" description="Common pattern for preference toggles.">
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             <Checkbox id="t1" defaultChecked />
@@ -75,10 +67,7 @@ export default function CheckboxDemo() {
         </div>
       </Story>
 
-      <Story
-        title="Group with options"
-        description="CheckboxGroup renders checkboxes from an options array."
-      >
+      <Story title="Group with options" description="CheckboxGroup renders checkboxes from an options array.">
         <CheckboxGroup
           value={selectedOptions}
           onValueChange={setSelectedOptions}
@@ -87,10 +76,7 @@ export default function CheckboxDemo() {
         />
       </Story>
 
-      <Story
-        title="Check all / Uncheck all"
-        description="Master checkbox controls all items with indeterminate state."
-      >
+      <Story title="Check all / Uncheck all" description="Master checkbox controls all items with indeterminate state.">
         <div className="space-y-2">
           <Checkbox
             checked={allChecked}
@@ -99,67 +85,51 @@ export default function CheckboxDemo() {
             onCheckedChange={toggleAll}
           />
           <div className="ml-6 space-y-2">
-            <CheckboxGroup
-              value={selectedFruits}
-              onValueChange={setSelectedFruits}
-            >
+            <CheckboxGroup value={selectedFruits} onValueChange={setSelectedFruits}>
               {fruits.map((fruit) => (
-                <Checkbox
-                  key={fruit}
-                  value={fruit.toLowerCase()}
-                  label={fruit}
-                />
+                <Checkbox key={fruit} value={fruit.toLowerCase()} label={fruit} />
               ))}
             </CheckboxGroup>
           </div>
         </div>
       </Story>
 
-      <Story
-        title="Group disabled"
-        description="Disabled group prevents interaction with all checkboxes."
-      >
+      <Story title="Group disabled" description="Disabled group prevents interaction with all checkboxes.">
         <CheckboxGroup
-          defaultValue={["b"]}
+          defaultValue={['b']}
           disabled
           options={[
-            { label: "Option A", value: "a" },
-            { label: "Option B", value: "b" },
-            { label: "Option C", value: "c" },
+            { label: 'Option A', value: 'a' },
+            { label: 'Option B', value: 'b' },
+            { label: 'Option C', value: 'c' },
           ]}
           label="Disabled group"
         />
       </Story>
 
-      <Story
-        title="Group inline layout"
-        description="Horizontal arrangement with the inline prop."
-      >
+      <Story title="Group inline layout" description="Horizontal arrangement with the inline prop.">
         <CheckboxGroup
-          defaultValue={["a", "c"]}
+          defaultValue={['a', 'c']}
           inline
           options={[
-            { label: "Option A", value: "a" },
-            { label: "Option B", value: "b" },
-            { label: "Option C", value: "c" },
+            { label: 'Option A', value: 'a' },
+            { label: 'Option B', value: 'b' },
+            { label: 'Option C', value: 'c' },
           ]}
         />
       </Story>
 
-      <Story
-        title="Group with name"
-        description="Name attribute for form submission."
-      >
+      <Story title="Group with name" description="Name attribute for form submission.">
         <CheckboxGroup
-          defaultValue={["a"]}
+          defaultValue={['a']}
           name="my-checkbox-group"
           options={[
-            { label: "Option A", value: "a" },
-            { label: "Option B", value: "b" },
+            { label: 'Option A', value: 'a' },
+            { label: 'Option B', value: 'b' },
           ]}
           label="Named group"
         />
       </Story>
     </>
-  );
+  )
 }

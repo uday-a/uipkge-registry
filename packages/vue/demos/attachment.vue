@@ -1,86 +1,35 @@
 <script setup lang="ts">
-import { Attachment } from "@/components/ui/attachment";
+import { Attachment } from '@/components/ui/attachment'
 </script>
 
 <template>
-  <Story
-    title="Default"
-    description="title + description. Default size, done state, file media."
-  >
+  <Story title="Default" description="title + description. Default size, done state, file media.">
     <Attachment title="sales-dashboard.pdf" description="PDF · 2.4 MB" />
   </Story>
 
-  <Story
-    title="State"
-    description="state drives idle, uploading, processing, error, and done."
-  >
+  <Story title="State" description="state drives idle, uploading, processing, error, and done.">
     <div class="flex flex-col gap-3">
-      <Attachment
-        title="Add a file"
-        description="PNG or JPG"
-        state="idle"
-        media="image"
-      />
-      <Attachment
-        title="sales-dashboard.pdf"
-        description="Uploading · 64%"
-        state="uploading"
-      />
-      <Attachment
-        title="invoice.png"
-        description="Processing"
-        state="processing"
-        media="image"
-      />
-      <Attachment
-        title="corrupt.bin"
-        description="Upload failed"
-        state="error"
-        removable
-      />
+      <Attachment title="Add a file" description="PNG or JPG" state="idle" media="image" />
+      <Attachment title="sales-dashboard.pdf" description="Uploading · 64%" state="uploading" />
+      <Attachment title="invoice.png" description="Processing" state="processing" media="image" />
+      <Attachment title="corrupt.bin" description="Upload failed" state="error" removable />
       <Attachment title="notes.pdf" description="PDF · 2.4 MB" state="done" />
     </div>
   </Story>
 
   <Story title="Size" description="size is default, sm, or xs.">
     <div class="flex flex-col gap-3">
-      <Attachment
-        title="schema.ts"
-        description="TypeScript · default"
-        media="code"
-        size="default"
-      />
-      <Attachment
-        title="schema.ts"
-        description="TypeScript · sm"
-        media="code"
-        size="sm"
-      />
-      <Attachment
-        title="schema.ts"
-        description="TypeScript · xs"
-        media="code"
-        size="xs"
-      />
+      <Attachment title="schema.ts" description="TypeScript · default" media="code" size="default" />
+      <Attachment title="schema.ts" description="TypeScript · sm" media="code" size="sm" />
+      <Attachment title="schema.ts" description="TypeScript · xs" media="code" size="xs" />
     </div>
   </Story>
 
-  <Story
-    title="Orientation"
-    description="orientation=vertical stacks media above the title."
-  >
-    <Attachment
-      title="cover.jpg"
-      description="JPG · 1.1 MB"
-      media="image"
-      orientation="vertical"
-    />
+  <Story title="Orientation" description="orientation=vertical stacks media above the title.">
+    <Attachment title="cover.jpg" description="JPG · 1.1 MB" media="image" orientation="vertical" />
   </Story>
 
-  <Story
-    title="Media"
-    description="media is file, image, or code. src fills the thumbnail when media is image."
-  >
+  <Story title="Media" description="media is file, image, or code. src fills the thumbnail when media is image.">
     <div class="flex flex-col gap-3">
       <Attachment title="brief.pdf" description="PDF · 820 KB" media="file" />
       <Attachment title="schema.ts" description="TS · 12 KB" media="code" />
@@ -94,10 +43,7 @@ import { Attachment } from "@/components/ui/attachment";
     </div>
   </Story>
 
-  <Story
-    title="Removable"
-    description="removable adds a close control. Listen for the remove event."
-  >
+  <Story title="Removable" description="removable adds a close control. Listen for the remove event.">
     <Attachment title="notes.pdf" description="PDF · 2.4 MB" removable />
   </Story>
 
@@ -113,10 +59,7 @@ import { Attachment } from "@/components/ui/attachment";
     />
   </Story>
 
-  <Story
-    title="Small removable image"
-    description="Combine size, media, src, and removable."
-  >
+  <Story title="Small removable image" description="Combine size, media, src, and removable.">
     <Attachment
       title="avatar.png"
       description="PNG · 210 KB"
@@ -128,15 +71,7 @@ import { Attachment } from "@/components/ui/attachment";
     />
   </Story>
 
-  <Story
-    title="Idle image drop"
-    description="idle + media=image is the empty chip before a file is chosen."
-  >
-    <Attachment
-      title="Add an image"
-      description="PNG or JPG"
-      state="idle"
-      media="image"
-    />
+  <Story title="Idle image drop" description="idle + media=image is the empty chip before a file is chosen.">
+    <Attachment title="Add an image" description="PNG or JPG" state="idle" media="image" />
   </Story>
 </template>

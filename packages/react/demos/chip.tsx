@@ -1,18 +1,13 @@
-import { useState } from "react";
-import Story from "../../components/story/Story";
-import { Chip, ChipGroup } from "@react-registry/chip";
-import { Hash } from "lucide-react";
+import { useState } from 'react'
+import Story from '../../components/story/Story'
+import { Chip, ChipGroup } from '@react-registry/chip'
+import { Hash } from 'lucide-react'
 
 export default function ChipDemo() {
-  const [tags, setTags] = useState([
-    "design",
-    "engineering",
-    "product",
-    "marketing",
-  ]);
+  const [tags, setTags] = useState(['design', 'engineering', 'product', 'marketing'])
 
   function removeTag(tag: string) {
-    setTags((prev) => prev.filter((t) => t !== tag));
+    setTags((prev) => prev.filter((t) => t !== tag))
   }
 
   return (
@@ -32,10 +27,7 @@ export default function ChipDemo() {
         </div>
       </Story>
 
-      <Story
-        title="Sizes"
-        description="Three sizes — sm, default, lg — pair naturally with surrounding text scale."
-      >
+      <Story title="Sizes" description="Three sizes — sm, default, lg — pair naturally with surrounding text scale.">
         <div className="flex flex-wrap items-center gap-2">
           <Chip size="sm">Small</Chip>
           <Chip>Default</Chip>
@@ -84,12 +76,7 @@ export default function ChipDemo() {
             {() => (
               <>
                 {tags.map((tag) => (
-                  <Chip
-                    key={tag}
-                    variant="elevated"
-                    closable
-                    onClose={() => removeTag(tag)}
-                  >
+                  <Chip key={tag} variant="elevated" closable onClose={() => removeTag(tag)}>
                     #{tag}
                   </Chip>
                 ))}
@@ -99,9 +86,7 @@ export default function ChipDemo() {
           {tags.length === 0 && (
             <button
               className="text-muted-foreground text-xs underline"
-              onClick={() =>
-                setTags(["design", "engineering", "product", "marketing"])
-              }
+              onClick={() => setTags(['design', 'engineering', 'product', 'marketing'])}
             >
               Reset chips
             </button>
@@ -124,5 +109,5 @@ export default function ChipDemo() {
         </ChipGroup>
       </Story>
     </>
-  );
+  )
 }

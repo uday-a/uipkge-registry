@@ -1,60 +1,55 @@
-"use client";
+'use client'
 
-import * as React from "react";
-import ReactECharts from "echarts-for-react/esm/core";
-import { ChartFrame, EChart } from "../shared";
-import { useChartTheme, mergeOptionBlock } from "../useChartTheme";
+import * as React from 'react'
+import ReactECharts from 'echarts-for-react/esm/core'
+import { ChartFrame, EChart } from '../shared'
+import { useChartTheme, mergeOptionBlock } from '../useChartTheme'
 
 // ThemeRiver
 // ─────────────────────────────────────────────────────────────────────────
 
 export interface ThemeRiverProps {
   /** `[time, value, series]` tuples. Time can be a date string or number. */
-  data: [string | number, number, string][];
-  height?: number | string;
-  option?: any;
-  className?: string;
+  data: [string | number, number, string][]
+  height?: number | string
+  option?: any
+  className?: string
   /** Accessible name announced for the chart image. Defaults to "Chart". */
-  ariaLabel?: string;
+  ariaLabel?: string
 }
 
 export const ThemeRiver = React.forwardRef<HTMLDivElement, ThemeRiverProps>(
   ({ data, height = 320, option, className, ariaLabel }, ref) => {
-    const theme = useChartTheme();
+    const theme = useChartTheme()
 
     const mergedOption = React.useMemo(() => {
       const series = [
         {
-          type: "themeRiver",
+          type: 'themeRiver',
           data,
           label: { show: false },
-          emphasis: {
-            itemStyle: { shadowBlur: 12, shadowColor: "rgba(0,0,0,0.2)" },
-          },
+          emphasis: { itemStyle: { shadowBlur: 12, shadowColor: 'rgba(0,0,0,0.2)' } },
         },
-      ];
+      ]
 
-      const userOption: any = option ?? {};
+      const userOption: any = option ?? {}
       const {
         series: userSeries,
         singleAxis: userSingleAxis,
         tooltip: userTooltip,
         legend: userLegend,
         ...userRest
-      } = userOption;
+      } = userOption
       const mergedSeries = Array.isArray(userSeries)
         ? series.map((s, i) => ({ ...s, ...(userSeries[i] ?? {}) }))
-        : series;
+        : series
 
       return {
         color: theme.colors,
         tooltip: mergeOptionBlock(
           {
-            trigger: "axis",
-            axisPointer: {
-              type: "line",
-              lineStyle: { color: theme.axisColor, opacity: 0.8 },
-            },
+            trigger: 'axis',
+            axisPointer: { type: 'line', lineStyle: { color: theme.axisColor, opacity: 0.8 } },
             backgroundColor: theme.tooltipBg,
             borderColor: theme.tooltipBorder,
             textStyle: { color: theme.tooltipText, fontSize: 12 },
@@ -67,7 +62,7 @@ export const ThemeRiver = React.forwardRef<HTMLDivElement, ThemeRiverProps>(
             : mergeOptionBlock(
                 {
                   bottom: 0,
-                  icon: "circle",
+                  icon: 'circle',
                   itemWidth: 8,
                   itemHeight: 8,
                   textStyle: { fontSize: 11, color: theme.textColor },
@@ -78,7 +73,7 @@ export const ThemeRiver = React.forwardRef<HTMLDivElement, ThemeRiverProps>(
           {
             top: 12,
             bottom: 40,
-            type: "time",
+            type: 'time',
             axisTick: { show: false },
             axisLabel: { color: theme.textColor, fontSize: 11 },
             axisLine: { lineStyle: { color: theme.axisColor } },
@@ -87,20 +82,14 @@ export const ThemeRiver = React.forwardRef<HTMLDivElement, ThemeRiverProps>(
         ),
         series: mergedSeries,
         ...userRest,
-      };
-    }, [data, option, theme]);
+      }
+    }, [data, option, theme])
 
     return (
-      <ChartFrame
-        ref={ref}
-        height={height}
-        className={className}
-        focusable={false}
-        ariaLabel={ariaLabel}
-      >
+      <ChartFrame ref={ref} height={height} className={className} focusable={false} ariaLabel={ariaLabel}>
         <EChart option={mergedOption} />
       </ChartFrame>
-    );
+    )
   },
-);
-ThemeRiver.displayName = "ThemeRiver";
+)
+ThemeRiver.displayName = 'ThemeRiver'

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue";
-import { Primitive } from "reka-ui";
-import { cn } from "@/lib/utils";
-import { sidebarMenuButtonVariants } from "./sidebar.variants";
+import type { HTMLAttributes } from 'vue'
+import { Primitive } from 'reka-ui'
+import { cn } from '@/lib/utils'
+import { sidebarMenuButtonVariants } from './sidebar.variants'
 
 // Inline `as`/`asChild` from PrimitiveProps -- see Button.vue for why
 // `extends /* @vue-ignore */ PrimitiveProps` was wrong: the annotation
@@ -13,19 +13,19 @@ import { sidebarMenuButtonVariants } from "./sidebar.variants";
 // from `SidebarMenuButtonVariants['variant']` indexed-access types,
 // so the unions are inlined explicitly.
 export interface SidebarMenuButtonProps {
-  as?: string;
-  asChild?: boolean;
-  variant?: "default" | "outline";
-  size?: "default" | "sm" | "lg";
-  isActive?: boolean;
-  class?: HTMLAttributes["class"];
+  as?: string
+  asChild?: boolean
+  variant?: 'default' | 'outline'
+  size?: 'default' | 'sm' | 'lg'
+  isActive?: boolean
+  class?: HTMLAttributes['class']
 }
 
 const props = withDefaults(defineProps<SidebarMenuButtonProps>(), {
-  as: "button",
-  variant: "default",
-  size: "default",
-});
+  as: 'button',
+  variant: 'default',
+  size: 'default',
+})
 </script>
 
 <template>

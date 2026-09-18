@@ -1,6 +1,6 @@
-import { useState } from "react";
-import Story from "../../components/story/Story";
-import { AdvanceSelect } from "@react-registry/advance-select";
+import { useState } from 'react'
+import Story from '../../components/story/Story'
+import { AdvanceSelect } from '@react-registry/advance-select'
 import {
   NativeSelect,
   Select,
@@ -11,30 +11,27 @@ import {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-} from "@react-registry/select";
+} from '@react-registry/select'
 
 export default function SelectDemo() {
-  const [fruit, setFruit] = useState<string>();
-  const [country, setCountry] = useState<string>();
-  const [role, setRole] = useState<string>();
-  const [skill, setSkill] = useState<string>();
-  const [tz, setTz] = useState<string>();
-  const [disabledTrigger, setDisabledTrigger] = useState<string>();
-  const [fruits, setFruits] = useState<string[]>([]);
+  const [fruit, setFruit] = useState<string>()
+  const [country, setCountry] = useState<string>()
+  const [role, setRole] = useState<string>()
+  const [skill, setSkill] = useState<string>()
+  const [tz, setTz] = useState<string>()
+  const [disabledTrigger, setDisabledTrigger] = useState<string>()
+  const [fruits, setFruits] = useState<string[]>([])
   const fruitOptions = [
-    { label: "Apple", value: "apple" },
-    { label: "Banana", value: "banana" },
-    { label: "Cherry", value: "cherry" },
-    { label: "Durian", value: "durian" },
-    { label: "Elderberry", value: "elderberry" },
-  ];
+    { label: 'Apple', value: 'apple' },
+    { label: 'Banana', value: 'banana' },
+    { label: 'Cherry', value: 'cherry' },
+    { label: 'Durian', value: 'durian' },
+    { label: 'Elderberry', value: 'elderberry' },
+  ]
 
   return (
     <>
-      <Story
-        title="Default"
-        description="Single-select dropdown with a placeholder and basic options."
-      >
+      <Story title="Default" description="Single-select dropdown with a placeholder and basic options.">
         <Select value={fruit} onValueChange={setFruit}>
           <SelectTrigger className="w-48">
             <SelectValue placeholder="Pick a fruit" />
@@ -47,10 +44,7 @@ export default function SelectDemo() {
         </Select>
       </Story>
 
-      <Story
-        title="Grouped with labels"
-        description="Multiple SelectGroups, each with a SelectLabel header."
-      >
+      <Story title="Grouped with labels" description="Multiple SelectGroups, each with a SelectLabel header.">
         <Select value={country} onValueChange={setCountry}>
           <SelectTrigger className="w-56">
             <SelectValue placeholder="Choose a country" />
@@ -72,10 +66,7 @@ export default function SelectDemo() {
         </Select>
       </Story>
 
-      <Story
-        title="Disabled item"
-        description="Individual items can be disabled via the disabled prop."
-      >
+      <Story title="Disabled item" description="Individual items can be disabled via the disabled prop.">
         <Select value={role} onValueChange={setRole}>
           <SelectTrigger className="w-48">
             <SelectValue placeholder="Pick a role" />
@@ -91,10 +82,7 @@ export default function SelectDemo() {
         </Select>
       </Story>
 
-      <Story
-        title="With separator"
-        description="Use SelectSeparator to visually split groups inside the popover."
-      >
+      <Story title="With separator" description="Use SelectSeparator to visually split groups inside the popover.">
         <Select value={skill} onValueChange={setSkill}>
           <SelectTrigger className="w-56">
             <SelectValue placeholder="Pick a skill level" />
@@ -145,15 +133,8 @@ export default function SelectDemo() {
         </Select>
       </Story>
 
-      <Story
-        title="Disabled trigger"
-        description="Pass disabled to the root to lock the entire control."
-      >
-        <Select
-          value={disabledTrigger}
-          onValueChange={setDisabledTrigger}
-          disabled
-        >
+      <Story title="Disabled trigger" description="Pass disabled to the root to lock the entire control.">
+        <Select value={disabledTrigger} onValueChange={setDisabledTrigger} disabled>
           <SelectTrigger className="w-48">
             <SelectValue placeholder="Locked" />
           </SelectTrigger>
@@ -178,10 +159,7 @@ export default function SelectDemo() {
             className="w-56"
           />
           <p className="text-muted-foreground text-xs">
-            Selected:{" "}
-            <code className="text-foreground">
-              {fruits.length ? fruits.join(", ") : "—"}
-            </code>
+            Selected: <code className="text-foreground">{fruits.length ? fruits.join(', ') : '—'}</code>
           </p>
         </div>
       </Story>
@@ -194,18 +172,14 @@ export default function SelectDemo() {
           <NativeSelect
             defaultValue="banana"
             options={[
-              { label: "Apple", value: "apple" },
-              { label: "Banana", value: "banana" },
-              { label: "Cherry", value: "cherry" },
-              {
-                label: "Dragonfruit (Sold out)",
-                value: "dragonfruit",
-                disabled: true,
-              },
+              { label: 'Apple', value: 'apple' },
+              { label: 'Banana', value: 'banana' },
+              { label: 'Cherry', value: 'cherry' },
+              { label: 'Dragonfruit (Sold out)', value: 'dragonfruit', disabled: true },
             ]}
           />
         </div>
       </Story>
     </>
-  );
+  )
 }

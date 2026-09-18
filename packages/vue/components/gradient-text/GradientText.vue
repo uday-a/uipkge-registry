@@ -1,70 +1,67 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import type { HTMLAttributes } from "vue";
-import { Primitive } from "reka-ui";
-import { cn } from "@/lib/utils";
-import {
-  gradientTextPresets,
-  type GradientPreset,
-} from "./gradient-text.variants";
+import { computed } from 'vue'
+import type { HTMLAttributes } from 'vue'
+import { Primitive } from 'reka-ui'
+import { cn } from '@/lib/utils'
+import { gradientTextPresets, type GradientPreset } from './gradient-text.variants'
 
 type Direction =
-  | "to right"
-  | "to left"
-  | "to top"
-  | "to bottom"
-  | "to top right"
-  | "to top left"
-  | "to bottom right"
-  | "to bottom left";
+  | 'to right'
+  | 'to left'
+  | 'to top'
+  | 'to bottom'
+  | 'to top right'
+  | 'to top left'
+  | 'to bottom right'
+  | 'to bottom left'
 
 const props = withDefaults(
   defineProps<{
     /** Rendered element / component via Primitive. */
-    as?: string;
-    asChild?: boolean;
+    as?: string
+    asChild?: boolean
     /** Preset gradient name. Overrides from/to when set. */
-    preset?: GradientPreset;
+    preset?: GradientPreset
     /** Start color of a custom two-stop gradient. */
-    from?: string;
+    from?: string
     /** End color of a custom two-stop gradient. */
-    to?: string;
+    to?: string
     /** Gradient direction. */
-    direction?: Direction;
+    direction?: Direction
     /** Fully custom CSS gradient (e.g. 'linear-gradient(45deg, #f00, #00f, #0f0)'). Overrides preset/from/to. */
-    gradient?: string;
+    gradient?: string
     /** Animate the gradient (subtle background-position shift). */
-    animated?: boolean;
+    animated?: boolean
     /** Animation duration in seconds. Default 4. */
-    animationDuration?: number;
-    class?: HTMLAttributes["class"];
+    animationDuration?: number
+    class?: HTMLAttributes['class']
   }>(),
   {
-    as: "span",
-    direction: "to right",
+    as: 'span',
+    direction: 'to right',
     animated: false,
     animationDuration: 4,
   },
-);
+)
 
 const gradientValue = computed(() => {
-  if (props.gradient) return props.gradient;
-  if (props.preset) return gradientTextPresets[props.preset] ?? "";
+  if (props.gradient) return props.gradient
+  if (props.preset) return gradientTextPresets[props.preset] ?? ''
   if (props.from && props.to) {
-    return `linear-gradient(${props.direction}, ${props.from}, ${props.to})`;
+    return `linear-gradient(${props.direction}, ${props.from}, ${props.to})`
   }
   // Default fallback: primary token gradient.
-  return "linear-gradient(to right, var(--primary), var(--primary))";
-});
+  return 'linear-gradient(to right, var(--primary), var(--primary))'
+})
 
 const style = computed(() => ({
   backgroundImage: gradientValue.value,
-  backgroundClip: "text",
-  WebkitBackgroundClip: "text",
-  color: "transparent",
-  WebkitTextFillColor: "transparent",
-  backgroundSize: props.animated ? "200% 200%" : undefined,
-}));
+  backgroundClip: 'text',
+  WebkitBackgroundClip: 'text',
+  color: 'transparent',
+  WebkitTextFillColor: 'transparent',
+  backgroundSize: props.animated ? '200% 200%' : undefined,
+}))
 </script>
 
 <template>
@@ -78,9 +75,7 @@ const style = computed(() => ({
     :class="
       cn(
         'inline-block',
-        animated
-          ? `motion-safe:animate-[gradient-text-shift_${props.animationDuration}s_ease_infinite]`
-          : '',
+        animated ? `motion-safe:animate-[gradient-text-shift_${props.animationDuration}s_ease_infinite]` : '',
         props.class,
       )
     "

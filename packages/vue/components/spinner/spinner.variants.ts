@@ -1,5 +1,5 @@
-import type { VariantProps } from "class-variance-authority";
-import { cva } from "class-variance-authority";
+import type { VariantProps } from 'class-variance-authority'
+import { cva } from 'class-variance-authority'
 
 /**
  * Variant definitions live in their own file (rather than the package
@@ -9,21 +9,18 @@ import { cva } from "class-variance-authority";
  */
 
 // motion-safe: honor prefers-reduced-motion (static glyph when reduced).
-export const spinnerVariants = cva(
-  "motion-safe:animate-spin text-muted-foreground",
-  {
-    variants: {
-      size: {
-        default: "size-6",
-        sm: "size-4",
-        lg: "size-8",
-        icon: "size-4",
-      },
-    },
-    defaultVariants: {
-      size: "default",
+export const spinnerVariants = cva('motion-safe:animate-spin text-muted-foreground', {
+  variants: {
+    size: {
+      default: 'size-6',
+      sm: 'size-4',
+      lg: 'size-8',
+      icon: 'size-4',
     },
   },
-);
+  defaultVariants: {
+    size: 'default',
+  },
+})
 
-export type SpinnerVariants = VariantProps<typeof spinnerVariants>;
+export type SpinnerVariants = VariantProps<typeof spinnerVariants>

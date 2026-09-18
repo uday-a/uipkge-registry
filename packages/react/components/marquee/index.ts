@@ -1,1 +1,1 @@
-export { Marquee, type MarqueeProps } from "./Marquee";
+export { Marquee, type MarqueeProps } from './Marquee'

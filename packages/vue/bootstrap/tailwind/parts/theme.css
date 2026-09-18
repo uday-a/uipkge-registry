@@ -1,10 +1,9 @@
 --font-sans:
-  "DM Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-  "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
---font-display: "Anybody", "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  'DM Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+  'Noto Color Emoji';
+--font-display: 'Anybody', 'DM Sans', ui-sans-serif, system-ui, sans-serif;
 --font-mono:
-  "DM Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-  "Liberation Mono", "Courier New", monospace;
+  'DM Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
 --radius-sm: var(--radius);
 --radius-md: var(--radius);
 --radius-lg: var(--radius);

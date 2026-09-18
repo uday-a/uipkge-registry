@@ -1,1 +1,1 @@
-export { HistogramChart, type HistogramChartProps } from "./HistogramChart";
+export { HistogramChart, type HistogramChartProps } from './HistogramChart'

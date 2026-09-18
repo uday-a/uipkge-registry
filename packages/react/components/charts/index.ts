@@ -67,7 +67,7 @@ export {
   SmoothFunnel,
   WaterfallChart,
   WordCloudChart,
-} from "./Charts";
+} from './Charts'
 
 export type {
   AreaChartProps,
@@ -145,12 +145,6 @@ export type {
   SegmentedGaugeProps,
   SmoothFunnelProps,
   WaterfallChartProps,
-} from "./Charts";
+} from './Charts'
 
-export {
-  useChartTheme,
-  type ChartTheme,
-  toRgba,
-  mergeOptionBlock,
-  gaugeThresholds,
-} from "./useChartTheme";
+export { useChartTheme, type ChartTheme, toRgba, mergeOptionBlock, gaugeThresholds } from './useChartTheme'

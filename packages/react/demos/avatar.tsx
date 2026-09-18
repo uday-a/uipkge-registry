@@ -1,18 +1,10 @@
-import Story from "../../components/story/Story";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarGroup,
-  AvatarImage,
-} from "@react-registry/avatar";
+import Story from '../../components/story/Story'
+import { Avatar, AvatarFallback, AvatarGroup, AvatarImage } from '@react-registry/avatar'
 
 export default function AvatarDemo() {
   return (
     <>
-      <Story
-        title="Sizes"
-        description="Tailwind size-* utilities scale the avatar. Fallback text shrinks accordingly."
-      >
+      <Story title="Sizes" description="Tailwind size-* utilities scale the avatar. Fallback text shrinks accordingly.">
         <div className="flex items-end gap-4">
           <Avatar className="size-6">
             <AvatarFallback className="text-xs">XS</AvatarFallback>
@@ -35,10 +27,7 @@ export default function AvatarDemo() {
         </div>
       </Story>
 
-      <Story
-        title="Stack"
-        description="Negative spacing + ring-2 ring-background creates the overlap."
-      >
+      <Story title="Stack" description="Negative spacing + ring-2 ring-background creates the overlap.">
         <div className="flex -space-x-2">
           <Avatar className="ring-background size-8 ring-2">
             <AvatarFallback>AD</AvatarFallback>
@@ -102,5 +91,5 @@ export default function AvatarDemo() {
         </Avatar>
       </Story>
     </>
-  );
+  )
 }

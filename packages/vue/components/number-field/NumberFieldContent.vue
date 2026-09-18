@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue";
-import { computed } from "vue";
-import { cn } from "@/lib/utils";
-import { injectNumberFieldContext } from "./NumberFieldContext";
+import type { HTMLAttributes } from 'vue'
+import { computed } from 'vue'
+import { cn } from '@/lib/utils'
+import { injectNumberFieldContext } from './NumberFieldContext'
 
 const props = defineProps<{
-  class?: HTMLAttributes["class"];
-}>();
+  class?: HTMLAttributes['class']
+}>()
 
-const uiContext = injectNumberFieldContext();
+const uiContext = injectNumberFieldContext()
 
-const isRight = computed(() => uiContext.controlsPosition.value === "right");
+const isRight = computed(() => uiContext.controlsPosition.value === 'right')
 </script>
 
 <template>

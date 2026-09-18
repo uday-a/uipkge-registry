@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react'
 import {
   Calendar,
   Camera,
@@ -11,93 +11,31 @@ import {
   Search,
   Settings,
   Terminal,
-} from "lucide-react";
-import { Dock, type DockItem } from "@react-registry/dock";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@react-registry/card";
-import Story from "../../components/story/Story";
+} from 'lucide-react'
+import { Dock, type DockItem } from '@react-registry/dock'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@react-registry/card'
+import Story from '../../components/story/Story'
 
 export default function DockDemo() {
-  const [activeId, setActiveId] = useState("finder");
-  const [lastLaunched, setLastLaunched] = useState("—");
+  const [activeId, setActiveId] = useState('finder')
+  const [lastLaunched, setLastLaunched] = useState('—')
 
   const apps: DockItem[] = [
-    {
-      id: "finder",
-      label: "Finder",
-      icon: Folder,
-      active: true,
-      handler: () => setActiveId("finder"),
-    },
-    {
-      id: "mail",
-      label: "Mail",
-      icon: Mail,
-      handler: () => setActiveId("mail"),
-    },
-    {
-      id: "calendar",
-      label: "Calendar",
-      icon: Calendar,
-      handler: () => setActiveId("calendar"),
-    },
-    {
-      id: "notes",
-      label: "Notes",
-      icon: FileText,
-      handler: () => setActiveId("notes"),
-    },
-    {
-      id: "terminal",
-      label: "Terminal",
-      icon: Terminal,
-      handler: () => setActiveId("terminal"),
-    },
-    {
-      id: "music",
-      label: "Music",
-      icon: Music,
-      handler: () => setActiveId("music"),
-    },
-    {
-      id: "settings",
-      label: "Settings",
-      icon: Settings,
-      handler: () => setActiveId("settings"),
-    },
-  ];
+    { id: 'finder', label: 'Finder', icon: Folder, active: true, handler: () => setActiveId('finder') },
+    { id: 'mail', label: 'Mail', icon: Mail, handler: () => setActiveId('mail') },
+    { id: 'calendar', label: 'Calendar', icon: Calendar, handler: () => setActiveId('calendar') },
+    { id: 'notes', label: 'Notes', icon: FileText, handler: () => setActiveId('notes') },
+    { id: 'terminal', label: 'Terminal', icon: Terminal, handler: () => setActiveId('terminal') },
+    { id: 'music', label: 'Music', icon: Music, handler: () => setActiveId('music') },
+    { id: 'settings', label: 'Settings', icon: Settings, handler: () => setActiveId('settings') },
+  ]
 
   const tools: DockItem[] = [
-    {
-      id: "search",
-      label: "Search",
-      icon: Search,
-      handler: () => setLastLaunched("Search"),
-    },
-    {
-      id: "camera",
-      label: "Camera",
-      icon: Camera,
-      handler: () => setLastLaunched("Camera"),
-    },
-    {
-      id: "chat",
-      label: "Messages",
-      icon: MessageCircle,
-      handler: () => setLastLaunched("Messages"),
-    },
-    {
-      id: "cloud",
-      label: "Cloud",
-      icon: Cloud,
-      handler: () => setLastLaunched("Cloud"),
-    },
-  ];
+    { id: 'search', label: 'Search', icon: Search, handler: () => setLastLaunched('Search') },
+    { id: 'camera', label: 'Camera', icon: Camera, handler: () => setLastLaunched('Camera') },
+    { id: 'chat', label: 'Messages', icon: MessageCircle, handler: () => setLastLaunched('Messages') },
+    { id: 'cloud', label: 'Cloud', icon: Cloud, handler: () => setLastLaunched('Cloud') },
+  ]
 
   return (
     <>
@@ -120,9 +58,7 @@ export default function DockDemo() {
         description="The dock pinned to the bottom of a faux desktop wallpaper — the canonical macOS-style placement."
       >
         <div className="border-border/60 relative flex h-64 items-end justify-center overflow-hidden rounded-lg border bg-gradient-to-b from-zinc-800 to-zinc-950">
-          <div className="absolute top-4 left-4 text-sm font-medium text-white/90">
-            My Desktop
-          </div>
+          <div className="absolute top-4 left-4 text-sm font-medium text-white/90">My Desktop</div>
           <Dock items={apps} className="mb-3" />
         </div>
       </Story>
@@ -138,10 +74,7 @@ export default function DockDemo() {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground text-sm">
-              Last launched:{" "}
-              <span className="text-foreground font-medium">
-                {lastLaunched}
-              </span>
+              Last launched: <span className="text-foreground font-medium">{lastLaunched}</span>
             </p>
           </CardContent>
         </Card>
@@ -169,21 +102,15 @@ export default function DockDemo() {
         description="The dock inherits border and backdrop styling — pass a class to match a dark theme or brand surface."
       >
         <div className="flex items-end justify-center rounded-lg bg-zinc-900 py-6">
-          <Dock
-            items={apps}
-            className="border-zinc-700 bg-zinc-800/80 text-zinc-100"
-          />
+          <Dock items={apps} className="border-zinc-700 bg-zinc-800/80 text-zinc-100" />
         </div>
       </Story>
 
-      <Story
-        title="Tooltips off"
-        description="Hide the hover tooltip labels for a minimal, icon-only dock."
-      >
+      <Story title="Tooltips off" description="Hide the hover tooltip labels for a minimal, icon-only dock.">
         <div className="bg-muted/30 flex items-end justify-center rounded-lg py-6">
           <Dock items={apps} showTooltips={false} />
         </div>
       </Story>
     </>
-  );
+  )
 }

@@ -1,1 +1,1 @@
-export { SlopeChart, type SlopeChartProps } from "./SlopeChart";
+export { SlopeChart, type SlopeChartProps } from './SlopeChart'

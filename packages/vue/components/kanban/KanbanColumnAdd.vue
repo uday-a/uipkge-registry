@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue";
-import { cn } from "@/lib/utils";
-import { Plus } from "lucide-vue-next";
+import type { HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils'
+import { Plus } from 'lucide-vue-next'
 
 interface Props {
-  class?: HTMLAttributes["class"];
+  class?: HTMLAttributes['class']
 }
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 </script>
 
 <template>

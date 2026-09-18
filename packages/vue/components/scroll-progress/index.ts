@@ -1,1 +1,1 @@
-export { default as ScrollProgress } from "./ScrollProgress.vue";
+export { default as ScrollProgress } from './ScrollProgress.vue'

@@ -1,35 +1,34 @@
 <script setup lang="ts">
-import { computed, inject } from "vue";
-import type { HTMLAttributes } from "vue";
-import { TabsTrigger } from "reka-ui";
-import { cn } from "@/lib/utils";
-import { tabsTriggerVariants } from "./tabs.variants";
+import { computed, inject } from 'vue'
+import type { HTMLAttributes } from 'vue'
+import { TabsTrigger } from 'reka-ui'
+import { cn } from '@/lib/utils'
+import { tabsTriggerVariants } from './tabs.variants'
 
 // Inlined unions: SFC compiler can't extract runtime props from
 // indexed-access types like TabsTriggerVariants['size'].
 const props = withDefaults(
   defineProps<{
-    class?: HTMLAttributes["class"];
-    size?: "default" | "sm" | "lg";
-    variant?: "segmented" | "pill" | "underline";
-    orientation?: "horizontal" | "vertical";
-    value: string;
-    disabled?: boolean;
+    class?: HTMLAttributes['class']
+    size?: 'default' | 'sm' | 'lg'
+    variant?: 'segmented' | 'pill' | 'underline'
+    orientation?: 'horizontal' | 'vertical'
+    value: string
+    disabled?: boolean
   }>(),
   {
     disabled: false,
   },
-);
+)
 
-const tabsOrientation = inject<
-  { value: "horizontal" | "vertical" } | "horizontal" | "vertical"
->(Symbol.for("tabsOrientation"), "horizontal");
+const tabsOrientation = inject<{ value: 'horizontal' | 'vertical' } | 'horizontal' | 'vertical'>(
+  Symbol.for('tabsOrientation'),
+  'horizontal',
+)
 const effectiveOrientation = computed(() => {
-  if (props.orientation) return props.orientation;
-  return typeof tabsOrientation === "string"
-    ? tabsOrientation
-    : tabsOrientation.value;
-});
+  if (props.orientation) return props.orientation
+  return typeof tabsOrientation === 'string' ? tabsOrientation : tabsOrientation.value
+})
 </script>
 
 <template>

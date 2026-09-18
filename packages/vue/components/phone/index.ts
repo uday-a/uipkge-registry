@@ -1,4 +1,4 @@
-export { default as Phone } from "./Phone.vue";
+export { default as Phone } from './Phone.vue'
 export type {
   PhoneModel,
   PhoneVariant,
@@ -6,4 +6,4 @@ export type {
   PhoneColor,
   IPhone17ProColor,
   GalaxyS26UltraColor,
-} from "./Phone.vue";
+} from './Phone.vue'
