@@ -31,8 +31,10 @@ Do not invent versions. Pin these authoritative strings:
 3. **Primitive vs Block Boundary**:
    - Primitives (`registry:ui`) NEVER take structured record arrays (`items`, `data`) to render layouts.
    - Blocks (`registry:block`) compose primitives top-to-bottom and spell out titles, metrics, and badges inline.
-4. **Manifest Accuracy**: Every item must maintain an accurate `<name>.registry.ts` declaring all dependencies and target paths.
-5. **Formatting**:
+4. **Base Component Immunity**: Never modify existing base primitives (`components/ui/*`) or shared tokens (`packages/shared/*`) while creating or modifying blocks. Block contributions are strictly isolated to `packages/{vue,react}/blocks/<name>/`.
+5. **Token Discipline & No Micro-Text**: All components and blocks must strictly use semantic OKLCH design tokens (`border-border`, `bg-card`, `text-foreground`). Never use arbitrary palette colors (`bg-blue-500`) or sub-12px micro-text (`text-[10px]`).
+6. **Manifest Accuracy**: Every item must maintain an accurate `<name>.registry.ts` declaring all dependencies and target paths.
+7. **Formatting**:
    - Single quotes (`'`).
    - No semicolons (`semi: false`).
    - 2-space indentation.

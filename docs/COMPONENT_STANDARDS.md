@@ -134,3 +134,41 @@ Components follow world-class design standards influenced by Linear, Vercel, Ray
 4. **Keyboard & Focus States**:
    - Focus rings must be distinct: `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50`.
    - WCAG AA contrast compliance is strictly mandatory.
+
+---
+
+## 5. Token Discipline & Palette Restrictions
+
+All components, charts, and blocks must adhere strictly to the shared semantic design system:
+
+1. **Strict Design Tokens Only**:
+   - ❌ **Forbidden**: Raw arbitrary palette colors like `bg-blue-500`, `text-emerald-600`, `border-purple-300`, or arbitrary `#hex` values.
+   - ✅ **Required**: Use semantic tokens defined in `packages/shared/styles/tailwind.css`:
+     - Surfaces: `bg-background`, `bg-card`, `bg-popover`, `bg-muted`, `bg-accent`
+     - Foreground: `text-foreground`, `text-card-foreground`, `text-muted-foreground`, `text-primary`
+     - Borders & Inputs: `border-border`, `border-input`
+     - Interactive States: `hover:bg-accent hover:text-accent-foreground`
+     - Focus: `ring-ring`
+     - Status/Destructive: `destructive`, `destructive-foreground`
+2. **Seamless Dark Mode**:
+   - Never write hardcoded `dark:bg-black` or `dark:text-white`. Semantic tokens dynamically adjust their OKLCH values when the `.dark` class is applied to the root element.
+
+---
+
+## 6. Lifecycle & Deprecation Policy
+
+1. **Never Delete Shipped Items**:
+   - Once a component or block is published, its registry endpoint (`https://uipkge.dev/r/{framework}/{name}.json`) must **never be deleted**. Deleting an item breaks CI pipelines and installation scripts for existing consumers.
+2. **Deprecation Workflow**:
+   - If an item is superseded or retired, mark it in `<name>.registry.ts`:
+     ```ts
+     export default defineRegistryItem({
+       name: 'old-component',
+       type: 'registry:ui',
+       deprecated: 'Replaced by unified data-table component',
+       replacedBy: 'data-table',
+       // ...
+     })
+     ```
+   - The registry compiler continues to serve the JSON manifest, but badging and search UI will alert users to migrate to the replacement.
+
