@@ -1,0 +1,54 @@
+name: 💡 Feature or Component Request
+description: Propose a new UI primitive, chart visualization, or block layout.
+labels: ['enhancement', 'triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have an idea for a component, chart, or block that should be in UIPKGE? Let us know!
+
+  - type: dropdown
+    id: item-type
+    attributes:
+      label: Item Type
+      description: What kind of item are you requesting?
+      options:
+        - UI Primitive (registry:ui - e.g. control, input, container)
+        - Data Visualization / Chart (registry:ui - ECharts based)
+        - Composed Block (registry:block - higher-level layout)
+        - Utility / Hook (registry:hook or registry:lib)
+      default: 0
+    validations:
+      required: true
+
+  - type: input
+    id: item-name
+    attributes:
+      label: Proposed Component or Block Name
+      description: Suggested kebab-case name (e.g. `stepper-form`, `matrix-chart`).
+      placeholder: matrix-chart
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Problem Statement / Use Case
+      description: Why is this component needed? What problem does it solve?
+    validations:
+      required: true
+
+  - type: textarea
+    id: visual-reference
+    attributes:
+      label: Visual References & Inspirations
+      description: Links to benchmarks (e.g. Linear, Stripe, Raycast), Figma mockups, or screenshots.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: willing-to-contribute
+    attributes:
+      label: Contribution
+      options:
+        - label: I am interested in building and contributing this component myself!

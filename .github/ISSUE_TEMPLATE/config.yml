@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 🌐 UIPKGE Documentation & Previews
+    url: https://uipkge.dev
+    about: Browse components, previews, source code, and installation instructions.
+  - name: 💬 Community & Discussions
+    url: https://github.com/uday-a/uipkge-registry/discussions
+    about: Ask questions, share ideas, or discuss implementation approaches with the community.

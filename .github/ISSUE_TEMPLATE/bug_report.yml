@@ -1,0 +1,67 @@
+name: 🐛 Bug Report
+description: Report a bug, rendering defect, or behavioral issue in a component or block.
+labels: ['bug', 'triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report an issue! Please provide as much detail as possible to help us reproduce and fix the bug quickly.
+
+  - type: dropdown
+    id: framework
+    attributes:
+      label: Framework Affected
+      description: Which framework implementation has the issue?
+      options:
+        - Vue 3.5 / Nuxt 4
+        - React 19 / Next.js 16
+        - Both frameworks / Shared Tokens
+      default: 0
+    validations:
+      required: true
+
+  - type: input
+    id: component
+    attributes:
+      label: Component or Block Name
+      description: e.g. `button`, `dialog`, `data-table`, `line-chart`
+      placeholder: button
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the Bug
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce the behavior?
+      placeholder: |
+        1. Install component via `npx shadcn-vue add https://uipkge.dev/r/vue/<name>.json`
+        2. Set prop `...`
+        3. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment Info
+      description: Browser, OS version, Node/Bun version.
+      placeholder: macOS 15, Chrome 130, Bun 1.4.0
+    validations:
+      required: false

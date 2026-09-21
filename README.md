@@ -67,6 +67,9 @@ bun run build:registry
 
 ---
 
-## License
+## Community & Policies
 
-MIT © UIPKGE
+- **License**: [MIT License](./LICENSE) © 2026 Uday Adaka & UIPKGE
+- **Code of Conduct**: [Contributor Covenant v2.1](./CODE_OF_CONDUCT.md)
+- **Security Policy**: [SECURITY.md](./SECURITY.md)
+

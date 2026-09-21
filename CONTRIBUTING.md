@@ -209,4 +209,13 @@ bun run verify
 2. If your PR only implements one framework, add the note `needs-port` in the PR description so community members can pick up the companion port.
 3. Keep PRs focused: one component, block, or fix per pull request.
 
+---
+
+## 🤝 Community & Conduct
+
+- **Code of Conduct**: This project operates under the [Contributor Covenant v2.1](./CODE_OF_CONDUCT.md). By participating, you agree to uphold this code.
+- **Security Policy**: For responsible vulnerability disclosure, please review [SECURITY.md](./SECURITY.md).
+- **License**: All contributions are licensed under the [MIT License](./LICENSE).
+
 Thank you for helping build UIPKGE!
+
