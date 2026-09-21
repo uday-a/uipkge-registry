@@ -6,6 +6,7 @@ In UIPKGE, the **components are the product**, not an npm package. Source code i
 
 - 🌐 **Documentation & Live Previews**: [uipkge.dev](https://uipkge.dev)
 - 🤝 **Contributing**: See [CONTRIBUTING.md](./CONTRIBUTING.md) (Single-framework contributions are welcomed!)
+- 🤖 **AI & Agent Documentation**: See [docs/](./docs/) and [AGENTS.md](./AGENTS.md)
 
 ---
 

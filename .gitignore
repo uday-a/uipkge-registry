@@ -17,3 +17,9 @@ packages/*/registry.json
 # System files
 .DS_Store
 Thumbs.db
+
+# Explicitly track AI Docs and Agent guidelines (overriding user global gitignore)
+!docs/
+!docs/**
+!AGENTS.md
+
