@@ -1,4 +1,4 @@
-import { execSync } from 'node:child_process'
+import { execFileSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
 
@@ -10,7 +10,7 @@ interface ChangedFile {
 function getBaseRef(): string {
   if (process.env.GITHUB_BASE_REF) {
     try {
-      execSync(`git rev-parse --verify origin/${process.env.GITHUB_BASE_REF}`, {
+      execFileSync('git', ['rev-parse', '--verify', `origin/${process.env.GITHUB_BASE_REF}`], {
         stdio: 'ignore',
       })
       return `origin/${process.env.GITHUB_BASE_REF}`
@@ -22,7 +22,7 @@ function getBaseRef(): string {
   const candidates = ['origin/main', 'main', 'HEAD~1']
   for (const ref of candidates) {
     try {
-      execSync(`git rev-parse --verify ${ref}`, { stdio: 'ignore' })
+      execFileSync('git', ['rev-parse', '--verify', ref], { stdio: 'ignore' })
       return ref
     } catch {
       continue
@@ -33,8 +33,7 @@ function getBaseRef(): string {
 
 function getChangedFiles(baseRef: string): ChangedFile[] {
   try {
-    const diffCmd = `git diff --name-status ${baseRef}`
-    const output = execSync(diffCmd, { encoding: 'utf-8' }).trim()
+    const output = execFileSync('git', ['diff', '--name-status', baseRef], { encoding: 'utf-8' }).trim()
 
     if (!output) return []
 

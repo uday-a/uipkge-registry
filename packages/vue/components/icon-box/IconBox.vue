@@ -3,16 +3,7 @@ import type { Component } from 'vue'
 import { cn } from '@/lib/utils'
 
 type Variant =
-  | 'primary'
-  | 'muted'
-  | 'outline'
-  | 'solid'
-  | 'subtle'
-  | 'destructive'
-  | 'success'
-  | 'warning'
-  | 'ghost'
-  | 'custom'
+  'primary' | 'muted' | 'outline' | 'solid' | 'subtle' | 'destructive' | 'success' | 'warning' | 'ghost' | 'custom'
 type Size = '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 type Shape = 'rounded' | 'circle' | 'square'
 

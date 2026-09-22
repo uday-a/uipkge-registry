@@ -4,15 +4,7 @@ import type * as L from 'leaflet'
 import { defined, toLatLng, useLeafletLayer } from './leaflet-context'
 
 type MarkerAnchor =
-  | 'center'
-  | 'top'
-  | 'bottom'
-  | 'left'
-  | 'right'
-  | 'top-left'
-  | 'top-right'
-  | 'bottom-left'
-  | 'bottom-right'
+  'center' | 'top' | 'bottom' | 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
 
 const props = withDefaults(
   defineProps<{

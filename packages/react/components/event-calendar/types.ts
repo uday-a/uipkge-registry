@@ -17,16 +17,7 @@ export interface CalendarEvent {
   end?: string | Date
   allDay?: boolean
   color?:
-    | 'default'
-    | 'primary'
-    | 'secondary'
-    | 'success'
-    | 'warning'
-    | 'destructive'
-    | 'info'
-    | 'purple'
-    | 'rose'
-    | string
+    'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'destructive' | 'info' | 'purple' | 'rose' | string
   category?: string
   description?: string
   location?: string

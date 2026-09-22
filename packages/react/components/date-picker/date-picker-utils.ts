@@ -4,14 +4,7 @@ export type DatePickerPicker = 'day' | 'week' | 'month' | 'quarter' | 'year'
 export type DatePickerStatus = 'error' | 'warning'
 export type DatePickerSize = 'small' | 'middle' | 'large'
 export type DatePickerPlacement =
-  | 'top'
-  | 'bottom'
-  | 'left'
-  | 'right'
-  | 'topLeft'
-  | 'topRight'
-  | 'bottomLeft'
-  | 'bottomRight'
+  'top' | 'bottom' | 'left' | 'right' | 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight'
 
 export type FormatValue = 'short' | 'medium' | 'long' | 'full' | Intl.DateTimeFormatOptions
 

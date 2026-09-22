@@ -292,7 +292,7 @@ const BoardLaneBody = React.forwardRef<HTMLDivElement, BoardLaneBodyProps>(
         data-uipkge=""
         data-slot="board-lane-body"
         className={cn(
-          'flex min-h-0 flex-1 [scrollbar-width:thin] flex-col gap-2 overflow-y-auto px-0.5 py-1 pr-1',
+          'flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto px-0.5 py-1 pr-1 [scrollbar-width:thin]',
           className,
         )}
         {...props}

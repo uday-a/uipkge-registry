@@ -29,10 +29,7 @@ function checkValue(target: EventTarget | null) {
     hasValue.value = !!el.value
   } else {
     const input = el.querySelector?.('input, textarea, select') as
-      | HTMLInputElement
-      | HTMLTextAreaElement
-      | HTMLSelectElement
-      | null
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | null
     if (input) hasValue.value = !!input.value
   }
 }
@@ -55,10 +52,7 @@ function handleInput(event: Event) {
 onMounted(() => {
   if (!wrapperRef.value) return
   const input = wrapperRef.value.querySelector('input, textarea, select') as
-    | HTMLInputElement
-    | HTMLTextAreaElement
-    | HTMLSelectElement
-    | null
+    HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | null
   if (!input) return
   hasValue.value = !!input.value
   if (input.id) {

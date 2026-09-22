@@ -136,18 +136,16 @@ const containerStyle = computed((): Record<string, string> => {
   return isVertical.value ? { height: h, overflowY: 'auto' } : { width: h, overflowX: 'auto' }
 })
 
-const innerStyle = computed(
-  (): Record<string, string> =>
-    isVertical.value
-      ? { height: `${totalSize.value}px`, position: 'relative', width: '100%' }
-      : { width: `${totalSize.value}px`, position: 'relative', height: '100%' },
+const innerStyle = computed((): Record<string, string> =>
+  isVertical.value
+    ? { height: `${totalSize.value}px`, position: 'relative', width: '100%' }
+    : { width: `${totalSize.value}px`, position: 'relative', height: '100%' },
 )
 
-const offsetStyle = computed(
-  (): Record<string, string> =>
-    isVertical.value
-      ? { transform: `translateY(${offsetStart.value}px)` }
-      : { transform: `translateX(${offsetStart.value}px)`, height: '100%', display: 'flex' },
+const offsetStyle = computed((): Record<string, string> =>
+  isVertical.value
+    ? { transform: `translateY(${offsetStart.value}px)` }
+    : { transform: `translateX(${offsetStart.value}px)`, height: '100%', display: 'flex' },
 )
 </script>
 

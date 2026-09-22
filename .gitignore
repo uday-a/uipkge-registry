@@ -11,8 +11,15 @@ packages/*/registry.json
 
 # Environment & Local overrides
 .env
+.env.*
 .env.local
 *.local
+!.env.example
+
+# Test & build artifacts
+coverage/
+*.tsbuildinfo
+*.log
 
 # System files
 .DS_Store

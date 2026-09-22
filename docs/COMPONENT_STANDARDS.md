@@ -171,4 +171,3 @@ All components, charts, and blocks must adhere strictly to the shared semantic d
      })
      ```
    - The registry compiler continues to serve the JSON manifest, but badging and search UI will alert users to migrate to the replacement.
-

@@ -191,7 +191,7 @@ const CarouselContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HT
             ? 'flex snap-x snap-mandatory overflow-x-auto scroll-smooth'
             : 'flex snap-y snap-mandatory flex-col overflow-y-auto',
           'relative h-full w-full',
-          '[scrollbar-width:none] [-ms-overflow-style:none]',
+          '[-ms-overflow-style:none] [scrollbar-width:none]',
           '[&::-webkit-scrollbar]:hidden',
         )}
         aria-orientation={orientation}

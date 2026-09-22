@@ -52,6 +52,7 @@ uipkge-registry/
 The UIPKGE ecosystem consists of two repositories with specific roles:
 
 1. **`uipkge-ui` (Platform & Docs Monorepo)**:
+   - Private, maintainer-only. Contributors never need it: everything in this repository builds, tests, and previews on its own.
    - Contains `apps/astro-site`, the full Astro SSG documentation site deployed to `https://uipkge.dev`.
    - Contains 467 domain vertical blocks and 503 demos used for reference vertical applications (HRMS, HMS, Logistics).
 2. **`uipkge-registry` (This Repository - Open-Source Component Registry)**:
@@ -73,6 +74,8 @@ The UIPKGE ecosystem consists of two repositories with specific roles:
                            │
                       uipkge-ui (core component updates)
 ```
+
+`.uipkge-sync.json` at the repository root records the `uipkge-ui` commit last exported. The export refuses to run while this repository holds changes under exported paths that `uipkge-ui` has not ingested yet, so a merged primitive fix cannot be overwritten by the next export. Per-repo files (`package.json`, `tsconfig.json`, Vite/Vitest configs) and blocks other than `cloud-backup-schedule` are never synced automatically.
 
 ---
 

@@ -107,6 +107,8 @@ describe('Button', () => {
 
 ## 4. Upstream & Downstream Ingest Pipeline
 
+Maintainer-only. `uipkge-ui` is a private repository, so contributors cannot run these commands. Open a pull request here and a maintainer ingests it.
+
 - **Syncing Upstream (ingesting community PRs from `uipkge-registry` into `uipkge-ui`)**:
   In `uipkge-ui`:
   ```bash
@@ -117,3 +119,4 @@ describe('Button', () => {
   ```bash
   bun run export:registry
   ```
+  The export aborts if this repository has changes under exported paths that `uipkge-ui` lacks (baseline: `.uipkge-sync.json`). Ingest them with `bun run sync:upstream` first, or pass `--force` to discard them.

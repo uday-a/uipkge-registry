@@ -54,4 +54,3 @@ In `uipkge-registry`, an automated CI gate enforces that pull requests contribut
 - **Block PR**: Touches only `packages/{vue,react}/blocks/<name>/` and `packages/{vue,react}/demos/<name>.*`.
 - **Primitive PR**: Modifies base primitives (`packages/{vue,react}/components/`) or tokens (`packages/shared/`).
 - **Mixed PRs are Blocked**: Combining block changes with primitive edits in a single community PR will fail `bun run check:scope` in CI. If a base component has a genuine bug, it must be submitted in a separate, dedicated PR titled `fix(ui): ...` with companion unit tests.
-

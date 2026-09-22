@@ -8,6 +8,9 @@ concurrency:
   group: pr-scope-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   scope-guard:
     name: Validate PR File Boundaries & Primitive Integrity
@@ -26,8 +29,10 @@ jobs:
           bun-version: 1.4.0
 
       - name: Fetch Target Base Branch
+        env:
+          BASE_REF: ${{ github.base_ref }}
         run: |
-          git fetch origin ${{ github.base_ref }}:origin/${{ github.base_ref }} || true
+          git fetch origin "$BASE_REF":origin/"$BASE_REF" || true
 
       - name: Run Scope & Primitive Protection Check
         env:

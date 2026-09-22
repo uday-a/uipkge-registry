@@ -1,20 +1,23 @@
-name: Vue Checks
+name: React Checks
 
 on:
   pull_request:
     paths:
-      - 'packages/vue/**'
+      - 'packages/react/**'
       - 'packages/shared/**'
       - 'package.json'
   workflow_dispatch:
 
 concurrency:
-  group: pr-vue-${{ github.ref }}
+  group: pr-react-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
-  vue-check:
-    name: Vue Registry Build, Verify & Tests
+  react-check:
+    name: React Registry Build, Verify & Tests
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -30,11 +33,11 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      - name: Build Vue registry
-        run: bun run build:vue
+      - name: Build React registry
+        run: bun run build:react
 
-      - name: Verify Vue registry
-        run: bun run verify:vue
+      - name: Verify React registry
+        run: bun run verify:react
 
-      - name: Test Vue
-        run: bun run test:vue
+      - name: Test React
+        run: bun run test:react

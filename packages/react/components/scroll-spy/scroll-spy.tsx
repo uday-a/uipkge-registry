@@ -5,15 +5,7 @@ import { cn } from '@/lib/utils'
 
 export type ScrollSpyTurn = 'straight' | 'sharp' | 'rounded'
 export type ScrollSpyVariant =
-  | 'default'
-  | 'line'
-  | 'angle'
-  | 'sharp'
-  | 'rounded'
-  | 'stepper'
-  | 'scrollspy'
-  | 'tabs'
-  | 'pills'
+  'default' | 'line' | 'angle' | 'sharp' | 'rounded' | 'stepper' | 'scrollspy' | 'tabs' | 'pills'
 export type ScrollSpyIndicatorMode = 'segment' | 'fill' | 'progress' | 'pill' | 'dot' | 'line'
 export type ScrollSpyPosition = 'right' | 'left' | 'top' | 'bottom'
 export type ScrollSpyRailPosition = 'left' | 'right'
@@ -1295,7 +1287,7 @@ export const ScrollSpyStepper = React.forwardRef<HTMLDivElement, ScrollSpySteppe
             ref={ref}
             data-slot="scroll-spy-top"
             className={cn(
-              'border-border/70 bg-card/85 relative sticky top-0 z-20 flex w-full scrollbar-none items-center gap-1 overflow-x-auto rounded-xl border p-1.5 shadow-xs backdrop-blur-md',
+              'border-border/70 bg-card/85 scrollbar-none relative sticky top-0 z-20 flex w-full items-center gap-1 overflow-x-auto rounded-xl border p-1.5 shadow-xs backdrop-blur-md',
               className,
             )}
             {...props}
@@ -1346,7 +1338,7 @@ export const ScrollSpyStepper = React.forwardRef<HTMLDivElement, ScrollSpySteppe
           ref={ref}
           data-slot="scroll-spy-stepper-top"
           className={cn(
-            'border-border/70 bg-card/85 sticky top-0 z-20 flex w-full scrollbar-none items-center gap-1.5 overflow-x-auto rounded-xl border p-2 shadow-xs backdrop-blur-md',
+            'border-border/70 bg-card/85 scrollbar-none sticky top-0 z-20 flex w-full items-center gap-1.5 overflow-x-auto rounded-xl border p-2 shadow-xs backdrop-blur-md',
             className,
           )}
           {...props}

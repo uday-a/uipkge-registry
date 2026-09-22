@@ -167,7 +167,16 @@ Blocks compose existing UI primitives (`Card`, `Button`, `Badge`, `Input`, `Prog
 
 ---
 
-## 🛡️ Contributor & Maintainer Precautions
+## 🔧 Fixing or Improving a Primitive
+
+Primitives (`packages/{vue,react}/components/`, `bootstrap/`, `packages/shared/`) are developed in the maintainers' upstream monorepo and exported here; `.uipkge-sync.json` records the last exported upstream commit. Fixes are welcome all the same:
+
+- Send them as a **dedicated PR** (`fix(vue): …`, `fix(react): …`) that touches no blocks, so the primitive test suites run on their own and `bun run check:scope` stays green.
+- After merge, the maintainers port the change upstream. The export pipeline refuses to overwrite anything merged here that upstream does not have yet, so a merged fix cannot be lost.
+
+---
+
+## 🛡️ Contributor Precautions
 
 ### Pre-flight Checklist Before Submitting a PR
 
@@ -178,25 +187,6 @@ Blocks compose existing UI primitives (`Card`, `Button`, `Badge`, `Input`, `Prog
 - [ ] `bun run build`: Registry build succeeds and JSON outputs are clean.
 - [ ] **Strict Scope Isolation**: Block contributions must ONLY add files under `packages/{vue,react}/blocks/<name>/` and `packages/{vue,react}/demos/<name>.*`. Never modify existing primitives (`components/ui/*`) or shared styles (`packages/shared/*`).
 - [ ] No arbitrary pixel values (`text-[10px]` or hardcoded `#hex` colors). Use semantic OKLCH tokens (`border-border`, `bg-card`, `text-foreground`).
-
-### Maintainer Sync Procedure
-
-When a community or registry PR is merged into `main` of `uipkge-registry`:
-
-```bash
-# 1. Inside the main uipkge-ui monorepo:
-# Copy the new block source & sidecar from uipkge-registry:
-cp -r ../uipkge-registry/packages/vue/blocks/<name> packages/registry-vue/blocks/
-cp -r ../uipkge-registry/packages/react/blocks/<name> packages/registry-react/blocks/
-
-# 2. Add companion preview demos in astro-site:
-# apps/astro-site/src/demos/vue/<name>.vue
-# apps/astro-site/src/demos/react/<name>.tsx
-
-# 3. Build & verify monorepo:
-bun run build:registry
-bun run verify
-```
 
 ---
 
@@ -218,4 +208,3 @@ bun run verify
 - **License**: All contributions are licensed under the [MIT License](./LICENSE).
 
 Thank you for helping build UIPKGE!
-

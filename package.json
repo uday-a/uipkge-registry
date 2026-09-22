@@ -4,6 +4,11 @@
   "version": "0.1.0",
   "description": "UIPKGE open-source dual-framework component registry (Vue & React).",
   "license": "MIT",
+  "homepage": "https://uipkge.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uday-a/uipkge-registry.git"
+  },
   "workspaces": [
     "packages/*"
   ],

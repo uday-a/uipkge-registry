@@ -77,8 +77,7 @@
     "react-resizable-panels": "^2.1.9",
     "shiki": "^4.0.2",
     "sonner": "^2.0.7",
-    "tailwind-merge": "^2.0.0",
-    "zod": "^4.4.3"
+    "tailwind-merge": "^2.0.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.9.1",

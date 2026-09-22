@@ -2,16 +2,7 @@ import * as React from 'react'
 import { cn } from '@/lib/utils'
 
 export type IconBoxVariant =
-  | 'primary'
-  | 'muted'
-  | 'outline'
-  | 'solid'
-  | 'subtle'
-  | 'destructive'
-  | 'success'
-  | 'warning'
-  | 'ghost'
-  | 'custom'
+  'primary' | 'muted' | 'outline' | 'solid' | 'subtle' | 'destructive' | 'success' | 'warning' | 'ghost' | 'custom'
 
 export type IconBoxSize = '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 export type IconBoxShape = 'rounded' | 'circle' | 'square'

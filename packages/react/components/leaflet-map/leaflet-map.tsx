@@ -543,15 +543,7 @@ function useLatest<T>(value: T) {
 }
 
 type MarkerAnchor =
-  | 'center'
-  | 'top'
-  | 'bottom'
-  | 'left'
-  | 'right'
-  | 'top-left'
-  | 'top-right'
-  | 'bottom-left'
-  | 'bottom-right'
+  'center' | 'top' | 'bottom' | 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
 
 export interface LeafletMarkerProps {
   /** [lng, lat] — Mapbox order, matching the `map` component's MapMarker. */
