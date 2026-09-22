@@ -77,7 +77,7 @@ The playground automatically discovers your demo file and makes it visible in th
 ### Running Tests & Verification
 
 ```bash
-bun test                    # Run vitest
+bun run test                # Run vitest
 bun run verify              # Verify registry sidecar manifests
 ```
 
@@ -129,7 +129,7 @@ export default function ButtonDemo() {
 ### Running Tests & Verification
 
 ```bash
-bun test                    # Run vitest
+bun run test                # Run vitest
 bun run verify              # Verify registry sidecar manifests
 ```
 
@@ -173,7 +173,7 @@ Blocks compose existing UI primitives (`Card`, `Button`, `Badge`, `Input`, `Prog
 
 - [ ] `bun run check:scope`: Validates that block PRs do NOT touch existing primitives or shared tokens.
 - [ ] `bun run typecheck`: TypeScript passes without diagnostics.
-- [ ] `bun test`: All unit tests pass in both frameworks.
+- [ ] `bun run test`: All unit tests pass in both frameworks.
 - [ ] `bun run verify`: Sidecar schemas conform to registry spec.
 - [ ] `bun run build`: Registry build succeeds and JSON outputs are clean.
 - [ ] **Strict Scope Isolation**: Block contributions must ONLY add files under `packages/{vue,react}/blocks/<name>/` and `packages/{vue,react}/demos/<name>.*`. Never modify existing primitives (`components/ui/*`) or shared styles (`packages/shared/*`).
