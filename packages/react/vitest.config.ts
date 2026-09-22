@@ -69,7 +69,7 @@ export default defineConfig({
   },
   test: {
     name: 'registry-react',
-    environment: 'jsdom',
+    environment: 'happy-dom',
     setupFiles: [path.join(root, 'components/data-table/__tests__/setup.ts')],
     include: [
       'components/**/__tests__/**/*.{spec,test}.tsx',

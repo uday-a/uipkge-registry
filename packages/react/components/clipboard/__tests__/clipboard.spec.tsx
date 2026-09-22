@@ -6,8 +6,12 @@ const writeText = vi.fn().mockResolvedValue(undefined)
 
 beforeEach(() => {
   writeText.mockClear()
-  // @ts-expect-error test mock
-  navigator.clipboard = { writeText }
+  // happy-dom exposes navigator.clipboard as a getter-only property, so it
+  // must be redefined rather than assigned.
+  Object.defineProperty(navigator, 'clipboard', {
+    value: { writeText },
+    configurable: true,
+  })
 })
 
 afterEach(cleanup)
