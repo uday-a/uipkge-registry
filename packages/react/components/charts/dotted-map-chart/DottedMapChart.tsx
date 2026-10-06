@@ -5,6 +5,7 @@ import type { LineLayerSpecification } from 'mapbox-gl'
 import { Map, MapMarker, MapSource, MapLayer, type MapVariant } from '@/components/ui/map'
 import { cn } from '@/lib/utils'
 import { Globe } from 'lucide-react'
+import { toCanvasColor } from '../useChartTheme'
 
 export interface MapPin {
   lat: number
@@ -46,6 +47,16 @@ export interface DottedMapChartProps {
   onPinClick?: (pin: MapPin) => void
   /** Fired with the hovered pin, or null when the pointer leaves it. */
   onPinHover?: (pin: MapPin | null) => void
+}
+
+// Mapbox GL paint needs a concrete color — resolve `var(--token)` values
+// (the natural way to pass theme colors) via getComputedStyle first.
+function resolvePaintColor(value: string): string {
+  const match = value.trim().match(/^var\(\s*(--[\w-]+)\s*\)$/)
+  const name = match?.[1]
+  if (!name || typeof window === 'undefined') return value
+  const resolved = getComputedStyle(document.documentElement).getPropertyValue(name).trim()
+  return resolved ? toCanvasColor(resolved) : value
 }
 
 export function DottedMapChart({
@@ -127,7 +138,7 @@ export function DottedMapChart({
   const dotPaint = React.useMemo(
     () => ({
       'circle-radius': 1.5,
-      'circle-color': dotColor || 'rgba(255, 255, 255, 0.22)',
+      'circle-color': resolvePaintColor(dotColor || 'rgba(255, 255, 255, 0.22)'),
       'circle-opacity': 0.4,
     }),
     [dotColor],

@@ -6,10 +6,11 @@ export default defineRegistryItem({
   framework: 'vue',
   categories: ['chart'],
   description:
-    'Dotted map as dependency-free SVG. Embedded world (96×48) and USA (155×74) landmasks with cartographic AK/HI insets rasterized from Natural Earth/US outlines; lat/lng pins with pulse, vertical/diagonal grids, circle/hexagon dots. No map tokens or geodata fetches.',
+    'Dotted world/USA map on Mapbox GL. Telemetry dot grid with theme-aware dot color, connection route arcs, and pulsing lat/lng pins with hover cards.',
   files: [
     { path: 'DottedMapChart.vue', target: 'components/ui/charts/dotted-map-chart/DottedMapChart.vue' },
     { path: 'index.ts', target: 'components/ui/charts/dotted-map-chart/index.ts' },
+    { path: '../useChartTheme.ts', target: 'components/ui/charts/useChartTheme.ts' },
   ],
   dependencies: ['lucide-vue-next'],
   registryDependencies: ['https://uipkge.dev/r/map.json'],

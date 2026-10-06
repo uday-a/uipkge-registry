@@ -1,0 +1,47 @@
+<script lang="ts" module>
+  import type { Snippet } from 'svelte'
+  import type { HTMLButtonAttributes } from 'svelte/elements'
+
+  export interface CalendarNextButtonProps extends HTMLButtonAttributes {
+    /** Overrides the default chevron icon. */
+    icon?: Snippet
+    ref?: HTMLButtonElement | null
+  }
+</script>
+
+<script lang="ts">
+  import { getContext } from 'svelte'
+  import { ChevronRight } from '@lucide/svelte'
+  import { cn } from '$lib/utils'
+  import { Button } from '$lib/components/ui/button'
+  import { buttonVariants } from '$lib/components/ui/button/button.variants'
+  import { CALENDAR_CONTEXT_KEY, type CalendarState } from './calendar-state.svelte'
+
+  let { class: className, icon, children, ref = $bindable(null), ...restProps }: CalendarNextButtonProps = $props()
+
+  const state = getContext<CalendarState | undefined>(CALENDAR_CONTEXT_KEY)
+</script>
+
+<Button
+  type="button"
+  variant="outline"
+  bind:ref
+  data-slot="calendar-next-button"
+  aria-label="Next month"
+  disabled={state ? !state.canGoNext : undefined}
+  class={cn(
+    buttonVariants({ variant: 'outline' }),
+    'size-9 bg-transparent p-0 opacity-70 hover:opacity-100 focus-visible:opacity-100',
+    className,
+  )}
+  onclick={() => state?.goNext()}
+  {...restProps}
+>
+  {#if icon}
+    {@render icon()}
+  {:else if children}
+    {@render children()}
+  {:else}
+    <ChevronRight class="size-4" aria-hidden="true" />
+  {/if}
+</Button>

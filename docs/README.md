@@ -7,14 +7,14 @@
 
 ## Quick Navigation
 
-| Document                                                         | Purpose                                                                                                             |
-| ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| [**ARCHITECTURE.md**](./ARCHITECTURE.md)                         | Registry distribution philosophy (shadcn model), monorepo topology, dual-framework parity, and workspace boundaries |
-| [**COMPONENT_STANDARDS.md**](./COMPONENT_STANDARDS.md)           | Component authoring guide, file layout, CVA variants, Vue 3.5 / React 19 rules, accessibility, and craft standards  |
-| [**REGISTRY_SCHEMA.md**](./REGISTRY_SCHEMA.md)                   | `<name>.registry.ts` sidecar schema, manifest compilation, dependency graphs, and registry JSON generation          |
-| [**PRIMITIVE_VS_BLOCK_RULES.md**](./PRIMITIVE_VS_BLOCK_RULES.md) | Critical architectural boundary between primitives (`registry:ui`) and composed blocks (`registry:block`)           |
-| [**COMPONENTS_CATALOG.md**](./COMPONENTS_CATALOG.md)             | Full classified inventory of all 210 shipped items: UI primitives, charts, and bootstrap utilities                  |
-| [**WORKFLOWS_AND_COMMANDS.md**](./WORKFLOWS_AND_COMMANDS.md)     | Development playgrounds, verification scripts, testing patterns, and upstream/downstream synchronization            |
+| Document                                                         | Purpose                                                                                                            |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| [**ARCHITECTURE.md**](./ARCHITECTURE.md)                         | Registry distribution philosophy (shadcn model), monorepo topology, framework coverage, and workspace boundaries   |
+| [**COMPONENT_STANDARDS.md**](./COMPONENT_STANDARDS.md)           | Component authoring guide, file layout, CVA variants, Vue 3.5 / React 19 rules, accessibility, and craft standards |
+| [**REGISTRY_SCHEMA.md**](./REGISTRY_SCHEMA.md)                   | `<name>.registry.ts` sidecar schema, manifest compilation, dependency graphs, and registry JSON generation         |
+| [**PRIMITIVE_VS_BLOCK_RULES.md**](./PRIMITIVE_VS_BLOCK_RULES.md) | Critical architectural boundary between primitives (`registry:ui`) and composed blocks (`registry:block`)          |
+| [**COMPONENTS_CATALOG.md**](./COMPONENTS_CATALOG.md)             | Classified inventory of shipped items (Vue/React full catalog plus Angular, Svelte and Lit sets)                   |
+| [**WORKFLOWS_AND_COMMANDS.md**](./WORKFLOWS_AND_COMMANDS.md)     | Development playgrounds, verification scripts, testing patterns, and upstream/downstream synchronization           |
 
 ---
 

@@ -4,12 +4,12 @@
 
 In UIPKGE, components are **unbundled source code**, not packaged npm dependencies:
 
-- **Zero Semver Lock-in**: Installing a component copies the source code (`.vue` or `.tsx`, `.variants.ts`, etc.) directly into the user's project (`components/ui/...`).
+- **Zero Semver Lock-in**: Installing a component copies the source code (`.vue`, `.tsx`, `.ts`, `.svelte`, etc.) directly into the user's project (`components/ui/...`).
 - **User Ownership**: Consumers are encouraged to modify the installed source code to fit their domain needs.
-- **Transitive CLI Resolution**: When a user installs a component or block, the shadcn CLI queries the JSON manifest from `https://uipkge.dev/r/{framework}/{name}.json`, downloading dependencies transitively.
+- **Transitive CLI Resolution**: When a user installs a component or block, the CLI queries the JSON manifest from `https://uipkge.dev/r/{framework}/{name}.json`, downloading dependencies transitively.
 
 ```text
-Registry JSON (HTTP)  ──>  CLI (shadcn-vue / shadcn)  ──>  Copied into User Workspace
+Registry JSON (HTTP)  ──>  CLI (shadcn-vue / shadcn / uipkge-ng / shadcn-svelte)  ──>  Copied into User Workspace
 ```
 
 ---
@@ -35,6 +35,9 @@ uipkge-registry/
 │   │   ├── playground/           # Local Vite preview workbench (localhost:5174)
 │   │   ├── scripts/              # build.ts, verify.ts, check-use-client.ts
 │   │   └── public/r/react/*.json # Built registry artifacts
+│   ├── angular/                  # Angular 22 standalone components, blocks & demos
+│   ├── svelte/                   # Svelte 5 components & demos
+│   ├── lit/                      # Lit 3 web components (framework-agnostic)
 │   └── shared/                   # Cross-framework single source of truth
 │       ├── styles/               # Canonical tailwind.css and color-themes.css
 │       └── variants/             # CVA variant class string definitions
@@ -56,7 +59,7 @@ The UIPKGE ecosystem consists of two repositories with specific roles:
    - Contains `apps/astro-site`, the full Astro SSG documentation site deployed to `https://uipkge.dev`.
    - Contains 467 domain vertical blocks and 503 demos used for reference vertical applications (HRMS, HMS, Logistics).
 2. **`uipkge-registry` (This Repository - Open-Source Component Registry)**:
-   - Contains the 210 core UI primitives, charts, tokens, and bootstrap utilities.
+   - Contains the core UI primitives, charts, tokens, and bootstrap utilities (210 items in Vue/React parity, plus Angular, Svelte and Lit sets).
    - Houses the public community contribution surface.
    - Contains isolated Vite dev playgrounds (`dev:vue`, `dev:react`) so contributors can build without running a heavy docs site.
 
@@ -87,6 +90,9 @@ Always use these exact pinned versions in documentation, code, and comments:
 - **Nuxt**: `4`
 - **React**: `19`
 - **Next.js**: `16`
+- **Angular**: `22`
+- **Svelte**: `5` + **SvelteKit**
+- **Lit**: `3`
 - **Tailwind CSS**: `v4` with `@theme inline` and OKLCH color spaces
 - **Bun**: `>= 1.4.0`
 - **Headless Foundations**:

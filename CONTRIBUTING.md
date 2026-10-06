@@ -2,7 +2,7 @@
 
 Welcome! We are excited that you want to contribute to UIPKGE.
 
-UIPKGE is an open-source, dual-framework UI registry providing components and blocks for **Vue 3.5+ (Nuxt 4)** and **React 19+ (Next.js 16)**.
+UIPKGE is an open-source UI registry providing components and blocks for **Vue 3.5+ (Nuxt 4)**, **React 19+ (Next.js 16)**, **Angular 22**, **Svelte 5 (SvelteKit)** and **Lit 3** web components.
 
 ---
 
@@ -14,7 +14,7 @@ UIPKGE is an open-source, dual-framework UI registry providing components and bl
 > You do **not** need to know Vue to contribute a React component.  
 > You do **not** need to know Astro (our documentation engine is completely separated).
 
-If you submit a PR for Vue, our maintainers and community will handle porting the component to React (and vice versa). Single-framework PRs are enthusiastically welcomed!
+If you submit a PR for one framework, our maintainers and community will handle porting the component to the others. Single-framework PRs are enthusiastically welcomed!
 
 ---
 
@@ -137,7 +137,7 @@ bun run verify              # Verify registry sidecar manifests
 
 ## 🎨 Design Tokens & Shared Styles
 
-Design tokens (Tailwind CSS v4 OKLCH tokens) live in `packages/shared/styles/tailwind.css`. Both Vue and React consume the exact same token set.
+Design tokens (Tailwind CSS v4 OKLCH tokens) live in `packages/shared/styles/tailwind.css`. All framework packages consume the exact same token set.
 
 - Use standard semantic tokens: `bg-card`, `bg-muted`, `border-border`, `text-foreground`, `text-muted-foreground`, `text-primary`.
 - Avoid arbitrary sub-12px text sizes (`text-[10px]`); stick to `text-xs` (12px) and `text-sm` (14px).
@@ -157,7 +157,7 @@ Blocks compose existing UI primitives (`Card`, `Button`, `Badge`, `Input`, `Prog
    - **Never create hidden template wrappers** (e.g. no `StatCard` wrapper that takes an `items` array). Use raw `Card` composition.
 2. **Proper Naming & Collision Prevention**:
    - Use descriptive, lower kebab-case names: `cloud-backup-schedule`, `api-keys`, `workspace-quota`.
-   - Check existing directories under `packages/vue/blocks/` and `packages/react/blocks/` before naming a new block.
+   - Check existing directories under `packages/<framework>/blocks/` before naming a new block.
    - Do not reuse or duplicate existing primitive or block names.
 3. **Accurate Manifests & Dependencies**:
    - Every UI primitive imported in the block (`@/components/ui/<primitive>`) **must** be listed in `registryDependencies` using `https://uipkge.dev/r/<primitive>.json`.
@@ -169,7 +169,7 @@ Blocks compose existing UI primitives (`Card`, `Button`, `Badge`, `Input`, `Prog
 
 ## 🔧 Fixing or Improving a Primitive
 
-Primitives (`packages/{vue,react}/components/`, `bootstrap/`, `packages/shared/`) are developed in the maintainers' upstream monorepo and exported here; `.uipkge-sync.json` records the last exported upstream commit. Fixes are welcome all the same:
+Primitives (`packages/*/components/`, `bootstrap/`, `packages/shared/`) are developed in the maintainers' upstream monorepo and exported here; `.uipkge-sync.json` records the last exported upstream commit. Fixes are welcome all the same:
 
 - Send them as a **dedicated PR** (`fix(vue): …`, `fix(react): …`) that touches no blocks, so the primitive test suites run on their own and `bun run check:scope` stays green.
 - After merge, the maintainers port the change upstream. The export pipeline refuses to overwrite anything merged here that upstream does not have yet, so a merged fix cannot be lost.
@@ -182,10 +182,10 @@ Primitives (`packages/{vue,react}/components/`, `bootstrap/`, `packages/shared/`
 
 - [ ] `bun run check:scope`: Validates that block PRs do NOT touch existing primitives or shared tokens.
 - [ ] `bun run typecheck`: TypeScript passes without diagnostics.
-- [ ] `bun run test`: All unit tests pass in both frameworks.
+- [ ] `bun run test`: All unit tests pass.
 - [ ] `bun run verify`: Sidecar schemas conform to registry spec.
 - [ ] `bun run build`: Registry build succeeds and JSON outputs are clean.
-- [ ] **Strict Scope Isolation**: Block contributions must ONLY add files under `packages/{vue,react}/blocks/<name>/` and `packages/{vue,react}/demos/<name>.*`. Never modify existing primitives (`components/ui/*`) or shared styles (`packages/shared/*`).
+- [ ] **Strict Scope Isolation**: Block contributions must ONLY add files under `packages/<framework>/blocks/<name>/` and `packages/<framework>/demos/<name>.*`. Never modify existing primitives (`components/ui/*`) or shared styles (`packages/shared/*`).
 - [ ] No arbitrary pixel values (`text-[10px]` or hardcoded `#hex` colors). Use semantic OKLCH tokens (`border-border`, `bg-card`, `text-foreground`).
 
 ---

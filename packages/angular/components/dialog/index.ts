@@ -1,0 +1,16 @@
+export {
+  UiDialogComponent,
+  UiDialogOverlayComponent,
+  UiDialogContentComponent,
+  UiDialogScrollContentComponent,
+  UiDialogHeaderComponent,
+  UiDialogFooterComponent,
+  UiDialogTitleComponent,
+  UiDialogDescriptionComponent,
+  UiDialogTriggerComponent,
+  UiDialogCloseComponent,
+  DialogContentBase,
+  DIALOG_OVERLAY_CLASS,
+  DIALOG_CONTENT_CLASS,
+  type DialogDismissEvent,
+} from './dialog.component'

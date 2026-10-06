@@ -1,5 +1,11 @@
 import Story from '../../components/story/Story'
 import { Button, ButtonGroup } from '@react-registry/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@react-registry/dropdown-menu'
 import { ChevronDown, ChevronRight, Copy, Download, Loader2, Mail, Plus, Share2, Trash2 } from 'lucide-react'
 
 export default function ButtonDemo() {
@@ -92,9 +98,18 @@ export default function ButtonDemo() {
             <Button variant="default" size="sm">
               Save changes
             </Button>
-            <Button variant="default" size="icon-sm" aria-label="More options">
-              <ChevronDown className="size-3.5" />
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="default" size="icon-sm" aria-label="More options">
+                  <ChevronDown className="size-3.5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem>Save and publish</DropdownMenuItem>
+                <DropdownMenuItem>Save as draft</DropdownMenuItem>
+                <DropdownMenuItem>Export as JSON</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </ButtonGroup>
 
           <ButtonGroup>

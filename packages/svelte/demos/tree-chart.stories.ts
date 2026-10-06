@@ -1,0 +1,27 @@
+import type { SvelteStory } from '../../lib/svelte-stories'
+
+export const stories: SvelteStory[] = [
+  {
+    title: 'Left-to-right (file tree)',
+    description: 'Default LR orientation. Good for nested file systems, expression trees, decision trees.',
+  },
+  {
+    title: 'Top-down org chart',
+    description: "orient='TB' for the classic management chart layout — root at the top, descendants fanning down.",
+  },
+  {
+    title: 'Radial',
+    description:
+      'Hierarchy radiating from a central root. Works well for medium-depth trees where horizontal real estate is tight (modals, side panels).',
+  },
+  {
+    title: 'With roam (decision tree)',
+    description:
+      'Set roam to enable drag-to-pan and wheel-zoom. Worth it once the tree spills past the viewport. Pre-collapsed branches use the collapsed flag.',
+  },
+  {
+    title: 'Right-to-left compact',
+    description:
+      "orient='RL' mirrors the default — handy for sidebar layouts where the root anchors to the right edge.",
+  },
+]

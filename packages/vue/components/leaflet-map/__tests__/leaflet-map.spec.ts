@@ -66,6 +66,7 @@ vi.mock('leaflet', () => ({
   Icon: { Default: { mergeOptions: vi.fn() } },
 }))
 
+import * as L from 'leaflet'
 import { LeafletMap } from '../index'
 
 describe('LeafletMap', () => {
@@ -120,5 +121,22 @@ describe('LeafletMap', () => {
     await flushPromises()
     expect(on.find('[aria-label="Toggle fullscreen"]').exists()).toBe(true)
     on.unmount()
+  })
+
+  // Parents often pass `:center="[lng, lat]"` literals, which are new arrays on
+  // every re-render. Re-centring on identity would yank the map back from
+  // wherever the user panned; only a real coordinate change may move it.
+  it('re-centres only when the center coordinates change, not the array identity', async () => {
+    const w = mount(LeafletMap, { props: { center: [10, 20], zoom: 3 }, attachTo: document.body })
+    await flushPromises()
+    const m = vi.mocked(L.map).mock.results.at(-1)!.value
+    m.setView.mockClear()
+
+    await w.setProps({ center: [10, 20] })
+    expect(m.setView).not.toHaveBeenCalled()
+
+    await w.setProps({ center: [11, 20] })
+    expect(m.setView).toHaveBeenCalledWith([20, 11], 3)
+    w.unmount()
   })
 })

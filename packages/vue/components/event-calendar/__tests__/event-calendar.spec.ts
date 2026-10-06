@@ -131,6 +131,77 @@ describe('EventCalendar', () => {
     }
   })
 
+  // Month cells group events by their START date only (no multi-day spanning) and
+  // collapse overflow into "+N more" where N = total - (maxEventsPerDay - 1).
+  // Locks the per-cell grouping so the precomputed day map stays equivalent.
+  describe('month view day grouping', () => {
+    const cellFor = (wrapper: ReturnType<typeof mount>, day: number, inMonth = true) =>
+      wrapper
+        .findAll('.min-h-\\[96px\\]')
+        .filter((c) => c.classes().includes('bg-card') === inMonth)
+        .find((c) => c.find('span').text() === String(day))!
+
+    const busyDay: CalendarEvent[] = [
+      { id: 'a', title: 'Alpha', start: '2026-05-12 08:00' },
+      { id: 'b', title: 'Bravo', start: '2026-05-12T09:15' },
+      { id: 'c', title: 'Charlie', start: new Date(2026, 4, 12, 13, 5) },
+      { id: 'd', title: 'Delta', start: '2026-05-12', allDay: true },
+      { id: 'm', title: 'Multi-day Offsite', start: '2026-05-20 10:00', end: '2026-05-22 16:00' },
+      { id: 'j', title: 'June Kickoff', start: '2026-06-01 09:00' },
+    ]
+
+    it('places events on their start day, in input order, and not on other days', () => {
+      const wrapper = mount(EventCalendar, { props: { modelValue: '2026-05-18', events: busyDay, maxEventsPerDay: 5 } })
+      const cards = cellFor(wrapper, 12).findAll('[data-slot="event-card"]')
+      expect(cards.map((c) => c.text())).toEqual(['8:00 AMAlpha', '9:15 AMBravo', '1:05 PMCharlie', 'Delta'])
+      expect(cellFor(wrapper, 13).findAll('[data-slot="event-card"]')).toHaveLength(0)
+    })
+
+    it('shows a multi-day event on its start day only', () => {
+      const wrapper = mount(EventCalendar, { props: { modelValue: '2026-05-18', events: busyDay } })
+      expect(cellFor(wrapper, 20).text()).toContain('Multi-day Offsite')
+      expect(cellFor(wrapper, 21).text()).not.toContain('Multi-day Offsite')
+      expect(cellFor(wrapper, 22).text()).not.toContain('Multi-day Offsite')
+    })
+
+    it('shows next-month events in the trailing out-of-month cells', () => {
+      const wrapper = mount(EventCalendar, { props: { modelValue: '2026-05-18', events: busyDay } })
+      expect(cellFor(wrapper, 1, false).text()).toContain('June Kickoff')
+    })
+
+    it('collapses overflow into "+N more" and emits the full day list', async () => {
+      const wrapper = mount(EventCalendar, { props: { modelValue: '2026-05-18', events: busyDay, maxEventsPerDay: 3 } })
+      const cell = cellFor(wrapper, 12)
+      expect(cell.findAll('[data-slot="event-card"]').map((c) => c.text())).toEqual(['8:00 AMAlpha', '9:15 AMBravo'])
+      const more = cell.find('button')
+      expect(more.text()).toBe('+2 more')
+      await more.trigger('click')
+      const payload = wrapper.emitted('click:more')![0][0] as { date: string; events: CalendarEvent[] }
+      expect(payload.date).toBe('2026-05-12')
+      expect(payload.events.map((e) => e.id)).toEqual(['a', 'b', 'c', 'd'])
+    })
+
+    it('renders all events without "+more" when count equals maxEventsPerDay', () => {
+      const wrapper = mount(EventCalendar, { props: { modelValue: '2026-05-18', events: busyDay, maxEventsPerDay: 4 } })
+      const cell = cellFor(wrapper, 12)
+      expect(cell.findAll('[data-slot="event-card"]')).toHaveLength(4)
+      expect(cell.text()).not.toContain('more')
+    })
+
+    it('updates time labels when timeFormat changes', async () => {
+      const wrapper = mount(EventCalendar, { props: { modelValue: '2026-05-18', events: busyDay, maxEventsPerDay: 5 } })
+      await wrapper.setProps({ timeFormat: '24h' })
+      expect(cellFor(wrapper, 12).findAll('[data-slot="event-card"]')[2].text()).toBe('13:05Charlie')
+    })
+
+    it('re-groups when the events prop changes', async () => {
+      const wrapper = mount(EventCalendar, { props: { modelValue: '2026-05-18', events: busyDay } })
+      await wrapper.setProps({ events: [{ id: 'n', title: 'Moved', start: '2026-05-13 10:00' }] })
+      expect(cellFor(wrapper, 12).findAll('[data-slot="event-card"]')).toHaveLength(0)
+      expect(cellFor(wrapper, 13).text()).toContain('Moved')
+    })
+  })
+
   it('calculates overlapping timed event positions into split columns', () => {
     const date = new Date(2026, 4, 18)
     const positions = calculateTimedEventPositions(sampleEvents, date, 0, 24, 60)

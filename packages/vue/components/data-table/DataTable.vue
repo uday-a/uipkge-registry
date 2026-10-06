@@ -7,6 +7,7 @@ import type {
   VisibilityState,
   ExpandedState,
   GroupingState,
+  Header,
 } from '@tanstack/vue-table'
 import {
   FlexRender,
@@ -598,6 +599,15 @@ function onColDrop(targetId: string) {
   columnOrder.value = order
 }
 
+// Screen readers announce the active sort from aria-sort on the header cell;
+// only sortable columns carry it.
+function ariaSort(header: Header<TData, unknown>): 'ascending' | 'descending' | 'none' | undefined {
+  if (header.isPlaceholder || !header.column.getCanSort()) return undefined
+  const sorted = header.column.getIsSorted()
+  if (!sorted) return 'none'
+  return sorted === 'asc' ? 'ascending' : 'descending'
+}
+
 // Pinning — return style for sticky pinned cells (header or body)
 function pinStyle(col: any): Record<string, string> | undefined {
   const side = col.getIsPinned()
@@ -1020,6 +1030,8 @@ defineExpose({ table, exportCsv, exportJson, copyTsv, copyMarkdown })
               <TableHead
                 v-for="header in headerGroup.headers"
                 :key="header.id"
+                scope="col"
+                :aria-sort="ariaSort(header)"
                 class="relative transition-colors duration-150"
                 :class="[
                   enableReorder &&

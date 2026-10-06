@@ -26,4 +26,14 @@ describe('BarChart', () => {
     expect(wrapper.classes()).toContain('custom-chart-test')
     wrapper.unmount()
   })
+
+  it('blanks the series name for single-series (tooltip shows no raw field key) but keeps field names for multi-series', () => {
+    const single = mount(BarChart, { props: sampleProps })
+    expect((single.vm as any).mergedOption.series[0].name).toBe('')
+    single.unmount()
+
+    const multi = mount(BarChart, { props: { data: [{ x: 'A', y: 10, z: 5 }], xField: 'x', yField: ['y', 'z'] } })
+    expect((multi.vm as any).mergedOption.series.map((s: any) => s.name)).toEqual(['y', 'z'])
+    multi.unmount()
+  })
 })

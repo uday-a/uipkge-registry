@@ -1,6 +1,6 @@
-# Complete Catalog of 210 Registry Items
+# Component Catalog
 
-The registry ships **210 total registry items** with 100% dual-framework parity across **Vue 3.5** and **React 19**.
+Vue and React ship the full **210-item** catalog in parity. Angular (206 items), Svelte (203 items) and Lit (201 items) ship their own sets — see each package's `registry.json` for the exact list.
 
 ---
 

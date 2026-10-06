@@ -20,11 +20,19 @@ export interface FunnelChartProps {
   ariaLabel?: string
 }
 
+// Share of the top (largest) stage: '100%', '24%', '7.2%', '1.8%'.
+function formatShare(value: number, top: number): string {
+  if (!top) return '0%'
+  const pct = (value / top) * 100
+  return `${pct >= 10 ? Math.round(pct) : Math.round(pct * 10) / 10}%`
+}
+
 export const FunnelChart = React.forwardRef<HTMLDivElement, FunnelChartProps>(
   ({ data, height = 300, showLabels = true, showLegend = false, option, className, ariaLabel }, ref) => {
     const theme = useChartTheme()
 
     const mergedOption = React.useMemo(() => {
+      const topValue = Math.max(0, ...data.map(d => d.value))
       const series = [
         {
           type: 'funnel',
@@ -36,18 +44,33 @@ export const FunnelChart = React.forwardRef<HTMLDivElement, FunnelChartProps>(
           minSize: '20%',
           maxSize: '100%',
           funnelAlign: 'center',
-          gap: 2,
+          // Absorbs the 3px outer half of the 6px stroke, keeping a ~2px visible gutter.
+          gap: 8,
+          // Inside labels use the card-surface ink (light on the saturated stage
+          // fills, tracks light/dark) -- muted text was illegible on colour.
+          // Two lines: stage name, then value · share of the top stage.
           label: {
             show: showLabels,
             position: 'inside',
-            color: '#fff',
-            fontSize: 11,
-            fontWeight: 600,
+            color: theme.bgColor,
+            formatter: (p: { name: string; value: number }) =>
+              `{t|${p.name}}\n{v|${p.value.toLocaleString()} · ${formatShare(p.value, topValue)}}`,
+            rich: {
+              t: { fontSize: 12, fontWeight: 600, lineHeight: 16 },
+              v: { fontSize: 11, fontWeight: 500, lineHeight: 15 },
+            },
           },
           labelLine: { length: 8, lineStyle: { width: 1, type: 'solid' } },
-          itemStyle: { borderWidth: 0 },
+          // ECharts funnel has no borderRadius; a same-colour round-join stroke softens corners (~3px radius).
+          itemStyle: { borderWidth: 6, borderJoin: 'round' },
           emphasis: { label: { fontSize: 13, fontWeight: 700 } },
-          data,
+          data: data.map((d: any, i) => ({
+            ...d,
+            itemStyle: {
+              ...d.itemStyle,
+              borderColor: d.itemStyle?.color ?? theme.colors[i % theme.colors.length],
+            },
+          })),
         },
       ]
 

@@ -1,0 +1,16 @@
+export {
+  UiCarouselComponent,
+  UiCarouselContentComponent,
+  UiCarouselFooterComponent,
+  UiCarouselHeaderComponent,
+  UiCarouselIndicatorsComponent,
+  UiCarouselItemComponent,
+  UiCarouselNextComponent,
+  UiCarouselPreviousComponent,
+  carouselItemVariants,
+  carouselVariants,
+  type CarouselItemOrientation,
+  type CarouselItemVariants,
+  type CarouselOrientation,
+  type CarouselVariants,
+} from './carousel.component'

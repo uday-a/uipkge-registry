@@ -10,7 +10,7 @@
 import { inject, computed, type HTMLAttributes } from 'vue'
 import { ChevronRight } from 'lucide-vue-next'
 import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
+import Button from '@/components/ui/button/Button.vue'
 
 interface Props {
   class?: HTMLAttributes['class']

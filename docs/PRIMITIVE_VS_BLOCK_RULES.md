@@ -41,7 +41,7 @@ The division between **primitives** (`registry:ui`) and **blocks** (`registry:bl
 7. **Line Budget (~500 Lines Soft Cap)**:
    A single-file block should stay under ~500 lines. Anything larger must be modularized into subcomponents in the same block folder (e.g. `KanbanColumn.tsx`, `KanbanCard.tsx`).
 8. **Minimal Seed Data in Block Source**:
-   Rich sample datasets belong in the playground demo stories (`packages/{vue,react}/demos/`). The block itself ships with only a minimal inline default seed (1–3 rows) or scalar props.
+   Rich sample datasets belong in the playground demo stories (`packages/<framework>/demos/`). The block itself ships with only a minimal inline default seed (1–3 rows) or scalar props.
 9. **Layout Containers**:
    Layout containers (`KpiGrid`, `Grid`, `Separator`) may be primitives only when they provide pure structure without content assumptions.
 
@@ -51,6 +51,6 @@ The division between **primitives** (`registry:ui`) and **blocks** (`registry:bl
 
 In `uipkge-registry`, an automated CI gate enforces that pull requests contributing blocks do **not** touch or alter existing primitives or shared design tokens:
 
-- **Block PR**: Touches only `packages/{vue,react}/blocks/<name>/` and `packages/{vue,react}/demos/<name>.*`.
-- **Primitive PR**: Modifies base primitives (`packages/{vue,react}/components/`) or tokens (`packages/shared/`).
+- **Block PR**: Touches only `packages/<framework>/blocks/<name>/` and `packages/<framework>/demos/<name>.*`.
+- **Primitive PR**: Modifies base primitives (`packages/<framework>/components/`) or tokens (`packages/shared/`).
 - **Mixed PRs are Blocked**: Combining block changes with primitive edits in a single community PR will fail `bun run check:scope` in CI. If a base component has a genuine bug, it must be submitted in a separate, dedicated PR titled `fix(ui): ...` with companion unit tests.

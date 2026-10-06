@@ -33,8 +33,11 @@
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
   --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
   --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -96,11 +99,15 @@
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+  /* Chart palette held as hex (not OKLCH) so ECharts' canvas renderer can
+   * hex-concat opacity (`color + '40'`) for gradient fills. Same hue order in
+   * both themes (blue / teal / amber / violet / rose) so a series keeps its
+   * identity across light and dark; only lightness shifts. */
+  --chart-1: #2563eb;
+  --chart-2: #0d9488;
+  --chart-3: #d97706;
+  --chart-4: #7c3aed;
+  --chart-5: #e11d48;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -111,10 +118,14 @@
   --sidebar-ring: oklch(0.708 0 0);
 
   /* App extensions (not in base shadcn) — status intents for form/control APIs.
-   * Mapped to chart-adjacent hues so they stay token-driven and theme-safe. */
-  --success: oklch(0.55 0.15 155);
-  --warning: oklch(0.75 0.15 75);
-  --info: oklch(0.55 0.14 250);
+   * Text-safe on background/card (WCAG AA); use `bg-<status>/10` for tinted
+   * fills and `bg-<status> text-<status>-foreground` for solid ones. */
+  --success: oklch(0.52 0.14 150);
+  --success-foreground: oklch(0.985 0 0);
+  --warning: oklch(0.58 0.15 65);
+  --warning-foreground: oklch(0.985 0 0);
+  --info: oklch(0.52 0.18 260);
+  --info-foreground: oklch(0.985 0 0);
 }
 
 .dark {
@@ -137,11 +148,12 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
+  /* Dark: same hue order as light, lifted for contrast on dark surfaces. */
+  --chart-1: #60a5fa;
+  --chart-2: #2dd4bf;
+  --chart-3: #fbbf24;
+  --chart-4: #a78bfa;
+  --chart-5: #fb7185;
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
@@ -151,9 +163,12 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 
-  --success: oklch(0.7 0.14 155);
-  --warning: oklch(0.8 0.14 75);
-  --info: oklch(0.7 0.12 250);
+  --success: oklch(0.72 0.15 150);
+  --success-foreground: oklch(0.145 0 0);
+  --warning: oklch(0.8 0.15 75);
+  --warning-foreground: oklch(0.145 0 0);
+  --info: oklch(0.72 0.15 260);
+  --info-foreground: oklch(0.145 0 0);
 }
 
 @layer base {

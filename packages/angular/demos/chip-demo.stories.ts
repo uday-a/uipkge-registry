@@ -1,0 +1,30 @@
+import type { AngularStory } from './stories'
+
+/** Story cards for the chip Angular demo (titles + descriptions mirror demos/react/chip.tsx). */
+export const stories: AngularStory[] = [
+  {
+    title: 'Variants',
+    description:
+      'Seven visual styles. default / filled / outlined / elevated for visual weight; success / warning / destructive for tone.',
+  },
+  {
+    title: 'Sizes',
+    description: 'Three sizes — sm, default, lg — pair naturally with surrounding text scale.',
+  },
+  {
+    title: 'With leading icon',
+    description: 'Slot any icon before the label — common for hashtag and category chips.',
+  },
+  {
+    title: 'Closable',
+    description: 'closable renders a built-in dismiss button. Pass onClose to remove the chip from your list.',
+  },
+  {
+    title: 'ChipGroup with reactive removal',
+    description: 'Combine ChipGroup with map and closable chips — handle onClose to update the list.',
+  },
+  {
+    title: 'Status filters',
+    description: 'Tone variants are useful for filter-bar status chips that double as legend items.',
+  },
+]

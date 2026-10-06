@@ -1,0 +1,17 @@
+export {
+  UiAvatarComponent,
+  UiAvatarFallbackComponent,
+  UiAvatarImageComponent,
+  UiAvatarGroupComponent,
+  UiAvatarOverflowOutletDirective,
+  avatarVariants,
+  avatarFallbackVariants,
+  type AvatarVariants,
+  type AvatarFallbackVariants,
+  type AvatarSize,
+  type AvatarRounded,
+  type AvatarColor,
+  type AvatarVariant,
+  type AvatarImageLoadingStatus,
+  type AvatarOverflowContext,
+} from './avatar.component'

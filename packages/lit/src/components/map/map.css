@@ -1,0 +1,60 @@
+/**
+ * Map chrome — React's map.css (packages/registry-react/components/map/map.css)
+ * adopted into <uip-map>'s shadow root, where Mapbox renders its controls and
+ * popups. Vendor-override CSS: Mapbox's own DOM can't take utility classes.
+ * Only change from React: `.dark …` can't see <html class="dark"> from inside
+ * a shadow root, so it is `:host([data-theme='dark']) …` (set by ThemeController).
+ */
+.mapboxgl-ctrl-group {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm, 0 1px 2px rgb(0 0 0 / 0.08));
+}
+.mapboxgl-ctrl-group button {
+  background: transparent;
+}
+.mapboxgl-ctrl-group button + button {
+  border-top-color: var(--border);
+}
+.mapboxgl-ctrl-group button .mapboxgl-ctrl-icon {
+  filter: invert(var(--map-ctrl-invert, 0)) opacity(0.7);
+}
+:host([data-theme='dark']) .mapboxgl-ctrl-group {
+  background: var(--card, #18181b);
+  border-color: var(--border, #27272a);
+}
+:host([data-theme='dark']) .mapboxgl-ctrl-group button {
+  background: transparent;
+}
+:host([data-theme='dark']) .mapboxgl-ctrl-group button:hover {
+  background: var(--muted, #27272a);
+}
+:host([data-theme='dark']) .mapboxgl-ctrl-group button + button {
+  border-top-color: var(--border, #27272a);
+}
+:host([data-theme='dark']) .mapboxgl-ctrl-group button .mapboxgl-ctrl-icon {
+  filter: invert(1) brightness(1.2);
+}
+.mapboxgl-ctrl-attrib {
+  background: color-mix(in oklab, var(--card) 80%, transparent);
+  color: var(--muted-foreground);
+}
+.mapboxgl-ctrl-attrib a {
+  color: var(--muted-foreground);
+}
+.mapboxgl-popup-content {
+  padding: 8px 12px;
+  background: var(--popover);
+  color: var(--popover-foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md, 0 4px 12px rgb(0 0 0 / 0.12));
+}
+.mapboxgl-popup-close-button {
+  color: var(--muted-foreground);
+}
+.mapboxgl-popup-tip {
+  border-top-color: var(--popover);
+  border-bottom-color: var(--popover);
+}

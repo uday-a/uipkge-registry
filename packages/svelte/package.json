@@ -1,0 +1,44 @@
+{
+  "name": "@uipkge/registry-svelte",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Svelte 5 registry source. Builds to /r/svelte/*.json.",
+  "type": "module",
+  "scripts": {
+    "build": "bun scripts/build.ts",
+    "typecheck": "svelte-check --tsconfig ./tsconfig.json"
+  },
+  "dependencies": {
+    "@internationalized/date": "^3.12.2",
+    "@lucide/svelte": "^1.48.0",
+    "@tanstack/svelte-form": "^1.33.5",
+    "@tanstack/table-core": "^8.21.3",
+    "@tiptap/core": "^3.31.3",
+    "@tiptap/extension-link": "^3.31.3",
+    "@tiptap/extension-placeholder": "^3.31.3",
+    "@tiptap/extension-task-item": "^3.31.3",
+    "@tiptap/extension-task-list": "^3.31.3",
+    "@tiptap/extension-text-align": "^3.31.3",
+    "@tiptap/extension-underline": "^3.31.3",
+    "@tiptap/starter-kit": "^3.31.3",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "echarts": "^6.1.0",
+    "embla-carousel": "^8.6.0",
+    "leaflet": "^1.9.4",
+    "mapbox-gl": "^3.25.0",
+    "qrcode": "^1.5.4",
+    "shiki": "^4.0.2",
+    "svelte": "^5.57.1",
+    "svelte-sonner": "^1.2.1",
+    "tailwind-merge": "^2.6.1"
+  },
+  "devDependencies": {
+    "@types/leaflet": "^1.9.22",
+    "@types/qrcode": "^1.5.6",
+    "fast-glob": "^3.3.0",
+    "svelte-check": "^4.7.6",
+    "typescript": "^5.9.3",
+    "zod": "^3.0.0"
+  }
+}

@@ -195,7 +195,10 @@ const LeafletMapComponent = React.forwardRef<LeafletMapRef, LeafletMapProps>(
     const leafletRef = React.useRef<LeafletModule | null>(null)
     const baseLayerRef = React.useRef<L.TileLayer | null>(null)
     const overlayLayerRef = React.useRef<L.TileLayer | null>(null)
-    const [mapReady, setMapReady] = React.useState(false)
+    // The created map lives in state (not just mapRef) so the context
+    // provider below can render it without reading a ref during render.
+    const [mapInstance, setMapInstance] = React.useState<L.Map | null>(null)
+    const mapReady = mapInstance !== null
     const [attributions, setAttributions] = React.useState<string[]>([])
     const [showAttribution, setShowAttribution] = React.useState(false)
 
@@ -305,7 +308,7 @@ const LeafletMapComponent = React.forwardRef<LeafletMapRef, LeafletMapProps>(
         syncZoomBounds()
         m.on('layeradd layerremove', collectAttributions)
         collectAttributions()
-        setMapReady(true)
+        setMapInstance(m)
         onCreated?.(m)
       })
       return () => {
@@ -320,10 +323,14 @@ const LeafletMapComponent = React.forwardRef<LeafletMapRef, LeafletMapProps>(
       if (mapRef.current) applyTiles(resolvedTiles)
     }, [resolvedTiles, applyTiles])
 
+    // Depend on the coordinates, not the array: a parent re-render that passes
+    // a fresh `[lng, lat]` literal must not snap the user's pan/zoom back.
+    const centerLng = center?.[0]
+    const centerLat = center?.[1]
     React.useEffect(() => {
       const m = mapRef.current
-      if (m && center) m.setView(toLatLng(center), zoom)
-    }, [center, zoom])
+      if (m && centerLng !== undefined && centerLat !== undefined) m.setView(toLatLng([centerLng, centerLat]), zoom)
+    }, [centerLng, centerLat, zoom])
 
     React.useEffect(() => {
       if (!attribution) setShowAttribution(false)
@@ -502,7 +509,7 @@ const LeafletMapComponent = React.forwardRef<LeafletMapRef, LeafletMapProps>(
             </button>
           </div>
         )}
-        {mapReady && <LeafletMapContext.Provider value={mapRef.current}>{children}</LeafletMapContext.Provider>}
+        {mapReady && <LeafletMapContext.Provider value={mapInstance}>{children}</LeafletMapContext.Provider>}
       </div>
     )
   },
@@ -515,8 +522,7 @@ LeafletMapComponent.displayName = 'LeafletMap'
 function useLeafletLayer<T extends L.Layer>(build: (L: LeafletModule) => T): T | null {
   const map = useLeafletMap()
   const [layer, setLayer] = React.useState<T | null>(null)
-  const buildRef = React.useRef(build)
-  buildRef.current = build
+  const buildRef = useLatest(build)
   React.useEffect(() => {
     if (!map) return
     let cancelled = false
@@ -532,13 +538,17 @@ function useLeafletLayer<T extends L.Layer>(build: (L: LeafletModule) => T): T |
       instance?.remove()
       setLayer(null)
     }
-  }, [map])
+  }, [map, buildRef])
   return layer
 }
 
 function useLatest<T>(value: T) {
   const r = React.useRef(value)
-  r.current = value
+  // Sync after commit (not during render); readers are effects/event handlers,
+  // and layout effects run before passive effects.
+  React.useLayoutEffect(() => {
+    r.current = value
+  })
   return r
 }
 

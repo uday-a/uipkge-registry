@@ -1,0 +1,21 @@
+export {
+  UiDropdownMenuComponent,
+  UiDropdownMenuTriggerComponent,
+  UiDropdownMenuContentComponent,
+  UiDropdownMenuItemComponent,
+  UiDropdownMenuCheckboxItemComponent,
+  UiDropdownMenuRadioGroupComponent,
+  UiDropdownMenuRadioItemComponent,
+  UiDropdownMenuLabelComponent,
+  UiDropdownMenuSeparatorComponent,
+  UiDropdownMenuShortcutComponent,
+  UiDropdownMenuGroupComponent,
+  UiDropdownMenuSubComponent,
+  UiDropdownMenuSubTriggerComponent,
+  UiDropdownMenuSubContentComponent,
+  dropdownMenuContentVariants,
+  type DropdownMenuSide,
+  type DropdownMenuAlign,
+  type DropdownMenuItemVariant,
+} from './dropdown-menu.component'
+export { dropdownMenuContentVariants as dropdownMenuContentVariantsFromFile } from './dropdown-menu-content.variants'

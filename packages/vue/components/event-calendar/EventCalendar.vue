@@ -167,15 +167,34 @@ const formattedTitle = computed(() => {
 // Month View Data
 const monthDays = computed(() => getMonthDays(activeDate.value, props.weekStartsOn))
 
-function getEventsForDay(dateKey: string): CalendarEvent[] {
-  return props.events.filter((e) => {
+// Events grouped by start-date key in one pass (input order preserved), so each
+// month cell does a single lookup instead of re-filtering the full list.
+const eventsByDay = computed(() => {
+  const map = new Map<string, CalendarEvent[]>()
+  for (const e of props.events) {
     const startStr =
       typeof e.start === 'string' && /^\d{4}-\d{2}-\d{2}/.test(e.start)
         ? e.start.slice(0, 10)
         : formatDateKey(parseDate(e.start))
-    return startStr === dateKey
-  })
-}
+    const list = map.get(startStr)
+    if (list) list.push(e)
+    else map.set(startStr, [e])
+  }
+  return map
+})
+
+const NO_EVENTS: CalendarEvent[] = []
+
+const monthCells = computed(() =>
+  monthDays.value.map((cell) => ({ ...cell, events: eventsByDay.value.get(cell.dateKey) ?? NO_EVENTS })),
+)
+
+// Start-time label per event for the month grid (same formula as before, computed once per events/timeFormat change)
+const monthTimeLabels = computed(() => {
+  const map = new Map<CalendarEvent, string>()
+  for (const e of props.events) map.set(e, formatTime(getEventMinutes(e.start, 540), props.timeFormat))
+  return map
+})
 
 // Interval array for time grid
 const intervals = computed(() => {
@@ -308,7 +327,7 @@ function handleMoreClick(dateKey: string, events: CalendarEvent[], evt: MouseEve
               type="button"
               :class="
                 cn(
-                  'rounded-md px-2.5 py-1 text-xs font-medium transition-all',
+                  'rounded-md px-2.5 py-1 text-xs font-medium transition-[color,background-color,box-shadow]',
                   view === 'month'
                     ? 'bg-background text-foreground shadow-xs'
                     : 'text-muted-foreground hover:text-foreground',
@@ -322,7 +341,7 @@ function handleMoreClick(dateKey: string, events: CalendarEvent[], evt: MouseEve
               type="button"
               :class="
                 cn(
-                  'rounded-md px-2.5 py-1 text-xs font-medium transition-all',
+                  'rounded-md px-2.5 py-1 text-xs font-medium transition-[color,background-color,box-shadow]',
                   view === 'week'
                     ? 'bg-background text-foreground shadow-xs'
                     : 'text-muted-foreground hover:text-foreground',
@@ -336,7 +355,7 @@ function handleMoreClick(dateKey: string, events: CalendarEvent[], evt: MouseEve
               type="button"
               :class="
                 cn(
-                  'rounded-md px-2.5 py-1 text-xs font-medium transition-all',
+                  'rounded-md px-2.5 py-1 text-xs font-medium transition-[color,background-color,box-shadow]',
                   view === 'work-week'
                     ? 'bg-background text-foreground shadow-xs'
                     : 'text-muted-foreground hover:text-foreground',
@@ -350,7 +369,7 @@ function handleMoreClick(dateKey: string, events: CalendarEvent[], evt: MouseEve
               type="button"
               :class="
                 cn(
-                  'rounded-md px-2.5 py-1 text-xs font-medium transition-all',
+                  'rounded-md px-2.5 py-1 text-xs font-medium transition-[color,background-color,box-shadow]',
                   view === 'day'
                     ? 'bg-background text-foreground shadow-xs'
                     : 'text-muted-foreground hover:text-foreground',
@@ -365,7 +384,7 @@ function handleMoreClick(dateKey: string, events: CalendarEvent[], evt: MouseEve
               type="button"
               :class="
                 cn(
-                  'rounded-md px-2.5 py-1 text-xs font-medium transition-all',
+                  'rounded-md px-2.5 py-1 text-xs font-medium transition-[color,background-color,box-shadow]',
                   view === 'category'
                     ? 'bg-background text-foreground shadow-xs'
                     : 'text-muted-foreground hover:text-foreground',
@@ -398,7 +417,7 @@ function handleMoreClick(dateKey: string, events: CalendarEvent[], evt: MouseEve
       <!-- 6-week month grid -->
       <div class="divide-border/40 grid min-h-[580px] flex-1 grid-cols-7 grid-rows-6 divide-x divide-y">
         <div
-          v-for="cell in monthDays"
+          v-for="cell in monthCells"
           :key="cell.dateKey"
           :class="
             cn(
@@ -428,9 +447,9 @@ function handleMoreClick(dateKey: string, events: CalendarEvent[], evt: MouseEve
 
           <!-- Events in Day Cell -->
           <div class="flex flex-1 flex-col gap-1 overflow-hidden">
-            <template v-for="(evt, idx) in getEventsForDay(cell.dateKey)" :key="evt.id || idx">
+            <template v-for="(evt, idx) in cell.events" :key="evt.id || idx">
               <!-- If within maxEventsPerDay or second-to-last before +more -->
-              <template v-if="getEventsForDay(cell.dateKey).length <= maxEventsPerDay || idx < maxEventsPerDay - 1">
+              <template v-if="cell.events.length <= maxEventsPerDay || idx < maxEventsPerDay - 1">
                 <slot name="event" :event="evt" :view="'month'" :is-all-day="Boolean(evt.allDay)">
                   <div
                     data-slot="event-card"
@@ -439,7 +458,7 @@ function handleMoreClick(dateKey: string, events: CalendarEvent[], evt: MouseEve
                   >
                     <div class="flex items-center gap-1 truncate font-medium">
                       <span v-if="!evt.allDay" class="shrink-0 font-mono text-[10px] opacity-75">
-                        {{ formatTime(getEventMinutes(evt.start, 540), timeFormat) }}
+                        {{ monthTimeLabels.get(evt) }}
                       </span>
                       <span class="truncate">{{ evt.title }}</span>
                     </div>
@@ -449,15 +468,15 @@ function handleMoreClick(dateKey: string, events: CalendarEvent[], evt: MouseEve
             </template>
 
             <!-- +N more button with popover -->
-            <div v-if="getEventsForDay(cell.dateKey).length > maxEventsPerDay" class="mt-auto pt-0.5">
+            <div v-if="cell.events.length > maxEventsPerDay" class="mt-auto pt-0.5">
               <Popover>
                 <PopoverTrigger as-child>
                   <button
                     type="button"
                     class="text-primary hover:text-primary/80 hover:bg-primary/10 flex items-center gap-0.5 rounded-sm px-1 py-0.5 text-[11px] font-semibold transition-colors hover:underline"
-                    @click="handleMoreClick(cell.dateKey, getEventsForDay(cell.dateKey), $event)"
+                    @click="handleMoreClick(cell.dateKey, cell.events, $event)"
                   >
-                    +{{ getEventsForDay(cell.dateKey).length - (maxEventsPerDay - 1) }} more
+                    +{{ cell.events.length - (maxEventsPerDay - 1) }} more
                   </button>
                 </PopoverTrigger>
                 <PopoverContent class="w-64 p-2 shadow-lg" align="start">
@@ -468,19 +487,19 @@ function handleMoreClick(dateKey: string, events: CalendarEvent[], evt: MouseEve
                       cell.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', weekday: 'short' })
                     }}</span>
                     <span class="text-muted-foreground text-[11px] font-normal">
-                      {{ getEventsForDay(cell.dateKey).length }} events
+                      {{ cell.events.length }} events
                     </span>
                   </div>
                   <div class="flex max-h-48 flex-col gap-1 overflow-y-auto">
                     <div
-                      v-for="(evt, idx) in getEventsForDay(cell.dateKey)"
+                      v-for="(evt, idx) in cell.events"
                       :key="evt.id || idx"
                       :class="cn(calendarEventVariants({ variant: getEventVariant(evt), size: 'sm' }), 'w-full')"
                       @click="handleEventClick(evt, $event)"
                     >
                       <div class="flex items-center gap-1 truncate font-medium">
                         <span v-if="!evt.allDay" class="shrink-0 font-mono text-[10px] opacity-75">
-                          {{ formatTime(getEventMinutes(evt.start, 540), timeFormat) }}
+                          {{ monthTimeLabels.get(evt) }}
                         </span>
                         <span class="truncate">{{ evt.title }}</span>
                       </div>
@@ -531,7 +550,7 @@ function handleMoreClick(dateKey: string, events: CalendarEvent[], evt: MouseEve
               <span
                 :class="
                   cn(
-                    'mt-0.5 inline-flex size-7 items-center justify-center rounded-full text-xs font-semibold transition-all',
+                    'mt-0.5 inline-flex size-7 items-center justify-center rounded-full text-xs font-semibold transition-[color,background-color,box-shadow]',
                     isToday(d) ? 'bg-primary text-primary-foreground shadow-xs' : 'text-foreground',
                   )
                 "

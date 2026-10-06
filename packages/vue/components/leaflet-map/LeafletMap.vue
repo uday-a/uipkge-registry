@@ -261,8 +261,10 @@ watch(resolvedTiles, (tiles) => {
   if (map.value) applyTiles(tiles)
 })
 
+// Watch the coordinates, not the array: a parent re-render that passes a
+// fresh `[lng, lat]` literal must not snap the user's pan/zoom back.
 watch(
-  () => [props.center, props.zoom],
+  [() => props.center?.[0], () => props.center?.[1], () => props.zoom],
   () => {
     const m = map.value
     if (!m || !props.center) return

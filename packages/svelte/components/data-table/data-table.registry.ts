@@ -1,0 +1,40 @@
+import { defineRegistryItem } from '../../lib/define-registry'
+
+export default defineRegistryItem({
+  name: 'data-table',
+  type: 'registry:ui',
+  categories: ['data'],
+  framework: 'svelte',
+  description:
+    'Full-feature table with sorting, filtering, column pinning, pagination, row selection, and an opinionated header/toolbar. Built on TanStack Table — pass `columns` + `data` and configure as needed.',
+  files: [
+    { path: 'DataTable.svelte', target: 'components/ui/data-table/DataTable.svelte' },
+    { path: 'DataTableColumnHeader.svelte', target: 'components/ui/data-table/DataTableColumnHeader.svelte' },
+    { path: 'DataTableFilterPopover.svelte', target: 'components/ui/data-table/DataTableFilterPopover.svelte' },
+    { path: 'DataTableFilterSheet.svelte', target: 'components/ui/data-table/DataTableFilterSheet.svelte' },
+    { path: 'DataTablePagination.svelte', target: 'components/ui/data-table/DataTablePagination.svelte' },
+    { path: 'DataTableToolbar.svelte', target: 'components/ui/data-table/DataTableToolbar.svelte' },
+    { path: 'DataTableRangeCalendar.svelte', target: 'components/ui/data-table/DataTableRangeCalendar.svelte' },
+    { path: 'FlexRender.svelte', target: 'components/ui/data-table/FlexRender.svelte' },
+    { path: 'render-helpers.ts', target: 'components/ui/data-table/render-helpers.ts' },
+    { path: 'table.svelte.ts', target: 'components/ui/data-table/table.svelte.ts' },
+    { path: 'types.ts', target: 'components/ui/data-table/types.ts' },
+    { path: 'date-utils.ts', target: 'components/ui/data-table/date-utils.ts' },
+    { path: 'index.ts', target: 'components/ui/data-table/index.ts' },
+  ],
+  dependencies: ['@tanstack/table-core', '@lucide/svelte'],
+  registryDependencies: [
+    'https://uipkge.dev/r/badge.json',
+    'https://uipkge.dev/r/button.json',
+    'https://uipkge.dev/r/command.json',
+    'https://uipkge.dev/r/dropdown-menu.json',
+    'https://uipkge.dev/r/input.json',
+    'https://uipkge.dev/r/label.json',
+    'https://uipkge.dev/r/popover.json',
+    'https://uipkge.dev/r/range-calendar.json',
+    'https://uipkge.dev/r/select.json',
+    'https://uipkge.dev/r/separator.json',
+    'https://uipkge.dev/r/sheet.json',
+    'https://uipkge.dev/r/table.json',
+  ],
+})

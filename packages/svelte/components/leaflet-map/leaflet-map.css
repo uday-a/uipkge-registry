@@ -1,0 +1,130 @@
+/**
+ * Leaflet map chrome — re-skins Leaflet's controls, popups, and tooltips to the
+ * design-system tokens so they sit naturally on light and dark surfaces.
+ * Global (Leaflet renders this chrome outside the component subtree). Import
+ * once, e.g. in your root CSS: `@import './components/ui/leaflet-map/leaflet-map.css';`
+ */
+.leaflet-container {
+  font: inherit;
+  background: var(--muted);
+}
+.leaflet-bar {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+.leaflet-bar a,
+.leaflet-bar a:hover {
+  background: var(--card);
+  color: var(--foreground);
+  border-bottom-color: var(--border);
+}
+.leaflet-bar a:hover {
+  background: var(--muted);
+}
+.leaflet-bar a.leaflet-disabled {
+  background: var(--card);
+  color: var(--muted-foreground);
+}
+.leaflet-popup-content-wrapper {
+  background: var(--popover);
+  color: var(--popover-foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+}
+.leaflet-popup-content {
+  margin: var(--spacing-2, 8px) var(--spacing-3, 12px);
+  font: inherit;
+  line-height: 1.5;
+}
+.leaflet-popup-tip {
+  background: var(--popover);
+  border: 1px solid var(--border);
+  box-shadow: none;
+}
+.leaflet-popup-close-button {
+  color: var(--muted-foreground) !important;
+}
+.leaflet-tooltip {
+  background: var(--popover);
+  color: var(--popover-foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  font: inherit;
+}
+.leaflet-tooltip-top:before {
+  border-top-color: var(--border);
+}
+.leaflet-tooltip-bottom:before {
+  border-bottom-color: var(--border);
+}
+/* `muted` variant — desaturate only the tile pane so overlaid data keeps its
+ * colour. */
+[data-slot='leaflet-map'][data-muted='true'] .leaflet-tile-pane {
+  filter: grayscale(55%) contrast(0.92);
+}
+
+/* Custom marker icons: Leaflet wraps our element in its own icon div; keep it
+ * unstyled so slot content controls the look. DivIcon forces a 12×12 inline
+ * box plus anchor margins — override so the icon sizes to its content and the
+ * inner anchor transform does the positioning. */
+.uipkge-leaflet-div-icon {
+  background: transparent;
+  border: none;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+}
+
+/* Marker slot content is a real DOM element moved into the icon. It stays
+ * hidden while parked inside the component tree, and the anchor transform
+ * decides which point of the content sits on the coordinate. */
+.uipkge-leaflet-anchor {
+  display: none;
+}
+.leaflet-marker-icon .uipkge-leaflet-anchor {
+  display: block;
+  /* shrink-to-fit inside the abspos icon resolves to min-content and wraps
+   * labels — force natural content width instead */
+  width: max-content;
+}
+.uipkge-leaflet-anchor[data-anchor='center'] {
+  transform: translate(-50%, -50%);
+}
+.uipkge-leaflet-anchor[data-anchor='top'] {
+  transform: translate(-50%, 0);
+}
+.uipkge-leaflet-anchor[data-anchor='bottom'] {
+  transform: translate(-50%, -100%);
+}
+.uipkge-leaflet-anchor[data-anchor='left'] {
+  transform: translate(0, -50%);
+}
+.uipkge-leaflet-anchor[data-anchor='right'] {
+  transform: translate(-100%, -50%);
+}
+.uipkge-leaflet-anchor[data-anchor='top-left'] {
+  transform: translate(0, 0);
+}
+.uipkge-leaflet-anchor[data-anchor='top-right'] {
+  transform: translate(-100%, 0);
+}
+.uipkge-leaflet-anchor[data-anchor='bottom-left'] {
+  transform: translate(0, -100%);
+}
+.uipkge-leaflet-anchor[data-anchor='bottom-right'] {
+  transform: translate(-100%, -100%);
+}
+
+/* Popup/tooltip slot sources are real DOM moved into the overlay's content
+ * node when it opens. */
+.uipkge-leaflet-popup-src,
+.uipkge-leaflet-tooltip-src {
+  display: none;
+}
+.leaflet-popup-content .uipkge-leaflet-popup-src,
+.leaflet-tooltip .uipkge-leaflet-tooltip-src {
+  display: block;
+}

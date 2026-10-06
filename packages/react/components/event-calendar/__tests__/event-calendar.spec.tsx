@@ -107,6 +107,52 @@ describe('EventCalendar (React)', () => {
     }
   })
 
+  it('places events in the cell of their start date and counts the +N more overflow', () => {
+    // Day placement drives what users see in month view, and the "+N more" count is
+    // derived from maxEventsPerDay - 1 visible rows. Both must survive the per-day
+    // bucketing optimisation unchanged.
+    const busyDay: CalendarEvent[] = [
+      { id: 'b1', title: 'Busy 1', start: '2026-05-20 08:00', end: '2026-05-20 09:00' },
+      { id: 'b2', title: 'Busy 2', start: '2026-05-20 09:00', end: '2026-05-20 10:00' },
+      { id: 'b3', title: 'Busy 3', start: '2026-05-20 10:00', end: '2026-05-20 11:00' },
+      { id: 'b4', title: 'Busy 4', start: '2026-05-20 11:00', end: '2026-05-20 12:00' },
+      { id: 'b5', title: 'Busy 5', start: '2026-05-20 13:00', end: '2026-05-20 14:00' },
+      { id: 'q1', title: 'Quiet Day Event', start: new Date(2026, 4, 21, 9, 0), end: new Date(2026, 4, 21, 10, 0) },
+    ]
+    const onMoreClick = vi.fn()
+    render(
+      <EventCalendar
+        value="2026-05-18"
+        events={busyDay}
+        view="month"
+        maxEventsPerDay={3}
+        onMoreClick={onMoreClick}
+      />,
+    )
+
+    const cellFor = (title: string) => screen.getByText(title).closest('.min-h-\\[96px\\]') as HTMLElement
+    const busyCell = cellFor('Busy 1')
+    // Only maxEventsPerDay - 1 cards are shown, in original order; the rest overflow.
+    expect(busyCell.querySelectorAll('[data-slot="event-card"]').length).toBe(2)
+    expect(busyCell.textContent).toContain('Busy 2')
+    expect(busyCell.textContent).not.toContain('Busy 3')
+    expect(busyCell.textContent).toContain('20')
+
+    const more = screen.getByRole('button', { name: '+3 more' })
+    expect(busyCell.contains(more)).toBe(true)
+    fireEvent.click(more)
+    expect(onMoreClick).toHaveBeenCalledWith({
+      date: '2026-05-20',
+      events: busyDay.slice(0, 5),
+    })
+
+    // A Date-object start lands on its own day, with no overflow there.
+    const quietCell = cellFor('Quiet Day Event')
+    expect(quietCell).not.toBe(busyCell)
+    expect(quietCell.textContent).toContain('21')
+    expect(quietCell.textContent).not.toContain('more')
+  })
+
   it('calculates overlapping timed event positions into split columns', () => {
     const date = new Date(2026, 4, 18)
     const positions = calculateTimedEventPositions(sampleEvents, date, 0, 24, 60)

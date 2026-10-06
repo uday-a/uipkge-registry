@@ -6,9 +6,9 @@ Read this file and [`docs/README.md`](./docs/README.md) when assisting with or m
 
 ## 🎯 Purpose & Scope
 
-UIPKGE is an open-source dual-framework UI component registry where **the components are the product**, not an npm package. Consumers run `npx shadcn-vue add <url>` or `npx shadcn add <url>` to copy source code directly into their project.
+UIPKGE is an open-source multi-framework UI component registry where **the components are the product**, not an npm package. Consumers copy source code directly into their project (`npx shadcn-vue add <url>`, `npx shadcn add <url>`, `npx uipkge-ng add <name>`).
 
-- **This repository (`uipkge-registry`)**: Houses the 210 core primitives, charts, tokens, bootstrap items, and isolated Vite playgrounds.
+- **This repository (`uipkge-registry`)**: Houses the core primitives, charts, tokens, bootstrap items, and isolated Vite playgrounds for Vue, React, Angular, Svelte and Lit.
 - **Detailed Documentation**: Full specifications live under [`docs/`](./docs/).
 
 ---
@@ -19,6 +19,9 @@ Do not invent versions. Pin these authoritative strings:
 
 - **Vue**: `3.5` + **Nuxt**: `4` (using `reka-ui`)
 - **React**: `19` + **Next.js**: `16` (using Radix UI)
+- **Angular**: `22` (standalone components, installed with `uipkge-ng`)
+- **Svelte**: `5` + **SvelteKit** (installed with `shadcn-svelte`)
+- **Lit**: `3` web components (framework-agnostic, installed with `shadcn`)
 - **Tailwind CSS**: `v4` with OKLCH design tokens
 - **Bun**: `>= 1.4.0`
 
@@ -26,12 +29,12 @@ Do not invent versions. Pin these authoritative strings:
 
 ## ⚡ Core Rules for AI Assistants
 
-1. **Dual-Framework Parity**: Every component, chart, or utility exists in both Vue (`packages/vue/`) and React (`packages/react/`). Design tokens and CVA variants are identical via `packages/shared/`.
+1. **Framework Coverage**: Vue (`packages/vue/`) and React (`packages/react/`) hold the full 210-item catalog in parity; Angular (`packages/angular/`), Svelte (`packages/svelte/`) and Lit (`packages/lit/`) ship their own item sets (see each package's `registry.json`). Design tokens and CVA variants are identical via `packages/shared/`.
 2. **React `'use client'` Directive**: Every interactive React component file (`.tsx`) must begin with `'use client'`.
 3. **Primitive vs Block Boundary**:
    - Primitives (`registry:ui`) NEVER take structured record arrays (`items`, `data`) to render layouts.
    - Blocks (`registry:block`) compose primitives top-to-bottom and spell out titles, metrics, and badges inline.
-4. **Base Component Immunity**: Never modify existing base primitives (`components/ui/*`) or shared tokens (`packages/shared/*`) while creating or modifying blocks. Block contributions are strictly isolated to `packages/{vue,react}/blocks/<name>/`.
+4. **Base Component Immunity**: Never modify existing base primitives (`components/ui/*`) or shared tokens (`packages/shared/*`) while creating or modifying blocks. Block contributions are strictly isolated to `packages/<framework>/blocks/<name>/`.
 5. **Token Discipline & No Micro-Text**: All components and blocks must strictly use semantic OKLCH design tokens (`border-border`, `bg-card`, `text-foreground`). Never use arbitrary palette colors (`bg-blue-500`) or sub-12px micro-text (`text-[10px]`).
 6. **Manifest Accuracy**: Every item must maintain an accurate `<name>.registry.ts` declaring all dependencies and target paths.
 7. **Formatting**:
@@ -62,5 +65,5 @@ bun run format           # Format with Prettier
 - [Component Authoring & Craft Standards](./docs/COMPONENT_STANDARDS.md)
 - [Registry Manifest Specification](./docs/REGISTRY_SCHEMA.md)
 - [Primitive vs Block Boundary Rules](./docs/PRIMITIVE_VS_BLOCK_RULES.md)
-- [Complete 210 Component Catalog](./docs/COMPONENTS_CATALOG.md)
+- [Complete Component Catalog](./docs/COMPONENTS_CATALOG.md)
 - [Workflows & CLI Reference](./docs/WORKFLOWS_AND_COMMANDS.md)

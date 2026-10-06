@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button } from '@vue-registry/button'
+import Button from '@vue-registry/button/Button.vue'
 import { Kbd } from '@vue-registry/kbd'
 </script>
 

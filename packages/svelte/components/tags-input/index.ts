@@ -1,0 +1,5 @@
+export { default as TagsInput, type TagsInputProps } from './TagsInput.svelte'
+export { default as TagsInputInput, type TagsInputInputProps } from './TagsInputInput.svelte'
+export { default as TagsInputItem, type TagsInputItemProps } from './TagsInputItem.svelte'
+export { default as TagsInputItemDelete, type TagsInputItemDeleteProps } from './TagsInputItemDelete.svelte'
+export { default as TagsInputItemText, type TagsInputItemTextProps } from './TagsInputItemText.svelte'

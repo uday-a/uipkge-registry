@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "verbatimModuleSyntax": true,
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "$lib/utils": ["./bootstrap/utils/utils.ts"],
+      "$lib/components/ui/*": ["./components/*"],
+      "$lib/components/blocks/*": ["./blocks/*"],
+      "$lib/composables/useKanban": ["./bootstrap/use-kanban/useKanban.ts"],
+      "$lib/composables/useMonthGrid.svelte": ["./bootstrap/use-month-grid/useMonthGrid.svelte.ts"]
+    }
+  },
+  "include": ["components/**/*", "blocks/**/*", "bootstrap/**/*", "lib/**/*", "scripts/**/*"]
+}

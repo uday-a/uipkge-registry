@@ -68,7 +68,7 @@ const isScrollSpy = computed(
       :data-active="idx === activeIndex ? 'true' : 'false'"
       :class="
         cn(
-          'group relative flex shrink-0 items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-medium transition-all duration-150 outline-none select-none',
+          'group relative flex shrink-0 items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-medium transition-[color,background-color,box-shadow,scale] duration-150 outline-none select-none',
           'focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-1 active:scale-[0.98]',
           idx === activeIndex
             ? 'bg-primary/10 text-primary font-semibold shadow-2xs'
@@ -118,7 +118,7 @@ const isScrollSpy = computed(
         :data-active="idx === activeIndex ? 'true' : 'false'"
         :class="
           cn(
-            'group flex shrink-0 items-center gap-2 rounded-md px-2.5 py-1.5 text-xs font-medium transition-[color,background-color,transform] duration-150 outline-none select-none',
+            'group flex shrink-0 items-center gap-2 rounded-md px-2.5 py-1.5 text-xs font-medium transition-[color,background-color,scale] duration-150 outline-none select-none',
             'focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-1 active:scale-[0.98]',
             idx === activeIndex
               ? 'bg-primary/10 text-foreground font-medium shadow-2xs'
@@ -133,7 +133,7 @@ const isScrollSpy = computed(
         <span
           :class="
             cn(
-              'flex size-5 shrink-0 items-center justify-center rounded-full font-mono text-[10px] transition-all duration-200',
+              'flex size-5 shrink-0 items-center justify-center rounded-full font-mono text-[10px] transition-[color,background-color,box-shadow,scale] duration-200',
               idx === activeIndex
                 ? 'bg-primary text-primary-foreground scale-105 font-semibold shadow-2xs'
                 : idx < activeIndex
@@ -191,7 +191,7 @@ const isScrollSpy = computed(
       type="button"
       aria-label="Previous section"
       :disabled="activeIndex <= 0"
-      class="text-muted-foreground hover:bg-muted/80 hover:text-foreground flex size-7 items-center justify-center rounded-full transition-all active:scale-95 disabled:pointer-events-none disabled:opacity-25"
+      class="text-muted-foreground hover:bg-muted/80 hover:text-foreground flex size-7 items-center justify-center rounded-full transition-[color,background-color,opacity,scale] active:scale-95 disabled:pointer-events-none disabled:opacity-25"
       @click="ctx.goToPrev"
     >
       <svg class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -208,7 +208,7 @@ const isScrollSpy = computed(
         :aria-label="`Jump to section ${idx + 1}`"
         :class="
           cn(
-            'h-1.5 cursor-pointer rounded-full transition-all duration-200',
+            'h-1.5 cursor-pointer rounded-full transition-[width,background-color] duration-200',
             idx === activeIndex
               ? 'bg-primary w-5'
               : idx < activeIndex
@@ -235,7 +235,7 @@ const isScrollSpy = computed(
       type="button"
       aria-label="Next section"
       :disabled="activeIndex >= items.length - 1"
-      class="text-muted-foreground hover:bg-muted/80 hover:text-foreground flex size-7 items-center justify-center rounded-full transition-all active:scale-95 disabled:pointer-events-none disabled:opacity-25"
+      class="text-muted-foreground hover:bg-muted/80 hover:text-foreground flex size-7 items-center justify-center rounded-full transition-[color,background-color,opacity,scale] active:scale-95 disabled:pointer-events-none disabled:opacity-25"
       @click="ctx.goToNext"
     >
       <svg class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

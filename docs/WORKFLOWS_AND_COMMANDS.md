@@ -12,20 +12,23 @@ bun install
 bun run dev:vue        # Vue 3.5 workbench on http://localhost:5173
 bun run dev:react      # React 19 workbench on http://localhost:5174
 
-# Build registries (compiles manifests into public/r/{vue,react}/*.json)
-bun run build:registry # Builds both Vue and React registries
+# Build registries (compiles manifests into public/r/<framework>/*.json)
+bun run build:registry # Builds all five registries (vue, react, angular, svelte, lit)
 bun run build:vue      # Builds Vue registry only
 bun run build:react    # Builds React registry only
+bun run build:angular  # Builds Angular registry only
+bun run build:svelte   # Builds Svelte registry only
+bun run build:lit      # Builds Lit registry only
 
 # Validation & Spec Checks
 bun run verify         # Runs verify:vue and verify:react
 bun run verify:vue     # Checks Vue manifests against registry spec
 bun run verify:react   # Checks React manifests and validates 'use client'
-bun run typecheck      # Runs vue-tsc and tsc (0 errors expected)
+bun run typecheck      # Typechecks all five packages (0 errors expected)
 bun run check:scope    # Validates that block PRs do not mutate primitives
 
 # Unit Tests (Vitest)
-bun run test           # Runs all Vue & React test suites
+bun run test           # Runs Vue & React test suites
 bun run test:vue       # Runs Vue Vitest suites
 bun run test:react     # Runs React Vitest suites
 
@@ -61,6 +64,30 @@ npx shadcn@latest add https://uipkge.dev/r/react/init.json
 npx shadcn@latest add https://uipkge.dev/r/react/button.json
 npx shadcn@latest add https://uipkge.dev/r/react/data-table.json
 npx shadcn@latest add https://uipkge.dev/r/react/line-chart.json
+```
+
+### Angular 22 Projects
+
+```bash
+# Initialize once per project
+npx uipkge-ng@latest init
+
+# Add a component
+npx uipkge-ng@latest add button
+```
+
+### Svelte 5 / SvelteKit Projects
+
+```bash
+# Add a component (full URL form)
+npx shadcn-svelte@latest add https://uipkge.dev/r/svelte/button.json
+```
+
+### Lit 3 Web Components
+
+```bash
+# Add a component (works in plain HTML and any framework)
+npx shadcn@latest add https://uipkge.dev/r/lit/button.json -y
 ```
 
 ---

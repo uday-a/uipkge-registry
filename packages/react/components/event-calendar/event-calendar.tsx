@@ -158,17 +158,26 @@ export function EventCalendar({
   // Month View Days
   const monthDays = React.useMemo(() => getMonthDays(activeDate, weekStartsOn), [activeDate, weekStartsOn])
 
+  // Bucket events by start-date key once per `events` change so each month
+  // cell is a Map lookup instead of a full filter. Insertion order matches the
+  // original `events` order, same as the previous per-cell filter.
+  const eventsByDay = React.useMemo(() => {
+    const map = new Map<string, CalendarEvent[]>()
+    for (const e of events) {
+      const startStr =
+        typeof e.start === 'string' && /^\d{4}-\d{2}-\d{2}/.test(e.start)
+          ? e.start.slice(0, 10)
+          : formatDateKey(parseDate(e.start))
+      const bucket = map.get(startStr)
+      if (bucket) bucket.push(e)
+      else map.set(startStr, [e])
+    }
+    return map
+  }, [events])
+
   const getEventsForDay = React.useCallback(
-    (dateKey: string): CalendarEvent[] => {
-      return events.filter((e) => {
-        const startStr =
-          typeof e.start === 'string' && /^\d{4}-\d{2}-\d{2}/.test(e.start)
-            ? e.start.slice(0, 10)
-            : formatDateKey(parseDate(e.start))
-        return startStr === dateKey
-      })
-    },
-    [events],
+    (dateKey: string): CalendarEvent[] => eventsByDay.get(dateKey) ?? [],
+    [eventsByDay],
   )
 
   // Intervals for time grid
@@ -293,7 +302,7 @@ export function EventCalendar({
                 <button
                   type="button"
                   className={cn(
-                    'rounded-md px-2.5 py-1 text-xs font-medium transition-all',
+                    'rounded-md px-2.5 py-1 text-xs font-medium transition-[color,background-color,box-shadow]',
                     activeView === 'month'
                       ? 'bg-background text-foreground shadow-xs'
                       : 'text-muted-foreground hover:text-foreground',
@@ -305,7 +314,7 @@ export function EventCalendar({
                 <button
                   type="button"
                   className={cn(
-                    'rounded-md px-2.5 py-1 text-xs font-medium transition-all',
+                    'rounded-md px-2.5 py-1 text-xs font-medium transition-[color,background-color,box-shadow]',
                     activeView === 'week'
                       ? 'bg-background text-foreground shadow-xs'
                       : 'text-muted-foreground hover:text-foreground',
@@ -317,7 +326,7 @@ export function EventCalendar({
                 <button
                   type="button"
                   className={cn(
-                    'rounded-md px-2.5 py-1 text-xs font-medium transition-all',
+                    'rounded-md px-2.5 py-1 text-xs font-medium transition-[color,background-color,box-shadow]',
                     activeView === 'work-week'
                       ? 'bg-background text-foreground shadow-xs'
                       : 'text-muted-foreground hover:text-foreground',
@@ -329,7 +338,7 @@ export function EventCalendar({
                 <button
                   type="button"
                   className={cn(
-                    'rounded-md px-2.5 py-1 text-xs font-medium transition-all',
+                    'rounded-md px-2.5 py-1 text-xs font-medium transition-[color,background-color,box-shadow]',
                     activeView === 'day'
                       ? 'bg-background text-foreground shadow-xs'
                       : 'text-muted-foreground hover:text-foreground',
@@ -342,7 +351,7 @@ export function EventCalendar({
                   <button
                     type="button"
                     className={cn(
-                      'rounded-md px-2.5 py-1 text-xs font-medium transition-all',
+                      'rounded-md px-2.5 py-1 text-xs font-medium transition-[color,background-color,box-shadow]',
                       activeView === 'category'
                         ? 'bg-background text-foreground shadow-xs'
                         : 'text-muted-foreground hover:text-foreground',
@@ -534,7 +543,7 @@ export function EventCalendar({
                         </span>
                         <span
                           className={cn(
-                            'mt-0.5 inline-flex size-7 items-center justify-center rounded-full text-xs font-semibold transition-all',
+                            'mt-0.5 inline-flex size-7 items-center justify-center rounded-full text-xs font-semibold transition-[color,background-color,box-shadow]',
                             isToday(d) ? 'bg-primary text-primary-foreground shadow-xs' : 'text-foreground',
                           )}
                         >

@@ -1,0 +1,6 @@
+export { default as Tabs, type TabsProps } from './Tabs.svelte'
+export { default as TabsContent, type TabsContentProps } from './TabsContent.svelte'
+export { default as TabsList, type TabsListProps } from './TabsList.svelte'
+export { default as TabsTrigger, type TabsTriggerProps } from './TabsTrigger.svelte'
+export { tabsListVariants, tabsTriggerVariants, type TabsListVariants, type TabsTriggerVariants } from './tabs.variants'
+export type { TabsOrientation } from './context'

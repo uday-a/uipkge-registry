@@ -8,6 +8,7 @@ export default defineRegistryItem({
   files: [
     { path: 'DottedMapChart.tsx', target: 'components/ui/charts/dotted-map-chart/DottedMapChart.tsx' },
     { path: 'index.ts', target: 'components/ui/charts/dotted-map-chart/index.ts' },
+    { path: '../useChartTheme.ts', target: 'components/ui/charts/useChartTheme.ts' },
   ],
   dependencies: ['mapbox-gl', 'lucide-react'],
   registryDependencies: ['https://uipkge.dev/r/map.json'],

@@ -1,0 +1,5 @@
+export { default as VerticalTabs, type VerticalTabsProps } from './VerticalTabs.svelte'
+export { default as VerticalTabsList, type VerticalTabsListProps } from './VerticalTabsList.svelte'
+export { default as VerticalTabsSection, type VerticalTabsSectionProps } from './VerticalTabsSection.svelte'
+export { default as VerticalTabsTrigger, type VerticalTabsTriggerProps } from './VerticalTabsTrigger.svelte'
+export { default as VerticalTabsContent, type VerticalTabsContentProps } from './VerticalTabsContent.svelte'

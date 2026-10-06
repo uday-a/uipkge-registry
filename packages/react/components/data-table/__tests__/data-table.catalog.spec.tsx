@@ -1453,4 +1453,22 @@ describe('DataTable React catalog (200)', () => {
     expect(document.querySelector('[data-slot="data-table-bulk-dock"]')).toBeNull()
     expect(document.querySelector('.custom-del')).toBeTruthy()
   })
+  it('DT-REACT-205 sortable header cells expose aria-sort and scope', async () => {
+    const { ref } = renderSortable({ enablePagination: false })
+    tableApi(ref).setPageSize(50)
+    const nameTh = () => screen.getAllByRole('button').find((b) => (b.textContent ?? '').includes('Name'))!.closest('th')!
+    expect(nameTh().getAttribute('scope')).toBe('col')
+    expect(nameTh().getAttribute('aria-sort')).toBe('none')
+    await clickByName('Name')
+    expect(nameTh().getAttribute('aria-sort')).toBe('ascending')
+    await clickByName('Name')
+    expect(nameTh().getAttribute('aria-sort')).toBe('descending')
+  })
+
+  it('DT-REACT-206 non-sortable header cells omit aria-sort', () => {
+    renderSortable({ enablePagination: false })
+    const selectTh = screen.getByLabelText('Select all rows').closest('th')!
+    expect(selectTh.getAttribute('scope')).toBe('col')
+    expect(selectTh.hasAttribute('aria-sort')).toBe(false)
+  })
 })

@@ -55,8 +55,8 @@ When `bun run build:registry` runs:
    - Vue: `public/r/vue/<name>.json`
    - React: `public/r/react/<name>.json`
 5. Emits registry index catalogs:
-   - `packages/{vue,react}/registry.json`
-   - `public/r/{vue,react}/registry.json`
+   - `packages/<framework>/registry.json`
+   - `public/r/<framework>/registry.json`
 
 ---
 

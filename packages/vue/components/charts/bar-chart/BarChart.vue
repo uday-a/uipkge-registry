@@ -78,7 +78,8 @@ const mergedOption = computed(() => {
     const isStacked = Boolean(props.stacked || u?.stack || hasUserStack)
 
     return {
-      name: field,
+      // Single-series charts hide the legend, so a blank name only drops the raw field key from the tooltip row.
+      name: fields.length > 1 ? field : '',
       type: 'bar',
       stack: props.stacked ? 'bars' : undefined,
       barMaxWidth: 32,

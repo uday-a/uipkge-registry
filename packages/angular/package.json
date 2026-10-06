@@ -1,0 +1,46 @@
+{
+  "name": "@uipkge/registry-angular",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Angular registry source (standalone components). Builds to /r/angular/*.json. Blocks excluded for now; primitives + maps + charts only.",
+  "type": "module",
+  "scripts": {
+    "build": "bun scripts/build.ts",
+    "verify": "bun scripts/verify.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "check:imports": "bun scripts/check-imports.ts"
+  },
+  "dependencies": {
+    "@angular/cdk": "^22.0.0",
+    "@angular/common": "^22.0.0",
+    "@angular/core": "^22.0.0",
+    "@angular/forms": "^22.0.0",
+    "@tiptap/core": "^3.31.3",
+    "@tiptap/extension-link": "^3.31.3",
+    "@tiptap/extension-placeholder": "^3.31.3",
+    "@tiptap/extension-task-item": "^3.31.3",
+    "@tiptap/extension-task-list": "^3.31.3",
+    "@tiptap/extension-text-align": "^3.31.3",
+    "@tiptap/extension-underline": "^3.31.3",
+    "@tiptap/starter-kit": "^3.31.3",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "echarts": "^6.1.0",
+    "leaflet": "^1.9.4",
+    "lucide-angular": "^1.0.0",
+    "mapbox-gl": "^3.25.0",
+    "qrcode": "^1.5.4",
+    "shiki": "^4.1.0",
+    "tailwind-merge": "^2.0.0"
+  },
+  "devDependencies": {
+    "@angular/compiler": "22.1.7",
+    "@angular/platform-browser": "22.1.7",
+    "@types/leaflet": "^1.9.22",
+    "fast-glob": "^3.3.0",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7",
+    "zod": "^3.0.0"
+  }
+}

@@ -6,7 +6,7 @@ import { FunnelChart as EChartsFunnelChart } from 'echarts/charts'
 import { TooltipComponent, LegendComponent } from 'echarts/components'
 import VChart from 'vue-echarts'
 import { cn } from '@/lib/utils'
-import { chartColors, chartTextColor, chartTooltipBg, chartTooltipBorder, chartTooltipText } from '../useChartTheme'
+import { chartBgColor, chartColors, chartTextColor, chartTooltipBg, chartTooltipBorder, chartTooltipText } from '../useChartTheme'
 
 use([CanvasRenderer, EChartsFunnelChart, TooltipComponent, LegendComponent])
 
@@ -28,7 +28,15 @@ const props = withDefaults(defineProps<Props>(), {
   showLegend: false,
 })
 
+// Share of the top (largest) stage: '100%', '24%', '7.2%', '1.8%'.
+function formatShare(value: number, top: number): string {
+  if (!top) return '0%'
+  const pct = (value / top) * 100
+  return `${pct >= 10 ? Math.round(pct) : Math.round(pct * 10) / 10}%`
+}
+
 const mergedOption = computed(() => {
+  const topValue = Math.max(0, ...props.data.map(d => d.value))
   const series = [
     {
       type: 'funnel',
@@ -44,18 +52,34 @@ const mergedOption = computed(() => {
       minSize: '20%',
       maxSize: '100%',
       funnelAlign: 'center',
-      gap: 2,
+      // Absorbs the 3px outer half of the 6px stroke, keeping a ~2px visible gutter.
+      gap: 8,
+      // Inside labels use the card-surface ink (light on the saturated stage
+      // fills, tracks light/dark) -- muted text was illegible on colour.
+      // Two lines: stage name, then value · share of the top stage.
       label: {
         show: props.showLabels,
         position: 'inside',
-        color: chartTextColor.value,
-        fontSize: 11,
-        fontWeight: 600,
+        color: chartBgColor.value,
+        formatter: (p: { name: string, value: number }) =>
+          `{t|${p.name}}\n{v|${p.value.toLocaleString()} · ${formatShare(p.value, topValue)}}`,
+        rich: {
+          t: { fontSize: 12, fontWeight: 600, lineHeight: 16 },
+          v: { fontSize: 11, fontWeight: 500, lineHeight: 15 },
+        },
       },
       labelLine: { length: 8, lineStyle: { width: 1, type: 'solid' } },
-      itemStyle: { borderWidth: 0 },
+      // ECharts funnel has no borderRadius; a same-colour round-join stroke softens corners (~3px radius).
+      itemStyle: { borderWidth: 6, borderJoin: 'round' },
       emphasis: { label: { fontSize: 13, fontWeight: 700 } },
-      data: props.data,
+      // Stroke each stage in its own fill: palette by data index (how ECharts assigns funnel colours) unless the item sets one.
+      data: props.data.map((d: any, i) => ({
+        ...d,
+        itemStyle: {
+          ...d.itemStyle,
+          borderColor: d.itemStyle?.color ?? chartColors.value[i % chartColors.value.length],
+        },
+      })),
     },
   ]
 

@@ -923,9 +923,20 @@ function DataTableInner<TData, TValue>(
                       header.column.id !== 'select' &&
                       header.column.id !== 'actions' &&
                       header.column.id !== 'expander'
+                    // Screen readers announce the active sort from aria-sort on the header cell.
+                    const sorted = header.column.getIsSorted()
+                    const ariaSort = header.column.getCanSort()
+                      ? sorted === 'asc'
+                        ? 'ascending'
+                        : sorted === 'desc'
+                          ? 'descending'
+                          : 'none'
+                      : undefined
                     return (
                       <TableHead
                         key={header.id}
+                        scope="col"
+                        aria-sort={ariaSort}
                         className={[
                           'relative transition-colors duration-150',
                           reorderable ? 'cursor-grab active:cursor-grabbing' : '',

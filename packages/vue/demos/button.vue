@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { ChevronRight, Loader2, Mail, Plus, Trash2, ChevronDown, Copy, Share2, Download } from 'lucide-vue-next'
 import { Button, ButtonGroup } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 </script>
 
 <template>
@@ -65,9 +71,18 @@ import { Button, ButtonGroup } from '@/components/ui/button'
 
       <ButtonGroup>
         <Button variant="default" size="sm">Save changes</Button>
-        <Button variant="default" size="icon-sm" aria-label="More options">
-          <ChevronDown class="size-3.5" />
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="default" size="icon-sm" aria-label="More options">
+              <ChevronDown class="size-3.5" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem>Save and publish</DropdownMenuItem>
+            <DropdownMenuItem>Save as draft</DropdownMenuItem>
+            <DropdownMenuItem>Export as JSON</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </ButtonGroup>
 
       <ButtonGroup>

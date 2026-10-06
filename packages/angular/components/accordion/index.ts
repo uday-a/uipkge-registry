@@ -1,0 +1,16 @@
+export {
+  UiAccordionComponent,
+  UiAccordionItemComponent,
+  UiAccordionHeaderComponent,
+  UiAccordionTriggerComponent,
+  UiAccordionContentComponent,
+  accordionVariants,
+  accordionItemVariants,
+  accordionTriggerVariants,
+  type AccordionVariants,
+  type AccordionItemVariants,
+  type AccordionTriggerVariants,
+  type AccordionVariant,
+  type AccordionType,
+  type AccordionOrientation,
+} from './accordion.component'

@@ -2,7 +2,7 @@
 
 ## 1. Directory & File Conventions
 
-Every component lives in its own directory under `packages/{vue,react}/components/<name>/`:
+Every Vue/React component lives in its own directory under `packages/{vue,react}/components/<name>/` (Angular, Svelte and Lit follow the same one-directory-per-component layout under their own package roots):
 
 ### Vue Layout
 

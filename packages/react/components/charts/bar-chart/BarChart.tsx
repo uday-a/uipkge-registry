@@ -74,7 +74,8 @@ export const BarChart = React.forwardRef<HTMLDivElement, BarChartProps>(
         const isSeriesStacked = Boolean(stacked || u?.stack || hasUserStack)
 
         return {
-          name: field,
+          // Single-series hides the legend; a blank name keeps the raw field key out of the tooltip row.
+          name: fields.length > 1 ? field : '',
           type: 'bar',
           stack: stacked ? 'bars' : undefined,
           barMaxWidth: 32,

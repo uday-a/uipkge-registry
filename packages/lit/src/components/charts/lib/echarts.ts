@@ -1,0 +1,92 @@
+// ECharts core with every chart type / component the React wrappers register
+// (same list as packages/registry-react/components/charts/shared.tsx), so
+// <uip-raw-chart> can render any of them. Only ever loaded with a dynamic
+// import() from ChartElement.firstUpdated — never at module scope — so the
+// elements stay SSR-safe and echarts stays out of the initial bundle.
+// (Lives in charts/lib/ so src/index.ts's components/*/*.ts glob skips it.)
+import * as echarts from 'echarts/core'
+import { CanvasRenderer } from 'echarts/renderers'
+import {
+  LineChart,
+  BarChart,
+  PieChart,
+  ScatterChart,
+  EffectScatterChart,
+  PictorialBarChart,
+  RadarChart,
+  GaugeChart,
+  HeatmapChart,
+  TreemapChart,
+  FunnelChart,
+  BoxplotChart,
+  CandlestickChart,
+  CustomChart,
+  ChordChart,
+  MapChart,
+  GraphChart,
+  ParallelChart,
+  SankeyChart,
+  SunburstChart,
+  ThemeRiverChart,
+  TreeChart,
+} from 'echarts/charts'
+import {
+  GridComponent,
+  PolarComponent,
+  TooltipComponent,
+  LegendComponent,
+  MarkLineComponent,
+  MarkAreaComponent,
+  MarkPointComponent,
+  GraphicComponent,
+  RadarComponent,
+  VisualMapComponent,
+  CalendarComponent,
+  DataZoomComponent,
+  ParallelComponent,
+  SingleAxisComponent,
+  TitleComponent,
+} from 'echarts/components'
+
+echarts.use([
+  CanvasRenderer,
+  LineChart,
+  BarChart,
+  PieChart,
+  ScatterChart,
+  EffectScatterChart,
+  PictorialBarChart,
+  RadarChart,
+  GaugeChart,
+  HeatmapChart,
+  TreemapChart,
+  FunnelChart,
+  BoxplotChart,
+  CandlestickChart,
+  CustomChart,
+  ChordChart,
+  MapChart,
+  GraphChart,
+  ParallelChart,
+  SankeyChart,
+  SunburstChart,
+  ThemeRiverChart,
+  TreeChart,
+  GridComponent,
+  PolarComponent,
+  TooltipComponent,
+  LegendComponent,
+  MarkLineComponent,
+  MarkAreaComponent,
+  MarkPointComponent,
+  GraphicComponent,
+  RadarComponent,
+  VisualMapComponent,
+  CalendarComponent,
+  DataZoomComponent,
+  ParallelComponent,
+  SingleAxisComponent,
+  TitleComponent,
+])
+
+export { echarts }
