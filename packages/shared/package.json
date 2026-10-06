@@ -2,7 +2,7 @@
   "name": "@uipkge/shared",
   "private": true,
   "version": "0.0.0",
-  "description": "Single source of truth shared by the Vue and React registries: Tailwind v4 tokens + cva variant definitions. Synced into each registry by scripts/sync-shared.mjs so the copy-source distribution model still works.",
+  "description": "Single source of truth shared by every framework registry: Tailwind v4 tokens + cva variant definitions. Synced into each registry by scripts/sync-shared.mjs so the own-your-code distribution model keeps working.",
   "type": "module",
   "dependencies": {
     "fast-glob": "^3.3.0"

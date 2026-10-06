@@ -6,7 +6,7 @@ Read this file and [`docs/README.md`](./docs/README.md) when assisting with or m
 
 ## 🎯 Purpose & Scope
 
-UIPKGE is an open-source multi-framework UI component registry where **the components are the product**, not an npm package. Consumers copy source code directly into their project (`npx shadcn-vue add <url>`, `npx shadcn add <url>`, `npx uipkge-ng add <name>`).
+UIPKGE is an open-source multi-framework UI component registry where **the components are the product**, not an npm package. Consumers install source files into their project (`npx shadcn-vue add <url>`, `npx shadcn add <url>`, `npx uipkge-ng add <name>`) and own that code.
 
 - **This repository (`uipkge-registry`)**: Houses the core primitives, charts, tokens, bootstrap items, and isolated Vite playgrounds for Vue, React, Angular, Svelte and Lit.
 - **Detailed Documentation**: Full specifications live under [`docs/`](./docs/).

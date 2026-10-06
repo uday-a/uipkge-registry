@@ -9,7 +9,7 @@ In UIPKGE, components are **unbundled source code**, not packaged npm dependenci
 - **Transitive CLI Resolution**: When a user installs a component or block, the CLI queries the JSON manifest from `https://uipkge.dev/r/{framework}/{name}.json`, downloading dependencies transitively.
 
 ```text
-Registry JSON (HTTP)  ──>  CLI (shadcn-vue / shadcn / uipkge-ng / shadcn-svelte)  ──>  Copied into User Workspace
+Registry JSON (HTTP)  ──>  CLI (shadcn-vue / shadcn / uipkge-ng / shadcn-svelte)  ──>  Owned Source in User Project
 ```
 
 ---

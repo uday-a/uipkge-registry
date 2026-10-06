@@ -2,7 +2,7 @@
 
 > Open-source component registry for **Vue 3.5** (Nuxt 4), **React 19** (Next.js 16), **Angular 22**, **Svelte 5** (SvelteKit) and **Lit 3** web components.
 
-In UIPKGE, the **components are the product**, not an npm package. Source code is copied directly into your project via the CLI. You own the code, edit it freely, and have zero semver lock-in.
+In UIPKGE, the **components are the product**, not an npm package. Source files install into your project via the CLI. You own that code — edit it freely, with zero semver lock-in.
 
 - 🌐 **Documentation & Live Previews**: [uipkge.dev](https://uipkge.dev)
 - 🚀 **Boilerplates & Templates**: [Official Starters & Templates](#-official-boilerplates--production-templates)
@@ -145,6 +145,6 @@ All code in this repository is MIT. One runtime dependency is not open source: [
 
 UIPKGE stands on:
 
-- [shadcn/ui](https://ui.shadcn.com) (© 2023 shadcn, MIT) and [shadcn-vue](https://www.shadcn-vue.com) (© 2023 unovue, MIT) — the copy-the-source registry model, the CLIs that install from it, and the component conventions this registry follows. Portions of this registry derive from their code; their notices apply.
+- [shadcn/ui](https://ui.shadcn.com) (© 2023 shadcn, MIT) and [shadcn-vue](https://www.shadcn-vue.com) (© 2023 unovue, MIT) — the own-your-code registry model, the CLIs that install from it, and the component conventions this registry follows. Portions of this registry derive from their code; their notices apply.
 - [Radix UI](https://www.radix-ui.com) (© 2022 WorkOS, MIT) for React and [Reka UI](https://reka-ui.com) (© 2023 UnoVue, MIT) for Vue — the accessible headless primitives underneath.
 - [Tailwind CSS](https://tailwindcss.com), [class-variance-authority](https://cva.style), [Lucide](https://lucide.dev) and [Apache ECharts](https://echarts.apache.org).

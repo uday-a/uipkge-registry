@@ -38,7 +38,7 @@ import { UiSectionCardComponent } from '../../../../../packages/registry-angular
       }
       @case ('Paragraph') {
         <ui-text-reveal
-          text="Every component ships as source code you copy into your project. No runtime dependency, no version lock — edit anything after installing."
+          text="Every component ships as source you own. No runtime dependency, no version lock — edit anything after installing."
           class="text-muted-foreground max-w-prose text-sm leading-relaxed"
         />
       }

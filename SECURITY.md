@@ -6,7 +6,7 @@ UIPKGE takes the security of our open-source component registry and our users se
 
 ## Supported Versions
 
-Because UIPKGE is an unbundled registry where components are copied directly into user codebases rather than installed as immutable packages, fixes and security patches are released directly to `main` and immediately served via the registry API (`https://uipkge.dev/r/...`).
+Because UIPKGE is an unbundled registry where components ship as owned source in user codebases rather than immutable packages, fixes and security patches are released directly to `main` and immediately served via the registry API (`https://uipkge.dev/r/...`).
 
 | Version               | Supported          | Notes                                                      |
 | --------------------- | ------------------ | ---------------------------------------------------------- |

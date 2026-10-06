@@ -40,7 +40,7 @@ export default function TextRevealDemo() {
 
       <Story title="Paragraph" description="Longer body copy reveals word by word at reading size.">
         <TextReveal
-          text="Every component ships as source code you copy into your project. No runtime dependency, no version lock — edit anything after installing."
+          text="Every component ships as source you own. No runtime dependency, no version lock — edit anything after installing."
           className="text-muted-foreground max-w-prose text-sm leading-relaxed"
         />
       </Story>
